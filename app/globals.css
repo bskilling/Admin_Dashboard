@@ -1,0 +1,11 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.grid-box {
+  display: grid;
+  grid-template-columns: subgrid;
+  grid-row: 1/4;
+  padding: 10px;
+  max-width: 60rem;
+}
