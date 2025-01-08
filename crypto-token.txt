@@ -1,0 +1,31 @@
+const crypto = require("crypto");
+const token =
+
+"pLJSGxi+ZJPSnsrJPObRuuIyN7tvqT3tLOe38ql+JVZEMul8y41HAgPu60ZovMzhuEAZ+119BASu/q91/HBDf27+vOJ6WWQzAmPqsbPR3VaUu2rYvU1YV4Pa/nVbzEnDWD
+jJDsZrbO+7n/QmRqSyvxvDi/iT2BgtGreaUpHojoe496NLApkOSB14XejlxnopjpSXtqSjYP0iQin16w333BcMefB5v2k5o34W6Cdv/aWb4Yt8tMv4EkDjpHAaeN3LJsF8p
+frPyrKUtkIADzvqBJthPN0WWdgn88G3DWauYAum3MwqUMOWebiWLpTSySjVv1q6oXrIi1uIpacsD0C0TRQZrFjS6r/12SpEjDt+hyvFliSD/4sdyWNcNUG6RdFGTHZqG3+L
+T4Gycdvt725sfgrms4WwRRFQW1yzduDldCBslA6qAt99jU5j1oGtZoBGuADUhJe6mglEu09rxlyB6YWvS4kQHMK0j6K4hUtXvEA=";
+const CRYPTO_KEY = "oI1mdI3yp2etMvjNEwV7uA==";
+const CRYPTO_IV = "ptVfhaSqSKNz1d2iI9emUQ==";
+function decryptData() {
+ try {
+ const encodedDataBuffer = Buffer.from(token, "base64");
+ const key = Buffer.from(CRYPTO_KEY, "base64");
+ const iv = Buffer.from(CRYPTO_IV, "base64");
+ const decipher = crypto.createDecipheriv("aes-128-cbc", key, iv);
+ const decryptedChunks = [];
+ decryptedChunks.push(decipher.update(encodedDataBuffer));
+ decryptedChunks.push(decipher.final());
+ const decryptedData = Buffer.concat(decryptedChunks).toString("utf-8");
+ return decryptedData;
+ } catch (error) {
+ console.error("Decryption error:", error?.message);
+ return error?.message;
+ }
+}
+console.log(decryptData());
+
+
+
+
+https://www.bskilling.com/courses/courseDetails/professional-certification-in-generative-ai-and-machine-learning
