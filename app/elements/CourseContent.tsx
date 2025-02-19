@@ -302,6 +302,13 @@ const CourseContent = (props: Props) => {
             Blog
           </Link>
 
+          <Link
+            href="/reviews"
+            // target="_blank"
+            className="px-4 py-[8px] bg-sky-700 rounded-md text-white font-[600] hover:bg-sky-600 transition-all"
+          >
+            Reviews
+          </Link>
           <Search
             setSearchQuery={setSearchQuery}
             searchQuery={searchQuery}
