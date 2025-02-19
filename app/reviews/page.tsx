@@ -54,7 +54,7 @@ const LinkedInLogin = () => {
   async function publish({ review }: { review: any }) {
     try {
       const response = await axios.put(
-        `${process.env.NEXT_PUBLIC_TRAINING_BASE_URL}/api/v1/reviews/${review._id}/publish`,
+        `${process.env.NEXT_PUBLIC_SERVER_URI}/api/v1/reviews/${review._id}/publish`,
         { isPublished: !review.published }
       );
 
