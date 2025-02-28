@@ -51,7 +51,7 @@ export const draftCourseSchema = z.object({
     currency: z.enum(["INR", "USD"]).optional(),
   }),
   description: z.string().optional(),
-  durationHours: z.number().optional(),
+  durationHours: z.coerce.number().optional(),
   startTime: z.preprocess(
     (arg) =>
       typeof arg === "string" || arg instanceof Date ? new Date(arg) : arg,

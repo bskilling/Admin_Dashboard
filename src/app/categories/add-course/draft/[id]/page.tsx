@@ -189,6 +189,14 @@ export default function RouteComponent() {
       reset({
         ...res,
         banner: res?.banner?._id,
+        certification: {
+          ...res?.certification,
+          image: res?.certification?.image?._id,
+        },
+        partnerShip: {
+          ...res?.partnerShip,
+          image: res?.partnerShip?.image?._id,
+        },
         previewImage: res?.previewImage?._id,
         logoUrl: res?.logoUrl?._id,
         skills: res?.skills?.map(
@@ -589,6 +597,23 @@ export default function RouteComponent() {
                                       </div>
                                     )
                                   )}
+
+                                  <div className="flex justify-end mt-8">
+                                    <Button
+                                      type="button"
+                                      className="bg-blue-500 text-white"
+                                      onClick={() => {
+                                        const projects =
+                                          watch("curriculum.projects") || [];
+                                        setValue("curriculum.projects", [
+                                          ...projects,
+                                          { title: "", content: [] },
+                                        ]);
+                                      }}
+                                    >
+                                      Add New Project
+                                    </Button>
+                                  </div>
                                 </div>
                               </>
                             </div>

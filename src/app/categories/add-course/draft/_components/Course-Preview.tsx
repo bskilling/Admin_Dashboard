@@ -117,7 +117,7 @@ const CourseLandingPage = ({ courseData }: { courseData: ICourse }) => {
     images,
     overview,
     tools,
-    partnership,
+    partnerShip,
     certification,
     variant,
     // logoUrl, previewImage, slug not used in this single-page layout
@@ -133,7 +133,7 @@ const CourseLandingPage = ({ courseData }: { courseData: ICourse }) => {
     "https://www.svgrepo.com/show/508699/landscape-placeholder.svg";
 
   // Format price (assuming price is in cents)
-  const formattedPrice = price ? (price?.amount / 100).toFixed(2) : "Free";
+  const formattedPrice = price ? price?.amount?.toFixed(2) : "Free";
   const dateOptions: Intl.DateTimeFormatOptions = {
     month: "short",
     day: "numeric",
@@ -290,7 +290,7 @@ const CourseLandingPage = ({ courseData }: { courseData: ICourse }) => {
             <p className="text-lg font-semibold text-[#FFD166]">
               Enrollment Closes:{" "}
               <span className="text-[#06D6A0]">
-                {format(new Date(endTime), "dd MMM, yyyy")}
+                {endTime ? format(new Date(endTime), "dd MMM, yyyy") : "-"}
               </span>
             </p>
 
@@ -337,7 +337,7 @@ const CourseLandingPage = ({ courseData }: { courseData: ICourse }) => {
             <div>
               <p className="font-semibold">Application Starts</p>
               <p className="text-muted-foreground text-lg">
-                {format(new Date(startTime), "dd MMM, yyyy")}
+                {startTime && format(new Date(startTime), "dd MMM, yyyy")}
               </p>
             </div>
           </div>
@@ -355,7 +355,7 @@ const CourseLandingPage = ({ courseData }: { courseData: ICourse }) => {
             <div>
               <p className="font-semibold">Application Ends</p>
               <p className="text-muted-foreground text-lg">
-                {format(new Date(endTime), "dd MMM, yyyy")}
+                {endTime && format(new Date(endTime), "dd MMM, yyyy")}
               </p>{" "}
             </div>
           </div>
@@ -371,7 +371,12 @@ const CourseLandingPage = ({ courseData }: { courseData: ICourse }) => {
           </div>
         </div>
         {/* <h2>Hey i am here</h2> */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-y-12 w-1/2">
+        <div
+          className={cn(
+            "grid grid-cols-1  gap-y-12 w-1/2",
+            partnerShip ? "grid-cols-2" : ""
+          )}
+        >
           <div>
             <p className="font-semibold inline-flex items-center gap-x-3">
               {" "}
@@ -385,7 +390,7 @@ const CourseLandingPage = ({ courseData }: { courseData: ICourse }) => {
             <Image
               src={certification?.image?.viewUrl ?? placeholder}
               alt="Certification"
-              className="w-full rounded-xl  max-h-40 bg-card object-cover"
+              className=" rounded-xl h-28 w-28 bg-card object-cover m-auto mt-3"
               width={600}
               height={600}
             />

@@ -34,7 +34,7 @@ export interface ICourse {
     title: string;
     content: string;
   };
-  partnership: {
+  partnerShip: {
     image: {
       _id: string;
       viewUrl: string;

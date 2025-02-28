@@ -101,7 +101,7 @@ export default function CertificationSection({
                 setValue("certification.image", fileId as string)
               }
               title="cc"
-              id={watch("certification.image") as string}
+              // id={watch("certification.image") as string}
               key={watch("certification.image") as string}
               label="Certification"
               purpose="certification"
