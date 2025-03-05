@@ -1,4 +1,4 @@
-import env from "@/src/lib/env";
+import env from "@/lib/env";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 

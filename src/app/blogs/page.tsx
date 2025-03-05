@@ -6,11 +6,11 @@ import React, { Suspense, useEffect, useState } from "react";
 import Link from "next/link";
 import { IoIosAdd } from "react-icons/io";
 // import loginPageLogo from "../../public/assets/loginPageLogo.png";
-import { useGetAllBlogsQuery } from "@/src/redux/features/blog/blogApi";
+import { useGetAllBlogsQuery } from "@/redux/features/blog/blogApi";
 import Protected from "../hooks/useProtected";
 import { LiaEdit } from "react-icons/lia";
 import { FaExternalLinkAlt } from "react-icons/fa";
-import { formatToStringDate } from "@/src/utils/formatter";
+import { formatToStringDate } from "@/utils/formatter";
 
 const Header = ({ courseId, setEditModal }: any) => {
   const [scrolled, setScrolled] = useState(false);

@@ -1,6 +1,6 @@
 "use client";
 
-import env from "@/src/lib/env";
+import env from "@/lib/env";
 import { useMutation, useQuery } from "@tanstack/react-query";
 // import { Link, useNavigate } from "@tanstack/react-router";
 import axios from "axios";
@@ -13,12 +13,12 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@/src/components/ui/card";
+} from "@/components/ui/card";
 import { IAllCourses, publishedCourseSchema } from "./types";
-import { Button } from "@/src/components/ui/button";
+import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
-import { Switch } from "@/src/components/ui/switch";
-import { Label } from "@/src/components/ui/label";
+import { Switch } from "@/components/ui/switch";
+import { Label } from "@/components/ui/label";
 import { useState } from "react";
 import {
   Dialog,
@@ -28,12 +28,13 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/src/components/ui/dialog";
-import { cn } from "@/src/lib/utils";
+} from "@/components/ui/dialog";
+import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { ICourse } from "../add-course/draft/_components/types";
+import { ICategories } from "./CreateCategory";
 
 // interface ICourses {
 //   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -47,17 +48,21 @@ import { ICourse } from "../add-course/draft/_components/types";
 //   itemsPerPage: number;
 // }
 
-export default function CreateCourse({ category }: { category: string }) {
+export default function CreateCourse({
+  category,
+}: {
+  category: ICategories["categories"][number];
+}) {
   const navigate = useRouter();
   const [isPublished, setIsPublished] = useState<boolean | undefined>(false);
   const { data } = useQuery<{ courses: ICourse[] }>({
-    queryKey: ["courses", category, isPublished],
+    queryKey: ["courses", category?._id, isPublished],
     queryFn: async () => {
       const res = await axios.get(env?.BACKEND_URL + "/api/courses", {
         params: {
           limit: 100,
           page: 1,
-          category: category ?? undefined,
+          category: category?._id ?? undefined,
           isPublished: isPublished,
         },
       });
@@ -122,7 +127,7 @@ export default function CreateCourse({ category }: { category: string }) {
           </div>
 
           <CardTitle className="text-2xl text-center capitalize">
-            {category} Courses
+            {category?.name} Courses
           </CardTitle>
           <CardDescription></CardDescription>
         </CardHeader>
@@ -294,7 +299,7 @@ export default function CreateCourse({ category }: { category: string }) {
                     <DialogDescription>
                       Do you want create a new course for this category{" "}
                       <span className="capitalize text-base pl-2 font-bold text-purple-600 underline">
-                        {category}
+                        {category?.name}
                       </span>
                     </DialogDescription>
                   </DialogHeader>
@@ -307,7 +312,7 @@ export default function CreateCourse({ category }: { category: string }) {
                     <Button
                       onClick={() => {
                         createDraftMutation.mutate({
-                          category: category,
+                          category: category._id,
                         });
                       }}
                     >

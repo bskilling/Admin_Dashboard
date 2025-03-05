@@ -3,7 +3,7 @@
 import {
   useEditCourseMutation,
   useGetCoursesTitleQuery,
-} from "@/src/redux/features/courses/coursesApi";
+} from "@/redux/features/courses/coursesApi";
 import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { AiOutlinePlus, AiOutlineMinus } from "react-icons/ai";

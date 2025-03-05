@@ -2,12 +2,12 @@
 import React, { Suspense, useEffect, useMemo, useState } from "react";
 import "react-quill/dist/quill.snow.css";
 import dynamic from "next/dynamic";
-import { useCreateBlogMutation } from "@/src/redux/features/blog/blogApi";
+import { useCreateBlogMutation } from "@/redux/features/blog/blogApi";
 import toast from "react-hot-toast";
-import { getCookie } from "@/src/utils/AuthUser";
-import Protected from "@/src/app/hooks/useProtected";
+import { getCookie } from "@/utils/AuthUser";
+import Protected from "@/app/hooks/useProtected";
 import { ThreeCircles } from "react-loader-spinner";
-import { useUploadImageMutation } from "@/src/redux/features/upload/uploadApi";
+import { useUploadImageMutation } from "@/redux/features/upload/uploadApi";
 import Image from "next/image";
 
 export default function Page() {

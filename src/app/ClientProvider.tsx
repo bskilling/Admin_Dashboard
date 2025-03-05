@@ -9,6 +9,8 @@ import React, { Suspense, useMemo } from "react";
 import { Toaster } from "../components/ui/sonner";
 import { usePathname, useSearchParams } from "next/navigation";
 import Protected from "./hooks/useProtected";
+import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
+import { AppSidebar } from "@/components/app-sidebar";
 
 export function ClientProviders({ children }: { children: React.ReactNode }) {
   const [queryClient] = React.useState(() => new QueryClient());
@@ -30,12 +32,17 @@ export function ClientProviders({ children }: { children: React.ReactNode }) {
           <>
             {isSidebar ? (
               <>
-                <div className="flex h-screen w-full">
-                  <Sidebar />{" "}
-                  <div className="h-screen overflow-y-auto w-full relative ">
-                    {children}
-                  </div>
-                </div>
+                <SidebarProvider>
+                  <AppSidebar />
+                  <main className="w-full">
+                    <SidebarTrigger />
+                    <div className="flex h-screen w-full">
+                      <div className="h-screen overflow-y-auto w-full relative ">
+                        {children}
+                      </div>
+                    </div>
+                  </main>
+                </SidebarProvider>
               </>
             ) : (
               <div className="h-screen overflow-y-auto w-full relative ">

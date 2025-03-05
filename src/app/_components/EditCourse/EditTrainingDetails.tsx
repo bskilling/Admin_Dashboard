@@ -8,12 +8,12 @@ import {
   useGetCourseByIdQuery,
   useGetCoursesTitleQuery,
 } from "../../../redux/features/courses/coursesApi";
-import { language, mode, category, level } from "@/src/utils/list";
+import { language, mode, category, level } from "@/utils/list";
 import toast from "react-hot-toast";
 import {
   useUploadImageMutation,
   useUploadFileMutation,
-} from "@/src/redux/features/upload/uploadApi";
+} from "@/redux/features/upload/uploadApi";
 import { ThreeCircles } from "react-loader-spinner";
 
 type Props = {

@@ -6,13 +6,13 @@ import {
   useGetCourseByIdQuery,
   useGetCoursesTitleQuery,
 } from "../../../redux/features/courses/coursesApi";
-import { language, mode, category, level } from "@/src/utils/list";
+import { language, mode, category, level } from "@/utils/list";
 import { ThreeCircles } from "react-loader-spinner";
 import toast from "react-hot-toast";
 import {
   useUploadFileMutation,
   useUploadImageMutation,
-} from "@/src/redux/features/upload/uploadApi";
+} from "@/redux/features/upload/uploadApi";
 
 type Props = {
   setIsCourseCreated: any;

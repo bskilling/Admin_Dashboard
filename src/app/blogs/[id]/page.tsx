@@ -1,12 +1,12 @@
 "use client";
 
-import { useGetBlogByIdQuery } from "@/src/redux/features/blog/blogApi";
+import { useGetBlogByIdQuery } from "@/redux/features/blog/blogApi";
 import React from "react";
 // import loginBg from "../../../public/assets/loginBg.png";
-import BlogHeader from "@/src/app/_components/Blog/BlogHeader";
-import BlogBody from "@/src/app/_components/Blog/BlogBody";
-import BlogNav from "@/src/app/_components/Blog/BlogNav";
-import Protected from "@/src/app/hooks/useProtected";
+import BlogHeader from "@/app/_components/Blog/BlogHeader";
+import BlogBody from "@/app/_components/Blog/BlogBody";
+import BlogNav from "@/app/_components/Blog/BlogNav";
+import Protected from "@/app/hooks/useProtected";
 
 export default function Page({ params }: any) {
   const { isLoading, data, refetch } = useGetBlogByIdQuery(params.id);

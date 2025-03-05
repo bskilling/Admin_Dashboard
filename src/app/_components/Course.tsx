@@ -7,7 +7,7 @@ import { FaCopy } from "react-icons/fa";
 import "react-tooltip/dist/react-tooltip.css";
 import { Tooltip } from "react-tooltip";
 import Link from "next/link";
-import { useGetAllCoursesQuery } from "@/src/redux/features/courses/coursesApi";
+import { useGetAllCoursesQuery } from "@/redux/features/courses/coursesApi";
 import Modal from "./Modal";
 
 type Props = {

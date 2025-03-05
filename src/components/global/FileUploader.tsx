@@ -1,7 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 import React, { useRef, useState } from "react";
 import axios from "axios";
-import env from "@/src/lib/env";
+import env from "@/lib/env";
 import { toast } from "sonner";
 import Image from "next/image";
 

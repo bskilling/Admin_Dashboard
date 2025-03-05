@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { BiSolidDownArrow, BiSolidUpArrow } from "react-icons/bi";
-import { batch_status } from "@/src/utils/list";
+import { batch_status } from "@/utils/list";
 import { useSelector } from "react-redux";
-import { useEditCourseMutation } from "@/src/redux/features/courses/coursesApi";
+import { useEditCourseMutation } from "@/redux/features/courses/coursesApi";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 

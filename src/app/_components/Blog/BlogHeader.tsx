@@ -1,12 +1,12 @@
 "use client";
-import { formatToStringDate } from "@/src/utils/formatter";
+import { formatToStringDate } from "@/utils/formatter";
 import CoverImage from "./CoverImage";
 import BlogTitle from "./BlogTitle";
 import Avatar from "./Avatar";
 import { RiEdit2Line } from "react-icons/ri";
 import Link from "next/link";
 import { RiDeleteBin5Line } from "react-icons/ri";
-import { useDeleteBlogMutation } from "@/src/redux/features/blog/blogApi";
+import { useDeleteBlogMutation } from "@/redux/features/blog/blogApi";
 import Swal from "sweetalert2";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";

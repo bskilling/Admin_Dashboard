@@ -13,9 +13,9 @@ import { category, level, language, ispaid, mode } from "../../utils/list";
 import {
   useGetCoursesTitleQuery,
   useGetCoursesLengthQuery,
-} from "@/src/redux/features/courses/coursesApi";
+} from "@/redux/features/courses/coursesApi";
 import Search from "./Search";
-import { useGetAllCoursesQuery } from "@/src/redux/features/courses/coursesApi";
+import { useGetAllCoursesQuery } from "@/redux/features/courses/coursesApi";
 import dynamic from "next/dynamic";
 import { Pagination } from "./Pagination";
 import Link from "next/link";

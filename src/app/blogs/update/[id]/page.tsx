@@ -6,12 +6,12 @@ import { useEffect, useState } from "react";
 import {
   useEditBlogMutation,
   useGetBlogByIdQuery,
-} from "@/src/redux/features/blog/blogApi";
+} from "@/redux/features/blog/blogApi";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
-import Protected from "@/src/app/hooks/useProtected";
+import Protected from "@/app/hooks/useProtected";
 import Image from "next/image";
-import { useUploadImageMutation } from "@/src/redux/features/upload/uploadApi";
+import { useUploadImageMutation } from "@/redux/features/upload/uploadApi";
 
 export default function UpdateBlog({ params }: any) {
   const [formData, setFormData] = useState<any>();

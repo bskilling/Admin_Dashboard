@@ -4,18 +4,18 @@ import Protected from "../../../hooks/useProtected";
 import React, { useState } from "react";
 import { BiPencil, BiLogOut, BiTrash } from "react-icons/bi";
 import { FaArrowLeftLong } from "react-icons/fa6";
-import { useLogOutQuery } from "@/src/redux/features/auth/authApi";
+import { useLogOutQuery } from "@/redux/features/auth/authApi";
 import { useRouter } from "next/navigation";
 import {
   useDeleteCourseMutation,
   useGetCourseByIdQuery,
-} from "@/src/redux/features/courses/coursesApi";
+} from "@/redux/features/courses/coursesApi";
 import Swal from "sweetalert2";
 import toast from "react-hot-toast";
-import CourseEditModal from "@/src/app/_components/CourseEditModal";
+import CourseEditModal from "@/app/_components/CourseEditModal";
 import Image from "next/image";
 // import loginBg from "../../../../public/assets/loginBg.png";
-import { formatToStringDate } from "@/src/utils/formatter";
+import { formatToStringDate } from "@/utils/formatter";
 
 const Header = ({ courseId, setEditModal }: any) => {
   const router = useRouter();

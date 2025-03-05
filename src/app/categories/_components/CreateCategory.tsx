@@ -5,26 +5,28 @@ import { z } from "zod";
 
 import {
   Dialog,
+  DialogClose,
   DialogContent,
   DialogDescription,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/src/components/ui/dialog";
-import { Input } from "@/src/components/ui/input";
-import { Button } from "@/src/components/ui/button";
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 import { BiSolidCategoryAlt } from "react-icons/bi";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { toast } from "sonner";
 import axios from "axios";
 // import env from "@/lib/env";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import CreateCourse from "./CreateCourse";
-import { cn } from "@/src/lib/utils";
+import { cn } from "@/lib/utils";
 import { MdDelete } from "react-icons/md";
-import env from "@/src/lib/env";
-import FileUploader from "@/src/components/global/FileUploader";
+import env from "@/lib/env";
+import FileUploader from "@/components/global/FileUploader";
 import Image from "next/image";
+import { set } from "date-fns";
 
 const createCategoryValidator = z.object({
   name: z
@@ -32,11 +34,12 @@ const createCategoryValidator = z.object({
     .min(3, "Name is required")
     .max(100, "Name must be less than 100 characters"),
   logo: z.string().length(24, "Logo is required"),
+  type: z.enum(["b2b", "b2c", "b2g", "b2i"]),
 });
 
 type TCreateCategoryForm = z.infer<typeof createCategoryValidator>;
 
-interface ICategories {
+export interface ICategories {
   categories: Category[];
   pagination: Pagination;
 }
@@ -61,12 +64,20 @@ interface logo {
   viewUrl: string;
 }
 
-export default function CreateCategory() {
+export default function CreateCategory({
+  selectedType,
+}: {
+  selectedType: "b2b" | "b2c" | "b2g" | "b2i" | null;
+}) {
   const [show, setShow] = useState(false);
-  const [scategory, setScategory] = useState<string | null>(null);
+  const [scategory, setScategory] = useState<
+    ICategories["categories"][number] | null
+  >(null);
 
   const form = useForm<TCreateCategoryForm>({
-    defaultValues: undefined,
+    defaultValues: {
+      type: selectedType ?? undefined,
+    },
     resolver: zodResolver(createCategoryValidator),
   });
 
@@ -107,26 +118,38 @@ export default function CreateCategory() {
   });
 
   const categoryQuery = useQuery<ICategories>({
-    queryKey: ["categories"],
+    queryKey: ["categories", selectedType],
     queryFn: async () => {
       const res = await axios.get(env?.BACKEND_URL + "/api/categories", {
         params: {
           limit: 100,
           page: 1,
+          type: selectedType ?? undefined,
         },
       });
       return res.data.data;
     },
     staleTime: 1000 * 60 * 5,
+    enabled: !!selectedType,
   });
+  // console.log(selectedType, "selectedType");
+
+  useEffect(() => {
+    setScategory(null);
+    if (selectedType) form.setValue("type", selectedType ?? undefined);
+    if (!selectedType) toast.error("Please select a type");
+  }, [selectedType]);
 
   return (
     <div className="p-6">
       <div className="flex w-full justify-between items-center mb-8">
         <h2 className="text-2xl font-semibold">Manage Categories</h2>
         <Dialog open={show} onOpenChange={setShow}>
-          <DialogTrigger>
-            <Button className="flex items-center gap-x-3 px-6 py-3 bg-blue-600 text-white rounded-lg shadow-md hover:bg-blue-700 transition-all">
+          <DialogTrigger disabled={!selectedType}>
+            <Button
+              disabled={!selectedType}
+              className="flex items-center gap-x-3 px-6 py-3 bg-blue-600 text-white rounded-lg shadow-md hover:bg-blue-700 transition-all"
+            >
               <BiSolidCategoryAlt size={24} /> Create New Category
             </Button>
           </DialogTrigger>
@@ -141,17 +164,28 @@ export default function CreateCategory() {
             </DialogHeader>
             <form
               className="flex flex-col gap-y-6"
-              onSubmit={form.handleSubmit((e) => {
-                const isDuplicate = categoryQuery?.data?.categories?.some(
-                  (category) =>
-                    category.name.toLowerCase() === e.name.toLowerCase()
-                );
-                if (isDuplicate) {
-                  toast.error("Category already exists");
-                  return;
+              onSubmit={form.handleSubmit(
+                (e) => {
+                  const isDuplicate = categoryQuery?.data?.categories?.some(
+                    (category) =>
+                      category.name.toLowerCase() === e.name.toLowerCase()
+                  );
+                  if (isDuplicate) {
+                    toast.error("Category already exists");
+                    return;
+                  }
+                  if (selectedType)
+                    uploadCategory.mutate({
+                      ...e,
+                      type: selectedType ?? undefined,
+                    });
+                  if (!selectedType)
+                    toast.error("Please select a category type");
+                },
+                (err) => {
+                  console.log(err);
                 }
-                uploadCategory.mutate(e);
-              })}
+              )}
             >
               <Input
                 {...form.register("name")}
@@ -180,34 +214,57 @@ export default function CreateCategory() {
           </DialogContent>
         </Dialog>
       </div>
-      <div className="grid md:grid-cols-3 lg:grid-cols-4 gap-6">
-        {categoryQuery?.data?.categories?.map((category) => (
-          <div
-            key={category.slug}
-            className={cn(
-              "flex flex-col items-center p-4 bg-white border rounded-lg shadow-md transition-all cursor-pointer relative hover:shadow-lg",
-              category.slug === scategory &&
-                "bg-gradient-to-tr from-[#8E2DE2] to-[#4A00E0] text-white"
-            )}
-            onClick={() => setScategory(category.slug)}
-          >
-            <Image
-              width={200}
-              height={200}
-              src={category?.logo?.viewUrl}
-              alt={category?.slug}
-              className="w-20 h-20 rounded-full object-cover mb-3"
-            />
-            <p className="text-lg font-medium capitalize">{category.name}</p>
-            <p className="text-sm text-gray-500">{category?.slug}</p>
-            <button
-              className="absolute top-3 right-3 text-red-600 hover:text-red-800 transition-all"
-              onClick={() => deleteCategory?.mutate(category._id)}
+      <div className="border rounded-lg">
+        <Input placeholder="Search Category" className="w-full m-5" />
+        <div className="grid grid-cols-5  gap-4 p-6 h-48 overflow-y-auto ">
+          {categoryQuery?.data?.categories?.map((category) => (
+            <div
+              key={category.slug}
+              className={cn(
+                "flex flex-col gap-4 items-center p-4 bg-white border rounded-lg shadow-md transition-all cursor-pointer relative hover:shadow-lg",
+                category._id === scategory?._id &&
+                  "bg-gradient-to-tr from-[#8E2DE2] to-[#4A00E0] text-white"
+              )}
+              onClick={() => setScategory(category)}
             >
-              <MdDelete size={20} />
-            </button>
-          </div>
-        ))}
+              <Image
+                width={200}
+                height={200}
+                src={category?.logo?.viewUrl}
+                alt={category?.slug}
+                className="w-16 h-16 rounded-full object-cover mb-3"
+              />
+              <p className="text-lg font-medium capitalize">{category.name}</p>
+              {/* <p className="text-sm text-gray-500">{category?.slug}</p> */}
+              <Dialog>
+                <DialogTrigger className="absolute top-2 right-2 text-red-500">
+                  <MdDelete size={20} />
+                </DialogTrigger>
+                <DialogContent>
+                  <DialogHeader>
+                    <DialogTitle>Are you absolutely sure?</DialogTitle>
+                    <DialogDescription>
+                      This action cannot be undone. This will permanently delete
+                      your account and remove your data from our servers.
+                    </DialogDescription>
+                  </DialogHeader>
+                  <div className="flex justify-end gap-x-4">
+                    <DialogClose>
+                      <Button variant={"outline"}>Cancel</Button>
+                    </DialogClose>
+                    <DialogClose>
+                      <Button
+                        onClick={() => deleteCategory?.mutate(category._id)}
+                      >
+                        Delete <MdDelete size={20} />
+                      </Button>
+                    </DialogClose>
+                  </div>
+                </DialogContent>
+              </Dialog>
+            </div>
+          ))}
+        </div>
       </div>
       {scategory && <CreateCourse category={scategory} />}
     </div>

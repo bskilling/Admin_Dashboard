@@ -2,8 +2,8 @@
 
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { getCookie } from "@/src/utils/AuthUser";
-import { useAuthMutation } from "@/src/redux/features/auth/authApi";
+import { getCookie } from "@/utils/AuthUser";
+import { useAuthMutation } from "@/redux/features/auth/authApi";
 
 interface ProtectedProps {
   children: React.ReactNode;

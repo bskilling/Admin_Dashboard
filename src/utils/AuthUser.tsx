@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 "use client";
 
-import { useAuthMutation } from "@/src/redux/features/auth/authApi";
+import { useAuthMutation } from "@/redux/features/auth/authApi";
 import cookie from "js-cookie";
 
 export const setCookie = (key: any, value: any) => {

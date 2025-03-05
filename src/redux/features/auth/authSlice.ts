@@ -1,4 +1,4 @@
-import { logout, setAuthentication, setUser } from "@/src/utils/AuthUser";
+import { logout, setAuthentication, setUser } from "@/utils/AuthUser";
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 
 const initialState = {

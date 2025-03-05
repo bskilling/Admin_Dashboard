@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { MdClose } from "react-icons/md";
 import { useSelector } from "react-redux";
 import EditTrainingDetails from "./EditCourse/EditTrainingDetails";
-import { useGetCourseByIdQuery } from "@/src/redux/features/courses/coursesApi";
+import { useGetCourseByIdQuery } from "@/redux/features/courses/coursesApi";
 import EditTrainingMetadata from "./EditCourse/EditTrainingMetadata";
 import EditTrainingBatches from "./EditCourse/EditTrainingBatches";
 

@@ -2,7 +2,7 @@ import {
   useEditCourseMutation,
   useGetCourseByIdQuery,
   useGetCoursesTitleQuery,
-} from "@/src/redux/features/courses/coursesApi";
+} from "@/redux/features/courses/coursesApi";
 import React, { useState } from "react";
 import { AiOutlinePlus, AiOutlineMinus } from "react-icons/ai";
 import { BiSolidDownArrow, BiSolidUpArrow } from "react-icons/bi";

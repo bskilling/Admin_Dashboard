@@ -1,6 +1,6 @@
-import { useEditCourseMutation } from "@/src/redux/features/courses/coursesApi";
-import { formattDate } from "@/src/utils/formatter";
-import { batch_status } from "@/src/utils/list";
+import { useEditCourseMutation } from "@/redux/features/courses/coursesApi";
+import { formattDate } from "@/utils/formatter";
+import { batch_status } from "@/utils/list";
 import React, { useState } from "react";
 import toast from "react-hot-toast";
 import { BiSolidDownArrow, BiSolidUpArrow } from "react-icons/bi";
