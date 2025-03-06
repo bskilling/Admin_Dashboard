@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 "use client";
 import { format } from "date-fns";
 import { Link } from "react-scroll";
@@ -34,7 +35,18 @@ import { LuRadioTower } from "react-icons/lu";
 import { Button } from "@/components/ui/button";
 import { BiSolidCertification } from "react-icons/bi";
 // import ContactForm from "./ContactForm";
+// @ts-ignore
 import { heroVariants } from "../[id]/_components/HeroSection";
+import { HeroSection } from "./HeroSection";
+import CourseDetails from "./Certificate";
+import CourseContent from "@/app/_components/CourseContent";
+import CourseOverview from "./CourseOverview";
+import Highlights from "./Highlights";
+import Outcomes from "./Outcomes";
+import CourseEnrollment from "./Price";
+import FAQSection from "./faqs";
+import WhyJoinSection from "./Whychoose";
+import Footer from "./Footer";
 // Adjust this type as needed.
 export interface TDraftCourseForm {
   _id: string;
@@ -119,6 +131,7 @@ const CourseLandingPage = ({ courseData }: { courseData: ICourse }) => {
     tools,
     partnerShip,
     certification,
+    outcomes,
     variant,
     // logoUrl, previewImage, slug not used in this single-page layout
   } = courseData;
@@ -251,154 +264,18 @@ const CourseLandingPage = ({ courseData }: { courseData: ICourse }) => {
       </nav>
 
       {/* Hero Section */}
-      <section
-        id="hero"
-        className={cn(
-          "relative w-screen min-h-[600px] bg-gradient-to-r from-[#0F2027] via-[#203A43] to-[#2C5364] flex justify-center items-center overflow-hidden",
-          variant === 0 ? heroVariants[0] : "",
-          variant === 1 ? heroVariants[1] : "",
-          variant === 2 ? heroVariants[2] : "",
-          variant === 3 ? heroVariants[3] : "",
-          variant === 4 ? heroVariants[4] : "",
-          variant === 5 ? heroVariants[5] : "",
-          variant === 6 ? heroVariants[6] : "",
-          variant === 7 ? heroVariants[7] : "",
-          variant === 8 ? heroVariants[8] : "",
-          variant === 9 ? heroVariants[9] : "",
-          variant === 10 ? heroVariants[10] : ""
-        )}
-      >
-        {/* Decorative Background Elements */}
-        <div className="absolute -top-10 left-10 w-40 h-40 bg-[#FFD166] rounded-full opacity-40"></div>
-        <div className="absolute -bottom-10 right-10 w-32 h-32 bg-[#06D6A0] rounded-full opacity-40"></div>
-        <div className="absolute top-1/4 left-1/3 w-20 h-20 bg-[#118AB2] rounded-full opacity-50"></div>
-        <div className="absolute bottom-1/3 right-1/4 w-28 h-28 bg-[#EF476F] rounded-full opacity-50"></div>
+      <HeroSection
+        category={category}
+        title={title}
+        description={description}
+        bannerImage={bannerImage}
+      />
 
-        {/* Main Content */}
-        <div className="relative z-10 mx-auto grid md:grid-cols-2 gap-10 w-[80vw] py-14">
-          {/* Left Column: Course Details */}
-          <div className="space-y-5 text-[#FCEFEF]">
-            {category && (
-              <span className="inline-block bg-white text-[#118AB2] px-4 py-2 rounded-full text-sm font-semibold">
-                {category}
-              </span>
-            )}
-            <h1 className="text-4xl md:text-5xl font-extrabold text-white">
-              {title}
-            </h1>
-            <p className="text-lg text-[#E5E5E5]">{description}</p>
-            <p className="text-lg font-semibold text-[#FFD166]">
-              Enrollment Closes:{" "}
-              <span className="text-[#06D6A0]">
-                {endTime ? format(new Date(endTime), "dd MMM, yyyy") : "-"}
-              </span>
-            </p>
-
-            {highlights && highlights.length > 0 && (
-              <div className="space-y-2">
-                {highlights.map((hl, index) => (
-                  <p
-                    key={index}
-                    className="text-lg flex items-center gap-x-3 text-[#E5E5E5]"
-                  >
-                    <IoIosCheckbox className="w-6 h-6 text-[#06D6A0]" /> {hl}
-                  </p>
-                ))}
-              </div>
-            )}
-
-            <div className="flex gap-5 mt-5">
-              <Button className="bg-white text-[#118AB2] px-6 py-2 rounded-lg font-semibold hover:bg-[#FFD166] transition">
-                Apply Now
-              </Button>
-              <Button className="border-none bg-[#118AB2] border-white text-white px-6 py-2 rounded-lg font-semibold hover:bg-[#FFD166] hover:text-[#118AB2] transition">
-                Get Syllabus
-              </Button>
-            </div>
-          </div>
-
-          {/* Right Column: Course Banner Image */}
-          <div className="relative w-full flex justify-center">
-            <Image
-              width={600}
-              height={600}
-              src={bannerImage}
-              alt="Course Banner"
-              className="w-full max-h-80 rounded-lg object-cover"
-            />
-          </div>
-        </div>
-      </section>
-
-      <section className="py-8 bg-card rounded-lg drop-shadow px-10 relative z-[40]  -mt-20 w-[80vw] flex justify-between m-auto min-h-[300px]">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-y-12 w-1/2">
-          <div className="flex  gap-x-3">
-            <Calendar className="w-6 h-6 text-indigo-500" />
-            <div>
-              <p className="font-semibold">Application Starts</p>
-              <p className="text-muted-foreground text-lg">
-                {startTime && format(new Date(startTime), "dd MMM, yyyy")}
-              </p>
-            </div>
-          </div>
-          <div className="flex  gap-x-3">
-            <Clock className="w-6 h-6 text-indigo-500" />
-            <div>
-              <p className="font-semibold">Duration</p>
-              <p className="text-muted-foreground text-lg">
-                {durationHours} Hours
-              </p>
-            </div>
-          </div>
-          <div className="flex  gap-x-3">
-            <Calendar className="w-6 h-6 text-indigo-500" />
-            <div>
-              <p className="font-semibold">Application Ends</p>
-              <p className="text-muted-foreground text-lg">
-                {endTime && format(new Date(endTime), "dd MMM, yyyy")}
-              </p>{" "}
-            </div>
-          </div>
-
-          <div className="flex  gap-x-3">
-            <LuRadioTower className="w-6 h-6 text-indigo-500" />
-            <div>
-              <p className="font-semibold">Course Mode</p>
-              <p className="text-muted-foreground text-lg">
-                {"Online"} & {"Offline"}
-              </p>
-            </div>
-          </div>
-        </div>
-        {/* <h2>Hey i am here</h2> */}
-        <div
-          className={cn(
-            "grid grid-cols-1  gap-y-12 w-1/2",
-            partnerShip ? "grid-cols-2" : ""
-          )}
-        >
-          <div>
-            <p className="font-semibold inline-flex items-center gap-x-3">
-              {" "}
-              <BiSolidCertification className="w-6 h-6 text-blue-500" />
-              Certifications
-            </p>
-            <p className="font-semibold text-lg mt-3">{certification?.title}</p>
-            <p className="text-muted-foreground text-lg mt-3">
-              {certification?.content}
-            </p>
-            <Image
-              src={certification?.image?.viewUrl ?? placeholder}
-              alt="Certification"
-              className=" rounded-xl h-28 w-28 bg-card object-cover m-auto mt-3"
-              width={600}
-              height={600}
-            />
-          </div>
-        </div>
-      </section>
-
-      {/* Course Overview Section */}
+      <CourseDetails
+        durationHours={durationHours}
+        enrolledStudents={1000}
+        certification={certification}
+      />
 
       <section className="   -mt-56  m-auto flex ">
         <section className="flex  w-[90vw]  pl-[10vw] pt-60 pb-10">
@@ -414,7 +291,7 @@ const CourseLandingPage = ({ courseData }: { courseData: ICourse }) => {
             {/* Chapters */}
 
             <div className="rounded-xl  mt-10">
-              <h3 className="text-xl font-bold mb-4">Course Content</h3>
+              <h3 className="text-xl font-bold mb-4">Course Modules</h3>
               <div className="space-y-4">
                 {curriculum.chapters?.map((chapter) => (
                   <div
@@ -448,87 +325,95 @@ const CourseLandingPage = ({ courseData }: { courseData: ICourse }) => {
                 ))}
               </div>
             </div>
+            <Highlights highlights={highlights || []} />
+            <Outcomes outcomes={outcomes || []} />
 
-            <div className=" rounded-xl  mt-10">
-              <h3 className="text-xl font-bold mb-4">Projects Covered</h3>
-              <div className="space-y-4">
-                {curriculum.projects?.map((project) => (
-                  <div
-                    key={project._id}
-                    className="border-l-4 border-purple-500 pl-4"
-                  >
-                    <Accordion type="single" collapsible>
-                      <AccordionItem value="item-1">
-                        <AccordionTrigger>
-                          {" "}
-                          <h4 className="font-semibold capitalize">
-                            {project.title}
-                          </h4>
-                        </AccordionTrigger>
-                        <AccordionContent>
-                          <div className="mt-2 space-y-2">
-                            {project.content?.map((lesson: string) => (
-                              <div
-                                key={lesson}
-                                className="flex items-center space-x-2"
-                              >
-                                {/* <PlayIcon className="h-4 w-4 text-gray-500" /> */}
-                                <BsFolderCheck className="h-4 w-4 text-purple-500" />
-                                <span>{lesson}</span>
-                              </div>
-                            ))}
-                          </div>
-                        </AccordionContent>
-                      </AccordionItem>
-                    </Accordion>
-                  </div>
-                ))}
-              </div>
-            </div>
-            {/* prerequists */}
-            <section className="mt-10">
-              <h3 className="text-xl font-bold mb-4">Creteria</h3>
-              <section className=" flex flex-col gap-y-5  ">
-                <div className="w-full">
-                  {curriculum.prerequisites && (
-                    <div className="bg-blue-50 p-4 rounded-lg flex flex-col">
-                      <h4 className="font-semibold mb-2">Prerequisites</h4>
-                      {/* <p>{curriculum.prerequisites}</p> */}
-                      {curriculum.prerequisites.map((prerequisite, index) => (
-                        <p key={index} className="mt-5 inline-flex gap-x-4">
-                          {" "}
-                          <IoIosCheckmarkCircle className="w-6 h-6 text-blue-500" />{" "}
-                          <span className="text-sm font-semibold">
-                            {prerequisite}
-                          </span>
-                        </p>
-                      ))}
+            {category?.type !== "b2i" && (
+              <div className=" rounded-xl  mt-10">
+                <h3 className="text-xl font-bold mb-4">Projects Covered</h3>
+                <div className="space-y-4">
+                  {curriculum.projects?.map((project) => (
+                    <div
+                      key={project._id}
+                      className="border-l-4 border-purple-500 pl-4"
+                    >
+                      <Accordion type="single" collapsible>
+                        <AccordionItem value="item-1">
+                          <AccordionTrigger>
+                            {" "}
+                            <h4 className="font-semibold capitalize">
+                              {project.title}
+                            </h4>
+                          </AccordionTrigger>
+                          <AccordionContent>
+                            <div className="mt-2 space-y-2">
+                              {project.content?.map((lesson: string) => (
+                                <div
+                                  key={lesson}
+                                  className="flex items-center space-x-2"
+                                >
+                                  {/* <PlayIcon className="h-4 w-4 text-gray-500" /> */}
+                                  <BsFolderCheck className="h-4 w-4 text-purple-500" />
+                                  <span>{lesson}</span>
+                                </div>
+                              ))}
+                            </div>
+                          </AccordionContent>
+                        </AccordionItem>
+                      </Accordion>
                     </div>
-                  )}
+                  ))}
                 </div>
-                <div className="w-full">
-                  {curriculum.eligibility && (
-                    <div className="bg-purple-50 p-4 rounded-lg">
-                      <h4 className="font-semibold mb-2">Eligibility</h4>
-                      {/* <p>{curriculum.eligibility}</p> */}
-                      <div className="flex flex-col ">
-                        {curriculum.eligibility.map((eligibility, index) => (
-                          <p
-                            key={index}
-                            className="mt-5 inline-flex gap-x-4 items-center"
-                          >
-                            <IoIosCheckmarkCircle className="w-6 h-6 text-purple-500" />{" "}
+              </div>
+            )}
+
+            {/* prerequists */}
+
+            {category?.type !== "b2i" && (
+              <section className="mt-10">
+                <h3 className="text-xl font-bold mb-4">Creteria</h3>
+                <section className=" flex flex-col gap-y-5  ">
+                  <div className="w-full">
+                    {curriculum.prerequisites && (
+                      <div className="bg-blue-50 p-4 rounded-lg flex flex-col">
+                        <h4 className="font-semibold mb-2">Prerequisites</h4>
+                        {/* <p>{curriculum.prerequisites}</p> */}
+                        {curriculum.prerequisites.map((prerequisite, index) => (
+                          <p key={index} className="mt-5 inline-flex gap-x-4">
+                            {" "}
+                            <IoIosCheckmarkCircle className="w-6 h-6 text-blue-500" />{" "}
                             <span className="text-sm font-semibold">
-                              {eligibility}
+                              {prerequisite}
                             </span>
                           </p>
                         ))}
                       </div>
-                    </div>
-                  )}
-                </div>
+                    )}
+                  </div>
+                  <div className="w-full">
+                    {curriculum.eligibility && (
+                      <div className="bg-purple-50 p-4 rounded-lg">
+                        <h4 className="font-semibold mb-2">Eligibility</h4>
+                        {/* <p>{curriculum.eligibility}</p> */}
+                        <div className="flex flex-col ">
+                          {curriculum.eligibility.map((eligibility, index) => (
+                            <p
+                              key={index}
+                              className="mt-5 inline-flex gap-x-4 items-center"
+                            >
+                              <IoIosCheckmarkCircle className="w-6 h-6 text-purple-500" />{" "}
+                              <span className="text-sm font-semibold">
+                                {eligibility}
+                              </span>
+                            </p>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                </section>
               </section>
-            </section>
+            )}
           </div>
         </section>
         <section className="bg-card w-[50vw]  pt-60 pb-10 pl-10 flex flex-col">
@@ -648,109 +533,15 @@ const CourseLandingPage = ({ courseData }: { courseData: ICourse }) => {
           </div>
         </section>
       </section>
-
-      <section className="py-16 px-6 flex justify-center bg-gray-100">
-        <div className="w-full max-w-4xl bg-white shadow-2xl rounded-3xl p-10 flex flex-col items-center gap-8">
-          {/* Header & Price */}
-          <h2 className="text-3xl font-extrabold text-[#203A43] text-center">
-            Enroll Today & Start Learning
-          </h2>
-          <div className="bg-[#203A43] text-white px-6 py-4 rounded-xl text-4xl font-bold shadow-md flex items-center gap-3">
-            <CurrencyDollarIcon className="h-8 w-8" />
-            <span>{formattedPrice}</span>
-          </div>
-
-          {/* Button */}
-          <Button className="bg-[#F4A261] text-white px-8 py-3 text-lg font-semibold rounded-xl shadow-lg hover:bg-[#E98E49] transition-transform transform hover:scale-105 flex items-center">
-            <CreditCardIcon className="h-5 w-5 mr-2" />
-            Enroll Now
-          </Button>
-
-          {/* Features Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full">
-            <div className="flex items-center gap-3 bg-gray-50 p-4 rounded-xl shadow">
-              <ClockIcon className="h-6 w-6 text-[#203A43]" />
-              <span className="font-medium text-gray-700">
-                {durationHours} Hours
-              </span>
-            </div>
-            <div className="flex items-center gap-3 bg-gray-50 p-4 rounded-xl shadow">
-              <BookOpenIcon className="h-6 w-6 text-[#203A43]" />
-              <span className="font-medium text-gray-700">
-                Comprehensive Learning
-              </span>
-            </div>
-            <div className="flex items-center gap-3 bg-gray-50 p-4 rounded-xl shadow">
-              <CurrencyDollarIcon className="h-6 w-6 text-[#203A43]" />
-              <span className="font-medium text-gray-700">
-                Flexible Payment Options
-              </span>
-            </div>
-            <div className="flex items-center gap-3 bg-gray-50 p-4 rounded-xl shadow">
-              <ShieldCheckIcon className="h-6 w-6 text-[#203A43]" />
-              <span className="font-medium text-gray-700">Secure Payment</span>
-            </div>
-          </div>
-        </div>
-      </section>
+      <CourseEnrollment
+        formattedPrice={formattedPrice}
+        durationHours={durationHours}
+      />
 
       {/* Overview Section */}
-
-      <section className="mt-10">
-        <div className="w-[80vw] m-auto flex flex-col gap-x-10">
-          <div className="w-full">
-            {faqs && faqs.length > 0 && (
-              <section id="faqs" className="">
-                <div className=" mx-auto">
-                  <h2 className="text-3xl font-bold text-center mb-6">
-                    Frequently Asked Questions
-                  </h2>
-                  <div className="space-y-4">
-                    {faqs.map((faq, index) => (
-                      <div
-                        key={index}
-                        className="bg-white p-6 rounded-xl shadow-md"
-                      >
-                        <h4 className="font-semibold">
-                          {" "}
-                          Q.{index + 1} {faq.question}
-                        </h4>
-                        <p className="pl-6">{faq.answer}</p>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </section>
-            )}
-          </div>
-        </div>
-      </section>
-
-      {/* Why Join Section */}
-      {whyJoin && whyJoin.length > 0 && (
-        <section id="why-join" className="py-16 px-4 bg-gray-50">
-          <div className="max-w-7xl mx-auto">
-            <h2 className="text-3xl font-bold text-center mb-6">
-              Why Join This Program?
-            </h2>
-            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-              {whyJoin.map((reason, index) => (
-                <div
-                  key={index}
-                  className="bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition-shadow"
-                >
-                  <AcademicCapIcon className="h-8 w-8 text-blue-600 mb-4" />
-                  <p className="font-semibold">{reason}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-      )}
-
-      {/* FAQs Section */}
-
-      {/* Pricing Section */}
+      <FAQSection faqs={faqs} />
+      <WhyJoinSection whyJoin={whyJoin} />
+      <Footer />
     </div>
   );
 };

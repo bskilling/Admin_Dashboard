@@ -42,11 +42,26 @@ import { Calendar, Clock, PlayIcon } from "lucide-react";
 import { BsFolderCheck } from "react-icons/bs";
 import { LuRadioTower } from "react-icons/lu";
 import { BiSolidCertification } from "react-icons/bi";
+// @ts-ignore
 import HeroSection, { heroVariants } from "./_components/HeroSection";
 import Navbar from "./_components/Navbar";
 import MetadataForm from "./_components/MetaData";
 import PriceForm from "../_components/PriceForm";
 import CertificationSection from "./_components/CertificationSection";
+import FaqSection from "./_components/FaqSection";
+import MediaUploadSection from "./_components/MediaUplodationSection";
+import HighlightsSection from "./_components/highlights";
+import OutcomesSection from "./_components/Outcomes";
+import CourseModuleSection from "./_components/CourseModuleSection";
+import ProjectsCoveredSection from "./_components/ProjectsSection";
+import EligibilitySection from "./_components/Eligibility";
+import PrerequisitesSection from "./_components/Prerequisites";
+import SkillsSection from "./_components/SkillsSection";
+import ToolsSection from "./_components/ToolsSection";
+import KeyFeaturesSection from "./_components/KeyFeaturesSection";
+import { FiBookOpen } from "react-icons/fi";
+import CoursePricing from "./_components/Pricing";
+import WhyChooseProgram from "./_components/ChooseUs";
 
 export type TDraftCourseForm = z.infer<typeof draftCourseSchema>;
 
@@ -114,6 +129,7 @@ export default function RouteComponent() {
       const res = await axios.get(env.BACKEND_URL + `/api/courses/draft/${id}`);
       reset({
         ...res.data.data,
+        category: res.data.data?.category?._id,
         banner: res.data.data?.banner?._id,
         previewImage: res.data.data?.previewImage?._id,
         logoUrl: res.data.data?.logoUrl?._id,
@@ -180,17 +196,16 @@ export default function RouteComponent() {
     console.log("redndering in useffecti");
     if (draftQuery.data && !preview) {
       const res = draftQuery.data as ICourse;
-      // @ts-expect-error error
+      // @ts-expect-error
       reset({
         ...res,
+        category: res?.category?._id,
         banner: res?.banner?._id,
         certification: {
-          ...res?.certification,
-          image: res?.certification?.image?._id,
+          title: res?.certification?.title,
         },
         partnerShip: {
-          ...res?.partnerShip,
-          image: res?.partnerShip?.image?._id,
+          title: res?.partnerShip?.title,
         },
         previewImage: res?.previewImage?._id,
         logoUrl: res?.logoUrl?._id,
@@ -266,28 +281,7 @@ export default function RouteComponent() {
                 Switch To Preview
               </Button>
             </div>
-            {/* <Navbar activeTab={activeTab} setActiveTab={setActiveTab} /> */}
-            <div className="flex justify-end items-center mt-24">
-              {/* <h2>variants</h2> */}
-              <div className="flex gap-x-5 ">
-                <Button onClick={() => setCurrentHeader(-1)}>Default</Button>
-                {heroVariants.map((variant, index) => (
-                  <Button
-                    key={index}
-                    className={cn(
-                      variant,
-                      index === currentHeader && "border-2 border-white"
-                    )}
-                    onClick={() => {
-                      setCurrentHeader(index);
-                      setValue("variant", index);
-                    }}
-                  >
-                    {index}
-                  </Button>
-                ))}
-              </div>
-            </div>
+
             {draftQuery?.data?._id && (
               <MetadataForm id={draftQuery?.data?._id} />
             )}
@@ -320,937 +314,145 @@ export default function RouteComponent() {
                     key={""}
                   />
                   <CertificationSection
-                    watch={watch}
-                    setValue={setValue}
-                    formState={formState}
+                    // watch={watch}
+                    // setValue={setValue}
+                    // formState={formState}
                     register={register}
-                    key={""}
+                    // key={""}
                   />
-
-                  <section className="p-6">
-                    <div className="flex gap-x-8 w-[80vw] m-auto">
-                      {/* Main two sections and creations of the data  */}
-                      <div className="w-8/12 border-r-4 border-blue-500 pr-5">
-                        {/* overview Section */}
-
-                        <div className="" id="overview">
-                          <h2 className="text-xl font-bold">
-                            {" "}
-                            Overview Sections
+                  <section className="p-10 bg-gray-50">
+                    <div className="flex gap-x-10 w-[80vw] mx-auto">
+                      {/* Left Section */}
+                      <div className="w-8/12 border-r-4  pr-10">
+                        {/* Overview */}
+                        <div
+                          id="overview"
+                          className="bg-white shadow-lg rounded-xl p-6 border border-gray-200 backdrop-blur-lg"
+                        >
+                          {/* Heading with Icon */}
+                          <h2 className="text-2xl font-bold flex items-center gap-2 text-gray-800">
+                            <FiBookOpen className="text-blue-500 text-3xl" />{" "}
+                            Overview
                           </h2>
-                          <div className="mt-5 flex flex-col  gap-y-5">
-                            <div className="flex flex-col gap-8">
+
+                          {/* Form Inputs */}
+                          <div className="mt-6 space-y-6">
+                            {/* Title Input */}
+                            <div className="flex flex-col">
+                              <label className="text-sm font-medium text-gray-700">
+                                Overview Title
+                              </label>
                               <Input
                                 {...register("overview.title")}
-                                label="Overview Title"
                                 error={
                                   formState.errors.overview?.title?.message
                                 }
-                                placeholder="Overview Title"
+                                placeholder="Enter a captivating title..."
+                                className="mt-2 p-3 rounded-lg border border-gray-300 shadow-sm focus:ring-2 focus:ring-blue-400"
                               />
+                            </div>
+
+                            {/* Description Textarea */}
+                            <div className="flex flex-col">
+                              <label className="text-sm font-medium text-gray-700">
+                                Overview Description
+                              </label>
                               <Textarea
                                 {...register("overview.description")}
-                                label="Overview Description"
                                 error={
                                   formState.errors.overview?.description
                                     ?.message
                                 }
-                                placeholder="Overview Description"
-                                className="min-h-60"
+                                placeholder="Write a brief and engaging overview..."
+                                className="mt-2 p-3 min-h-40 rounded-lg border border-gray-300 shadow-sm focus:ring-2 focus:ring-blue-400"
                               />
                             </div>
                           </div>
                         </div>
 
-                        {/* Circullum Starts */}
-                        <div>
-                          {/* Course Content */}
-                          <div className="rounded-xl  mt-10">
-                            <h3 className="text-xl font-bold mb-4">
-                              Course Content
-                            </h3>
-                            <div className="space-y-4">
-                              {watch("curriculum.chapters") &&
-                                watch("curriculum.chapters")?.map((chapter) => (
-                                  <div
-                                    key={chapter.title}
-                                    className="border-l-4 border-green-500 pl-4"
-                                  >
-                                    <Accordion type="single" collapsible>
-                                      <AccordionItem value="item-1">
-                                        <AccordionTrigger>
-                                          {" "}
-                                          <h4 className="font-semibold inline-flex gap-x-4">
-                                            <span>
-                                              <MdDelete
-                                                size={20}
-                                                className=""
-                                                onClick={() => {
-                                                  const chapters =
-                                                    watch(
-                                                      "curriculum.chapters"
-                                                    ) || [];
-                                                  setValue(
-                                                    "curriculum.chapters",
-                                                    chapters.filter(
-                                                      (item) =>
-                                                        item.title !==
-                                                        chapter?.title
-                                                    )
-                                                  );
-                                                }}
-                                              />
-                                            </span>
-                                            {chapter.title}
-                                          </h4>
-                                        </AccordionTrigger>
-                                        <AccordionContent>
-                                          <div className="mt-2 space-y-2">
-                                            {chapter.lessons?.map((lesson) => (
-                                              <div
-                                                key={lesson.title}
-                                                className="flex items-center space-x-2"
-                                              >
-                                                <PlayIcon className="h-4 w-4 text-gray-500" />
-                                                <span>
-                                                  {lesson.title}:{" "}
-                                                  {lesson.content}
-                                                </span>
-                                              </div>
-                                            ))}
-                                          </div>
-                                        </AccordionContent>
-                                      </AccordionItem>
-                                    </Accordion>
-                                  </div>
-                                ))}
-                            </div>
-                            <hr className="my-5 mt-10 bg-blue-500" />
-                            <div className="mt-5">
-                              <div
-                                key={"chapter"}
-                                className="border-l-4 border-blue-500 pl-4"
-                              >
-                                <Input
-                                  label="Add New Chapter"
-                                  placeholder="Chapter"
-                                  value={chapter}
-                                  onChange={(e) => setChapter(e.target.value)}
-                                />
-                                <div className="pl-5 mt-5">
-                                  {lessons?.map((lesson, lessonIndex) => (
-                                    <div
-                                      key={lesson?.title}
-                                      className="flex gap-x-2"
-                                    >
-                                      l.{lessonIndex + 1}
-                                      <div>
-                                        <p>{lesson?.title}</p>
-                                        <p className="text-muted-foreground">
-                                          {lesson?.content}
-                                        </p>
-                                      </div>
-                                    </div>
-                                  ))}
-                                  <div className="mt-5 flex gap-x-3">
-                                    <Input
-                                      label="Add New Lesson"
-                                      placeholder="Lesson"
-                                      value={lesson}
-                                      onChange={(e) =>
-                                        setLesson(e.target.value)
-                                      }
-                                      // className="mt-5"
-                                    />
-                                    <Input
-                                      label="Add Content"
-                                      placeholder="Content"
-                                      value={lessonContent}
-                                      onChange={(e) =>
-                                        setLessonContent(e.target.value)
-                                      }
-                                      // className="mt-5"
-                                    />
-                                  </div>
-                                  <div className="flex justify-end">
-                                    <Button
-                                      type="button"
-                                      className="mt-4"
-                                      onClick={() => {
-                                        setLessons([
-                                          ...lessons,
-                                          {
-                                            title: lesson,
-                                            content: lessonContent,
-                                          },
-                                        ]);
-                                        setLesson("");
-                                        setLessonContent("");
-                                      }}
-                                    >
-                                      Add Lesson
-                                    </Button>
-                                  </div>
-                                  <hr className="my-5" />
-                                </div>
-                              </div>
-
-                              <div className="mt-5 flex justify-end">
-                                <Button
-                                  type="button"
-                                  className="bg-blue-500 text-white"
-                                  onClick={() => {
-                                    const chapters =
-                                      watch("curriculum.chapters") || [];
-                                    setValue("curriculum.chapters", [
-                                      ...chapters,
-                                      { title: chapter, lessons: [...lessons] },
-                                    ]);
-                                    setLessons([]);
-                                    setChapter("");
-                                  }}
-                                >
-                                  Confirm Chapter
-                                </Button>
-                              </div>
-                            </div>
-                          </div>
-                          {/* Projects Content */}
-
-                          <div className="w-full">
-                            <div className=" rounded-xl  mt-5 w-full">
-                              <h3 className="text-xl font-bold mb-4">
-                                Projects Covered
-                              </h3>
-                              <>
-                                <div className="gap-6 mt-6 w-full ">
-                                  {watch("curriculum.projects")?.map(
-                                    (field, index) => (
-                                      <div
-                                        key={index}
-                                        className=" justify-center gap-x-1 w-full border-l-4 border-purple-500 pl-5"
-                                      >
-                                        <div className=" gap-x-1 w-full">
-                                          <Input
-                                            {...register(
-                                              `curriculum.projects.${index}.title`
-                                            )}
-                                            label={`Projects ${index + 1}`}
-                                            placeholder="Projects"
-                                          />
-                                          <div className=" pl-5 pt-5">
-                                            {field?.content.map((f, i) => (
-                                              <div
-                                                key={i}
-                                                className="flex items-center justify-center gap-x-1"
-                                              >
-                                                <Input
-                                                  {...register(
-                                                    `curriculum.projects.${index}.content.${i}`
-                                                  )}
-                                                  // label={`Project ${index + 1} ${i + 1}`}
-                                                  placeholder="Enter Project Content"
-                                                />
-                                                <MdDelete
-                                                  size={20}
-                                                  onClick={() => {
-                                                    const currentEligibility =
-                                                      watch(
-                                                        `curriculum.projects.${index}.content`
-                                                      ) || [];
-                                                    const updatedEligibility =
-                                                      currentEligibility.filter(
-                                                        (_, i1) => i1 !== i
-                                                      );
-                                                    setValue(
-                                                      `curriculum.projects.${index}.content`,
-                                                      updatedEligibility
-                                                    );
-                                                  }}
-                                                />
-                                              </div>
-                                            ))}
-                                            <div className="flex justify-end mt-6">
-                                              <Button
-                                                type="button"
-                                                onClick={() => {
-                                                  const currentPorjects =
-                                                    watch(
-                                                      `curriculum.projects.${index}.content`
-                                                    ) || [];
-                                                  setValue(
-                                                    `curriculum.projects.${index}.content`,
-                                                    [...currentPorjects, ""]
-                                                  );
-                                                }}
-                                              >
-                                                Add Content
-                                              </Button>
-                                            </div>
-                                          </div>
-                                        </div>
-                                      </div>
-                                    )
-                                  )}
-
-                                  <div className="flex justify-end mt-8">
-                                    <Button
-                                      type="button"
-                                      className="bg-blue-500 text-white"
-                                      onClick={() => {
-                                        const projects =
-                                          watch("curriculum.projects") || [];
-                                        setValue("curriculum.projects", [
-                                          ...projects,
-                                          { title: "", content: [] },
-                                        ]);
-                                      }}
-                                    >
-                                      Add New Project
-                                    </Button>
-                                  </div>
-                                </div>
-                              </>
-                            </div>
-                          </div>
-                          <div>
-                            {/* Eligibility */}
-                            <div className="flex flex-col gap-y-6 mt-10">
-                              <h2 className="text-xl font-bold">Eligibility</h2>
-                              <div className="flex flex-col items-center gap-y-6 mt-6 bg-purple-100 p-5">
-                                {watch("curriculum.eligibility")?.map(
-                                  (field, index) => (
-                                    <>
-                                      <div className="flex items-center justify-center gap-x-1 w-full">
-                                        <Input
-                                          {...register(
-                                            `curriculum.eligibility.${index}`
-                                          )}
-                                          // label={`Eligibility ${index + 1}`}
-                                          placeholder="Eligibility"
-                                          value={field}
-                                          className="bg-gray-100"
-                                        />
-
-                                        <button
-                                          type="button"
-                                          onClick={() => {
-                                            const currentEligibility =
-                                              watch("curriculum.eligibility") ||
-                                              [];
-                                            const updatedEligibility =
-                                              currentEligibility.filter(
-                                                (_, i) => i !== index
-                                              );
-                                            setValue(
-                                              "curriculum.eligibility",
-                                              updatedEligibility
-                                            );
-                                          }}
-                                          className="flex flex-col items-center h-full "
-                                        >
-                                          <MdDelete
-                                            size={20}
-                                            className="text-red-500"
-                                          />
-                                        </button>
-                                      </div>
-                                    </>
-                                  )
-                                )}
-                                <div className="w-full flex justify-end">
-                                  {" "}
-                                  <Button
-                                    onClick={() => {
-                                      setValue("curriculum.eligibility", [
-                                        ...watch("curriculum.eligibility"),
-                                        "",
-                                      ]);
-                                    }}
-                                    type="button"
-                                  >
-                                    Add Eligibility
-                                  </Button>
-                                </div>
-                              </div>
-                              <h2 className="text-xl font-bold">
-                                Prerequisites
-                              </h2>
-                              <div className="flex flex-col items-center gap-y-6 mt-6 bg-blue-100 p-5">
-                                {watch("curriculum.prerequisites")?.map(
-                                  (field, index) => (
-                                    <>
-                                      <div className="flex items-center justify-center gap-x-1 w-full">
-                                        <Input
-                                          {...register(
-                                            `curriculum.prerequisites.${index}`
-                                          )}
-                                          label={`Prerequisites ${index + 1}`}
-                                          placeholder="Prerequisites"
-                                          value={field}
-                                        />
-                                        <button
-                                          type="button"
-                                          onClick={() => {
-                                            const currentEligibility =
-                                              watch(
-                                                "curriculum.prerequisites"
-                                              ) || [];
-                                            const updatedEligibility =
-                                              currentEligibility.filter(
-                                                (_, i) => i !== index
-                                              );
-                                            setValue(
-                                              "curriculum.prerequisites",
-                                              updatedEligibility
-                                            );
-                                          }}
-                                          className="flex flex-col items-center h-full "
-                                        >
-                                          <MdDelete
-                                            size={20}
-                                            className="text-red-500"
-                                          />
-                                        </button>
-                                      </div>
-                                    </>
-                                  )
-                                )}
-                                <div className="w-full flex justify-end">
-                                  <Button
-                                    onClick={() => {
-                                      setValue("curriculum.prerequisites", [
-                                        ...watch("curriculum.prerequisites"),
-                                        "",
-                                      ]);
-                                    }}
-                                    type="button"
-                                  >
-                                    Add Pre Requisites
-                                  </Button>
-                                </div>
-                              </div>
-
-                              <Textarea
-                                {...register("curriculum.whyJoin")}
-                                label="Why Join"
-                                error={
-                                  formState.errors.curriculum?.whyJoin?.message
-                                }
-                                placeholder="Why Join"
-                              />
-                            </div>
-                          </div>
+                        {/* Course Sections */}
+                        <div className="mt-10 space-y-8">
+                          <CourseModuleSection
+                            watch={watch}
+                            setValue={setValue}
+                          />
+                          <HighlightsSection
+                            watch={watch}
+                            setValue={setValue}
+                          />
+                          <OutcomesSection watch={watch} setValue={setValue} />
+                          <ProjectsCoveredSection
+                            watch={watch}
+                            setValue={setValue}
+                            register={register}
+                          />
+                          <EligibilitySection
+                            register={register}
+                            setValue={setValue}
+                            watch={watch}
+                          />
+                          <PrerequisitesSection
+                            register={register}
+                            setValue={setValue}
+                            watch={watch}
+                          />
                         </div>
                       </div>
-                      <div className="w-4/12">
-                        {/* Skills */}
-                        <div className="bg-blue-100 p-5 rounded-md">
-                          <h2 className="font-bold pb-5">Skills</h2>
-                          {!isLoading && data && (
-                            <Combobox
-                              frameworks={data}
-                              nofound="No Skills found"
-                              placeholder="Add New Skill"
-                              key={"skills"}
-                              setAdd={(skill) => {
-                                // const newSkills = watch("skills") || [];
-                                // setValue("skills", [...newSkills, skill._id]);
-                                // setSkill((prev) => [...prev, skill]);
-                                const currentSkillIds = watch("skills") || [];
-                                // Create a Set for uniqueness
-                                const skillsSet = new Set(currentSkillIds);
 
-                                if (skillsSet.has(skill._id)) {
-                                  // Optionally, display a message if the skill is already added
-                                  toast.error("Skill already added");
-                                  return;
-                                }
+                      {/* Right Section */}
+                      <div className="w-4/12 space-y-8">
+                        <SkillsSection
+                          watch={watch}
+                          setValue={setValue}
+                          skills={skills}
+                          setSkill={setSkill}
+                          isLoading={isLoading}
+                          data={data}
+                        />
 
-                                skillsSet.add(skill._id);
-                                // Update the form value with unique skill IDs
-                                setValue("skills", Array.from(skillsSet));
+                        <ToolsSection
+                          watch={watch}
+                          setValue={setValue}
+                          tools={tools}
+                          setTool={setTool}
+                          isLoading={isLoading1}
+                          data={toolss}
+                        />
 
-                                // Also update the local state for skill objects
-                                setSkill((prev) => [...prev, skill]);
-                              }}
-                            />
-                          )}
-                          <div className="flex flex-col gap-y-5 mt-10">
-                            {skills?.map((skill, index) => (
-                              <div
-                                key={index}
-                                className="flex gap-x-5 items-center"
-                              >
-                                <Image
-                                  width={100}
-                                  height={100}
-                                  src={skill.logo.viewUrl}
-                                  alt=""
-                                  className="w-10 h-10  object-cover"
-                                />
-                                <p className="capitalize text-center">
-                                  {skill?.title}
-                                </p>
-                                <button
-                                  type="button"
-                                  onClick={() => {
-                                    const currentSkills = watch("skills") || [];
-                                    const updatedSkills = currentSkills.filter(
-                                      (_, i) => i !== index
-                                    );
-                                    setValue("skills", updatedSkills);
-                                    setSkill((prev) =>
-                                      prev.filter((s) => s._id !== skill._id)
-                                    );
-                                  }}
-                                >
-                                  <MdDelete
-                                    size={20}
-                                    className="text-red-500"
-                                  />
-                                </button>
-                              </div>
-                            ))}
-                          </div>
-                        </div>
-                        {/* Tools */}
-                        <>
-                          <div className="mt-10 bg-purple-100 p-5 rounded-md">
-                            <h2 className=" font-bold pb-5">Tools</h2>
-                            {!isLoading1 && toolss && (
-                              <Combobox
-                                frameworks={toolss}
-                                nofound="No Tools found"
-                                placeholder="Add New Tool"
-                                key={"tools"}
-                                setAdd={(tool) => {
-                                  const currentToolIds = watch("tools") || [];
-                                  // Create a Set for uniqueness
-                                  const toolsSet = new Set(currentToolIds);
-
-                                  if (toolsSet.has(tool._id)) {
-                                    // Optionally, display a message if the tool is already added
-                                    toast.error("Tool already added");
-                                    return;
-                                  }
-
-                                  toolsSet.add(tool._id);
-                                  // Update the form value with unique tool IDs
-                                  setValue("tools", Array.from(toolsSet));
-
-                                  // Also update the local state for tool objects
-                                  setTool((prev) => [...prev, tool]);
-                                }}
-                              />
-                            )}
-                            <div className="flex flex-col  gap-y-5 mt-10">
-                              {tools?.map((tool, index) => (
-                                <div key={tool._id} className="flex gap-x-5">
-                                  <button
-                                    type="button"
-                                    onClick={() => {
-                                      const currentTools = watch("tools") || [];
-                                      const updatedTools = currentTools.filter(
-                                        (_, i) => i !== index
-                                      );
-                                      setValue("tools", updatedTools);
-                                      setTool((prev) =>
-                                        prev.filter((t) => t._id !== tool._id)
-                                      );
-                                    }}
-                                  >
-                                    <MdDelete
-                                      size={20}
-                                      className="text-red-500"
-                                    />
-                                  </button>
-                                  <div className="flex items-center gap-x-5">
-                                    <Image
-                                      width={100}
-                                      height={100}
-                                      src={tool.logo.viewUrl}
-                                      alt={tool.title}
-                                      className="w-10 h-10 object-cover"
-                                    />
-                                    <p className="capitalize text-center">
-                                      {tool?.title}
-                                    </p>
-                                  </div>
-                                </div>
-                              ))}
-                            </div>
-                          </div>
-                        </>
-                        {/* Key Features */}
-                        <div className="mt-10 flex flex-col gap-y-5 bg-green-100 p-5 rounded-md">
-                          <div className="bg-card text-foreground  rounded-lg">
-                            <h2 className=" font-bold flex gap-x-2 item-center">
-                              <IoKeyOutline size={20} /> Key Features
-                            </h2>
-                            <div className="grid-cols-1 grid gap-5">
-                              {watch("overview.keyFeatures")?.map((field) => (
-                                <div key={field} className="flex items-center">
-                                  <Input
-                                    key={field}
-                                    value={field}
-                                    className="mt-4"
-                                  />
-                                  <MdDelete
-                                    size={30}
-                                    className=" cursor-pointer text-red-500"
-                                    onClick={() => {
-                                      const keyFeatures =
-                                        watch("overview.keyFeatures") || [];
-                                      setValue(
-                                        "overview.keyFeatures",
-                                        keyFeatures.filter(
-                                          (item) => item !== field
-                                        )
-                                      );
-                                    }}
-                                  />
-                                </div>
-                              ))}
-                              <div className="flex items-center gap-x-4">
-                                <Input
-                                  value={keyFeature}
-                                  onChange={(e) =>
-                                    setKeyFeature(e.target.value)
-                                  }
-                                  placeholder="Enter a key feature"
-                                  className="mt-5"
-                                />
-                                <Button
-                                  className="mt-2"
-                                  type="button"
-                                  onClick={() => {
-                                    const keyFeatures =
-                                      watch("overview.keyFeatures") || [];
-                                    if (watch("overview.keyFeatures"))
-                                      setValue("overview.keyFeatures", [
-                                        ...keyFeatures,
-                                        keyFeature,
-                                      ]);
-                                    setKeyFeature("");
-                                  }}
-                                >
-                                  Add
-                                </Button>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                        {/* Why Join */}
+                        <KeyFeaturesSection
+                          watch={watch}
+                          setValue={setValue}
+                          keyFeature={keyFeature}
+                          setKeyFeature={setKeyFeature}
+                        />
                       </div>
                     </div>
                   </section>
-                  <div className="space-y-4 p-6">
-                    <div className="flex items-center gap-2">
-                      <Switch
-                        id="isPaid"
-                        checked={watch("isPaid")}
-                        onCheckedChange={(checked) =>
-                          setValue("isPaid", checked)
-                        }
-                      />
-                      <Label htmlFor="isPaid">Paid Course</Label>
-                    </div>
-                    {formState.errors.isPaid && (
-                      <p className="text-sm text-red-500">
-                        {formState.errors.isPaid.message}
-                      </p>
-                    )}
-                  </div>
-                  <PriceForm
-                    durationHours={
-                      // @ts-ignore
-                      watch("durationHours") ? +watch("durationHours") : 0
-                    }
-                    formattedPrice={
-                      <Input
-                        {...register("price.amount")}
-                        placeholder="Enter Pirce"
-                        type="number"
-                        label="Price"
-                      />
-                    }
+
+                  <CoursePricing
+                    watch={watch}
+                    setValue={setValue}
+                    register={register}
+                    formState={formState}
                   />
 
-                  <div
-                    id="faqs"
-                    className="p-6 border-2 bg-gray-100 rounded-md w-[80vw] m-auto"
-                  >
-                    {/* Faqs */}
-                    <h2 className="text-4xl font-bold">FAQS</h2>
-                    <div className="p-5 rounded-md shadow-lg">
-                      {watch("faqs")?.map((field, index) => (
-                        <div
-                          key={field.question}
-                          className="mt-5 border-l-4 border-black pl-5"
-                        >
-                          <Accordion type="single" collapsible>
-                            <AccordionItem value="item-1">
-                              <AccordionTrigger className="bg-card text-foreground px-3 rounded-md">
-                                <div className="flex justify-between items-center">
-                                  <p className="inline-flex items-center gap-x-5">
-                                    {index + 1}. {field.question}
-                                  </p>
-                                  <MdDelete
-                                    size={20}
-                                    className=""
-                                    onClick={() => {
-                                      const faqs = watch("faqs") || [];
-                                      setValue(
-                                        "faqs",
-                                        faqs.filter(
-                                          (item) =>
-                                            item.question !== field?.question
-                                        )
-                                      );
-                                    }}
-                                  />
-                                </div>
-                              </AccordionTrigger>
-                              <AccordionContent className="pl-5">
-                                <Input
-                                  {...register(`faqs.${index}.answer`)}
-                                  label="Answer"
-                                  placeholder="Answer"
-                                  error={
-                                    formState.errors?.faqs?.[index]?.answer
-                                      ?.message
-                                  }
-                                />
-                              </AccordionContent>
-                            </AccordionItem>
-                          </Accordion>
-                        </div>
-                      ))}
-                    </div>
+                  <FaqSection
+                    register={register}
+                    watch={watch}
+                    setValue={setValue}
+                  />
 
-                    <div className="mt-5 flex flex-col gap-y-5 pl-5">
-                      <Input
-                        label="Add New Question"
-                        placeholder="Question"
-                        value={faq?.question}
-                        onChange={(e) =>
-                          setfaq({ ...faq, question: e.target.value })
-                        }
-                      />
-                      <Input
-                        label="Add Answer"
-                        placeholder="Answer"
-                        value={faq?.answer}
-                        onChange={(e) =>
-                          setfaq({ ...faq, answer: e.target.value })
-                        }
-                      />
-                      <Button
-                        onClick={() => {
-                          const faqs = watch("faqs") || [];
-                          if (!faq?.question?.length || !faq?.answer?.length) {
-                            return toast.error("Please fill all the fields");
-                          }
-                          setValue("faqs", [...faqs, faq]);
-                          setfaq({ question: "", answer: "" });
-                        }}
-                      >
-                        Add New Faq
-                      </Button>
-                    </div>
-                  </div>
+                  <WhyChooseProgram watch={watch} setValue={setValue} />
+                  <MediaUploadSection
+                    register={register}
+                    watch={watch}
+                    setValue={setValue}
+                    setLogoUrl={setLogoUrl}
+                    setPreviewImage={setPreviewImage}
+                    logoUrl={logoUrl}
+                    previewImage={previewImage}
+                  />
 
-                  <div className="p-6 ">
-                    <div className="bg-card text-foreground rounded-lg">
-                      <h2 className="font-medium"> Highlights</h2>
-
-                      <div className="grid grid-cols-2 gap-8">
-                        {watch("highlights")?.map((field, index) => (
-                          <>
-                            <div className="flex items-center space-x-4 w-full mt-4 border border-input  p-2 rounded-md">
-                              <div className="flex gap-x-3 w-full">
-                                <IoCheckmarkCircle
-                                  size={20}
-                                  className="text-green-500"
-                                />
-                                <p>{field}</p>
-                              </div>
-                              <Button
-                                type="button"
-                                variant="destructive"
-                                onClick={() => {
-                                  const currentHighlights =
-                                    watch("highlights") || [];
-                                  const updatedHighlights =
-                                    currentHighlights.filter(
-                                      (_, i) => i !== index
-                                    );
-                                  setValue("highlights", updatedHighlights);
-                                }}
-                              >
-                                <MdDelete size={20} />
-                              </Button>
-                            </div>
-                          </>
-                        ))}
-                        <div className="flex items-center  w-full gap-x-2 border-r-4 mt-6">
-                          <Input
-                            value={currentHighlight}
-                            placeholder="Add New Highlight"
-                            onChange={(e) => {
-                              setCurrentHighlight(e.target.value);
-                            }}
-                            className="!w-full"
-                          />
-                          <Button
-                            type="button"
-                            variant="default"
-                            onClick={() => {
-                              if (
-                                currentHighlight === "" ||
-                                currentHighlight?.length < 5
-                              )
-                                return toast.error(
-                                  "Please enter a valid highlight"
-                                );
-                              // setHighlights([...highlights, currentHighlight]);
-                              const highlights = watch("highlights") || [];
-                              setValue("highlights", [
-                                ...highlights,
-                                currentHighlight,
-                              ]);
-                              setCurrentHighlight("");
-                            }}
-                          >
-                            Add
-                          </Button>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="bg-card text-foreground p-4 border shadow-lg border-input rounded-lg">
-                    <h2 className="text-xl font-bold">
-                      Why Choose this Program
-                    </h2>
-
-                    <div className="2xl:grid-cols-4 xl:grid-cols-3 grid lg:grid-cols-2 grid-cols-1 gap-4 mt-4">
-                      {watch("whyJoin")?.map((field, index) => (
-                        <>
-                          <div className="flex flex-col  w-full  bg-card border border-input text-foreground  p-4 min-h-32 rounded-md">
-                            <div className="flex items-center space-x-4 justify-end">
-                              <Button
-                                type="button"
-                                variant="destructive"
-                                onClick={() => {
-                                  const currentWhyJoin = watch("whyJoin") || [];
-                                  const updatedWhyJoin = currentWhyJoin.filter(
-                                    (_, i) => i !== index
-                                  );
-                                  setValue("whyJoin", updatedWhyJoin);
-                                }}
-                                className="w-fit"
-                              >
-                                <MdDelete size={20} />
-                              </Button>
-                            </div>
-                            <div className="flex gap-x-3 w-full mt-5">
-                              <p className="text-sm">{field}</p>
-                            </div>
-                          </div>
-                        </>
-                      ))}
-                    </div>
-                    {/* Enter Why Join us  */}
-                    <div className="mt-5">
-                      <Textarea
-                        value={whyJoin}
-                        placeholder="Add New Why Join"
-                        onChange={(e) => {
-                          setWhyJoin(e.target.value);
-                        }}
-                      />
-                      <Button
-                        type="button"
-                        variant="default"
-                        className="mt-5"
-                        onClick={() => {
-                          if (whyJoin === "" || whyJoin?.length < 5)
-                            return toast.error(
-                              "Please enter a valid why join us"
-                            );
-                          const whyJoin1 = watch("whyJoin") || [];
-                          setValue("whyJoin", [...whyJoin1, whyJoin]);
-                          setWhyJoin("");
-                        }}
-                      >
-                        Add
-                      </Button>
-                    </div>
-                  </div>
-
-                  <div className="bg-card text-foreground p-6 rounded-lg">
-                    <h2 className="text-xl font-bold">
-                      Media, Preview image & logo image
-                    </h2>
-
-                    <div className="grid grid-cols-2 gap-4  w-full mt-5">
-                      <div className=" p-6 rounded-lg">
-                        <h2 className="text-xl font-bold inline-flex items-center gap-x-3">
-                          <ImYoutube className="text-red-600" /> Youtube Video
-                          Preview
-                        </h2>
-                        <div className="max-w-3xl mx-auto p-4">
-                          {watch("videoUrl") && (
-                            <iframe
-                              className="w-full aspect-video mt-4"
-                              src={
-                                watch("videoUrl")
-                                  ? // @ts-expect-error TODO
-                                    getYouTubeEmbedUrl(watch("videoUrl"))
-                                  : ""
-                              }
-                              allowFullScreen
-                            />
-                          )}
-                        </div>
-                        <Input
-                          {...register("videoUrl")}
-                          label="Video URL"
-                          placeholder="Video URL"
-                        />
-                      </div>
-
-                      <div className="w-full min-h-40">
-                        <FileUploader
-                          label="Course Logo"
-                          title="Course Logo"
-                          purpose="course-logo"
-                          setFileId={(fileId) =>
-                            setValue("logoUrl", fileId as string)
-                          }
-                          id={watch("logoUrl")}
-                          setUrl={(url) => setLogoUrl(url as string)}
-                          url={logoUrl}
-                        />
-                      </div>
-
-                      <div className="w-full min-h-20">
-                        <FileUploader
-                          label="Preview Image"
-                          purpose="course-preview"
-                          title="Preview Image"
-                          setFileId={(fileId) =>
-                            setValue("previewImage", fileId as string)
-                          }
-                          id={watch("previewImage")}
-                          setUrl={(url) => setPreviewImage(url as string)}
-                          url={previewImage}
-                        />
-                      </div>
-                    </div>
-                  </div>
                   <div className="flex justify-end">
                     <Button
                       type="submit"
