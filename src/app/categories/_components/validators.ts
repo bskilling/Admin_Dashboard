@@ -34,22 +34,22 @@ export const baseCurriculumSchema = z.object({
       })
       .optional()
   ),
-  whyJoin: z.string(),
 });
 
 // Draft course validator: all fields are optional.
 export const draftCourseSchema = z.object({
   title: z.string().optional(),
-  variant: z.coerce.number().optional(),
   slug: z.string().optional(),
-  skills: z.array(z.string().length(24, "Skill is required")).optional(),
-  tools: z.array(z.string().length(24, "Tool is required")).optional(),
-  videoUrl: z.string().optional(),
+  variant: z.number().optional(),
+  price: z
+    .object({
+      amount: z.coerce.number().optional(),
+      currency: z.enum(["INR", "USD", "EUR", "GBP"]).optional(),
+    })
+    .optional(),
   whyJoin: z.array(z.string()).optional(),
-  price: z.object({
-    amount: z.coerce.number().optional(),
-    currency: z.enum(["INR", "USD"]).optional(),
-  }),
+  skills: z.array(z.string()).optional(),
+  videoUrl: z.string().optional(),
   description: z.string().optional(),
   durationHours: z.coerce.number().optional(),
   startTime: z.preprocess(
@@ -64,38 +64,37 @@ export const draftCourseSchema = z.object({
   ),
   certification: z
     .object({
-      image: z.string().length(24).optional(),
       title: z.string().optional(),
-      content: z.string().optional(),
     })
     .optional(),
   partnerShip: z
     .object({
-      image: z.string().length(24).optional(),
       title: z.string().optional(),
-      content: z.string().optional(),
     })
     .optional(),
   isPaid: z.boolean().optional(),
   appliedCount: z.number().optional(),
   trainedCount: z.number().optional(),
   highlights: z.array(z.string()).optional(),
+  outcomes: z.array(z.string()).optional(),
   banner: z.string().optional(), // expect an ObjectId string
   previewImage: z.string().optional(),
   logoUrl: z.string().optional(),
-  category: z.string().optional(),
+  category: z.string().length(24).optional(),
+  tools: z.array(z.string()).optional(),
   overview: baseOverviewSchema.optional(),
   curriculum: baseCurriculumSchema.optional(),
   images: z.array(z.string()).optional(),
   isPublished: z.boolean().optional(),
-  faqs: z.array(
-    z.object({
-      question: z.string(),
-      answer: z.string(),
-    })
-  ),
+  faqs: z
+    .array(
+      z.object({
+        question: z.string(),
+        answer: z.string(),
+      })
+    )
+    .optional(),
 });
-
 // Published course validator: all fields are required.
 export const publishedCourseSchema = z.object({
   title: z.string(),

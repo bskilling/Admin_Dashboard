@@ -50,9 +50,6 @@ export default function Typess({
 
   return (
     <div className="w-full mx-auto p-6 ">
-      <h2 className="text-3xl font-bold text-center mb-6">
-        Types of Business Models
-      </h2>
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
         {businessTypes.map((type) => (
           <div

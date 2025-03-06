@@ -141,9 +141,8 @@ export default function CreateCategory({
   }, [selectedType]);
 
   return (
-    <div className="p-6">
-      <div className="flex w-full justify-between items-center mb-8">
-        <h2 className="text-2xl font-semibold">Manage Categories</h2>
+    <div className="">
+      <div className="flex w-full justify-end items-center pr-8">
         <Dialog open={show} onOpenChange={setShow}>
           <DialogTrigger disabled={!selectedType}>
             <Button
@@ -214,30 +213,32 @@ export default function CreateCategory({
           </DialogContent>
         </Dialog>
       </div>
-      <div className="border rounded-lg">
-        <Input placeholder="Search Category" className="w-full m-5" />
-        <div className="grid grid-cols-5  gap-4 p-6 h-48 overflow-y-auto ">
+      <div className=" rounded-lg">
+        <div className="grid grid-cols-5  gap-4 p-6  overflow-y-auto ">
           {categoryQuery?.data?.categories?.map((category) => (
             <div
               key={category.slug}
               className={cn(
-                "flex flex-col gap-4 items-center p-4 bg-white border rounded-lg shadow-md transition-all cursor-pointer relative hover:shadow-lg",
+                "flex justify-between  gap-4 rounded-full items-center p-4 bg-white border  shadow-md transition-all cursor-pointer relative hover:shadow-lg",
                 category._id === scategory?._id &&
                   "bg-gradient-to-tr from-[#8E2DE2] to-[#4A00E0] text-white"
               )}
               onClick={() => setScategory(category)}
             >
-              <Image
-                width={200}
-                height={200}
-                src={category?.logo?.viewUrl}
-                alt={category?.slug}
-                className="w-16 h-16 rounded-full object-cover mb-3"
-              />
-              <p className="text-lg font-medium capitalize">{category.name}</p>
-              {/* <p className="text-sm text-gray-500">{category?.slug}</p> */}
+              <div className="flex items-center gap-x-4">
+                <Image
+                  width={200}
+                  height={200}
+                  src={category?.logo?.viewUrl}
+                  alt={category?.slug}
+                  className="w-8 h-8 rounded-full object-cover mb-3"
+                />
+                <p className="text-lg font-medium capitalize">
+                  {category.name}
+                </p>
+              </div>
               <Dialog>
-                <DialogTrigger className="absolute top-2 right-2 text-red-500">
+                <DialogTrigger className=" text-red-500">
                   <MdDelete size={20} />
                 </DialogTrigger>
                 <DialogContent>

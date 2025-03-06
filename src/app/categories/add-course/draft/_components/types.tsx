@@ -1,6 +1,21 @@
 "use client";
+
+interface CategoryProps {
+  category: Category;
+}
+interface Category {
+  _id: string;
+  name: string;
+  type: string;
+  slug: string;
+  logo: string;
+  createdAt: string;
+  updatedAt: string;
+  __v: number;
+}
 export interface ICourse {
   overview: Overview;
+  outcomes: string[];
   curriculum: Curriculum;
   _id: string;
   title: string;
@@ -27,23 +42,13 @@ export interface ICourse {
     currency: "INR" | "USD";
   };
   certification?: {
-    image: {
-      _id: string;
-      viewUrl: string;
-    };
     title: string;
-    content: string;
   };
   partnerShip: {
-    image: {
-      _id: string;
-      viewUrl: string;
-    };
     title: string;
-    content: string;
   };
   logoUrl: Banner;
-  category: string;
+  category: CategoryProps["category"];
   tools: Skill[];
 }
 interface Faq {
