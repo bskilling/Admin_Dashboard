@@ -214,7 +214,7 @@ export default function CreateCategory({
         </Dialog>
       </div>
       <div className=" rounded-lg">
-        <div className="grid grid-cols-5  gap-4 p-6  overflow-y-auto ">
+        <div className="flex flex-wrap  gap-4 p-6  overflow-y-auto ">
           {categoryQuery?.data?.categories?.map((category) => (
             <div
               key={category.slug}
@@ -226,13 +226,13 @@ export default function CreateCategory({
               onClick={() => setScategory(category)}
             >
               <div className="flex items-center gap-x-4">
-                <Image
+                {/* <Image
                   width={200}
                   height={200}
                   src={category?.logo?.viewUrl}
                   alt={category?.slug}
                   className="w-8 h-8 rounded-full object-cover mb-3"
-                />
+                /> */}
                 <p className="text-lg font-medium capitalize">
                   {category.name}
                 </p>

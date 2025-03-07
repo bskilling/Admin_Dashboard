@@ -25,6 +25,7 @@ import {
   DialogClose,
   DialogContent,
   DialogDescription,
+  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
@@ -113,6 +114,22 @@ export default function CreateCourse({
     },
   });
 
+  const deleteCourse = useMutation({
+    mutationFn: async (data: ICourse) => {
+      const res = await axios.delete(
+        env.BACKEND_URL + "/api/courses" + `/${data?._id}`
+      );
+      return res.data;
+    },
+    onSuccess: () => {
+      toast.success("Course Deleted successfully");
+      // Handle additional success logic
+    },
+    onError: (error) => {
+      toast.error("Failed to delete draft: " + error.message);
+    },
+  });
+
   return (
     <div className="">
       <Card className="mt-5">
@@ -185,7 +202,36 @@ export default function CreateCourse({
                       Edit
                     </Button>
                   </Link>
-                  {/* <Button className="w-full">Delete</Button> */}
+                  <Dialog>
+                    <DialogTrigger>
+                      <Button className="w-full" variant={"destructive"}>
+                        Delete
+                      </Button>
+                    </DialogTrigger>
+                    <DialogContent>
+                      <DialogHeader>
+                        <DialogTitle>Are you absolutely sure?</DialogTitle>
+                        <DialogDescription>
+                          This action cannot be undone. This will permanently
+                          delete your account and remove your data from our
+                          servers.
+                        </DialogDescription>
+                      </DialogHeader>
+                      <DialogFooter>
+                        <DialogClose>Cancel</DialogClose>
+                        <DialogClose>
+                          <Button
+                            className="w-full"
+                            onClick={() => deleteCourse.mutate(category)}
+                            variant={"destructive"}
+                          >
+                            Delete
+                          </Button>
+                        </DialogClose>
+                      </DialogFooter>
+                    </DialogContent>
+                  </Dialog>
+
                   <Dialog>
                     <DialogTrigger>
                       <Button
