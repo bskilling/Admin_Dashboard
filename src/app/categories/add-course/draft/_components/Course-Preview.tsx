@@ -517,13 +517,21 @@ const CourseLandingPage = ({ courseData }: { courseData: ICourse }) => {
                 ))}
               </div>
             </div>
-            <div className="mt-5">
+            <div className="mt-5 mr-10">
               <h2 className="mt-10 text-xl font-semibold">Key Features</h2>
               {overview.keyFeatures && overview.keyFeatures.length > 0 && (
                 <div className="flex flex-col gap-y-5 mt-5">
                   {overview.keyFeatures.map((feature, index) => (
-                    <div key={index} className="flex items-center gap-x-2">
-                      <IoIosCheckmarkCircle className="w-6 h-6 text-blue-500" />
+                    <div
+                      key={index}
+                      className="flex items-center gap-x-2 text-sm"
+                    >
+                      <div className="w-fit">
+                        <IoIosCheckmarkCircle
+                          className=" text-blue-500"
+                          size={20}
+                        />
+                      </div>
                       <p>{feature}</p>
                     </div>
                   ))}
@@ -539,8 +547,9 @@ const CourseLandingPage = ({ courseData }: { courseData: ICourse }) => {
       />
 
       {/* Overview Section */}
-      <FAQSection faqs={faqs} />
       <WhyJoinSection whyJoin={whyJoin} />
+      <FAQSection faqs={faqs} />
+
       <Footer />
     </div>
   );

@@ -24,7 +24,7 @@ const WhyJoinSection: React.FC<Props> = ({ whyJoin }) => {
         id="why-join"
         className="py-20 px-6 bg-gradient-to-b from-gray-100 to-gray-50"
       >
-        <div className="max-w-6xl mx-auto">
+        <div className="w-full mx-auto">
           <h2 className="text-4xl font-bold text-center mb-10 text-gray-900">
             🚀 Why Join This Program?
           </h2>
@@ -35,8 +35,8 @@ const WhyJoinSection: React.FC<Props> = ({ whyJoin }) => {
                 className="bg-white/70 p-6 rounded-xl shadow-lg border-l-4 border-[#F8B400] backdrop-blur-md transition-all hover:-translate-y-2 hover:shadow-xl"
               >
                 <div className="flex items-center gap-4 mb-3">
-                  {icons[index % icons.length]}
-                  <span className="text-lg font-semibold">{reason}</span>
+                  {/* {icons[index % icons.length]} */}
+                  <span className="text-sm font-semibold">{reason}</span>
                 </div>
               </div>
             ))}
