@@ -10,6 +10,8 @@ interface HeroSectionProps {
   bannerImage: string;
 }
 
+// from-[#0F2027] via-[#203A43] to-[#2C5364]
+
 export const HeroSection: React.FC<HeroSectionProps> = ({
   category,
   title,
@@ -20,7 +22,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
     <section
       id="hero"
       className={cn(
-        "relative w-full min-h-[600px] bg-gradient-to-br from-[#0F2027] via-[#203A43] to-[#2C5364] flex justify-center items-center overflow-hidden rounded-xl shadow-xl"
+        "relative w-full min-h-[600px] bg-gradient-to-br from-[#0D1B2A] to-[#2E1A47]  flex justify-center items-center overflow-hidden rounded-xl shadow-xl"
       )}
     >
       {/* Decorative Background Elements */}
@@ -38,7 +40,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
               {category?.name}
             </span>
           )}
-          <h1 className="text-4xl md:text-5xl font-extrabold text-white leading-tight">
+          <h1 className="text-2xl md:text-3xl font-extrabold text-white leading-tight">
             {title}
           </h1>
           <p className="text-lg text-[#E5E5E5] opacity-90">{description}</p>

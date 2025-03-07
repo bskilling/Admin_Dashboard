@@ -33,6 +33,11 @@ const items = [
     icon: Inbox,
   },
   {
+    title: "Migration of data",
+    url: "/migration",
+    icon: Inbox,
+  },
+  {
     title: "Categories",
     url: "/categories",
     icon: Slack,
