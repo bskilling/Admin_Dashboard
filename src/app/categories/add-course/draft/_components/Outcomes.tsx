@@ -7,18 +7,23 @@ interface OutcomesProps {
 
 const Outcomes: React.FC<OutcomesProps> = ({ outcomes }) => {
   return (
-    <div className="p-6 bg-gradient-to-br from-gray-100 to-gray-200 text-gray-900 rounded-xl shadow-md border border-gray-300 mt-7">
-      <h2 className="text-xl font-semibold mb-4 text-gray-800 flex items-center gap-2">
-        <FaRocket className="text-green-600" /> Learning Outcomes
+    <div className="p-6 bg-gradient-to-br from-[#f9fafb] to-[#e5e7eb] rounded-2xl shadow-lg mt-8 border border-gray-300">
+      <h2 className="text-xl font-bold mb-4 text-gray-900 flex items-center gap-2">
+        <FaRocket className="text-blue-500 h-5 w-5 drop-shadow-md animate-bounce" />
+        <span className="bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent">
+          Learning Outcomes
+        </span>
       </h2>
       <div className="grid grid-cols-1 gap-3">
         {outcomes.map((outcome, index) => (
           <div
             key={index}
-            className="flex items-center gap-3 p-3 bg-white border border-gray-300 rounded-md shadow-sm hover:shadow-md transition"
+            className="flex items-center gap-3 p-4 bg-white rounded-xl border border-gray-200 shadow hover:shadow-lg transition-all duration-200 hover:scale-[1.02]"
           >
-            <FaBullseye className="text-green-600 text-lg" />
-            <span className="text-gray-700 text-sm font-medium">{outcome}</span>
+            <FaBullseye className="text-blue-500 h-5 w-5 drop-shadow-md" />
+            <span className="text-gray-800 text-sm font-medium tracking-tight">
+              {outcome}
+            </span>
           </div>
         ))}
       </div>

@@ -13,7 +13,7 @@ export default function CertificationSection({
   register: UseFormReturn<TDraftCourseForm>["register"];
 }) {
   return (
-    <section className="relative z-[40] -mt-20 w-[85vw] mx-auto bg-white shadow-lg rounded-2xl p-10 flex flex-col gap-8 border border-gray-200">
+    <section className="relative z-[40]  w-[85vw] mx-auto bg-white shadow-lg rounded-2xl p-10 flex flex-col gap-8 border border-gray-200">
       {/* Title */}
       <h2 className="text-2xl font-semibold text-gray-800 flex items-center gap-3">
         <BiSolidCertification className="w-8 h-8 text-[#00C6FF]" />
