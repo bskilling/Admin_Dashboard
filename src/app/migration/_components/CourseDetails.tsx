@@ -37,7 +37,7 @@ const CategoryDraftCreator = ({ courseId }: CourseDetailsProps) => {
     const fetchCourseDetails = async () => {
       try {
         const response = await axios.get(
-          `https://backbs.bskilling.com/api/v1/get-course/${courseId}`
+          `${env.BACKEND_URL}/api/v1/get-course/${courseId}`
         );
         setCourseDetails(response.data.course);
       } catch (error) {

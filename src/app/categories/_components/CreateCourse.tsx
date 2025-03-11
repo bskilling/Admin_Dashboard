@@ -167,7 +167,7 @@ export default function CreateCourse({
                     </Button>
 
                     {category?.previewImage?.viewUrl ? (
-                      <Image
+                      <img
                         src={category?.previewImage?.viewUrl}
                         alt={"Preview image"}
                         width={100}
@@ -175,7 +175,7 @@ export default function CreateCourse({
                         className="w-full h-52 object-cover"
                       />
                     ) : (
-                      <Image
+                      <img
                         src={"/images/placeholder.png"}
                         alt=""
                         width={100}

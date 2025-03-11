@@ -35,7 +35,7 @@ export default function Migration() {
     const fetchCourses = async () => {
       try {
         const response = await axios.get(
-          `https://backbs.bskilling.com/api/v1/get-course-title`,
+          `${env.BACKEND_URL}/api/v1/get-course-title`,
           { withCredentials: true }
         );
 

@@ -31,7 +31,7 @@ export default function HeroSection({
     <section
       id="hero"
       className={cn(
-        "relative w-full min-h-[600px] flex justify-center items-center overflow-hidden transition-all duration-500",
+        "relative w-full  flex justify-center items-center overflow-hidden transition-all duration-500",
         "bg-gradient-to-r from-[#0F2027] via-[#203A43] to-[#2C5364]" // Deep Blue Ocean
       )}
     >
@@ -78,26 +78,15 @@ export default function HeroSection({
 
         {/* Right Column: Banner Image */}
         <div className="relative w-full px-6 py-6 rounded-lg bg-black/20 backdrop-blur-md flex flex-col items-center justify-center">
-          {!bannerUrl ? (
-            <FileUploader
-              label="Banner Image"
-              purpose="course-banner"
-              title="Upload Banner Image"
-              url={bannerUrl}
-              id={watch("banner")}
-              setFileId={(fileId) => setValue("banner", fileId as string)}
-              setUrl={(url) => setBannerUrl(url as string)}
-            />
-          ) : (
-            <motion.img
-              src={bannerUrl}
-              alt="Course Banner"
-              className="w-full max-h-80 rounded-lg object-cover shadow-lg hover:scale-105 transition-transform duration-300"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.5 }}
-            />
-          )}
+          <FileUploader
+            label="Banner Image"
+            purpose="course-banner"
+            title="Upload Banner Image"
+            url={bannerUrl}
+            id={watch("banner")}
+            setFileId={(fileId) => setValue("banner", fileId as string)}
+            setUrl={(url) => setBannerUrl(url as string)}
+          />
         </div>
       </motion.div>
     </section>
