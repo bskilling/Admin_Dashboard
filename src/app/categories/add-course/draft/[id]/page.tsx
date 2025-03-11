@@ -258,7 +258,7 @@ export default function RouteComponent() {
                   `/categories/add-course/draft/${id}?preview=false`
                 );
               }}
-              className="mb-4 absolute top-4 right-4 z-[100]"
+              className="mb-4 fixed top-4 right-4 z-[100]"
             >
               Switch To Editing
             </Button>

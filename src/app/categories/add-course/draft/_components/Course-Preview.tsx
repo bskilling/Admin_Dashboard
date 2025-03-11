@@ -47,6 +47,7 @@ import CourseEnrollment from "./Price";
 import FAQSection from "./faqs";
 import WhyJoinSection from "./Whychoose";
 import Footer from "./Footer";
+import Modules from "./Modules";
 // Adjust this type as needed.
 export interface TDraftCourseForm {
   _id: string;
@@ -256,9 +257,6 @@ const CourseLandingPage = ({ courseData }: { courseData: ICourse }) => {
                 Pricing
               </Link>
             </div>
-            <div className="flex items-center">
-              <span className="text-2xl font-bold text-blue-600">Azure AI</span>
-            </div>
           </div>
         </div>
       </nav>
@@ -275,24 +273,37 @@ const CourseLandingPage = ({ courseData }: { courseData: ICourse }) => {
         durationHours={durationHours}
         enrolledStudents={1000}
         certification={certification}
+        enrollmentEnd={endTime}
+        enrollmentStart={startTime}
+        trainingMode={"Hybrid"}
       />
 
       <section className="   -mt-56  m-auto flex ">
-        <section className="flex  w-[90vw]  pl-[10vw] pt-60 pb-10">
+        <section className="flex  w-[70vw]  pl-[10vw] pt-60 pb-10">
           <div className=" w-full">
-            <h2 className="text-3xl font-bold mt-10">Course Overview</h2>
+            <h2 className="text-xl font-semibold text-gray-900 mt-10 tracking-wide">
+              Course Overview
+            </h2>
+
             {overview && (
-              <section id="overview" className="mt-5">
-                <h2 className="font-semibold  ">{overview.title}</h2>
-                <p className=" mb-3">{overview.description}</p>{" "}
+              <section id="overview" className="mt-6 space-y-3">
+                <h3 className="text-lg font-medium text-gray-800">
+                  {overview.title}
+                </h3>
+                <p className="text-sm text-gray-600 leading-relaxed">
+                  {overview.description}
+                </p>
               </section>
             )}
 
             {/* Chapters */}
 
             <div className="rounded-xl  mt-10">
-              <h3 className="text-xl font-bold mb-4">Course Modules</h3>
-              <div className="space-y-4">
+              <h3 className="text-lg  mb-4 font-medium text-gray-800">
+                Course Ciricullum
+              </h3>
+              <Modules chapters={curriculum.chapters} />
+              {/* <div className="space-y-4">
                 {curriculum.chapters?.map((chapter) => (
                   <div
                     key={chapter._id}
@@ -323,14 +334,17 @@ const CourseLandingPage = ({ courseData }: { courseData: ICourse }) => {
                     </Accordion>
                   </div>
                 ))}
-              </div>
+              </div> */}
             </div>
             <Highlights highlights={highlights || []} />
             <Outcomes outcomes={outcomes || []} />
 
             {category?.type !== "b2i" && (
               <div className=" rounded-xl  mt-10">
-                <h3 className="text-xl font-bold mb-4">Projects Covered</h3>
+                {/* <h3 className="text-xl font-bold mb-4">Projects Covered</h3> */}
+                {curriculum.projects?.length >= 1 && (
+                  <div className="text-gray-600">No projects covered</div>
+                )}
                 <div className="space-y-4">
                   {curriculum.projects?.map((project) => (
                     <div

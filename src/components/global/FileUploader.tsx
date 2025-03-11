@@ -132,7 +132,7 @@ const FileUploader: React.FC<FileUploaderProps> = ({
           type="file"
           style={{ display: "none" }}
           onChange={handleFileChange}
-          accept=".pdf,.jpg,.png,.jpeg,.webp,.docx"
+          accept=".pdf,.jpg,.png,.jpeg,.webp,.docx,.avif,.svg"
           disabled={!!fileId}
         />
         {isLoading ? (
