@@ -58,8 +58,10 @@ const CourseDetails: React.FC<CourseDetailsProps> = ({
           <div>
             <p className="font-semibold text-gray-800">Enrollment Period</p>
             <p className="text-gray-600 text-lg">
-              {format(new Date(enrollmentStart), "dd MMM yyyy")} -{" "}
-              {format(new Date(enrollmentEnd), "dd MMM yyyy")}
+              {enrollmentStart &&
+                format(new Date(enrollmentStart), "dd MMM yyyy")}{" "}
+              -{" "}
+              {enrollmentEnd && format(new Date(enrollmentEnd), "dd MMM yyyy")}
             </p>
           </div>
         </div>

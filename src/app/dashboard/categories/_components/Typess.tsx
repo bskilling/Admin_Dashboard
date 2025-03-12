@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Briefcase, Users, Building, Globe } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 const businessTypes = [
   {
@@ -42,34 +43,60 @@ export default function Typess({
   >;
 }) {
   //   const [selectedType, setSelectedType] = useState<string | null>(null);
+  const router = useRouter();
 
   const handleSelect = (id: "b2b" | "b2c" | "b2g" | "b2i") => {
     setSelectedType(id);
+    router.push(`/dashboard/categories?type=${id}`);
     console.log(`Selected Business Type: ${id}`); // Replace with your logic
   };
 
   return (
-    <div className="w-full mx-auto p-6 ">
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+    <div className="w-full mx-auto px-8 py-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
         {businessTypes.map((type) => (
           <div
             key={type.id}
             onClick={() =>
               handleSelect(type.id as "b2b" | "b2c" | "b2g" | "b2i")
             }
-            className={`flex items-center gap-4 p-6 cursor-pointer shadow-md rounded-xl border 
-              transition-all duration-300 
+            className={`flex items-start gap-4 p-6 cursor-pointer shadow-md rounded-xl border
+            transition-all duration-300 group
+            ${
+              selectedType === type.id
+                ? "border-blue-400 bg-blue-100 shadow-lg scale-[1.02]"
+                : "border-gray-300 bg-white dark:bg-gray-900 dark:border-gray-800"
+            }`}
+          >
+            {/* Icon Section */}
+            <div
+              className={`flex-shrink-0 p-3 rounded-lg transition-all duration-300 
               ${
                 selectedType === type.id
-                  ? "border-blue-200 bg-blue-50 shadow-lg scale-105"
-                  : "border-gray-200 bg-white dark:bg-gray-800 dark:border-gray-700"
+                  ? "bg-blue-500 text-white"
+                  : "bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-300"
               }`}
-          >
-            <div className="flex-shrink-0">{type.icon}</div>
+            >
+              {type.icon}
+            </div>
+
+            {/* Text Section */}
             <div>
-              <h3 className="text-xl font-semibold">{type.title}</h3>
-              <p className="text-sm text-gray-500">{type.fullForm}</p>
-              <p className="text-gray-400 italic text-sm">{type.placeholder}</p>
+              <h3
+                className={`text-lg font-bold transition-all ${
+                  selectedType === type.id
+                    ? "text-blue-600 dark:text-blue-300"
+                    : "text-gray-900 dark:text-gray-100"
+                }`}
+              >
+                {type.title}
+              </h3>
+              <p className="text-sm text-gray-600 dark:text-gray-400">
+                {type.fullForm}
+              </p>
+              <p className="text-gray-500 dark:text-gray-500 italic text-xs mt-1">
+                {type.placeholder}
+              </p>
             </div>
           </div>
         ))}

@@ -133,8 +133,10 @@ export default function MetadataForm({ id }: { id: string }) {
 
   return (
     <Dialog>
-      <DialogTrigger>
-        <Button className="bg-green-600 mt-5">Meta Data </Button>
+      <DialogTrigger className="m-0 p-0">
+        <Button className="bg-green-600 fixed top-6 left-60 z-[999]">
+          Meta Data{" "}
+        </Button>
       </DialogTrigger>
       <DialogContent className="!w-[80vw]  h-[80vh] overflow-y-auto">
         <DialogHeader>

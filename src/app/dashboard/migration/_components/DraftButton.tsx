@@ -10,7 +10,7 @@ import {
 import { toast } from "react-hot-toast";
 import { z } from "zod";
 import { Coursedetailstype } from "../page";
-import { draftCourseSchema } from "@/app/categories/_components/validators";
+import { draftCourseSchema } from "@/app/dashboard/categories/_components/validators";
 
 interface RootObject {
   _id: string;

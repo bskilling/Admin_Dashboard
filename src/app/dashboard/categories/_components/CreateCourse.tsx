@@ -131,99 +131,110 @@ export default function CreateCourse({
   });
 
   return (
-    <div className="">
-      <Card className="mt-5">
+    <div className="w-full mx-auto px-6 py-5">
+      <Card className="mt-6 border border-gray-300 shadow-lg rounded-xl bg-white dark:bg-gray-900">
         <CardHeader>
-          <div className="flex items-center space-x-2 w-full  justify-end">
+          {/* Top Switch Toggle */}
+          <div className="flex items-center justify-end gap-3">
+            <Label
+              htmlFor="airplane-mode"
+              className="text-gray-700 dark:text-gray-300"
+            >
+              Published
+            </Label>
             <Switch
               id="airplane-mode"
               checked={isPublished}
               onCheckedChange={(checked) => setIsPublished(checked)}
             />
-            <Label htmlFor="airplane-mode">Published</Label>
           </div>
 
-          <CardTitle className="text-2xl text-center capitalize">
+          {/* Main Title */}
+          <CardTitle className="text-3xl font-bold text-center capitalize text-gray-900 dark:text-white mt-4">
             {category?.name} Courses
           </CardTitle>
-          <CardDescription></CardDescription>
         </CardHeader>
+
         <CardContent>
-          <div className="grid 2xl:grid-cols-4 xl:grid-cols-3 gap-8 mt-10">
+          <div className="grid 2xl:grid-cols-4 xl:grid-cols-3 gap-8 mt-8">
             {data?.courses.map((category) => (
-              <Card key={category._id} className="relative min-h-96">
-                <Link
-                  key={category._id}
-                  href={`/categories/add-course/draft/${category?._id}`}
-                >
-                  <CardHeader className="space-y-1 p-0">
+              <Card
+                key={category._id}
+                className="relative min-h-96 border border-gray-200 rounded-lg shadow-md transition-all hover:shadow-xl hover:scale-[1.02] dark:border-gray-700 dark:bg-gray-800"
+              >
+                <Link href={`/categories/add-course/draft/${category?._id}`}>
+                  <CardHeader className="p-0 relative">
+                    {/* Status Button */}
                     <Button
                       className={cn(
-                        "absolute top-0 left-0 bg-purple-900",
-                        !category?.isPublished && "bg-orange-500"
+                        "absolute top-2 left-2 px-3 py-1 text-xs font-semibold rounded-lg shadow-sm",
+                        category?.isPublished
+                          ? "bg-green-600 text-white"
+                          : "bg-orange-500 text-white"
                       )}
                     >
                       {category?.isPublished ? "Published" : "Draft"}
                     </Button>
 
+                    {/* Course Image */}
                     {category?.previewImage?.viewUrl ? (
                       <img
                         src={category?.previewImage?.viewUrl}
-                        alt={"Preview image"}
-                        width={100}
-                        height={100}
-                        className="w-full h-52 object-cover"
+                        alt="Preview image"
+                        className="w-full h-56 object-cover rounded-t-lg"
                       />
                     ) : (
-                      <img
-                        src={"/images/placeholder.png"}
-                        alt=""
-                        width={100}
-                        height={100}
-                        className=" h-40 w-40 m-auto object-cover p-3"
-                      />
+                      <div className="flex items-center justify-center h-56 bg-gray-200 dark:bg-gray-700 rounded-t-lg">
+                        <img
+                          src="/images/placeholder.png"
+                          alt="Placeholder"
+                          className="h-24 w-24 object-cover"
+                        />
+                      </div>
                     )}
-                    <CardTitle className="px-3 py-2">
+
+                    {/* Course Title & Description */}
+                    <CardTitle className="px-4 py-2 text-lg font-semibold text-gray-900 dark:text-white">
                       {category?.title || "No Name"}
                     </CardTitle>
-                    <CardDescription className="px-3">
-                      <p>{category?.description || "No Description"}</p>
+                    <CardDescription className="px-4 text-gray-600 dark:text-gray-400 text-sm">
+                      {category?.description || "No Description"}
                     </CardDescription>
                   </CardHeader>
                 </Link>
 
-                <CardContent></CardContent>
-                <CardFooter className="w-full flex justify-between gap-x-4">
-                  <Link
-                    key={category._id}
-                    href={`/categories/add-course/draft/${category?._id}`}
-                  >
-                    <Button variant={"secondary"} className="w-full">
+                {/* Card Footer Buttons */}
+                <CardFooter className="w-full flex justify-between gap-4 p-4">
+                  <Link href={`/categories/add-course/draft/${category?._id}`}>
+                    <Button variant="secondary" className="w-full">
                       Edit
                     </Button>
                   </Link>
+
+                  {/* Delete Dialog */}
                   <Dialog>
                     <DialogTrigger>
-                      <Button className="w-full" variant={"destructive"}>
+                      <Button className="w-full" variant="destructive">
                         Delete
                       </Button>
                     </DialogTrigger>
                     <DialogContent>
                       <DialogHeader>
-                        <DialogTitle>Are you absolutely sure?</DialogTitle>
+                        <DialogTitle>Are you sure?</DialogTitle>
                         <DialogDescription>
-                          This action cannot be undone. This will permanently
-                          delete your account and remove your data from our
-                          servers.
+                          This action cannot be undone. It will permanently
+                          delete the course.
                         </DialogDescription>
                       </DialogHeader>
                       <DialogFooter>
-                        <DialogClose>Cancel</DialogClose>
+                        <DialogClose>
+                          <Button variant="outline">Cancel</Button>
+                        </DialogClose>
                         <DialogClose>
                           <Button
                             className="w-full"
                             onClick={() => deleteCourse.mutate(category)}
-                            variant={"destructive"}
+                            variant="destructive"
                           >
                             Delete
                           </Button>
@@ -232,74 +243,27 @@ export default function CreateCourse({
                     </DialogContent>
                   </Dialog>
 
+                  {/* Publish Dialog */}
                   <Dialog>
                     <DialogTrigger>
-                      <Button
-                        onClick={() => {
-                          try {
-                            console.log(category);
-                            const newCat = {
-                              ...category,
-                              banner: category?.banner?._id,
-                              previewImage: category?.previewImage?._id,
-                              logoUrl: category?.logoUrl?._id,
-                            };
-                            const data =
-                              publishedCourseSchema.safeParse(newCat);
-                            console.log("data====", data);
-
-                            if (data.success) {
-                              setErrors(null);
-                            } else {
-                              // Extract & format errors
-                              const formattedErrors = Object.entries(
-                                data.error.format()
-                              )
-                                .map(([key, value]) => {
-                                  if (key !== "_errors") {
-                                    return `${key}: ${(
-                                      value as any
-                                    )._errors.join(", ")}`;
-                                  }
-                                })
-                                .filter(Boolean); // Remove undefined values
-
-                              console.log("Formatted Errors:", formattedErrors);
-                              setErrors(formattedErrors);
-                            }
-                          } catch (error) {
-                            console.log("erro====", error);
-                            setErrors([
-                              "Unexpected error occurred. Please try again.",
-                            ]);
-                          }
-                        }}
-                      >
-                        Publish
-                      </Button>
+                      <Button>Publish</Button>
                     </DialogTrigger>
-
                     <DialogContent className="w-[80vw]">
                       <DialogHeader>
-                        <DialogTitle>Are you absolutely sure?</DialogTitle>
+                        <DialogTitle>Confirm Publishing</DialogTitle>
                         <DialogDescription>
-                          This will publish the course
+                          This will publish the course.
                         </DialogDescription>
                       </DialogHeader>
 
-                      {/* Error Display Section */}
+                      {/* Error Display */}
                       {allErrors && allErrors.length > 0 && (
                         <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-lg">
-                          <h3 className="font-semibold">
-                            Please fix the following errors:
-                          </h3>
+                          <h3 className="font-semibold">Fix these errors:</h3>
                           <ul className="list-disc list-inside mt-2">
-                            {
-                              // @ts-ignore
-                              allErrors.map((error, index) => (
-                                <li key={index}>{error}</li>
-                              ))
-                            }
+                            {allErrors.map((error, index) => (
+                              <li key={index}>{error}</li>
+                            ))}
                           </ul>
                         </div>
                       )}
@@ -313,8 +277,6 @@ export default function CreateCourse({
                             previewImage: category?.previewImage?._id,
                             logoUrl: category?.logoUrl?._id,
                           };
-                          console.log(newCat);
-                          // @ts-ignore
                           publishCourse.mutate(newCat);
                         }}
                       >
@@ -325,49 +287,42 @@ export default function CreateCourse({
                 </CardFooter>
               </Card>
             ))}
-            {
-              <Dialog>
-                <DialogTrigger className="min-h-96 hover:bg-gradient-to-br hover:text-white hover:bg-blue-700 to-black rounded-md">
-                  {" "}
-                  <div className="h-full  border-dotted border-2 rounded-md flex flex-col items-center justify-center cursor-pointer">
-                    <p className="text-center text-xl font-bold hover:text-white">
-                      Create New Course
-                    </p>
-                    <FaPlusSquare
-                      size={30}
-                      className="hover:text-white text-center mt-3"
-                    />
-                  </div>
-                </DialogTrigger>
-                <DialogContent>
-                  <DialogHeader>
-                    <DialogTitle>Are you absolutely sure?</DialogTitle>
-                    <DialogDescription>
-                      Do you want create a new course for this category{" "}
-                      <span className="capitalize text-base pl-2 font-bold text-purple-600 underline">
-                        {category?.name}
-                      </span>
-                    </DialogDescription>
-                  </DialogHeader>
-                  <div className="flex justify-end gap-x-5">
-                    <DialogClose>
-                      <Button variant={"outline"}>
-                        <p>Cancel</p>
-                      </Button>
-                    </DialogClose>
-                    <Button
-                      onClick={() => {
-                        createDraftMutation.mutate({
-                          category: category._id,
-                        });
-                      }}
-                    >
-                      <p>Create Course</p>
-                    </Button>
-                  </div>
-                </DialogContent>
-              </Dialog>
-            }
+
+            {/* Add New Course Button */}
+            <Dialog>
+              <DialogTrigger className="min-h-96 hover:bg-gradient-to-br hover:text-white from-blue-700 to-black rounded-lg transition-all">
+                <div className="h-full border-dashed border-2 rounded-lg flex flex-col items-center justify-center cursor-pointer p-6 hover:bg-blue-700 hover:text-white">
+                  <p className="text-center text-lg font-bold">
+                    Create New Course
+                  </p>
+                  <FaPlusSquare size={30} className="text-center mt-3" />
+                </div>
+              </DialogTrigger>
+              <DialogContent>
+                <DialogHeader>
+                  <DialogTitle>Create New Course</DialogTitle>
+                  <DialogDescription>
+                    Are you sure you want to create a new course for
+                    <span className="capitalize text-base pl-2 font-bold text-purple-600 underline">
+                      {category?.name}
+                    </span>
+                    ?
+                  </DialogDescription>
+                </DialogHeader>
+                <div className="flex justify-end gap-5">
+                  <DialogClose>
+                    <Button variant="outline">Cancel</Button>
+                  </DialogClose>
+                  <Button
+                    onClick={() =>
+                      createDraftMutation.mutate({ category: category._id })
+                    }
+                  >
+                    Create Course
+                  </Button>
+                </div>
+              </DialogContent>
+            </Dialog>
           </div>
         </CardContent>
       </Card>

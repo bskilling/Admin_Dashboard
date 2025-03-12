@@ -27,6 +27,13 @@ import env from "@/lib/env";
 import FileUploader from "@/components/global/FileUploader";
 import Image from "next/image";
 import { set } from "date-fns";
+import { useRouter, useSearchParams } from "next/navigation";
+import {
+  ContextMenu,
+  ContextMenuContent,
+  ContextMenuItem,
+  ContextMenuTrigger,
+} from "@/components/ui/context-menu";
 
 const createCategoryValidator = z.object({
   name: z
@@ -69,6 +76,8 @@ export default function CreateCategory({
 }: {
   selectedType: "b2b" | "b2c" | "b2g" | "b2i" | null;
 }) {
+  const router = useRouter();
+  const searchParams = useSearchParams();
   const [show, setShow] = useState(false);
   const [scategory, setScategory] = useState<
     ICategories["categories"][number] | null
@@ -118,7 +127,7 @@ export default function CreateCategory({
   });
 
   const categoryQuery = useQuery<ICategories>({
-    queryKey: ["categories", selectedType],
+    queryKey: ["categories", selectedType, searchParams],
     queryFn: async () => {
       const res = await axios.get(env?.BACKEND_URL + "/api/categories", {
         params: {
@@ -127,6 +136,10 @@ export default function CreateCategory({
           type: selectedType ?? undefined,
         },
       });
+      const data = res.data.data as ICategories;
+      setScategory(
+        data.categories.find((e) => e?._id === searchParams?.get("id")) ?? null
+      );
       return res.data.data;
     },
     staleTime: 1000 * 60 * 5,
@@ -138,6 +151,12 @@ export default function CreateCategory({
     setScategory(null);
     if (selectedType) form.setValue("type", selectedType ?? undefined);
     if (!selectedType) toast.error("Please select a type");
+
+    setScategory(
+      categoryQuery?.data?.categories?.find(
+        (e) => e?._id === searchParams?.get("id")
+      ) ?? null
+    );
   }, [selectedType]);
 
   return (
@@ -213,8 +232,71 @@ export default function CreateCategory({
           </DialogContent>
         </Dialog>
       </div>
-      <div className=" rounded-lg">
-        <div className="flex flex-wrap  gap-4 p-6  overflow-y-auto ">
+      <div className=" rounded-lg px-6">
+        <div className="flex flex-wrap gap-4 mt-5">
+          <div
+            className={cn(
+              "flex items-center justify-center px-4 hover:cursor-pointer py-3 border border-blue-500 rounded-lg shadow-md bg-white text-blue-700 font-medium transition-all hover:bg-blue-500 hover:text-white hover:shadow-lg hover:-translate-y-1",
+              !scategory?._id &&
+                "bg-blue-600 text-white border-blue-700 shadow-lg scale-[1.02]"
+            )}
+            onClick={() => setScategory(null)}
+          >
+            <p className="text-sm text-center">All</p>
+          </div>
+          {categoryQuery?.data?.categories?.map((category) => (
+            <ContextMenu>
+              <ContextMenuTrigger>
+                {" "}
+                <div
+                  key={category.slug}
+                  className={cn(
+                    "flex items-center justify-center px-4 hover:cursor-pointer py-3 border border-blue-500 rounded-lg shadow-md bg-white text-blue-700 font-medium transition-all hover:bg-blue-500 hover:text-white hover:shadow-lg hover:-translate-y-1",
+                    category._id === scategory?._id &&
+                      "bg-blue-600 text-white border-blue-700 shadow-lg scale-[1.02]"
+                  )}
+                  onClick={() => setScategory(category)}
+                >
+                  <p className="text-sm text-center">{category.name}</p>
+                </div>
+              </ContextMenuTrigger>
+              <ContextMenuContent>
+                <ContextMenuItem>Edit</ContextMenuItem>
+                <ContextMenuItem>
+                  {" "}
+                  <Dialog>
+                    <DialogTrigger className=" text-red-500">
+                      <MdDelete size={20} />
+                    </DialogTrigger>
+                    <DialogContent>
+                      <DialogHeader>
+                        <DialogTitle>Are you absolutely sure?</DialogTitle>
+                        <DialogDescription>
+                          This action cannot be undone. This will permanently
+                          delete your account and remove your data from our
+                          servers.
+                        </DialogDescription>
+                      </DialogHeader>
+                      <div className="flex justify-end gap-x-4">
+                        <DialogClose>
+                          <Button variant={"outline"}>Cancel</Button>
+                        </DialogClose>
+                        <DialogClose>
+                          <Button
+                            onClick={() => deleteCategory?.mutate(category._id)}
+                          >
+                            Delete <MdDelete size={20} />
+                          </Button>
+                        </DialogClose>
+                      </div>
+                    </DialogContent>
+                  </Dialog>
+                </ContextMenuItem>
+              </ContextMenuContent>
+            </ContextMenu>
+          ))}
+        </div>
+        {/* <div className="flex flex-wrap  gap-4 p-6  overflow-y-auto ">
           {categoryQuery?.data?.categories?.map((category) => (
             <div
               key={category.slug}
@@ -223,49 +305,21 @@ export default function CreateCategory({
                 category._id === scategory?._id &&
                   "bg-gradient-to-tr from-[#8E2DE2] to-[#4A00E0] text-white"
               )}
-              onClick={() => setScategory(category)}
+              onClick={() => {
+                setScategory(category);
+                router.push(
+                  `/categories?type=${selectedType}&id=${category?._id}`
+                );
+              }}
             >
               <div className="flex items-center gap-x-4">
-                {/* <Image
-                  width={200}
-                  height={200}
-                  src={category?.logo?.viewUrl}
-                  alt={category?.slug}
-                  className="w-8 h-8 rounded-full object-cover mb-3"
-                /> */}
                 <p className="text-lg font-medium capitalize">
                   {category.name}
                 </p>
               </div>
-              <Dialog>
-                <DialogTrigger className=" text-red-500">
-                  <MdDelete size={20} />
-                </DialogTrigger>
-                <DialogContent>
-                  <DialogHeader>
-                    <DialogTitle>Are you absolutely sure?</DialogTitle>
-                    <DialogDescription>
-                      This action cannot be undone. This will permanently delete
-                      your account and remove your data from our servers.
-                    </DialogDescription>
-                  </DialogHeader>
-                  <div className="flex justify-end gap-x-4">
-                    <DialogClose>
-                      <Button variant={"outline"}>Cancel</Button>
-                    </DialogClose>
-                    <DialogClose>
-                      <Button
-                        onClick={() => deleteCategory?.mutate(category._id)}
-                      >
-                        Delete <MdDelete size={20} />
-                      </Button>
-                    </DialogClose>
-                  </div>
-                </DialogContent>
-              </Dialog>
             </div>
           ))}
-        </div>
+        </div> */}
       </div>
       {scategory && <CreateCourse category={scategory} />}
     </div>

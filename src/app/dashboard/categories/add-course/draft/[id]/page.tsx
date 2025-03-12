@@ -38,7 +38,13 @@ import { draftCourseSchema } from "../../../_components/validators";
 import { ICourse } from "../_components/types";
 import CourseLandingPage from "../_components/Course-Preview";
 import Image from "next/image";
-import { Calendar, Clock, PlayIcon } from "lucide-react";
+import {
+  ArrowLeft,
+  ArrowLeftCircle,
+  Calendar,
+  Clock,
+  PlayIcon,
+} from "lucide-react";
 import { BsFolderCheck } from "react-icons/bs";
 import { LuRadioTower } from "react-icons/lu";
 import { BiSolidCertification } from "react-icons/bi";
@@ -242,12 +248,16 @@ export default function RouteComponent() {
     <Suspense fallback={<div>Loading...</div>}>
       <>
         <Button
-          onClick={() => {
-            router.push("/dashboard");
-          }}
-          className="mb-4 absolute bg-gray-500 top-4 left-4 z-[100]"
+          onClick={() => router.back()}
+          aria-label="Go back"
+          className="fixed top-6 left-6 z-[100] flex items-center gap-3 text-lg font-bold
+                 bg-gradient-to-r from-[#FF512F] to-[#DD2476] text-white 
+                 px-6 py-3 rounded-full shadow-xl 
+                 hover:scale-105 hover:shadow-2xl hover:brightness-110
+                 transition-all duration-300"
         >
-          Dashboard
+          <ArrowLeftCircle className="w-7 h-7 text-white drop-shadow-md animate-pulse" />
+          Back
         </Button>
         {preview ? (
           <>
@@ -258,7 +268,7 @@ export default function RouteComponent() {
                   `/categories/add-course/draft/${id}?preview=false`
                 );
               }}
-              className="mb-4 fixed top-4 right-4 z-[100]"
+              className="mb-4 fixed top-4 right-4 z-[9999]"
             >
               Switch To Editing
             </Button>
@@ -269,7 +279,7 @@ export default function RouteComponent() {
           </>
         ) : (
           <div className="p-5">
-            <div className="flex justify-end">
+            <div className="flex justify-end fixed top-5 right-5 z-[999]">
               <Button
                 onClick={() => {
                   setPreview(true);
@@ -285,7 +295,7 @@ export default function RouteComponent() {
             {draftQuery?.data?._id && (
               <MetadataForm id={draftQuery?.data?._id} />
             )}
-            <Card className="mt-5">
+            <Card className="mt-20">
               <CardContent id="hero" className="px-0 rounded-t-md">
                 <form
                   onSubmit={handleSubmit(onSubmit, (err) => {
@@ -294,7 +304,7 @@ export default function RouteComponent() {
                   })}
                   className="flex flex-col gap-y-6"
                 >
-                  <div className="flex justify-end fixed top-20 z-[100] right-10">
+                  <div className="flex justify-end fixed top-5 z-[100] right-60">
                     <Button
                       type="submit"
                       className="bg-blue-500"

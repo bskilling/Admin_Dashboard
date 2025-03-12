@@ -36,7 +36,7 @@ export default function BlogHeader({
     const deletedBlogData = await deleteBlog(id);
     if ("data" in deletedBlogData && deletedBlogData?.data?.success) {
       toast.success("Blog has been deleted.");
-      router.push("/blogs");
+      router.push("/dashboard/blogs");
     } else {
       toast.error("Something went wrong!");
     }

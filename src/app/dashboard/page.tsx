@@ -11,6 +11,7 @@ import { MdOutlineLibraryBooks } from "react-icons/md";
 import { HiOutlineUserGroup } from "react-icons/hi";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
+import AuthWrapper from "@/lib/AuthWrapper";
 
 export default function Dashboard() {
   const router = useRouter();

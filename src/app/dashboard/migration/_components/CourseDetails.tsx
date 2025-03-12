@@ -6,7 +6,7 @@ import axios from "axios";
 import { z } from "zod";
 import { toast } from "react-hot-toast";
 import env from "@/lib/env";
-import { draftCourseSchema } from "@/app/categories/_components/validators";
+import { draftCourseSchema } from "@/app/dashboard/categories/_components/validators";
 import DraftCourseButton from "./DraftButton";
 
 interface CourseDetailsProps {

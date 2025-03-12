@@ -29,7 +29,7 @@ export default function Protected({ children }: ProtectedProps) {
         const response = await auth({ token });
 
         if ("data" in response && !response?.data?.isLog) {
-          router.push("/learning/trainings");
+          router.push("/dashboard/learning/trainings");
         }
       } catch (error) {
         console.error("Error checking authentication:", error);
