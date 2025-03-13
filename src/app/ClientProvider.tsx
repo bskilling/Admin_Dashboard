@@ -8,9 +8,11 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import React, { Suspense, useMemo } from "react";
 import { Toaster } from "../components/ui/sonner";
 import { usePathname, useSearchParams } from "next/navigation";
-import Protected from "./hooks/useProtected";
+
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/app-sidebar";
+import { SessionProvider } from "next-auth/react";
+import Protected from "@/hooks/useProtected";
 
 export function ClientProviders({ children }: { children: React.ReactNode }) {
   const [queryClient] = React.useState(() => new QueryClient());
@@ -26,34 +28,36 @@ export function ClientProviders({ children }: { children: React.ReactNode }) {
 
   return (
     <Suspense fallback={<div>Loading...</div>}>
-      <QueryClientProvider client={queryClient}>
-        <Providers>
-          <NextTopLoader />
-          <>
-            {isSidebar ? (
-              <>
-                <SidebarProvider>
-                  <AppSidebar />
-                  <main className="w-full">
-                    <SidebarTrigger />
-                    <div className="flex h-screen w-full">
-                      <div className="h-screen overflow-y-auto w-full relative ">
-                        {children}
+      <SessionProvider>
+        <QueryClientProvider client={queryClient}>
+          <Providers>
+            <NextTopLoader />
+            <>
+              {isSidebar ? (
+                <>
+                  <SidebarProvider>
+                    <AppSidebar />
+                    <main className="w-full">
+                      <SidebarTrigger />
+                      <div className="flex h-screen w-full">
+                        <div className="h-screen overflow-y-auto w-full relative ">
+                          {children}
+                        </div>
                       </div>
-                    </div>
-                  </main>
-                </SidebarProvider>
-              </>
-            ) : (
-              <div className="h-screen overflow-y-auto w-full relative ">
-                {children}
-              </div>
-            )}
-          </>
-          <Toaster richColors position="top-right" />
-          {/* <Toaster position="top-center" reverseOrder={false} /> */}
-        </Providers>
-      </QueryClientProvider>
+                    </main>
+                  </SidebarProvider>
+                </>
+              ) : (
+                <div className="h-screen overflow-y-auto w-full relative ">
+                  {children}
+                </div>
+              )}
+            </>
+            <Toaster richColors position="top-right" />
+            {/* <Toaster position="top-center" reverseOrder={false} /> */}
+          </Providers>
+        </QueryClientProvider>
+      </SessionProvider>
     </Suspense>
   );
 }
