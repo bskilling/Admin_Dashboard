@@ -162,7 +162,9 @@ export default function CreateCourse({
                 key={category._id}
                 className="relative min-h-96 border border-gray-200 rounded-lg shadow-md transition-all hover:shadow-xl hover:scale-[1.02] dark:border-gray-700 dark:bg-gray-800"
               >
-                <Link href={`/categories/add-course/draft/${category?._id}`}>
+                <Link
+                  href={`/dashboard/categories/add-course/draft/${category?._id}`}
+                >
                   <CardHeader className="p-0 relative">
                     {/* Status Button */}
                     <Button
@@ -205,7 +207,9 @@ export default function CreateCourse({
 
                 {/* Card Footer Buttons */}
                 <CardFooter className="w-full flex justify-between gap-4 p-4">
-                  <Link href={`/categories/add-course/draft/${category?._id}`}>
+                  <Link
+                    href={`/dashboard/categories/add-course/draft/${category?._id}`}
+                  >
                     <Button variant="secondary" className="w-full">
                       Edit
                     </Button>
@@ -261,9 +265,12 @@ export default function CreateCourse({
                         <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-lg">
                           <h3 className="font-semibold">Fix these errors:</h3>
                           <ul className="list-disc list-inside mt-2">
-                            {allErrors.map((error, index) => (
-                              <li key={index}>{error}</li>
-                            ))}
+                            {
+                              //@ts-ignore
+                              allErrors.map((error, index) => (
+                                <li key={index}>{error}</li>
+                              ))
+                            }
                           </ul>
                         </div>
                       )}
@@ -277,6 +284,7 @@ export default function CreateCourse({
                             previewImage: category?.previewImage?._id,
                             logoUrl: category?.logoUrl?._id,
                           };
+                          // @ts-ignore
                           publishCourse.mutate(newCat);
                         }}
                       >

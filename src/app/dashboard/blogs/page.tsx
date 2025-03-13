@@ -7,7 +7,6 @@ import Link from "next/link";
 import { IoIosAdd } from "react-icons/io";
 // import loginPageLogo from "../../public/assets/loginPageLogo.png";
 import { useGetAllBlogsQuery } from "@/redux/features/blog/blogApi";
-import Protected from "../hooks/useProtected";
 import { LiaEdit } from "react-icons/lia";
 import { FaExternalLinkAlt } from "react-icons/fa";
 import { formatToStringDate } from "@/utils/formatter";
@@ -52,7 +51,7 @@ const Header = ({ courseId, setEditModal }: any) => {
         </Link>
       </div>
       <Link
-        href="/blogs/create"
+        href="/dashboard/blogs/create"
         className="p-3 flex justify-center items-center"
       >
         <LiaEdit size={40} className="text-gray-400" />
@@ -71,60 +70,58 @@ export default function Page() {
 
   return (
     <Suspense>
-      <Protected>
-        <div className="min-h-screen w-full bg-gray-200">
-          <div className="h-[80px]">
-            <Header />
-          </div>
+      <div className="min-h-screen w-full bg-gray-200">
+        <div className="h-[80px]">
+          <Header />
+        </div>
 
-          <div className="px-6 pb-4">
-            <div className="flex justify-center items-center py-4 px-6">
-              <h2 className="text-4xl">Latest Blog Posts</h2>
-            </div>
-            <div className="flex justify-center items-center flex-wrap gap-6">
-              {data?.posts?.map((val: any, index: any) => (
-                <Link href={`/blogs/${val._id}`} key={val}>
-                  <div className="relative bg-white rounded-lg overflow-hidden shadow-lg w-80 h-96 transition-all hover:scale-105 cursor-pointer group">
-                    <Image
-                      src={val?.banner ?? "/assets/loginBg.png"}
-                      alt="banner"
-                      className="rounded-md object-cover w-full h-full"
-                      width={400}
-                      height={200}
-                      style={{ height: "200px", width: "100%" }}
-                    />
-                    <div className="p-4">
-                      <div className="text-sm text-gray-600 items-center flex justify-between">
-                        <span className="mr-2 font-semibold">BSkilling</span>
-                        <span>{formatToStringDate(val.createdAt)}</span>
-                      </div>
-                      <div className="font-bold text-xl my-2">
-                        {val?.title || ""}
-                      </div>
-                      <p
-                        className="text-gray-700 text-base"
-                        dangerouslySetInnerHTML={{
-                          __html:
-                            val?.content?.length > 150
-                              ? val?.content?.slice(0, 100) + "..."
-                              : val?.content,
-                        }}
-                      />
+        <div className="px-6 pb-4">
+          <div className="flex justify-center items-center py-4 px-6">
+            <h2 className="text-4xl">Latest Blog Posts</h2>
+          </div>
+          <div className="flex justify-center items-center flex-wrap gap-6">
+            {data?.posts?.map((val: any, index: any) => (
+              <Link href={`/dashboard/blogs/${val._id}`} key={val}>
+                <div className="relative bg-white rounded-lg overflow-hidden shadow-lg w-80 h-96 transition-all hover:scale-105 cursor-pointer group">
+                  <Image
+                    src={val?.banner ?? "/assets/loginBg.png"}
+                    alt="banner"
+                    className="rounded-md object-cover w-full h-full"
+                    width={400}
+                    height={200}
+                    style={{ height: "200px", width: "100%" }}
+                  />
+                  <div className="p-4">
+                    <div className="text-sm text-gray-600 items-center flex justify-between">
+                      <span className="mr-2 font-semibold">BSkilling</span>
+                      <span>{formatToStringDate(val.createdAt)}</span>
                     </div>
-                    <Link
-                      href={`/blogs/${val._id}`}
-                      rel="noopener noreferrer"
-                      className="absolute bottom-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                    >
-                      <FaExternalLinkAlt className="text-gray-600 hover:text-gray-800" />
-                    </Link>
+                    <div className="font-bold text-xl my-2">
+                      {val?.title || ""}
+                    </div>
+                    <p
+                      className="text-gray-700 text-base"
+                      dangerouslySetInnerHTML={{
+                        __html:
+                          val?.content?.length > 150
+                            ? val?.content?.slice(0, 100) + "..."
+                            : val?.content,
+                      }}
+                    />
                   </div>
-                </Link>
-              ))}
-            </div>
+                  <Link
+                    href={`/blogs/${val._id}`}
+                    rel="noopener noreferrer"
+                    className="absolute bottom-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                  >
+                    <FaExternalLinkAlt className="text-gray-600 hover:text-gray-800" />
+                  </Link>
+                </div>
+              </Link>
+            ))}
           </div>
         </div>
-      </Protected>
+      </div>
     </Suspense>
   );
 }

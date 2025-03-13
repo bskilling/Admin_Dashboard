@@ -23,7 +23,7 @@ export default function Sidebar() {
           <BiCategoryAlt size={22} /> Old Trainings
         </Link>
         <Link
-          href="/categories"
+          href="/dashboard/categories"
           className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-700 transition-all"
         >
           <MdOutlineLibraryBooks size={22} /> New Courses

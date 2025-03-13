@@ -86,7 +86,7 @@ export default function BlogHeader({
             onClick={handleDelete}
             className="cursor-pointer"
           />
-          <Link href={`/blogs/update/${id}`}>
+          <Link href={`/dashboard/blogs/update/${id}`}>
             <RiEdit2Line size={20} title="Edit" />
           </Link>
         </div>

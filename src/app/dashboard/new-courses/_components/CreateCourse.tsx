@@ -137,7 +137,7 @@ export default function CreateCourse({
               <Card key={category._id} className="relative min-h-96">
                 <Link
                   key={category._id}
-                  href={`/categories/add-course/draft/${category?._id}`}
+                  href={`/dashboard/categories/add-course/draft/${category?._id}`}
                 >
                   <CardHeader className="space-y-1 p-0">
                     <Button
@@ -179,7 +179,7 @@ export default function CreateCourse({
                 <CardFooter className="w-full flex justify-between gap-x-4">
                   <Link
                     key={category._id}
-                    href={`/categories/add-course/draft/${category?._id}`}
+                    href={`/dashboard/categories/add-course/draft/${category?._id}`}
                   >
                     <Button variant={"secondary"} className="w-full">
                       Edit
