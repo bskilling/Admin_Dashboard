@@ -1,3 +1,6 @@
+"use client";
+
+import { usePathname } from "next/navigation";
 import {
   Calendar,
   CircuitBoard,
@@ -7,7 +10,7 @@ import {
   Settings,
   Slack,
 } from "lucide-react";
-
+import Link from "next/link";
 import {
   Sidebar,
   SidebarContent,
@@ -18,70 +21,63 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
-import Link from "next/link";
 
 // Menu items.
 const items = [
-  {
-    title: "Home",
-    url: "/dashboard",
-    icon: Home,
-  },
-  {
-    title: "Leads",
-    url: "/leads",
-    icon: Inbox,
-  },
-  {
-    title: "Migration of data",
-    url: "/migration",
-    icon: Inbox,
-  },
-  {
-    title: "Categories",
-    url: "/categories",
-    icon: Slack,
-  },
-  {
-    title: "Skills",
-    url: "/skills",
-    icon: CircuitBoard,
-  },
-  {
-    title: "Courses",
-    url: "/new-courses",
-    icon: Calendar,
-  },
-  {
-    title: "Old Trainings",
-    url: "/learning/trainings",
-    icon: Search,
-  },
-  {
-    title: "Settings",
-    url: "#",
-    icon: Settings,
-  },
+  { title: "Home", url: "/dashboard", icon: Home },
+  { title: "Leads", url: "/dashboard/leads", icon: Inbox },
+  { title: "Migration", url: "/dashboard/migration", icon: Inbox },
+  { title: "Categories", url: "/dashboard/categories?type=b2c", icon: Slack },
+  { title: "Skills", url: "/dashboard/skills", icon: CircuitBoard },
+  // { title: "Courses", url: "/dashboard/new-courses", icon: Calendar },
+  // { title: "Trainings", url: "/dashboard/learning/trainings", icon: Search },
+  { title: "Settings", url: "/dashboard/settings", icon: Settings },
 ];
 
 export function AppSidebar() {
+  const pathname = usePathname();
+
   return (
-    <Sidebar>
+    <Sidebar className=" bg-[#f5f5f5] text-[#222] min-h-screen shadow-xl border-r border-gray-300 px-5 py-6">
       <SidebarContent>
+        {/* Sidebar Header */}
+        <div className="p-5 text-2xl font-extrabold text-center uppercase bg-gradient-to-r from-[#444] to-[#222] text-white rounded-lg shadow-md tracking-wider">
+          Dashboard
+        </div>
+
         <SidebarGroup>
-          <SidebarGroupLabel>Application</SidebarGroupLabel>
+          <SidebarGroupLabel className="text-[#444] text-sm uppercase font-semibold px-3 mt-6 tracking-wide">
+            Quick Access
+          </SidebarGroupLabel>
+
           <SidebarGroupContent>
-            <SidebarMenu>
-              {items.map((item) => (
-                <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton asChild>
-                    <Link href={item.url}>
-                      <item.icon className="h-12 w-12" size={40} />
-                      <span>{item.title}</span>
-                    </Link>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              ))}
+            <SidebarMenu className="space-y-3 mt-2">
+              {items.map((item) => {
+                const isActive = pathname === item.url;
+
+                return (
+                  <SidebarMenuItem key={item.title} className="rounded-lg">
+                    <SidebarMenuButton asChild>
+                      <Link
+                        href={item.url}
+                        className={`flex items-center gap-4 px-5 py-3 rounded-lg text-lg font-semibold transition-all duration-200 
+                          ${
+                            isActive
+                              ? "bg-gradient-to-r from-[#222] to-[#444] text-white shadow-lg scale-105"
+                              : "text-[#222] hover:bg-[#ddd] hover:text-[#111] transition-all"
+                          }`}
+                      >
+                        <item.icon
+                          className={`h-6 w-6 ${
+                            isActive ? "text-white" : "text-[#555]"
+                          }`}
+                        />
+                        <span>{item.title}</span>
+                      </Link>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                );
+              })}
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>

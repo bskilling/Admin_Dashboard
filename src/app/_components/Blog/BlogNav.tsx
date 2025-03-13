@@ -49,7 +49,7 @@ export default function BlogNav() {
       </div>
 
       <Link
-        href="/blogs/create"
+        href="/dashboard/blogs/create"
         className="p-3 flex justify-center items-center"
       >
         <LiaEdit size={40} className="text-gray-400" />

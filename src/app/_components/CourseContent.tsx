@@ -296,7 +296,7 @@ const CourseContent = (props: Props) => {
           </div>
 
           <Link
-            href="/blogs"
+            href="/dashboard/blogs"
             // target="_blank"
             className="px-4 py-[8px] bg-sky-700 rounded-md text-white font-[600] hover:bg-sky-600 transition-all"
           >
@@ -304,7 +304,7 @@ const CourseContent = (props: Props) => {
           </Link>
 
           <Link
-            href="/reviews"
+            href="/dashboard/reviews"
             // target="_blank"
             className="px-4 py-[8px] bg-sky-700 rounded-md text-white font-[600] hover:bg-sky-600 transition-all"
           >
@@ -373,7 +373,7 @@ const CourseContent = (props: Props) => {
             opacity={1}
             style={{
               backgroundColor: "#665c5c",
-              fontSize: "12px",
+              fontSize: "13px",
               color: "white",
             }}
           />
