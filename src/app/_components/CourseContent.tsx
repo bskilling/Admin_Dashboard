@@ -373,7 +373,7 @@ const CourseContent = (props: Props) => {
             opacity={1}
             style={{
               backgroundColor: "#665c5c",
-              fontSize: "12px",
+              fontSize: "13px",
               color: "white",
             }}
           />
