@@ -40,6 +40,7 @@
 // });
 
 // export { handler as GET, handler as POST };
+
 import NextAuth from "next-auth";
 import EmailProvider from "next-auth/providers/email";
 import { MongoDBAdapter } from "@next-auth/mongodb-adapter";
@@ -51,6 +52,7 @@ const allowedAdmins = [
   "dev02@sfjbs.com",
   "rahulyh63@gmail.com",
   "arun.sfjbs@gmail.com",
+  "rahulyh600@gmail.com",
   "bskilling.digital@gmail.com",
 ];
 
