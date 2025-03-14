@@ -5,10 +5,5 @@ export default function DashboardLayout({
 }: {
   children: React.ReactNode;
 }) {
-  return (
-    <AuthWrapper>
-      {" "}
-      <div className="flex-1 p-4 w-full">{children}</div>{" "}
-    </AuthWrapper>
-  );
+  return <div className="flex-1 p-4 w-full">{children}</div>;
 }
