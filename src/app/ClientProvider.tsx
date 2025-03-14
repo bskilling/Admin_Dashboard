@@ -30,32 +30,30 @@ export function ClientProviders({ children }: { children: React.ReactNode }) {
     <Suspense fallback={<div>Loading...</div>}>
       <SessionProvider>
         <QueryClientProvider client={queryClient}>
-          <Providers>
-            <NextTopLoader />
-            <>
-              {isSidebar ? (
-                <>
-                  <SidebarProvider>
-                    <AppSidebar />
-                    <main className="w-full">
-                      <SidebarTrigger />
-                      <div className="flex h-screen w-full">
-                        <div className="h-screen overflow-y-auto w-full relative ">
-                          {children}
-                        </div>
+          <NextTopLoader />
+          <>
+            {isSidebar ? (
+              <>
+                <SidebarProvider>
+                  <AppSidebar />
+                  <main className="w-full">
+                    <SidebarTrigger />
+                    <div className="flex h-screen w-full">
+                      <div className="h-screen overflow-y-auto w-full relative ">
+                        {children}
                       </div>
-                    </main>
-                  </SidebarProvider>
-                </>
-              ) : (
-                <div className="h-screen overflow-y-auto w-full relative ">
-                  {children}
-                </div>
-              )}
-            </>
-            <Toaster richColors position="top-right" />
-            {/* <Toaster position="top-center" reverseOrder={false} /> */}
-          </Providers>
+                    </div>
+                  </main>
+                </SidebarProvider>
+              </>
+            ) : (
+              <div className="h-screen overflow-y-auto w-full relative ">
+                {children}
+              </div>
+            )}
+          </>
+          <Toaster richColors position="top-right" />
+          {/* <Toaster position="top-center" reverseOrder={false} /> */}
         </QueryClientProvider>
       </SessionProvider>
     </Suspense>
