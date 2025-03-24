@@ -82,7 +82,7 @@ export default function CreateCourse({
     },
     onSuccess: (data: any) => {
       toast.success("Draft course created successfully");
-      navigate.push(`/categories/add-course/draft/${data.data._id}`);
+      navigate.push(`/dashboard/categories/add-course/draft/${data.data._id}`);
       // Handle additional success logic
       // ({
       //   to: "/categories/add-course/draft/$id",

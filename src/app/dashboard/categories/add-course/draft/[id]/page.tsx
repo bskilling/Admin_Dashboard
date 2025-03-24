@@ -265,7 +265,7 @@ export default function RouteComponent() {
               onClick={() => {
                 setPreview(false);
                 navigate.push(
-                  `/categories/add-course/draft/${id}?preview=false`
+                  `/dashboard/categories/add-course/draft/${id}?preview=false`
                 );
               }}
               className="mb-4 fixed top-4 right-4 z-[9999]"
@@ -284,7 +284,7 @@ export default function RouteComponent() {
                 onClick={() => {
                   setPreview(true);
                   navigate.push(
-                    `/categories/add-course/draft/${id}?preview=true`
+                    `/dashboard/categories/add-course/draft/${id}?preview=true`
                   );
                 }}
               >
