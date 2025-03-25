@@ -1,5 +1,9 @@
-import React from "react";
+import ToolForm from "./-components/ToolForm";
 
-export default function Tools() {
-  return <div>Tools</div>;
+export default function RouteComponent() {
+  return (
+    <div>
+      <ToolForm />
+    </div>
+  );
 }
