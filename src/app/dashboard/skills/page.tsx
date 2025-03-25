@@ -1,5 +1,9 @@
-import React from "react";
+import SkillForm from "./_components/SkillForm";
 
-export default function Skills() {
-  return <div>Skills</div>;
+export default function RouteComponent() {
+  return (
+    <div>
+      <SkillForm />
+    </div>
+  );
 }

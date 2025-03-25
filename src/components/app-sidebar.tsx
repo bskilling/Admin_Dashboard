@@ -29,6 +29,7 @@ const items = [
   { title: "Migration", url: "/dashboard/migration", icon: Inbox },
   { title: "Categories", url: "/dashboard/categories?type=b2c", icon: Slack },
   { title: "Skills", url: "/dashboard/skills", icon: CircuitBoard },
+  { title: "Tools", url: "/dashboard/tools", icon: CircuitBoard },
   // { title: "Courses", url: "/dashboard/new-courses", icon: Calendar },
   // { title: "Trainings", url: "/dashboard/learning/trainings", icon: Search },
   { title: "Settings", url: "/dashboard/settings", icon: Settings },
