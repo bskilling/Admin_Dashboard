@@ -34,13 +34,16 @@ type ToolType = z.infer<typeof zodSchema>;
 export default function ToolForm() {
   const { data, isLoading } = useTools();
   const [show, setShow] = useState(false);
-  const [edit, setEdit] = useState<boolean>(false);
-  const [delete1, setDelete] = useState<boolean>(false);
+  const [editingTool, setEditingTool] = useState(null);
+  const [deletingToolId, setDeletingToolId] = useState(null);
   const queryClient = useQueryClient();
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [_, setUrl] = useState<null | string>(null);
+  const [url, setUrl] = useState<null | string>(null);
+
   const form = useForm<ToolType>({
-    defaultValues: undefined,
+    defaultValues: {
+      title: "",
+      logo: "",
+    },
     resolver: zodResolver(zodSchema),
   });
 
@@ -52,7 +55,6 @@ export default function ToolForm() {
     },
     onSuccess: () => {
       form.reset({ title: "", logo: "" });
-      console.log(form?.watch());
       toast.success("Tool created successfully");
       queryClient.invalidateQueries({ queryKey: ["tools"] });
       setShow(false);
@@ -68,7 +70,7 @@ export default function ToolForm() {
     onSuccess: () => {
       toast.success("Tool deleted successfully");
       queryClient.invalidateQueries({ queryKey: ["tools"] });
-      setDelete(false);
+      setDeletingToolId(null);
     },
     onError: (error) => {
       toast.error(error.message);
@@ -87,14 +89,31 @@ export default function ToolForm() {
     onSuccess: () => {
       toast.success("Tool updated successfully");
       queryClient.invalidateQueries({ queryKey: ["tools"] });
-      setEdit(false);
+      setEditingTool(null);
+      form.reset({ title: "", logo: "" });
     },
     onError: (error) => {
       toast.error(error.message);
     },
   });
+  // @ts-ignore
+  const handleEditClick = (tool) => {
+    form.reset({
+      title: tool.title,
+      logo: tool.logo?._id,
+    });
+    setEditingTool(tool);
+  };
 
-  console.log(form.watch());
+  const handleEditClose = () => {
+    setEditingTool(null);
+    form.reset({ title: "", logo: "" });
+  };
+
+  // @ts-ignore
+  const handleDeleteClick = (toolId) => {
+    setDeletingToolId(toolId);
+  };
 
   return (
     <div className="p-10">
@@ -178,33 +197,34 @@ export default function ToolForm() {
             />
             <p className="mt-2 font-bold capitalize">{tool.title}</p>
             <div className="flex gap-x-5 mt-5">
-              <Dialog open={edit} onOpenChange={setEdit}>
+              <Dialog
+                // @ts-ignore
+                open={editingTool?._id === tool._id}
+                onOpenChange={(open) => !open && handleEditClose()}
+              >
                 <DialogTrigger>
                   <Button
                     variant={"default"}
-                    onClick={() => {
-                      form?.reset({
-                        title: tool.title,
-                        logo: tool.logo?._id,
-                      });
-                    }}
+                    onClick={() => handleEditClick(tool)}
                   >
                     <MdEdit size={20} />
                   </Button>
                 </DialogTrigger>
-                <DialogContent>
+                <DialogContent className="max-h-[80vh]">
                   <DialogHeader>
-                    <DialogTitle>Are you absolutely sure?</DialogTitle>
+                    <DialogTitle>Edit Tool</DialogTitle>
                     <DialogDescription>
-                      Edit will update the tool. and where ever this new title
-                      or logo is it will be replaced make sure u confirm this
+                      Edit will update the tool. Wherever this new title or logo
+                      is used, it will be replaced. Please confirm these
+                      changes.
                     </DialogDescription>
 
                     <form
                       className="flex flex-col gap-y-6"
                       onSubmit={form.handleSubmit((data) =>
                         updateTool.mutate({
-                          ...tool,
+                          // @ts-ignore
+                          _id: editingTool._id,
                           title: data.title,
                           logo: data.logo,
                         })
@@ -214,6 +234,7 @@ export default function ToolForm() {
                         {...form.register("title")}
                         placeholder="Enter tool"
                         label="Tool"
+                        error={form.formState.errors.title?.message}
                       />
                       <div className="mt-5">
                         <FileUploader
@@ -224,29 +245,47 @@ export default function ToolForm() {
                               form.setValue("logo", id);
                             }
                           }}
-                          id={tool?.logo?._id}
-                          key={"tool"}
+                          id={form.watch("logo")}
+                          key={`tool-edit-${tool._id}`}
                           label="Tool Logo"
                           setUrl={(url) => {
                             if (url) {
                               setUrl(url);
                             }
                           }}
-                          url={tool.logo?.viewUrl}
+                          // @ts-ignore
+                          url={editingTool?.logo?.viewUrl}
                         />
+                        {form.formState.errors.logo?.message && (
+                          <p className="text-red-500">
+                            {form.formState.errors.logo?.message}
+                          </p>
+                        )}
                       </div>
-                      <div className="flex justify-end mt-5">
-                        <Button>Confirm edit</Button>
+                      <div className="flex justify-end mt-5 gap-x-3">
+                        <Button
+                          type="button"
+                          variant="outline"
+                          onClick={handleEditClose}
+                        >
+                          Cancel
+                        </Button>
+                        <Button type="submit">Confirm Edit</Button>
                       </div>
                     </form>
                   </DialogHeader>
                 </DialogContent>
               </Dialog>
 
-              <Dialog open={delete1} onOpenChange={setDelete}>
+              <Dialog
+                open={deletingToolId === tool._id}
+                onOpenChange={(open) => !open && setDeletingToolId(null)}
+              >
                 <DialogTrigger>
-                  {" "}
-                  <Button variant={"destructive"}>
+                  <Button
+                    variant={"destructive"}
+                    onClick={() => handleDeleteClick(tool._id)}
+                  >
                     <MdDelete size={20} />
                   </Button>
                 </DialogTrigger>
@@ -255,13 +294,16 @@ export default function ToolForm() {
                     <DialogTitle>Are you absolutely sure?</DialogTitle>
                     <DialogDescription>
                       This action cannot be undone. This will permanently delete
-                      tool from the data base
+                      this tool from the database.
                     </DialogDescription>
                   </DialogHeader>
                   <div className="flex justify-end mt-5 gap-x-5">
-                    <DialogClose>
-                      <Button variant={"outline"}>Cancel</Button>
-                    </DialogClose>
+                    <Button
+                      variant={"outline"}
+                      onClick={() => setDeletingToolId(null)}
+                    >
+                      Cancel
+                    </Button>
                     <Button
                       variant={"destructive"}
                       onClick={() => {
