@@ -18,7 +18,11 @@ import {
   UserPlus,
   Users,
 } from "lucide-react";
-import { IoIosCheckbox, IoIosCheckmarkCircle } from "react-icons/io";
+import {
+  IoIosCheckbox,
+  IoIosCheckmarkCircle,
+  IoIosCheckmarkCircleOutline,
+} from "react-icons/io";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
 import { ICourse } from "./types";
@@ -303,6 +307,43 @@ const CourseLandingPage = ({ courseData }: { courseData: ICourse }) => {
                 Course Ciricullum
               </h3>
               <Modules chapters={curriculum.chapters} />
+
+              <div>
+                <p className="mt-10 text-xl font-semibold"> Skills Covered</p>
+                <div className="flex flex-wrap gap-5 mt-5">
+                  {skills && skills.length > 0 && (
+                    <>
+                      {skills.map((skill, index) => (
+                        <div
+                          key={index}
+                          className="flex gap-x-3 items-center text-blue-400"
+                        >
+                          <IoIosCheckmarkCircleOutline />
+                          <p key={index}>{skill}</p>
+                        </div>
+                      ))}
+                    </>
+                  )}
+                </div>
+              </div>
+
+              <div className="mt-5">
+                <p className="mt-10 text-xl font-semibold">Tools Covered</p>
+                <div className="flex flex-col gap-y-5 mt-5">
+                  {tools.map((tool, index) => (
+                    <div key={index} className="flex gap-x-3">
+                      <Image
+                        width={100}
+                        height={100}
+                        src={tool?.logo?.viewUrl}
+                        alt={tool?.title}
+                        className="w-6 h-6 object-cover rounded-full"
+                      />
+                      <p key={index}>{tool?.title}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
               {/* <div className="space-y-4">
                 {curriculum.chapters?.map((chapter) => (
                   <div
@@ -493,44 +534,6 @@ const CourseLandingPage = ({ courseData }: { courseData: ICourse }) => {
             </div>
           </div>
           <div className="mt-6">
-            <div>
-              <p className="mt-10 text-xl font-semibold">Skills Covered</p>
-              <div className="flex flex-col gap-y-5 mt-5">
-                {skills && skills.length > 0 && (
-                  <>
-                    {skills.map((skill, index) => (
-                      <div key={index} className="flex gap-x-3">
-                        <Image
-                          width={100}
-                          height={100}
-                          src={skill?.logo?.viewUrl}
-                          alt={skill?.title}
-                          className="w-6 h-6 object-cover rounded-full"
-                        />
-                        <p key={index}>{skill?.title}</p>
-                      </div>
-                    ))}
-                  </>
-                )}
-              </div>
-            </div>
-            <div className="mt-5">
-              <p className="mt-10 text-xl font-semibold">Tools Covered</p>
-              <div className="flex flex-col gap-y-5 mt-5">
-                {tools.map((tool, index) => (
-                  <div key={index} className="flex gap-x-3">
-                    <Image
-                      width={100}
-                      height={100}
-                      src={tool?.logo?.viewUrl}
-                      alt={tool?.title}
-                      className="w-6 h-6 object-cover rounded-full"
-                    />
-                    <p key={index}>{tool?.title}</p>
-                  </div>
-                ))}
-              </div>
-            </div>
             <div className="mt-5 mr-10">
               <h2 className="mt-10 text-xl font-semibold">Key Features</h2>
               {overview.keyFeatures && overview.keyFeatures.length > 0 && (

@@ -68,6 +68,7 @@ import KeyFeaturesSection from "./_components/KeyFeaturesSection";
 import { FiBookOpen } from "react-icons/fi";
 import CoursePricing from "./_components/Pricing";
 import WhyChooseProgram from "./_components/ChooseUs";
+import SkillsSelector from "./_components/Skills";
 
 export type TDraftCourseForm = z.infer<typeof draftCourseSchema>;
 
@@ -109,7 +110,7 @@ export default function RouteComponent() {
 
   const [currentHighlight, setCurrentHighlight] = useState("");
   // const [skills, setSkills] = useState<string[]>([]);
-  const [skills, setSkill] = useState<TTool[]>([]);
+  const [skills, setSkill] = useState<string[]>([]);
   const [tools, setTool] = useState<TTool[]>([]);
 
   const [partnerShip, setPartnerShip] = useState<string>("");
@@ -140,7 +141,7 @@ export default function RouteComponent() {
         previewImage: res.data.data?.previewImage?._id,
         logoUrl: res.data.data?.logoUrl?._id,
         skills: res.data.data?.skills?.map(
-          (skill: ICourse["skills"][number]) => skill._id
+          (skill: ICourse["skills"][number]) => skill
         ),
         tools: res.data.data?.tools?.map(
           (tool: ICourse["tools"][number]) => tool._id
@@ -215,9 +216,7 @@ export default function RouteComponent() {
         },
         previewImage: res?.previewImage?._id,
         logoUrl: res?.logoUrl?._id,
-        skills: res?.skills?.map(
-          (skill: ICourse["skills"][number]) => skill._id
-        ),
+        skills: res?.skills?.map((skill: ICourse["skills"][number]) => skill),
         tools: res?.tools?.map((tool: ICourse["tools"][number]) => tool._id),
       });
 
@@ -385,6 +384,11 @@ export default function RouteComponent() {
                           <CourseModuleSection
                             watch={watch}
                             setValue={setValue}
+                          />
+
+                          <SkillsSelector
+                            formSetValue={setValue}
+                            formWatch={watch}
                           />
                           <HighlightsSection
                             watch={watch}
