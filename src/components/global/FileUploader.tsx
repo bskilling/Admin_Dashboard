@@ -139,11 +139,11 @@ const FileUploader: React.FC<FileUploaderProps> = ({
           <div className="loader">Processing...</div>
         ) : previewUrl ? (
           <div>
-            <Image
+            <img
               src={previewUrl}
               alt="Uploaded file preview"
               style={{ maxWidth: "100%", borderRadius: "5px" }}
-              className="m-auto h-full w-full object-cover"
+              className="m-auto h-full w-full max-h-40  object-cover "
               width={200}
               height={200}
             />
