@@ -20,8 +20,8 @@ export default function SkillsSection({
 }: {
   watch: UseFormReturn<TDraftCourseForm>["watch"];
   setValue: UseFormReturn<TDraftCourseForm>["setValue"];
-  skills: any[];
-  setSkill: React.Dispatch<React.SetStateAction<any[]>>;
+  skills: string[];
+  setSkill: React.Dispatch<React.SetStateAction<string[]>>;
   isLoading: boolean;
   data: any;
 }) {
@@ -45,6 +45,7 @@ export default function SkillsSection({
 
             skillsSet.add(skill._id);
             setValue("skills", Array.from(skillsSet));
+            // @ts-expect-error error
             setSkill((prev) => [...prev, skill]);
           }}
         />
@@ -56,14 +57,7 @@ export default function SkillsSection({
             key={index}
             className="flex gap-x-4 items-center bg-white p-2 rounded-md shadow-sm"
           >
-            <Image
-              width={40}
-              height={40}
-              src={skill.logo.viewUrl}
-              alt={skill.title}
-              className="w-10 h-10 object-cover rounded-md"
-            />
-            <p className="capitalize">{skill?.title}</p>
+            <p className="capitalize">{skill}</p>
             <button
               type="button"
               onClick={() => {
@@ -71,7 +65,7 @@ export default function SkillsSection({
                   (_, i) => i !== index
                 );
                 setValue("skills", updatedSkills);
-                setSkill((prev) => prev.filter((s) => s._id !== skill._id));
+                setSkill((prev) => prev.filter((s) => s !== skill));
               }}
             >
               <MdDelete size={20} className="text-red-500" />

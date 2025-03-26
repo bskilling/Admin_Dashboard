@@ -47,6 +47,7 @@ import Navbar from "./_components/Navbar";
 import MetadataForm from "./_components/MetaData";
 import PriceForm from "../_components/PriceForm";
 import CertificationSection from "./_components/CertificationSection";
+import SkillsSelector from "./_components/Skills";
 
 export type TDraftCourseForm = z.infer<typeof draftCourseSchema>;
 
@@ -516,6 +517,11 @@ export default function RouteComponent() {
                             </div>
                           </div>
                           {/* Projects Content */}
+
+                          <SkillsSelector
+                            formSetValue={setValue}
+                            formWatch={watch}
+                          />
 
                           <div className="w-full">
                             <div className=" rounded-xl  mt-5 w-full">
