@@ -282,24 +282,89 @@ const CourseLandingPage = ({ courseData }: { courseData: ICourse }) => {
         trainingMode={"Hybrid"}
       />
 
-      <section className="   -mt-56  m-auto flex ">
-        <section className="flex  w-[70vw]  pl-[10vw] pt-60 pb-10">
-          <div className=" w-full">
-            <h2 className="text-xl font-semibold text-gray-900 mt-10 tracking-wide">
-              Course Overview
-            </h2>
+      <div className="w-[80vw]  m-auto flex">
+        <div>
+          <h2 className="text-xl font-semibold text-gray-900 mt-10 tracking-wide">
+            Course Overview
+          </h2>
 
-            {overview && (
-              <section id="overview" className="mt-6 space-y-3">
-                <h3 className="text-lg font-medium text-gray-800">
-                  {overview.title}
-                </h3>
-                <p className="text-sm text-gray-600 leading-relaxed">
-                  {overview.description}
-                </p>
-              </section>
+          {overview && (
+            <section id="overview" className="mt-6 space-y-3">
+              <h3 className="text-lg font-medium text-gray-800">
+                {overview.title}
+              </h3>
+              <p className="text-sm text-gray-600 leading-relaxed">
+                {overview.description}
+              </p>
+            </section>
+          )}
+
+          <div className="mt-5 ">
+            <h2 className="mt-10 text-xl font-semibold">Key Features</h2>
+            {overview.keyFeatures && overview.keyFeatures.length > 0 && (
+              <div className="flex flex-col gap-y-5 mt-5">
+                {overview.keyFeatures.map((feature, index) => (
+                  <div
+                    key={index}
+                    className="flex items-center gap-x-2 text-sm"
+                  >
+                    <div className="w-fit">
+                      <IoIosCheckmarkCircle
+                        className=" text-blue-500"
+                        size={20}
+                      />
+                    </div>
+                    <p>{feature}</p>
+                  </div>
+                ))}
+              </div>
             )}
+          </div>
+        </div>
 
+        <div className="hidden lg:flex flex-col gap-6 w-full  top-10">
+          {/* Inquiry Form */}
+          <div className="bg-white shadow-lg rounded-2xl p-6 flex flex-col gap-4">
+            <h3 className="text-xl font-semibold text-gray-800">
+              Quick Inquiry
+            </h3>
+            <p className="text-gray-600 text-sm">
+              Want more details? Fill in your info and we’ll get in touch!
+            </p>
+            <input
+              type="text"
+              placeholder="Your Name"
+              className="w-full p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-400"
+            />
+            <input
+              type="email"
+              placeholder="Your Email"
+              className="w-full p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-400"
+            />
+            <button className="bg-purple-600 text-white py-2 rounded-lg hover:bg-purple-700 transition">
+              Submit Inquiry
+            </button>
+          </div>
+
+          {/* Key Highlights */}
+
+          {/* Call-to-Action Box */}
+          <div className="bg-purple-100 text-purple-900 shadow-lg rounded-2xl p-6 text-center">
+            <h3 className="text-lg font-semibold">🚀 Ready to Upskill?</h3>
+            <p className="text-sm mt-2">
+              Take the first step towards a brighter future with our
+              cutting-edge program.
+            </p>
+            <button className="mt-4 bg-purple-600 text-white py-2 px-4 rounded-lg hover:bg-purple-700 transition">
+              Apply Now
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <section className="w-[80vw] m-auto    ">
+        <section className="">
+          <div className=" w-full">
             {/* Chapters */}
 
             <div className="rounded-xl  mt-10">
@@ -314,12 +379,14 @@ const CourseLandingPage = ({ courseData }: { courseData: ICourse }) => {
                   {skills && skills.length > 0 && (
                     <>
                       {skills.map((skill, index) => (
-                        <div
-                          key={index}
-                          className="flex gap-x-3 items-center text-blue-400"
-                        >
-                          <IoIosCheckmarkCircleOutline />
-                          <p key={index}>{skill}</p>
+                        <div key={index} className="flex gap-x-3 items-center ">
+                          <IoIosCheckmarkCircleOutline
+                            className="text-blue-400 "
+                            size={30}
+                          />
+                          <p key={index} className="text-xl font-semibold">
+                            {skill}
+                          </p>
                         </div>
                       ))}
                     </>
@@ -327,19 +394,18 @@ const CourseLandingPage = ({ courseData }: { courseData: ICourse }) => {
                 </div>
               </div>
 
-              <div className="mt-5">
+              <div className="mt-20">
                 <p className="mt-10 text-xl font-semibold">Tools Covered</p>
-                <div className="flex flex-col gap-y-5 mt-5">
+                <div className="flex flex-wrap gap-x-20 gap-y-5 mt-5">
                   {tools.map((tool, index) => (
                     <div key={index} className="flex gap-x-3">
-                      <Image
+                      <img
                         width={100}
                         height={100}
                         src={tool?.logo?.viewUrl}
                         alt={tool?.title}
-                        className="w-6 h-6 object-cover rounded-full"
+                        className="w-full h-24 object-cover"
                       />
-                      <p key={index}>{tool?.title}</p>
                     </div>
                   ))}
                 </div>
@@ -472,90 +538,7 @@ const CourseLandingPage = ({ courseData }: { courseData: ICourse }) => {
           </div>
         </section>
         <section className="bg-card w-[50vw]  pt-60 pb-10 pl-10 flex flex-col">
-          <div className="hidden lg:flex flex-col gap-6 w-80  top-10">
-            {/* Inquiry Form */}
-            <div className="bg-white shadow-lg rounded-2xl p-6 flex flex-col gap-4">
-              <h3 className="text-xl font-semibold text-gray-800">
-                Quick Inquiry
-              </h3>
-              <p className="text-gray-600 text-sm">
-                Want more details? Fill in your info and we’ll get in touch!
-              </p>
-              <input
-                type="text"
-                placeholder="Your Name"
-                className="w-full p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-400"
-              />
-              <input
-                type="email"
-                placeholder="Your Email"
-                className="w-full p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-400"
-              />
-              <button className="bg-purple-600 text-white py-2 rounded-lg hover:bg-purple-700 transition">
-                Submit Inquiry
-              </button>
-            </div>
-
-            {/* Key Highlights */}
-            <div className="bg-gradient-to-b from-purple-600 to-purple-800 text-white shadow-lg rounded-2xl p-6 flex flex-col gap-4">
-              <h3 className="text-xl font-semibold">
-                Why Choose This Program?
-              </h3>
-              <ul className="text-sm space-y-2">
-                <li className="flex items-start gap-2">
-                  <CheckCircle className="w-5 h-5 text-green-400" />
-                  Hands-on projects with real-world applications.
-                </li>
-                <li className="flex items-start gap-2">
-                  <CheckCircle className="w-5 h-5 text-green-400" />
-                  Training in modern tools & emerging technologies.
-                </li>
-                <li className="flex items-start gap-2">
-                  <CheckCircle className="w-5 h-5 text-green-400" />
-                  Industry-relevant curriculum aligned with market trends.
-                </li>
-                <li className="flex items-start gap-2">
-                  <CheckCircle className="w-5 h-5 text-green-400" />
-                  Personalized mentorship and career guidance.
-                </li>
-              </ul>
-            </div>
-
-            {/* Call-to-Action Box */}
-            <div className="bg-purple-100 text-purple-900 shadow-lg rounded-2xl p-6 text-center">
-              <h3 className="text-lg font-semibold">🚀 Ready to Upskill?</h3>
-              <p className="text-sm mt-2">
-                Take the first step towards a brighter future with our
-                cutting-edge program.
-              </p>
-              <button className="mt-4 bg-purple-600 text-white py-2 px-4 rounded-lg hover:bg-purple-700 transition">
-                Apply Now
-              </button>
-            </div>
-          </div>
-          <div className="mt-6">
-            <div className="mt-5 mr-10">
-              <h2 className="mt-10 text-xl font-semibold">Key Features</h2>
-              {overview.keyFeatures && overview.keyFeatures.length > 0 && (
-                <div className="flex flex-col gap-y-5 mt-5">
-                  {overview.keyFeatures.map((feature, index) => (
-                    <div
-                      key={index}
-                      className="flex items-center gap-x-2 text-sm"
-                    >
-                      <div className="w-fit">
-                        <IoIosCheckmarkCircle
-                          className=" text-blue-500"
-                          size={20}
-                        />
-                      </div>
-                      <p>{feature}</p>
-                    </div>
-                  ))}
-                </div>
-              )}
-            </div>
-          </div>
+          <div className="mt-6"></div>
         </section>
       </section>
       <CourseEnrollment
