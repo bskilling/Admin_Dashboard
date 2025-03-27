@@ -39,6 +39,7 @@ export const baseCurriculumSchema = z.object({
 // Draft course validator: all fields are optional.
 export const draftCourseSchema = z.object({
   title: z.string().optional(),
+  type: z.enum(["b2i", "b2b", "b2c", "b2g"]),
   slug: z.string().optional(),
   variant: z.number().optional(),
   price: z
@@ -99,6 +100,8 @@ export const draftCourseSchema = z.object({
 export const publishedCourseSchema = z.object({
   title: z.string(),
   description: z.string(),
+  type: z.enum(["b2i", "b2b", "b2c", "b2g"]),
+
   durationHours: z.number(),
   startTime: z.preprocess(
     (arg) =>
