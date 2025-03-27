@@ -74,7 +74,8 @@ export default function CreateCourse({
   const [allErrors, setErrors] = useState<any>();
 
   const createDraftMutation = useMutation({
-    mutationFn: async (data: any) => {
+    mutationFn: async (data: { category: string; type: string }) => {
+      console.log(data);
       const res = await axios.post(
         env.BACKEND_URL + "/api/courses/draft",
         data
@@ -323,7 +324,10 @@ export default function CreateCourse({
                   </DialogClose>
                   <Button
                     onClick={() =>
-                      createDraftMutation.mutate({ category: category._id })
+                      createDraftMutation.mutate({
+                        category: category._id,
+                        type: category.type,
+                      })
                     }
                   >
                     Create Course
