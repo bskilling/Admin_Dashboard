@@ -322,108 +322,78 @@ export default function RouteComponent() {
                     variants={currentHeader}
                     key={""}
                   />
-                  <CertificationSection
-                    // watch={watch}
-                    // setValue={setValue}
-                    // formState={formState}
-                    register={register}
-                    // key={""}
-                  />
-                  <section className="p-10 bg-gray-50">
-                    <div className="flex gap-x-10 w-[80vw] mx-auto">
-                      {/* Left Section */}
-                      <div className="w-8/12 border-r-4  pr-10">
-                        {/* Overview */}
-                        <div
-                          id="overview"
-                          className="bg-white shadow-lg rounded-xl p-6 border border-gray-200 backdrop-blur-lg"
-                        >
-                          {/* Heading with Icon */}
-                          <h2 className="text-2xl font-bold flex items-center gap-2 text-gray-800">
-                            <FiBookOpen className="text-blue-500 text-3xl" />{" "}
-                            Overview
-                          </h2>
+                  <CertificationSection register={register} />
+                  <section className="w-[85vw] mx-auto">
+                    <div className="w-full">
+                      {/* Overview */}
+                      <div className="w-full flex ">
+                        <div className="w-full">
+                          <div
+                            id="overview"
+                            className="bg-white shadow-lg rounded-xl p-6 border border-gray-200 backdrop-blur-lg w-full"
+                          >
+                            {/* Heading with Icon */}
+                            <h2 className="text-2xl font-bold flex items-center gap-2 text-gray-800">
+                              <FiBookOpen className="text-blue-500 text-3xl" />{" "}
+                              Overview
+                            </h2>
 
-                          {/* Form Inputs */}
-                          <div className="mt-6 space-y-6">
-                            {/* Title Input */}
-                            <div className="flex flex-col">
-                              <label className="text-sm font-medium text-gray-700">
-                                Overview Title
-                              </label>
-                              <Input
-                                {...register("overview.title")}
-                                error={
-                                  formState.errors.overview?.title?.message
-                                }
-                                placeholder="Enter a captivating title..."
-                                className="mt-2 p-3 rounded-lg border border-gray-300 shadow-sm focus:ring-2 focus:ring-blue-400"
-                              />
-                            </div>
+                            {/* Form Inputs */}
+                            <div className="mt-6 space-y-6">
+                              {/* Title Input */}
+                              <div className="flex flex-col">
+                                <label className="text-sm font-medium text-gray-700">
+                                  Overview Title
+                                </label>
+                                <Input
+                                  {...register("overview.title")}
+                                  error={
+                                    formState.errors.overview?.title?.message
+                                  }
+                                  placeholder="Enter a captivating title..."
+                                  className="mt-2 p-3 rounded-lg border border-gray-300 shadow-sm focus:ring-2 focus:ring-blue-400"
+                                />
+                              </div>
 
-                            {/* Description Textarea */}
-                            <div className="flex flex-col">
-                              <label className="text-sm font-medium text-gray-700">
-                                Overview Description
-                              </label>
-                              <Textarea
-                                {...register("overview.description")}
-                                error={
-                                  formState.errors.overview?.description
-                                    ?.message
-                                }
-                                placeholder="Write a brief and engaging overview..."
-                                className="mt-2 p-3 min-h-40 rounded-lg border border-gray-300 shadow-sm focus:ring-2 focus:ring-blue-400"
-                              />
+                              {/* Description Textarea */}
+                              <div className="flex flex-col">
+                                <label className="text-sm font-medium text-gray-700">
+                                  Overview Description
+                                </label>
+                                <Textarea
+                                  {...register("overview.description")}
+                                  error={
+                                    formState.errors.overview?.description
+                                      ?.message
+                                  }
+                                  placeholder="Write a brief and engaging overview..."
+                                  className="mt-2 p-3 min-h-40 rounded-lg border border-gray-300 shadow-sm focus:ring-2 focus:ring-blue-400"
+                                />
+                              </div>
                             </div>
                           </div>
+                          <KeyFeaturesSection
+                            watch={watch}
+                            setValue={setValue}
+                            keyFeature={keyFeature}
+                            setKeyFeature={setKeyFeature}
+                          />
                         </div>
-
-                        {/* Course Sections */}
-                        <div className="mt-10 space-y-8">
-                          <CourseModuleSection
-                            watch={watch}
-                            setValue={setValue}
-                          />
-
-                          <SkillsSelector
-                            formSetValue={setValue}
-                            formWatch={watch}
-                          />
-                          <HighlightsSection
-                            watch={watch}
-                            setValue={setValue}
-                          />
-                          <OutcomesSection watch={watch} setValue={setValue} />
-                          <ProjectsCoveredSection
-                            watch={watch}
-                            setValue={setValue}
-                            register={register}
-                          />
-                          <EligibilitySection
-                            register={register}
-                            setValue={setValue}
-                            watch={watch}
-                          />
-                          <PrerequisitesSection
-                            register={register}
-                            setValue={setValue}
-                            watch={watch}
-                          />
+                        <div className="w-1/3 bg-gray-50">
+                          <form action=""></form>
                         </div>
                       </div>
-
-                      {/* Right Section */}
-                      <div className="w-4/12 space-y-8">
-                        <SkillsSection
+                      {/* Course Sections */}
+                      <div className="mt-10 space-y-8">
+                        <CourseModuleSection
                           watch={watch}
                           setValue={setValue}
-                          skills={skills}
-                          setSkill={setSkill}
-                          isLoading={isLoading}
-                          data={data}
                         />
 
+                        <SkillsSelector
+                          formSetValue={setValue}
+                          formWatch={watch}
+                        />
                         <ToolsSection
                           watch={watch}
                           setValue={setValue}
@@ -432,12 +402,22 @@ export default function RouteComponent() {
                           isLoading={isLoading1}
                           data={toolss}
                         />
-
-                        <KeyFeaturesSection
+                        <HighlightsSection watch={watch} setValue={setValue} />
+                        <OutcomesSection watch={watch} setValue={setValue} />
+                        <ProjectsCoveredSection
                           watch={watch}
                           setValue={setValue}
-                          keyFeature={keyFeature}
-                          setKeyFeature={setKeyFeature}
+                          register={register}
+                        />
+                        <EligibilitySection
+                          register={register}
+                          setValue={setValue}
+                          watch={watch}
+                        />
+                        <PrerequisitesSection
+                          register={register}
+                          setValue={setValue}
+                          watch={watch}
                         />
                       </div>
                     </div>

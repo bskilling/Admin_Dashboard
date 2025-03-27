@@ -110,6 +110,7 @@ const DraftCourseButton: React.FC<Props> = ({
     }
 
     const newDraftData: z.infer<typeof draftCourseSchema> = {
+      type: "b2c",
       title: courseDetails?.title || "New Draft Course",
       description: courseDetails?.description || "This is a draft description",
       category: selectedCategory,
