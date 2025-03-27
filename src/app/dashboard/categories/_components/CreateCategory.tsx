@@ -14,7 +14,7 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { BiSolidCategoryAlt } from "react-icons/bi";
+import { BiSolidCategoryAlt, BiSolidEditAlt } from "react-icons/bi";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { toast } from "sonner";
 import axios from "axios";
@@ -34,6 +34,7 @@ import {
   ContextMenuItem,
   ContextMenuTrigger,
 } from "@/components/ui/context-menu";
+import { AiOutlineCheckCircle, AiOutlineCloseCircle } from "react-icons/ai";
 
 const createCategoryValidator = z.object({
   name: z
@@ -63,6 +64,8 @@ interface Category {
   logo: logo;
   createdAt: string;
   updatedAt: string;
+  isPublished: boolean;
+  type: "b2b" | "b2c" | "b2g" | "b2i";
   __v: number;
 }
 
@@ -158,6 +161,27 @@ export default function CreateCategory({
       ) ?? null
     );
   }, [selectedType]);
+
+  const updateCategory = useMutation({
+    mutationKey: ["updateCategory"],
+    mutationFn: async (data: { _id: string; isPublished: boolean }) => {
+      const res = await axios.put(
+        env?.BACKEND_URL + `/api/categories/${data?._id}`,
+        data
+      );
+      return res.data.data;
+    },
+    onSuccess: () => {
+      form.reset();
+      toast.success("Category updated successfully");
+      setShow(false);
+      categoryQuery.refetch();
+    },
+    onError: (error) => {
+      console.log(error);
+      toast.error(error.message);
+    },
+  });
 
   return (
     <div className="">
@@ -255,42 +279,54 @@ export default function CreateCategory({
                     category._id === scategory?._id &&
                       "bg-blue-600 text-white border-blue-700 shadow-lg scale-[1.02]"
                   )}
-                  onClick={() => setScategory(category)}
+                  onClick={() => {
+                    setScategory(category);
+                    router.push(
+                      `/dashboard/categories?type=${selectedType}&id=${category._id}`
+                    );
+                  }}
                 >
                   <p className="text-sm text-center">{category.name}</p>
                 </div>
               </ContextMenuTrigger>
               <ContextMenuContent>
-                <ContextMenuItem>Edit</ContextMenuItem>
+                <ContextMenuItem className=" text-green-500 flex items-center gap-x-2">
+                  {category?.isPublished ? (
+                    <span
+                      className="flex items-center gap-x-2 text-red-400"
+                      onClick={() =>
+                        updateCategory?.mutate({
+                          _id: category._id,
+                          isPublished: false,
+                        })
+                      }
+                    >
+                      Unpublish <AiOutlineCheckCircle size={20} />
+                    </span>
+                  ) : (
+                    <span
+                      onClick={() =>
+                        updateCategory?.mutate({
+                          _id: category._id,
+                          isPublished: true,
+                        })
+                      }
+                      className="flex items-center gap-x-2 text-green-400"
+                    >
+                      Publish <AiOutlineCloseCircle size={20} />
+                    </span>
+                  )}
+                </ContextMenuItem>
+                <ContextMenuItem className=" text-blue-500 flex items-center gap-x-2">
+                  Edit <BiSolidEditAlt size={20} />
+                </ContextMenuItem>
                 <ContextMenuItem>
-                  {" "}
-                  <Dialog>
-                    <DialogTrigger className=" text-red-500">
-                      <MdDelete size={20} />
-                    </DialogTrigger>
-                    <DialogContent>
-                      <DialogHeader>
-                        <DialogTitle>Are you absolutely sure?</DialogTitle>
-                        <DialogDescription>
-                          This action cannot be undone. This will permanently
-                          delete your account and remove your data from our
-                          servers.
-                        </DialogDescription>
-                      </DialogHeader>
-                      <div className="flex justify-end gap-x-4">
-                        <DialogClose>
-                          <Button variant={"outline"}>Cancel</Button>
-                        </DialogClose>
-                        <DialogClose>
-                          <Button
-                            onClick={() => deleteCategory?.mutate(category._id)}
-                          >
-                            Delete <MdDelete size={20} />
-                          </Button>
-                        </DialogClose>
-                      </div>
-                    </DialogContent>
-                  </Dialog>
+                  <button
+                    className="text-red-500 flex item-center gap-x-2"
+                    onClick={() => deleteCategory?.mutate(category._id)}
+                  >
+                    Delete <MdDelete size={20} />
+                  </button>
                 </ContextMenuItem>
               </ContextMenuContent>
             </ContextMenu>
