@@ -24,8 +24,34 @@ export default function ToolsSection({
   data: any;
 }) {
   return (
-    <div className="bg-purple-100 p-5 rounded-md shadow-md mt-6">
+    <div className=" p-5 rounded-md shadow-md mt-6">
       <h2 className="font-bold pb-5 text-lg">Tools</h2>
+
+      <div className="flex flex-wrap gap-10 mt-5">
+        {tools?.map((tool, index) => (
+          <div key={tool._id} className="flex flex-col gap-x-4 items-center ">
+            <img
+              src={tool.logo.viewUrl}
+              alt={tool.title}
+              className="object-cover w-full h-24"
+            />
+            {/* <p className="capitalize">{tool?.title}</p> */}
+            <button
+              type="button"
+              onClick={() => {
+                const updatedTools = watch("tools")?.filter(
+                  (_, i) => i !== index
+                );
+                setValue("tools", updatedTools);
+                setTool((prev) => prev.filter((t) => t._id !== tool._id));
+              }}
+            >
+              <MdDelete size={20} className="text-red-500" />
+            </button>
+          </div>
+        ))}
+      </div>
+      <div className="my-5"></div>
       {!isLoading && data && (
         <Combobox
           frameworks={data}
@@ -47,36 +73,6 @@ export default function ToolsSection({
           }}
         />
       )}
-
-      <div className="flex flex-col gap-y-5 mt-5">
-        {tools?.map((tool, index) => (
-          <div
-            key={tool._id}
-            className="flex gap-x-4 items-center bg-white p-2 rounded-md shadow-sm"
-          >
-            <Image
-              width={40}
-              height={40}
-              src={tool.logo.viewUrl}
-              alt={tool.title}
-              className="w-10 h-10 object-cover rounded-md"
-            />
-            <p className="capitalize">{tool?.title}</p>
-            <button
-              type="button"
-              onClick={() => {
-                const updatedTools = watch("tools")?.filter(
-                  (_, i) => i !== index
-                );
-                setValue("tools", updatedTools);
-                setTool((prev) => prev.filter((t) => t._id !== tool._id));
-              }}
-            >
-              <MdDelete size={20} className="text-red-500" />
-            </button>
-          </div>
-        ))}
-      </div>
     </div>
   );
 }

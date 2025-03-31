@@ -79,6 +79,7 @@ const CategoryDraftCreator = ({ courseId }: CourseDetailsProps) => {
     }
 
     const draftData: z.infer<typeof draftCourseSchema> = {
+      type: "b2c",
       title: courseDetails?.title || "New Draft Course",
       category: selectedCategory,
       description: courseDetails?.description || "This is a draft description",
