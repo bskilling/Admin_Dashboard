@@ -75,6 +75,8 @@ import { toast } from "sonner";
 import { Lead } from "./type";
 import LeadDetailDialog from "./LeadDetails";
 import StatusChangeDialog from "./StatusChangeDialog";
+
+const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
 const LeadsTableView: React.FC<{
   leads: Lead[];
   onStatusChange: (id: string, status: string) => void;
@@ -133,10 +135,11 @@ const LeadsTableView: React.FC<{
   // either inside the LeadsTableView component or imported from another file
 
   const [commentText, setCommentText] = useState("");
-  const [activeLead, setActiveLead] = useState(null);
+  const [activeLead, setActiveLead] = useState<any>(null);
   const [changedLeads, setChangedLeads] = useState<Record<string, boolean>>({});
   const [tempStatus, setTempStatus] = useState<Record<string, string>>({});
   const [tempComment, setTempComment] = useState<Record<string, string>>({});
+  const [leads1, setLeads] = useState<any[]>([]);
 
   // Function to update lead status and add a note in one operation
   const updateStatusWithNote = async (
@@ -602,7 +605,6 @@ const LeadsTableView: React.FC<{
                               size="sm"
                               className="flex items-center gap-1 border-blue-200 bg-blue-50 text-blue-600 hover:bg-blue-100"
                               onClick={() => {
-                                // @ts-expect-error
                                 setActiveLead(lead);
                               }}
                             >
@@ -610,17 +612,14 @@ const LeadsTableView: React.FC<{
                             </Button>
                           </DialogTrigger>
 
-                          {
-                            // @ts-expect-error
-                            activeLead && activeLead._id === lead._id && (
-                              <LeadDetailDialog
-                                key={lead._id}
-                                lead={lead}
-                                onStatusChange={onStatusChange}
-                                onAddComment={onAddComment}
-                              />
-                            )
-                          }
+                          {activeLead && activeLead._id === lead._id && (
+                            <LeadDetailDialog
+                              key={lead._id}
+                              lead={lead}
+                              onStatusChange={onStatusChange}
+                              onAddComment={onAddComment}
+                            />
+                          )}
                         </Dialog>
 
                         <Dialog>
@@ -632,7 +631,7 @@ const LeadsTableView: React.FC<{
                               onClick={() => {
                                 if (!lead)
                                   return toast.error("No lead selected");
-                                // @ts-expect-error
+
                                 setActiveLead(lead);
                                 setCommentText(lead.comment || "");
                               }}
@@ -667,15 +666,12 @@ const LeadsTableView: React.FC<{
                               <Button
                                 onClick={() => {
                                   if (commentText.trim()) {
-                                    // @ts-expect-error
                                     if (!activeLead?._id) {
                                       toast.error("No lead selected");
                                       return;
                                     }
                                     // Save to temp state instead of immediately submitting
                                     saveCommentToTemp(
-                                      // @ts-expect-error
-
                                       activeLead._id,
                                       commentText.trim()
                                     );

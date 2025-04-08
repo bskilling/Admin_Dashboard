@@ -206,7 +206,7 @@ export default function RouteComponent() {
       // @ts-expect-error
       reset({
         ...res,
-        category: res?.category?._id,
+        category: res?.category,
         banner: res?.banner?._id,
         certification: {
           title: res?.certification?.title,
