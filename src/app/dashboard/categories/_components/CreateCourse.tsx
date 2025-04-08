@@ -62,7 +62,7 @@ export default function CreateCourse({
   });
 
   const createDraftMutation = useMutation({
-    mutationFn: async (data: { category: string; type: string }) => {
+    mutationFn: async (data: { category: [string]; type: string }) => {
       console.log(data);
       const res = await axios.post(
         env.BACKEND_URL + "/api/courses/draft",
@@ -319,7 +319,7 @@ export default function CreateCourse({
                   <Button
                     onClick={() =>
                       createDraftMutation.mutate({
-                        category: category._id,
+                        category: [category._id],
                         type: category.type,
                       })
                     }
