@@ -13,6 +13,7 @@ export default function RouteComponent() {
   return (
     <div className="w-full">
       <Typess selectedType={selectedType} setSelectedType={setSelectedType} />
+      {/* <MigrationButton /> */}
       <CreateCategory selectedType={selectedType} />
     </div>
   );

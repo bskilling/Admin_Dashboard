@@ -118,14 +118,14 @@ export default function ToolForm() {
   return (
     <div className="p-10">
       <AlertLoader isloading={isLoading} />
-      <div>
+      <div className="mb-6">
         <Input placeholder="Search Tool" label="Search Tool" />
       </div>
-      <div className="flex justify-end">
+      <div className="flex justify-end mb-6">
         <Dialog open={show} onOpenChange={setShow}>
-          <DialogTrigger className="mt-10">
-            <Button className="items-center gap-x-2">
-              Create New Tool <FaSquarePlus />
+          <DialogTrigger>
+            <Button className="flex items-center gap-x-2">
+              <FaSquarePlus /> Create New Tool
             </Button>
           </DialogTrigger>
           <DialogContent>
@@ -136,7 +136,7 @@ export default function ToolForm() {
               </DialogDescription>
             </DialogHeader>
             <form
-              className="flex flex-col gap-y-6"
+              className="space-y-6"
               onSubmit={form.handleSubmit((data) => createNewTool.mutate(data))}
             >
               <Input
@@ -145,31 +145,21 @@ export default function ToolForm() {
                 label="Tool"
                 error={form.formState.errors.title?.message}
               />
-              <div className="mt-5">
-                <FileUploader
-                  title="Tool Image"
-                  purpose="tool"
-                  setFileId={(id) => {
-                    if (id) {
-                      form.setValue("logo", id);
-                    }
-                  }}
-                  id={form.watch("logo")}
-                  key={"tool"}
-                  label="Tool Logo"
-                  setUrl={(url) => {
-                    if (url) {
-                      setUrl(url);
-                    }
-                  }}
-                />
-                {form.formState.errors.logo?.message && (
-                  <p className="text-red-500">
-                    {form.formState.errors.logo?.message}
-                  </p>
-                )}
-              </div>
-              <div className="flex justify-end mt-5">
+              <FileUploader
+                title="Tool Image"
+                purpose="tool"
+                setFileId={(id) => id && form.setValue("logo", id)}
+                id={form.watch("logo")}
+                key="tool"
+                label="Tool Logo"
+                setUrl={(url) => url && setUrl(url)}
+              />
+              {form.formState.errors.logo?.message && (
+                <p className="text-red-500">
+                  {form.formState.errors.logo?.message}
+                </p>
+              )}
+              <div className="flex justify-end">
                 <Button>Add Tool</Button>
               </div>
             </form>
@@ -184,96 +174,87 @@ export default function ToolForm() {
         </div>
       )}
 
-      <div className="flex flex-wrap gap-5 mt-10 gap-x-10">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mt-10">
         {data?.map((tool) => (
           <div
             key={tool._id}
-            className="flex flex-col items-center border rounded-md p-5"
+            className="flex flex-col items-center border rounded-lg p-5 shadow-md bg-white"
           >
             <img
               src={tool.logo?.viewUrl}
               alt={tool.title}
-              className="w-20 h-20 object-cover rounded-full"
+              className="w-20  object-cover "
             />
-            <p className="mt-2 font-bold capitalize">{tool.title}</p>
-            <div className="flex gap-x-5 mt-5">
+            {/* <p className="mt-2 font-bold capitalize text-center">
+              {tool.title}
+            </p> */}
+            <div className="flex justify-center gap-3 mt-5">
               <Dialog
-                // @ts-ignore
-                open={editingTool?._id === tool._id}
+                open={
+                  // @ts-ignore
+                  editingTool?._id === tool._id
+                }
                 onOpenChange={(open) => !open && handleEditClose()}
               >
                 <DialogTrigger>
-                  <Button
-                    variant={"default"}
-                    onClick={() => handleEditClick(tool)}
-                  >
+                  <button onClick={() => handleEditClick(tool)} className="p-2">
                     <MdEdit size={20} />
-                  </Button>
+                  </button>
                 </DialogTrigger>
                 <DialogContent className="max-h-[80vh]">
                   <DialogHeader>
                     <DialogTitle>Edit Tool</DialogTitle>
                     <DialogDescription>
-                      Edit will update the tool. Wherever this new title or logo
-                      is used, it will be replaced. Please confirm these
-                      changes.
+                      Changes will update the tool everywhere it is used.
                     </DialogDescription>
-
-                    <form
-                      className="flex flex-col gap-y-6"
-                      onSubmit={form.handleSubmit((data) =>
-                        updateTool.mutate({
-                          // @ts-ignore
-                          _id: editingTool._id,
-                          title: data.title,
-                          logo: data.logo,
-                        })
-                      )}
-                    >
-                      <Input
-                        {...form.register("title")}
-                        placeholder="Enter tool"
-                        label="Tool"
-                        error={form.formState.errors.title?.message}
-                      />
-                      <div className="mt-5">
-                        <FileUploader
-                          title="Tool Image"
-                          purpose="tool"
-                          setFileId={(id) => {
-                            if (id) {
-                              form.setValue("logo", id);
-                            }
-                          }}
-                          id={form.watch("logo")}
-                          key={`tool-edit-${tool._id}`}
-                          label="Tool Logo"
-                          setUrl={(url) => {
-                            if (url) {
-                              setUrl(url);
-                            }
-                          }}
-                          // @ts-ignore
-                          url={editingTool?.logo?.viewUrl}
-                        />
-                        {form.formState.errors.logo?.message && (
-                          <p className="text-red-500">
-                            {form.formState.errors.logo?.message}
-                          </p>
-                        )}
-                      </div>
-                      <div className="flex justify-end mt-5 gap-x-3">
-                        <Button
-                          type="button"
-                          variant="outline"
-                          onClick={handleEditClose}
-                        >
-                          Cancel
-                        </Button>
-                        <Button type="submit">Confirm Edit</Button>
-                      </div>
-                    </form>
                   </DialogHeader>
+                  <form
+                    className="space-y-6"
+                    onSubmit={form.handleSubmit((data) =>
+                      updateTool.mutate({
+                        // @ts-ignore
+
+                        _id: editingTool?._id,
+                        title: data.title,
+                        logo: data.logo,
+                      })
+                    )}
+                  >
+                    <Input
+                      {...form.register("title")}
+                      placeholder="Enter tool"
+                      label="Tool"
+                      error={form.formState.errors.title?.message}
+                    />
+                    <FileUploader
+                      title="Tool Image"
+                      purpose="tool"
+                      setFileId={(id) => id && form.setValue("logo", id)}
+                      id={form.watch("logo")}
+                      key={`tool-edit-${tool._id}`}
+                      label="Tool Logo"
+                      setUrl={(url) => url && setUrl(url)}
+                      url={
+                        // @ts-ignore
+                        editingTool?.logo?.viewUrl
+                      }
+                    />
+                    {form.formState.errors.logo?.message && (
+                      <p className="text-red-500">
+                        {form.formState.errors.logo?.message}
+                      </p>
+                    )}
+                    <div className="flex justify-end gap-3">
+                      <Button
+                        type="button"
+                        variant="outline"
+                        onClick={handleEditClose}
+                      >
+                        Cancel
+                      </Button>
+                      <Button type="submit">Confirm Edit</Button>
+                    </div>
+                  </form>
                 </DialogContent>
               </Dialog>
 
@@ -282,33 +263,31 @@ export default function ToolForm() {
                 onOpenChange={(open) => !open && setDeletingToolId(null)}
               >
                 <DialogTrigger>
-                  <Button
-                    variant={"destructive"}
+                  <button
+                    className="p-2"
                     onClick={() => handleDeleteClick(tool._id)}
                   >
-                    <MdDelete size={20} />
-                  </Button>
+                    <MdDelete size={20} className="" />
+                  </button>
                 </DialogTrigger>
                 <DialogContent>
                   <DialogHeader>
-                    <DialogTitle>Are you absolutely sure?</DialogTitle>
+                    <DialogTitle>Are you sure?</DialogTitle>
                     <DialogDescription>
-                      This action cannot be undone. This will permanently delete
-                      this tool from the database.
+                      This action is irreversible and will delete the tool
+                      permanently.
                     </DialogDescription>
                   </DialogHeader>
-                  <div className="flex justify-end mt-5 gap-x-5">
+                  <div className="flex justify-end gap-3">
                     <Button
-                      variant={"outline"}
+                      variant="outline"
                       onClick={() => setDeletingToolId(null)}
                     >
                       Cancel
                     </Button>
                     <Button
-                      variant={"destructive"}
-                      onClick={() => {
-                        deleteTool?.mutate(tool._id);
-                      }}
+                      variant="destructive"
+                      onClick={() => deleteTool?.mutate(tool._id)}
                     >
                       Confirm Delete
                     </Button>

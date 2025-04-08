@@ -2,7 +2,6 @@
 
 import env from "@/lib/env";
 import { useMutation, useQuery } from "@tanstack/react-query";
-// import { Link, useNavigate } from "@tanstack/react-router";
 import axios from "axios";
 import { FaPlusSquare } from "react-icons/fa";
 
@@ -37,18 +36,6 @@ import Image from "next/image";
 import { ICourse } from "../add-course/draft/_components/types";
 import { ICategories } from "./CreateCategory";
 
-// interface ICourses {
-//   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-//   courses: any[];
-//   pagination: Pagination;
-// }
-// interface Pagination {
-//   totalItems: number;
-//   totalPages: number;
-//   currentPage: number;
-//   itemsPerPage: number;
-// }
-
 export default function CreateCourse({
   category,
 }: {
@@ -56,6 +43,8 @@ export default function CreateCourse({
 }) {
   const navigate = useRouter();
   const [isPublished, setIsPublished] = useState<boolean | undefined>(false);
+  const [allErrors, setAllErrors] = useState<string[]>([]); // Initialize as empty array
+
   const { data } = useQuery<{ courses: ICourse[] }>({
     queryKey: ["courses", category?._id, isPublished],
     queryFn: async () => {
@@ -71,7 +60,6 @@ export default function CreateCourse({
     },
     staleTime: 1000 * 60 * 5,
   });
-  const [allErrors, setErrors] = useState<any>();
 
   const createDraftMutation = useMutation({
     mutationFn: async (data: { category: string; type: string }) => {
@@ -85,13 +73,6 @@ export default function CreateCourse({
     onSuccess: (data: any) => {
       toast.success("Draft course created successfully");
       navigate.push(`/dashboard/categories/add-course/draft/${data.data._id}`);
-      // Handle additional success logic
-      // ({
-      //   to: "/categories/add-course/draft/$id",
-      //   params: {
-      //     id: data.data._id,
-      //   },
-      // });
     },
     onError: (error) => {
       toast.error("Failed to create draft: " + error.message);
@@ -107,11 +88,23 @@ export default function CreateCourse({
       return res.data;
     },
     onSuccess: () => {
-      toast.success("Published course created successfully");
-      // Handle additional success logic
+      toast.success("Course published successfully");
+      // Reset errors on success
+      setAllErrors([]);
     },
-    onError: (error) => {
-      toast.error("Failed to create draft: " + error.message);
+    onError: (error: any) => {
+      // Extract errors from response
+      const errorResponse = error?.response?.data;
+
+      if (errorResponse?.errors && Array.isArray(errorResponse.errors)) {
+        setAllErrors(errorResponse.errors);
+      } else if (errorResponse?.message) {
+        setAllErrors([errorResponse.message]);
+      } else {
+        setAllErrors(["Failed to publish course. Please try again."]);
+      }
+
+      toast.error("Failed to publish course");
     },
   });
 
@@ -123,13 +116,17 @@ export default function CreateCourse({
       return res.data;
     },
     onSuccess: () => {
-      toast.success("Course Deleted successfully");
-      // Handle additional success logic
+      toast.success("Course deleted successfully");
     },
     onError: (error) => {
-      toast.error("Failed to delete draft: " + error.message);
+      toast.error("Failed to delete course: " + error.message);
     },
   });
+
+  // Clear errors when opening a new dialog
+  const handlePublishDialogOpen = () => {
+    setAllErrors([]);
+  };
 
   return (
     <div className="w-full mx-auto px-6 py-5">
@@ -249,7 +246,7 @@ export default function CreateCourse({
                   </Dialog>
 
                   {/* Publish Dialog */}
-                  <Dialog>
+                  <Dialog onOpenChange={handlePublishDialogOpen}>
                     <DialogTrigger>
                       <Button>Publish</Button>
                     </DialogTrigger>
@@ -261,17 +258,14 @@ export default function CreateCourse({
                         </DialogDescription>
                       </DialogHeader>
 
-                      {/* Error Display */}
-                      {allErrors && allErrors.length > 0 && (
-                        <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-lg">
+                      {/* Error Display - Fixed */}
+                      {allErrors.length > 0 && (
+                        <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-lg mt-4">
                           <h3 className="font-semibold">Fix these errors:</h3>
                           <ul className="list-disc list-inside mt-2">
-                            {
-                              //@ts-ignore
-                              allErrors.map((error, index) => (
-                                <li key={index}>{error}</li>
-                              ))
-                            }
+                            {allErrors.map((error, index) => (
+                              <li key={index}>{error}</li>
+                            ))}
                           </ul>
                         </div>
                       )}
@@ -285,7 +279,7 @@ export default function CreateCourse({
                             previewImage: category?.previewImage?._id,
                             logoUrl: category?.logoUrl?._id,
                           };
-                          // @ts-ignore
+                          // @ts-expect-error
                           publishCourse.mutate(newCat);
                         }}
                       >
@@ -341,20 +335,3 @@ export default function CreateCourse({
     </div>
   );
 }
-
-// export default function CreateDraftCourse() {
-
-//   return (
-//     <Dialog>
-//       <DialogTrigger asChild>
-//         <Button variant="outline">Create Draft Course</Button>
-//       </DialogTrigger>
-//       <DialogContent className="max-h-[90vh] overflow-y-auto">
-//         <DialogHeader>
-//           <DialogTitle>Create New Course Draft</DialogTitle>
-//         </DialogHeader>
-
-//       </DialogContent>
-//     </Dialog>
-//   );
-// }

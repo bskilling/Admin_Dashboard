@@ -113,7 +113,7 @@ const DraftCourseButton: React.FC<Props> = ({
       type: "b2c",
       title: courseDetails?.title || "New Draft Course",
       description: courseDetails?.description || "This is a draft description",
-      category: selectedCategory,
+      category: [selectedCategory],
       price: { amount: Number(courseDetails?.price) || 0, currency: "INR" },
       durationHours: courseDetails?.duration || 0,
       skills: [],

@@ -19,8 +19,8 @@ export const baseCurriculumSchema = z.object({
         title: z.string(),
         lessons: z.array(
           z.object({
-            title: z.string(),
-            content: z.string(),
+            title: z.string().optional(),
+            content: z.string().optional(),
           })
         ),
       })
@@ -81,7 +81,7 @@ export const draftCourseSchema = z.object({
   banner: z.string().optional(), // expect an ObjectId string
   previewImage: z.string().optional(),
   logoUrl: z.string().optional(),
-  category: z.string().length(24).optional(),
+  category: z.array(z.string()).optional(),
   tools: z.array(z.string()).optional(),
   overview: baseOverviewSchema.optional(),
   curriculum: baseCurriculumSchema.optional(),

@@ -446,95 +446,108 @@ const CourseLandingPage = ({ courseData }: { courseData: ICourse }) => {
             <Highlights highlights={highlights || []} />
             <Outcomes outcomes={outcomes || []} />
 
-            {category?.type !== "b2i" && (
-              <div className=" rounded-xl  mt-10">
-                {/* <h3 className="text-xl font-bold mb-4">Projects Covered</h3> */}
-                {curriculum.projects?.length >= 1 && (
-                  <div className="text-gray-600">No projects covered</div>
-                )}
-                <div className="space-y-4">
-                  {curriculum.projects?.map((project) => (
-                    <div
-                      key={project._id}
-                      className="border-l-4 border-purple-500 pl-4"
-                    >
-                      <Accordion type="single" collapsible>
-                        <AccordionItem value="item-1">
-                          <AccordionTrigger>
-                            {" "}
-                            <h4 className="font-semibold capitalize">
-                              {project.title}
-                            </h4>
-                          </AccordionTrigger>
-                          <AccordionContent>
-                            <div className="mt-2 space-y-2">
-                              {project.content?.map((lesson: string) => (
-                                <div
-                                  key={lesson}
-                                  className="flex items-center space-x-2"
-                                >
-                                  {/* <PlayIcon className="h-4 w-4 text-gray-500" /> */}
-                                  <BsFolderCheck className="h-4 w-4 text-purple-500" />
-                                  <span>{lesson}</span>
-                                </div>
-                              ))}
-                            </div>
-                          </AccordionContent>
-                        </AccordionItem>
-                      </Accordion>
-                    </div>
-                  ))}
+            {
+              // @ts-expect-error
+              category?.type !== "b2i" && (
+                <div className=" rounded-xl  mt-10">
+                  {/* <h3 className="text-xl font-bold mb-4">Projects Covered</h3> */}
+                  {curriculum.projects?.length >= 1 && (
+                    <div className="text-gray-600">No projects covered</div>
+                  )}
+                  <div className="space-y-4">
+                    {curriculum.projects?.map((project) => (
+                      <div
+                        key={project._id}
+                        className="border-l-4 border-purple-500 pl-4"
+                      >
+                        <Accordion type="single" collapsible>
+                          <AccordionItem value="item-1">
+                            <AccordionTrigger>
+                              {" "}
+                              <h4 className="font-semibold capitalize">
+                                {project.title}
+                              </h4>
+                            </AccordionTrigger>
+                            <AccordionContent>
+                              <div className="mt-2 space-y-2">
+                                {project.content?.map((lesson: string) => (
+                                  <div
+                                    key={lesson}
+                                    className="flex items-center space-x-2"
+                                  >
+                                    {/* <PlayIcon className="h-4 w-4 text-gray-500" /> */}
+                                    <BsFolderCheck className="h-4 w-4 text-purple-500" />
+                                    <span>{lesson}</span>
+                                  </div>
+                                ))}
+                              </div>
+                            </AccordionContent>
+                          </AccordionItem>
+                        </Accordion>
+                      </div>
+                    ))}
+                  </div>
                 </div>
-              </div>
-            )}
+              )
+            }
 
             {/* prerequists */}
 
-            {category?.type !== "b2i" && (
-              <section className="mt-10">
-                <h3 className="text-xl font-bold mb-4">Creteria</h3>
-                <section className=" flex flex-col gap-y-5  ">
-                  <div className="w-full">
-                    {curriculum.prerequisites && (
-                      <div className="bg-blue-50 p-4 rounded-lg flex flex-col">
-                        <h4 className="font-semibold mb-2">Prerequisites</h4>
-                        {/* <p>{curriculum.prerequisites}</p> */}
-                        {curriculum.prerequisites.map((prerequisite, index) => (
-                          <p key={index} className="mt-5 inline-flex gap-x-4">
-                            {" "}
-                            <IoIosCheckmarkCircle className="w-6 h-6 text-blue-500" />{" "}
-                            <span className="text-sm font-semibold">
-                              {prerequisite}
-                            </span>
-                          </p>
-                        ))}
-                      </div>
-                    )}
-                  </div>
-                  <div className="w-full">
-                    {curriculum.eligibility && (
-                      <div className="bg-purple-50 p-4 rounded-lg">
-                        <h4 className="font-semibold mb-2">Eligibility</h4>
-                        {/* <p>{curriculum.eligibility}</p> */}
-                        <div className="flex flex-col ">
-                          {curriculum.eligibility.map((eligibility, index) => (
-                            <p
-                              key={index}
-                              className="mt-5 inline-flex gap-x-4 items-center"
-                            >
-                              <IoIosCheckmarkCircle className="w-6 h-6 text-purple-500" />{" "}
-                              <span className="text-sm font-semibold">
-                                {eligibility}
-                              </span>
-                            </p>
-                          ))}
+            {
+              // @ts-expect-error
+              category?.type !== "b2i" && (
+                <section className="mt-10">
+                  <h3 className="text-xl font-bold mb-4">Creteria</h3>
+                  <section className=" flex flex-col gap-y-5  ">
+                    <div className="w-full">
+                      {curriculum.prerequisites && (
+                        <div className="bg-blue-50 p-4 rounded-lg flex flex-col">
+                          <h4 className="font-semibold mb-2">Prerequisites</h4>
+                          {/* <p>{curriculum.prerequisites}</p> */}
+                          {curriculum.prerequisites.map(
+                            (prerequisite, index) => (
+                              <p
+                                key={index}
+                                className="mt-5 inline-flex gap-x-4"
+                              >
+                                {" "}
+                                <IoIosCheckmarkCircle className="w-6 h-6 text-blue-500" />{" "}
+                                <span className="text-sm font-semibold">
+                                  {prerequisite}
+                                </span>
+                              </p>
+                            )
+                          )}
                         </div>
-                      </div>
-                    )}
-                  </div>
+                      )}
+                    </div>
+                    <div className="w-full">
+                      {curriculum.eligibility && (
+                        <div className="bg-purple-50 p-4 rounded-lg">
+                          <h4 className="font-semibold mb-2">Eligibility</h4>
+                          {/* <p>{curriculum.eligibility}</p> */}
+                          <div className="flex flex-col ">
+                            {curriculum.eligibility.map(
+                              (eligibility, index) => (
+                                <p
+                                  key={index}
+                                  className="mt-5 inline-flex gap-x-4 items-center"
+                                >
+                                  <IoIosCheckmarkCircle className="w-6 h-6 text-purple-500" />{" "}
+                                  <span className="text-sm font-semibold">
+                                    {eligibility}
+                                  </span>
+                                </p>
+                              )
+                            )}
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  </section>
                 </section>
-              </section>
-            )}
+              )
+            }
           </div>
         </section>
         <section className="bg-card w-[50vw]  pt-60 pb-10 pl-10 flex flex-col">
