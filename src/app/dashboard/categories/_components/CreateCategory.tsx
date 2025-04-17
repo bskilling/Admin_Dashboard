@@ -15,7 +15,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { BiSolidCategoryAlt, BiSolidEditAlt } from "react-icons/bi";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import axios from "axios";
 // import env from "@/lib/env";
@@ -41,7 +41,6 @@ const createCategoryValidator = z.object({
     .string()
     .min(3, "Name is required")
     .max(100, "Name must be less than 100 characters"),
-  logo: z.string().length(24, "Logo is required"),
   type: z.enum(["b2b", "b2c", "b2g", "b2i"]),
 });
 
@@ -79,6 +78,7 @@ export default function CreateCategory({
 }: {
   selectedType: "b2b" | "b2c" | "b2g" | "b2i" | null;
 }) {
+  const clientQuery = useQueryClient();
   const router = useRouter();
   const searchParams = useSearchParams();
   const [show, setShow] = useState(false);
@@ -104,6 +104,9 @@ export default function CreateCategory({
       toast.success("Category created successfully");
       setShow(false);
       categoryQuery.refetch();
+      clientQuery.invalidateQueries({
+        queryKey: ["categories", selectedType, searchParams],
+      });
     },
     onError: (error) => {
       console.log(error);
@@ -235,20 +238,7 @@ export default function CreateCategory({
                 label="Name"
                 error={form.formState.errors.name?.message}
               />
-              <div>
-                <FileUploader
-                  setFileId={(id) => {
-                    if (id) form.setValue("logo", id);
-                  }}
-                  title="Upload Logo"
-                  purpose="category"
-                />
-                {form?.formState.errors.logo?.message && (
-                  <p className="text-red-500 text-xs mt-1">
-                    {form.formState.errors.logo.message}
-                  </p>
-                )}
-              </div>
+
               <Button className="bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition-all">
                 Submit
               </Button>
