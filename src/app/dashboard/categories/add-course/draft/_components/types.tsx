@@ -15,6 +15,7 @@ interface Category {
 }
 export interface ICourse {
   overview: Overview;
+  slug: string;
   outcomes: string[];
   curriculum: Curriculum;
   _id: string;
