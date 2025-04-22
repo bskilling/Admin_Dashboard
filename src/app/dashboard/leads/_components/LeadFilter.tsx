@@ -80,7 +80,7 @@ const LeadsFilter: React.FC<LeadsFilterProps> = ({
                   <SelectValue placeholder="Select type" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="">All Types</SelectItem>
+                  {/* <SelectItem value="">All Types</SelectItem> */}
                   <SelectItem value="b2i">B2I</SelectItem>
                   <SelectItem value="b2b">B2B</SelectItem>
                   <SelectItem value="b2c">B2C</SelectItem>
@@ -103,7 +103,7 @@ const LeadsFilter: React.FC<LeadsFilterProps> = ({
                   <SelectValue placeholder="Select status" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="">All Statuses</SelectItem>
+                  {/* <SelectItem value="">All Statuses</SelectItem> */}
                   <SelectItem value="NEW">NEW</SelectItem>
                   <SelectItem value="Attempted to Contact">
                     Attempted to Contact
@@ -140,7 +140,7 @@ const LeadsFilter: React.FC<LeadsFilterProps> = ({
                   <SelectValue placeholder="Select sub-category" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="">All</SelectItem>
+                  {/* <SelectItem value="">All</SelectItem> */}
                   <SelectItem value="jobs">Jobs</SelectItem>
                   <SelectItem value="skills">Skills</SelectItem>
                 </SelectContent>
