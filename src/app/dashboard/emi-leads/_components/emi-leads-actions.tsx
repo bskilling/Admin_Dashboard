@@ -108,6 +108,8 @@ export function EmiLeadActions({ leadId, lead }: EmiLeadActionsProps) {
     handleSubmit: handleNoteSubmit,
     reset: resetNoteForm,
     formState: { errors: noteErrors, isSubmitting: isNoteSubmitting },
+    watch: watchNote,
+    setValue: setValueNote,
   } = useForm<AddNoteInput>({
     resolver: zodResolver(addNoteSchema),
     defaultValues: {
@@ -207,6 +209,7 @@ export function EmiLeadActions({ leadId, lead }: EmiLeadActionsProps) {
 
   // Handle form submissions
   const onAddNote = (data: AddNoteInput) => {
+    console.log(data);
     addNoteMutation.mutate(data);
   };
 
@@ -217,6 +220,10 @@ export function EmiLeadActions({ leadId, lead }: EmiLeadActionsProps) {
   const onDeleteLead = () => {
     deleteLeadMutation.mutate();
   };
+
+  useEffect(() => {
+    console.log(watchNote());
+  }, [watchNote()]);
 
   return (
     <DropdownMenu>
@@ -266,9 +273,8 @@ export function EmiLeadActions({ leadId, lead }: EmiLeadActionsProps) {
                     defaultValue={lead.status}
                     {...registerNote("status")}
                     onValueChange={(value) => {
-                      // Using the setValue method from useForm
-                      const formMethods = registerNote("status").ref as any;
-                      formMethods.onChange({ target: { value } });
+                      console.log(value, "hahahaah");
+                      setValueNote("status", value as any);
                     }}
                   >
                     <SelectTrigger id="status">

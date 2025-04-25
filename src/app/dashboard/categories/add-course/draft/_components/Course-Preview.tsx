@@ -113,7 +113,11 @@ export interface TDraftCourseForm {
   isPublished: boolean;
 }
 
-const CourseLandingPage = ({ courseData }: { courseData: ICourse }) => {
+const CourseLandingPage = ({
+  courseData,
+}: {
+  courseData: { course: ICourse };
+}) => {
   const {
     title,
     description,
@@ -139,7 +143,7 @@ const CourseLandingPage = ({ courseData }: { courseData: ICourse }) => {
     outcomes,
     variant,
     // logoUrl, previewImage, slug not used in this single-page layout
-  } = courseData;
+  } = courseData.course;
 
   const [activeTab, setActiveTab] = useState("home");
 
@@ -301,9 +305,9 @@ const CourseLandingPage = ({ courseData }: { courseData: ICourse }) => {
 
           <div className="mt-5 ">
             <h2 className="mt-10 text-xl font-semibold">Key Features</h2>
-            {overview.keyFeatures && overview.keyFeatures.length > 0 && (
+            {overview?.keyFeatures && overview?.keyFeatures.length > 0 && (
               <div className="flex flex-col gap-y-5 mt-5">
-                {overview.keyFeatures.map((feature, index) => (
+                {overview?.keyFeatures.map((feature, index) => (
                   <div
                     key={index}
                     className="flex items-center gap-x-2 text-sm"
