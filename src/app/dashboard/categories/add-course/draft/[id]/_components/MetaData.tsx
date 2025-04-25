@@ -11,12 +11,12 @@ import { toast } from "sonner";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import {
+  Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Select } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import {
@@ -39,15 +39,10 @@ const draftMetaSchema = z.object({
     .transform((val) => (val ? val.split(",").map((v) => v.trim()) : []))
     .optional(),
   metaUrl: z.string().optional(),
-  metaImage: z.string().length(24).optional(),
   ogTitle: z.string().optional(),
   ogDescription: z.string().optional(),
   ogType: z.enum(["website", "article", "course"]).optional(),
-  ogImage: z.string().optional(),
-  twitterCard: z.enum(["summary", "summary_large_image"]).optional(),
-  twitterTitle: z.string().optional(),
-  twitterDescription: z.string().optional(),
-  twitterImage: z.string().optional(),
+  ogImage: z.string().length(24).optional(),
   schemaMarkup: z.string().optional(),
   sitemapPriority: z.coerce.number().min(0.1).max(1.0).optional(),
   robotsIndex: z.boolean().optional(),
@@ -57,18 +52,17 @@ const draftMetaSchema = z.object({
 type MetadataFormValues = z.infer<typeof draftMetaSchema>;
 
 export default function MetadataForm({ id }: { id: string }) {
-  const [metaImage, setMetaImage] = useState("");
   const [ogImage, setOgImage] = useState("");
-  const [twitterImage, setTwitterImage] = useState("");
 
   const queryClient = useQueryClient();
   const { register, handleSubmit, setValue, reset, watch, formState } =
     useForm<MetadataFormValues>({
       resolver: zodResolver(draftMetaSchema),
       defaultValues: {
-        robotsIndex: false,
-        robotsFollow: false,
+        robotsIndex: true,
+        robotsFollow: true,
         courseId: id,
+        sitemapPriority: 0.5,
       },
     });
   const errors = formState.errors;
@@ -87,6 +81,10 @@ export default function MetadataForm({ id }: { id: string }) {
         ...data,
         sitemapPriority: data?.sitemapPriority || 0.5,
       });
+
+      if (data?.ogImage) {
+        setOgImage(data.ogImage);
+      }
 
       return data;
     },
@@ -114,47 +112,51 @@ export default function MetadataForm({ id }: { id: string }) {
   });
 
   const onSubmit = async (data: MetadataFormValues) => {
-    // setValue("courseId", id);
     updateMetadataMutation.mutate(data);
   };
+
   useEffect(() => {
-    // setMetaImage(draftQuery.data?.metaImage || "");
     setValue("courseId", id);
   }, []);
 
   if (draftQuery.isLoading)
     return <div className="text-center p-4">Loading metadata...</div>;
-  //   if (draftQuery.isError)
-  //     return (
-  //       <div className="text-center p-4 text-red-500">
-  //         Failed to load metadata
-  //       </div>
-  //     );
 
   return (
     <Dialog>
       <DialogTrigger className="m-0 p-0">
         <Button className="bg-green-600 fixed top-6 left-60 z-[999]">
-          Meta Data{" "}
+          Meta Data
         </Button>
       </DialogTrigger>
-      <DialogContent className="!w-[80vw]  h-[80vh] overflow-y-auto">
+      <DialogContent className="!w-[80vw] h-[80vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle className="text-2xl text-center">
-            Upload Meta Data
+            SEO Metadata Settings
           </DialogTitle>
           <DialogDescription>
-            This action cannot be undone. This will permanently delete your
-            account and remove your data from our servers.
+            Configure search engine optimization settings for your course
           </DialogDescription>
         </DialogHeader>
         <form
           onSubmit={handleSubmit(onSubmit)}
           className="p-4 grid grid-cols-2 gap-5"
         >
+          {/* Basic Meta Section */}
+          <div className="col-span-2">
+            <h3 className="text-lg font-semibold mb-2">Basic Meta Tags</h3>
+          </div>
+
           <div>
             <label className="block text-sm font-medium">Meta Title</label>
-            <Input {...register("metaTitle")} placeholder="Enter meta title" />
+            <Input
+              {...register("metaTitle")}
+              placeholder="Enter meta title"
+              className="mt-1"
+            />
+            <p className="text-xs text-gray-500 mt-1">
+              Optimal length: 50-60 characters
+            </p>
           </div>
 
           <div>
@@ -164,7 +166,11 @@ export default function MetadataForm({ id }: { id: string }) {
             <Textarea
               {...register("metaDescription")}
               placeholder="Enter meta description"
+              className="mt-1"
             />
+            <p className="text-xs text-gray-500 mt-1">
+              Optimal length: 150-160 characters
+            </p>
           </div>
 
           <div>
@@ -174,70 +180,51 @@ export default function MetadataForm({ id }: { id: string }) {
             <Input
               {...register("metaKeywords")}
               placeholder="e.g. SEO, Metadata, Optimization"
+              className="mt-1"
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium">Meta URL</label>
-            <Input {...register("metaUrl")} placeholder="Enter meta URL" />
+            <label className="block text-sm font-medium">Meta URL Slug</label>
+            <Input
+              {...register("metaUrl")}
+              placeholder="Enter URL slug (e.g., learn-javascript)"
+              className="mt-1"
+            />
           </div>
 
-          <div>
-            <label className="block text-sm font-medium">Meta Image</label>
-            {/* <Input
-              {...register("metaImage")}
-              placeholder="Enter meta image URL"
-            /> */}
-            <FileUploader
-              setFileId={(id) => {
-                if (id) setValue("metaImage", id);
-              }}
-              title="cc"
-              id={watch("metaImage")}
-              label="Meta Image"
-              purpose="meta"
-              setUrl={(url) => {
-                if (url) setMetaImage(url);
-              }}
-              url={metaImage}
-            />
+          {/* Open Graph Section */}
+          <div className="col-span-2 mt-4">
+            <h3 className="text-lg font-semibold mb-2">
+              Social Media Sharing (Open Graph)
+            </h3>
           </div>
 
           <div>
             <label className="block text-sm font-medium">OG Title</label>
             <Input
               {...register("ogTitle")}
-              placeholder="Enter OG title"
-              error={errors.ogTitle?.message}
+              placeholder="Enter title for social sharing"
+              className="mt-1"
             />
+            {errors.ogTitle?.message && (
+              <p className="text-red-500 text-sm">{errors.ogTitle?.message}</p>
+            )}
           </div>
 
           <div>
             <label className="block text-sm font-medium">OG Description</label>
             <Textarea
               {...register("ogDescription")}
-              placeholder="Enter OG description"
-              error={errors.ogDescription?.message}
+              placeholder="Enter description for social sharing"
+              className="mt-1"
             />
+            {errors.ogDescription?.message && (
+              <p className="text-red-500 text-sm">
+                {errors.ogDescription?.message}
+              </p>
+            )}
           </div>
-
-          {/* <div>
-            <label className="block text-sm font-medium">OG Image</label>
-            <Input {...register("ogImage")} placeholder="Enter OG image URL" />
-          </div> */}
-          <FileUploader
-            setFileId={(id) => {
-              if (id) setValue("ogImage", id);
-            }}
-            title="Og Image"
-            id={watch("ogImage")}
-            label="Og Image"
-            purpose="meta"
-            setUrl={(url) => {
-              if (url) setOgImage(url);
-            }}
-            url={ogImage}
-          />
 
           <div>
             <label className="block text-sm font-medium">OG Type</label>
@@ -245,8 +232,9 @@ export default function MetadataForm({ id }: { id: string }) {
               onValueChange={(value) =>
                 setValue("ogType", value as MetadataFormValues["ogType"])
               }
+              defaultValue={watch("ogType")}
             >
-              <SelectTrigger>
+              <SelectTrigger className="mt-1">
                 <SelectValue placeholder="Select OG Type" />
               </SelectTrigger>
               <SelectContent>
@@ -261,83 +249,44 @@ export default function MetadataForm({ id }: { id: string }) {
           </div>
 
           <div>
-            <label className="block text-sm font-medium">Twitter Card</label>
-            <Select
-              onValueChange={(value) =>
-                setValue(
-                  "twitterCard",
-                  value as MetadataFormValues["twitterCard"]
-                )
-              }
-            >
-              <SelectTrigger>
-                <SelectValue placeholder="Select Twitter Card Type" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="summary">Summary</SelectItem>
-                <SelectItem value="summary_large_image">
-                  Summary Large Image
-                </SelectItem>
-              </SelectContent>
-            </Select>
-            {errors.twitterCard?.message && (
-              <p className="text-red-500 text-sm">
-                {errors.twitterCard?.message}
-              </p>
-            )}
+            <label className="block text-sm font-medium">OG Image</label>
+            <FileUploader
+              setFileId={(id) => {
+                if (id) setValue("ogImage", id);
+              }}
+              title="Social Media Image"
+              id={watch("ogImage")}
+              label="Upload image (1200x630px recommended)"
+              purpose="meta"
+              setUrl={(url) => {
+                if (url) setOgImage(url);
+              }}
+              url={ogImage}
+            />
+            <p className="text-xs text-gray-500 mt-1">
+              Recommended size: 1200x630 pixels
+            </p>
           </div>
 
-          <div>
-            <label className="block text-sm font-medium">Twitter Title</label>
-            <Input
-              {...register("twitterTitle")}
-              placeholder="Enter Twitter title"
-              error={errors.twitterTitle?.message}
-            />
+          {/* Advanced SEO Section */}
+          <div className="col-span-2 mt-4">
+            <h3 className="text-lg font-semibold mb-2">
+              Advanced SEO Settings
+            </h3>
           </div>
 
-          <div>
-            <label className="block text-sm font-medium">
-              Twitter Description
-            </label>
-            <Textarea
-              {...register("twitterDescription")}
-              placeholder="Enter Twitter description"
-              error={errors.twitterDescription?.message}
-            />
-          </div>
-
-          {/* <div>
-            <label className="block text-sm font-medium">Twitter Image</label>
-            <Input
-              {...register("twitterImage")}
-              placeholder="Enter Twitter image URL"
-            />
-          </div> */}
-
-          <FileUploader
-            setFileId={(id) => {
-              if (id) setValue("twitterImage", id);
-            }}
-            title="twitterImage"
-            id={watch("twitterImage")}
-            label="Twitter Image"
-            purpose="meta"
-            setUrl={(url) => {
-              if (url) setOgImage(url);
-            }}
-            url={ogImage}
-          />
-
-          <div>
+          <div className="col-span-2">
             <label className="block text-sm font-medium">
               Schema Markup (JSON-LD)
             </label>
             <Textarea
               {...register("schemaMarkup")}
-              placeholder="Enter schema markup (JSON-LD format)"
-              error={errors.schemaMarkup?.message}
+              placeholder='{"@context": "https://schema.org", "@type": "Course", ...}'
+              className="mt-1 font-mono text-xs h-40"
             />
+            <p className="text-xs text-gray-500 mt-1">
+              Enter structured data in JSON-LD format for rich search results
+            </p>
           </div>
 
           <div>
@@ -350,29 +299,40 @@ export default function MetadataForm({ id }: { id: string }) {
               min="0.1"
               max="1.0"
               {...register("sitemapPriority")}
-              placeholder="Enter sitemap priority"
-              error={errors.sitemapPriority?.message}
+              placeholder="0.5"
+              className="mt-1"
             />
+            <p className="text-xs text-gray-500 mt-1">
+              Higher values indicate more important pages
+            </p>
           </div>
 
-          <div className="flex items-center gap-2">
-            <Switch {...register("robotsIndex")} />
-            <label className="text-sm font-medium">
-              Allow Search Engine Indexing?
-            </label>
-          </div>
+          <div className="space-y-4">
+            <div className="flex items-center gap-2">
+              <Switch
+                checked={watch("robotsIndex")}
+                onCheckedChange={(checked) => setValue("robotsIndex", checked)}
+              />
+              <label className="text-sm font-medium">
+                Allow Search Engine Indexing
+              </label>
+            </div>
 
-          <div className="flex items-center gap-2">
-            <Switch {...register("robotsFollow")} />
-            <label className="text-sm font-medium">
-              Allow Search Engine Following?
-            </label>
+            <div className="flex items-center gap-2">
+              <Switch
+                checked={watch("robotsFollow")}
+                onCheckedChange={(checked) => setValue("robotsFollow", checked)}
+              />
+              <label className="text-sm font-medium">
+                Allow Following Links
+              </label>
+            </div>
           </div>
 
           <Button
             type="submit"
             disabled={isSubmitting || updateMetadataMutation.isPending}
-            className="w-full"
+            className="col-span-2 mt-4"
           >
             {updateMetadataMutation.isPending ? "Saving..." : "Update Metadata"}
           </Button>

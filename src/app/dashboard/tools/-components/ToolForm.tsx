@@ -285,12 +285,12 @@ export default function ToolForm() {
                     >
                       Cancel
                     </Button>
-                    <Button
+                    {/* <Button
                       variant="destructive"
                       onClick={() => deleteTool?.mutate(tool._id)}
                     >
                       Confirm Delete
-                    </Button>
+                    </Button> */}
                   </div>
                 </DialogContent>
               </Dialog>

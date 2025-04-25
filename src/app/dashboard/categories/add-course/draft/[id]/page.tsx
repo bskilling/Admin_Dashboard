@@ -130,31 +130,31 @@ export default function RouteComponent() {
   });
   const [activeTab, setActiveTab] = useState("home");
 
-  const draftQuery = useQuery<ICourse>({
+  const draftQuery = useQuery<{ course: ICourse }>({
     queryKey: ["course-draft", id],
     queryFn: async () => {
       const res = await axios.get(env.BACKEND_URL + `/api/courses/draft/${id}`);
       reset({
-        ...res.data.data,
-        category: res.data.data?.category?._id,
-        banner: res.data.data?.banner?._id,
-        previewImage: res.data.data?.previewImage?._id,
-        logoUrl: res.data.data?.logoUrl?._id,
-        skills: res.data.data?.skills?.map(
+        ...res.data.data.course,
+        category: res.data.data?.course?.category?._id,
+        banner: res.data.data?.course?.banner?._id,
+        previewImage: res.data.data?.course?.previewImage?._id,
+        logoUrl: res.data.data?.course?.logoUrl?._id,
+        skills: res.data.data?.course?.skills?.map(
           (skill: ICourse["skills"][number]) => skill
         ),
-        tools: res.data.data?.tools?.map(
+        tools: res.data.data?.course?.tools?.map(
           (tool: ICourse["tools"][number]) => tool._id
         ),
       });
 
-      const data = res.data.data as ICourse;
+      const data = res.data.data as { course: ICourse };
       // setSkills(data?.skills);
-      setSkill(data?.skills);
-      setTool(data?.tools);
-      setBannerUrl(data?.banner?.viewUrl);
-      setPreviewImage(data?.previewImage?.viewUrl);
-      setLogoUrl(data?.logoUrl?.viewUrl);
+      setSkill(data?.course?.skills);
+      setTool(data?.course?.tools);
+      setBannerUrl(data?.course?.banner?.viewUrl);
+      setPreviewImage(data?.course?.previewImage?.viewUrl);
+      setLogoUrl(data?.course?.logoUrl?.viewUrl);
 
       return res.data.data;
     },
@@ -202,7 +202,7 @@ export default function RouteComponent() {
   useEffect(() => {
     console.log("redndering in useffecti");
     if (draftQuery.data && !preview) {
-      const res = draftQuery.data as ICourse;
+      const res = draftQuery.data.course as ICourse;
       // @ts-expect-error
       reset({
         ...res,
@@ -291,8 +291,8 @@ export default function RouteComponent() {
               </Button>
             </div>
 
-            {draftQuery?.data?._id && (
-              <MetadataForm id={draftQuery?.data?._id} />
+            {draftQuery?.data?.course?._id && (
+              <MetadataForm id={draftQuery?.data?.course?._id} />
             )}
             <Card className="mt-20">
               <CardContent id="hero" className="px-0 rounded-t-md">
