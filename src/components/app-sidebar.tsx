@@ -29,6 +29,8 @@ const items = [
   { title: "Emi-leads", url: "/dashboard/emi-leads", icon: Inbox },
   { title: "Migration", url: "/dashboard/migration", icon: Inbox },
   { title: "Categories", url: "/dashboard/categories?type=b2c", icon: Slack },
+  { title: "Course-mapping", url: "/dashboard/course-mapping", icon: Slack },
+
   { title: "Skills", url: "/dashboard/skills", icon: CircuitBoard },
   { title: "Tools", url: "/dashboard/tools", icon: CircuitBoard },
   // { title: "Courses", url: "/dashboard/new-courses", icon: Calendar },
