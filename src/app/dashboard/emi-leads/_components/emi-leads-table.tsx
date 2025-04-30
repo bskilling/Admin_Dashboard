@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { useRouter, usePathname } from "next/navigation";
+import Link from "next/link";
 import {
   Table,
   TableBody,
@@ -12,20 +13,36 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { Badge } from "@/components/ui/badge";
+import { ExternalLink } from "lucide-react";
 
 import { EmiLeadActions } from "./emi-leads-actions";
 import { EmiLeadStatus } from "./emi-leads-status";
 import { EmiLeadFilter } from "./emi-leads-filter";
 import { PaginationControls } from "./pagination-controls";
-import { formatDate } from "@/lib/utils";
+import { formatDate, formatCurrency } from "@/lib/utils";
 
-// Types based on our MongoDB schema
+// Types based on our MongoDB schema with updated courseId structure
+export interface Category {
+  _id: string;
+  name: string;
+}
+
+export interface Course {
+  _id: string;
+  name: string;
+  price: number;
+  type: "b2i" | "b2b" | "b2c" | "b2g";
+  category: Category[];
+  slug: string;
+}
+
 export interface EmiLead {
   _id: string;
   name: string;
   email: string;
   phone: string;
-  courseId?: string;
+  courseId?: Course;
   amount?: number;
   status: string;
   emiDetails?: {
@@ -69,7 +86,25 @@ interface EmiLeadsTableProps {
   order: string;
   startDate: string;
   endDate: string;
+  courseType?: string;
+  categoryId?: string;
 }
+
+// Convert course type to readable format
+const formatCourseType = (type: string) => {
+  switch (type) {
+    case "b2i":
+      return "Individual";
+    case "b2b":
+      return "Business";
+    case "b2c":
+      return "Consumer";
+    case "b2g":
+      return "Government";
+    default:
+      return type.toUpperCase();
+  }
+};
 
 export function EmiLeadsTable({
   page,
@@ -80,6 +115,8 @@ export function EmiLeadsTable({
   order,
   startDate,
   endDate,
+  courseType,
+  categoryId,
 }: EmiLeadsTableProps) {
   const router = useRouter();
   const pathname = usePathname();
@@ -96,6 +133,8 @@ export function EmiLeadsTable({
       order,
       startDate,
       endDate,
+      courseType,
+      categoryId,
     ],
     queryFn: async () => {
       const params = new URLSearchParams();
@@ -108,6 +147,8 @@ export function EmiLeadsTable({
       if (order) params.append("order", order);
       if (startDate) params.append("startDate", startDate);
       if (endDate) params.append("endDate", endDate);
+      if (courseType) params.append("courseType", courseType);
+      if (categoryId) params.append("categoryId", categoryId);
 
       const response = await axios.get(
         `${
@@ -131,28 +172,10 @@ export function EmiLeadsTable({
     params.append("order", newOrder);
     if (startDate) params.append("startDate", startDate);
     if (endDate) params.append("endDate", endDate);
+    if (courseType) params.append("courseType", courseType);
+    if (categoryId) params.append("categoryId", categoryId);
 
     router.push(`${pathname}?${params.toString()}`);
-  };
-
-  // Status badge color mapping
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case "NEW":
-        return "bg-blue-100 text-blue-800";
-      case "Attempted to Contact":
-        return "bg-yellow-100 text-yellow-800";
-      case "In-conversation":
-        return "bg-purple-100 text-purple-800";
-      case "Spam":
-        return "bg-red-100 text-red-800";
-      case "Converted":
-        return "bg-green-100 text-green-800";
-      case "Not-Converted":
-        return "bg-gray-100 text-gray-800";
-      default:
-        return "bg-gray-100 text-gray-800";
-    }
   };
 
   if (isError) {
@@ -172,13 +195,15 @@ export function EmiLeadsTable({
         currentStatus={status}
         currentStartDate={startDate}
         currentEndDate={endDate}
+        currentCourseType={courseType}
+        currentCategoryId={categoryId}
       />
 
       <div className="rounded-md border">
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead className="w-[200px]">
+              <TableHead className="w-[180px]">
                 <button
                   onClick={() => handleSortChange("name")}
                   className="flex items-center gap-1"
@@ -190,6 +215,17 @@ export function EmiLeadsTable({
                 </button>
               </TableHead>
               <TableHead>Contact</TableHead>
+              <TableHead>
+                <button
+                  onClick={() => handleSortChange("courseId.name")}
+                  className="flex items-center gap-1"
+                >
+                  Course
+                  {sort === "courseId.name" && (
+                    <span>{order === "asc" ? "↑" : "↓"}</span>
+                  )}
+                </button>
+              </TableHead>
               <TableHead>
                 <button
                   onClick={() => handleSortChange("status")}
@@ -220,7 +256,7 @@ export function EmiLeadsTable({
             {isLoading ? (
               Array.from({ length: 5 }).map((_, index) => (
                 <TableRow key={index}>
-                  {Array.from({ length: 6 }).map((_, cellIndex) => (
+                  {Array.from({ length: 7 }).map((_, cellIndex) => (
                     <TableCell key={cellIndex}>
                       <div className="h-4 bg-gray-200 rounded animate-pulse"></div>
                     </TableCell>
@@ -236,6 +272,45 @@ export function EmiLeadsTable({
                     <div className="text-sm text-gray-500">{lead.phone}</div>
                   </TableCell>
                   <TableCell>
+                    {lead.courseId ? (
+                      <div className="space-y-1">
+                        <div className="font-medium">
+                          {lead.courseId.type === "b2c" && (
+                            <Link
+                              href={`https://www.bskilling.com/course/${lead.courseId.slug}`}
+                              target="_blank"
+                              className="text-indigo-600 hover:underline flex items-center"
+                            >
+                              {lead.courseId.name}
+                              <ExternalLink className="ml-1 h-3 w-3" />
+                            </Link>
+                          )}
+                        </div>
+                        <div className="flex flex-col gap-1">
+                          <p className="text-xs">{lead.courseId.type}</p>
+                          <p className="text-xs">
+                            {
+                              // @ts-ignore error
+                              lead.courseId.title
+                            }
+                          </p>
+                          {lead.courseId.category?.map((cat) => (
+                            <p key={cat._id} className="text-xs">
+                              {cat.name}
+                            </p>
+                          ))}
+                        </div>
+                        <div className="text-sm text-gray-500">
+                          {formatCurrency(lead.courseId.price)}
+                        </div>
+                      </div>
+                    ) : (
+                      <span className="text-gray-400 text-sm">
+                        No course selected
+                      </span>
+                    )}
+                  </TableCell>
+                  <TableCell>
                     <EmiLeadStatus
                       leadId={lead._id}
                       currentStatus={lead.status}
@@ -245,7 +320,7 @@ export function EmiLeadsTable({
                   <TableCell>
                     {lead.notes?.length > 0 ? (
                       <div
-                        className="max-w-[200px] truncate"
+                        className="max-w-[150px] truncate"
                         title={lead.notes[lead.notes.length - 1].text}
                       >
                         {lead.notes[lead.notes.length - 1].text}
@@ -263,7 +338,7 @@ export function EmiLeadsTable({
               ))
             ) : (
               <TableRow>
-                <TableCell colSpan={6} className="h-24 text-center">
+                <TableCell colSpan={7} className="h-24 text-center">
                   No results found.
                 </TableCell>
               </TableRow>
@@ -283,6 +358,8 @@ export function EmiLeadsTable({
           order={order}
           startDate={startDate}
           endDate={endDate}
+          courseType={courseType}
+          categoryId={categoryId}
         />
       )}
     </div>

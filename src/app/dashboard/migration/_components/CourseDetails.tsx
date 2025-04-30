@@ -105,7 +105,7 @@ const CategoryDraftCreator = ({ courseId }: CourseDetailsProps) => {
           value={selectedCategory || ""}
           onChange={(e) => setSelectedCategory(e.target.value)}
         >
-          <option value="">Select Category</option>
+          <option value="asasa">Select Category</option>
           {categories?.categories?.map(
             (category: { _id: string; name: string }) => (
               <option key={category._id} value={category._id}>
