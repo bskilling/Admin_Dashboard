@@ -29,6 +29,8 @@ interface PaginationControlsProps {
   order: string;
   startDate: string;
   endDate: string;
+  courseType?: string;
+  categoryId?: string;
 }
 
 export function PaginationControls({
@@ -41,6 +43,8 @@ export function PaginationControls({
   order,
   startDate,
   endDate,
+  courseType,
+  categoryId,
 }: PaginationControlsProps) {
   const router = useRouter();
   const pathname = usePathname();
@@ -57,6 +61,8 @@ export function PaginationControls({
     if (order) params.append("order", order);
     if (startDate) params.append("startDate", startDate);
     if (endDate) params.append("endDate", endDate);
+    if (courseType) params.append("courseType", courseType);
+    if (categoryId) params.append("categoryId", categoryId);
 
     return `${pathname}?${params.toString()}`;
   };

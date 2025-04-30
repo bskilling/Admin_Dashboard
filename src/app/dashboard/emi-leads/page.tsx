@@ -16,6 +16,8 @@ export default function EmiLeadsPage({
     order?: string;
     startDate?: string;
     endDate?: string;
+    courseType?: string;
+    categoryId?: string;
   };
 }) {
   // Parse query parameters with defaults
@@ -27,6 +29,8 @@ export default function EmiLeadsPage({
   const order = searchParams.order || "desc";
   const startDate = searchParams.startDate || "";
   const endDate = searchParams.endDate || "";
+  const courseType = searchParams.courseType || "";
+  const categoryId = searchParams.categoryId || "";
 
   return (
     <div className="container mx-auto py-6 space-y-6">
@@ -42,6 +46,8 @@ export default function EmiLeadsPage({
           order={order}
           startDate={startDate}
           endDate={endDate}
+          courseType={courseType}
+          categoryId={categoryId}
         />
       </Suspense>
     </div>

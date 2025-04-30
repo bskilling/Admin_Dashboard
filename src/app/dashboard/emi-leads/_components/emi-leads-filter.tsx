@@ -2,6 +2,8 @@
 
 import { useState, useEffect, useCallback } from "react";
 import { useRouter, usePathname } from "next/navigation";
+import { useQuery } from "@tanstack/react-query";
+import axios from "axios";
 import {
   Sheet,
   SheetClose,
@@ -33,11 +35,18 @@ import { format } from "date-fns";
 import { cn } from "@/lib/utils";
 import { useDebounce } from "@/app/hooks/use-debounce";
 
+interface Category {
+  _id: string;
+  name: string;
+}
+
 interface EmiLeadFilterProps {
   currentSearch: string;
   currentStatus: string;
   currentStartDate: string;
   currentEndDate: string;
+  currentCourseType?: string;
+  currentCategoryId?: string;
 }
 
 export function EmiLeadFilter({
@@ -45,6 +54,8 @@ export function EmiLeadFilter({
   currentStatus,
   currentStartDate,
   currentEndDate,
+  currentCourseType,
+  currentCategoryId,
 }: EmiLeadFilterProps) {
   const router = useRouter();
   const pathname = usePathname();
@@ -52,12 +63,25 @@ export function EmiLeadFilter({
   // Form state
   const [search, setSearch] = useState(currentSearch);
   const [status, setStatus] = useState(currentStatus);
+  const [courseType, setCourseType] = useState(currentCourseType || "");
+  const [categoryId, setCategoryId] = useState(currentCategoryId || "");
   const [startDate, setStartDate] = useState<Date | undefined>(
     currentStartDate ? new Date(currentStartDate) : undefined
   );
   const [endDate, setEndDate] = useState<Date | undefined>(
     currentEndDate ? new Date(currentEndDate) : undefined
   );
+
+  // Fetch categories for the filter dropdown
+  const { data: categoriesData } = useQuery({
+    queryKey: ["categories"],
+    queryFn: async () => {
+      const response = await axios.get(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/categories`
+      );
+      return response.data;
+    },
+  });
 
   // Debounce search input to avoid too many URL updates
   const debouncedSearch = useDebounce(search, 500);
@@ -72,12 +96,23 @@ export function EmiLeadFilter({
 
     if (debouncedSearch) params.append("search", debouncedSearch);
     if (status) params.append("status", status);
+    if (courseType) params.append("courseType", courseType);
+    if (categoryId) params.append("categoryId", categoryId);
     if (startDate)
       params.append("startDate", startDate.toISOString().split("T")[0]);
     if (endDate) params.append("endDate", endDate.toISOString().split("T")[0]);
 
     router.push(`${pathname}?${params.toString()}`);
-  }, [debouncedSearch, status, startDate, endDate, router, pathname]);
+  }, [
+    debouncedSearch,
+    status,
+    courseType,
+    categoryId,
+    startDate,
+    endDate,
+    router,
+    pathname,
+  ]);
 
   // Update URL when debounced search changes
   useEffect(() => {
@@ -93,6 +128,26 @@ export function EmiLeadFilter({
     params.append("limit", "10");
     if (debouncedSearch) params.append("search", debouncedSearch);
     params.append("status", value);
+    if (courseType) params.append("courseType", courseType);
+    if (categoryId) params.append("categoryId", categoryId);
+    if (startDate)
+      params.append("startDate", startDate.toISOString().split("T")[0]);
+    if (endDate) params.append("endDate", endDate.toISOString().split("T")[0]);
+
+    router.push(`${pathname}?${params.toString()}`);
+  };
+
+  // Quick filter by course type
+  const handleCourseTypeChange = (value: string) => {
+    setCourseType(value);
+
+    const params = new URLSearchParams();
+    params.append("page", "1");
+    params.append("limit", "10");
+    if (debouncedSearch) params.append("search", debouncedSearch);
+    if (status) params.append("status", status);
+    params.append("courseType", value);
+    if (categoryId) params.append("categoryId", categoryId);
     if (startDate)
       params.append("startDate", startDate.toISOString().split("T")[0]);
     if (endDate) params.append("endDate", endDate.toISOString().split("T")[0]);
@@ -118,6 +173,8 @@ export function EmiLeadFilter({
   const resetFilters = () => {
     setSearch("");
     setStatus("");
+    setCourseType("");
+    setCategoryId("");
     setStartDate(undefined);
     setEndDate(undefined);
     router.push(pathname);
@@ -127,6 +184,8 @@ export function EmiLeadFilter({
   const activeFilterCount = [
     debouncedSearch,
     status,
+    courseType,
+    categoryId,
     startDate,
     endDate,
   ].filter(Boolean).length;
@@ -157,6 +216,19 @@ export function EmiLeadFilter({
             <SelectItem value="Spam">Spam</SelectItem>
             <SelectItem value="Converted">Converted</SelectItem>
             <SelectItem value="Not-Converted">Not Converted</SelectItem>
+          </SelectContent>
+        </Select>
+
+        <Select value={courseType} onValueChange={handleCourseTypeChange}>
+          <SelectTrigger className="w-[160px]">
+            <SelectValue placeholder="Course Type" />
+          </SelectTrigger>
+          <SelectContent>
+            {/* <SelectItem value="asasas">All Types</SelectItem> */}
+            <SelectItem value="b2i">Individual (B2I)</SelectItem>
+            <SelectItem value="b2b">Business (B2B)</SelectItem>
+            <SelectItem value="b2c">Consumer (B2C)</SelectItem>
+            <SelectItem value="b2g">Government (B2G)</SelectItem>
           </SelectContent>
         </Select>
 
@@ -209,6 +281,41 @@ export function EmiLeadFilter({
                     <SelectItem value="Spam">Spam</SelectItem>
                     <SelectItem value="Converted">Converted</SelectItem>
                     <SelectItem value="Not-Converted">Not Converted</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="sheet-course-type">Course Type</Label>
+                <Select value={courseType} onValueChange={setCourseType}>
+                  <SelectTrigger id="sheet-course-type">
+                    <SelectValue placeholder="Select course type" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {/* <SelectItem value="asasa">All Types</SelectItem> */}
+                    <SelectItem value="b2i">Individual (B2I)</SelectItem>
+                    <SelectItem value="b2b">Business (B2B)</SelectItem>
+                    <SelectItem value="b2c">Consumer (B2C)</SelectItem>
+                    <SelectItem value="b2g">Government (B2G)</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="sheet-category">Category</Label>
+                <Select value={categoryId} onValueChange={setCategoryId}>
+                  <SelectTrigger id="sheet-category">
+                    <SelectValue placeholder="Select category" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {/* <SelectItem value="asasa">All Categories</SelectItem> */}
+                    {categoriesData?.data?.categories?.map(
+                      (category: Category) => (
+                        <SelectItem key={category._id} value={category._id}>
+                          {category.name}
+                        </SelectItem>
+                      )
+                    )}
                   </SelectContent>
                 </Select>
               </div>
