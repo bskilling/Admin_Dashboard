@@ -110,7 +110,7 @@ export default function Page() {
                     />
                   </div>
                   <Link
-                    href={`/blogs/${val._id}`}
+                    href={`/dashboard/blogs/${val._id}`}
                     rel="noopener noreferrer"
                     className="absolute bottom-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
                   >

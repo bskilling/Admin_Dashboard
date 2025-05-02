@@ -1,7 +1,5 @@
-"use client";
-
-import React from "react";
-import { Badge } from "@/components/ui/badge";
+// leadUtils.ts
+import { Lead, LeadCounts, FilterOptions, Note } from "./types";
 import {
   Building2,
   UserSquare,
@@ -9,40 +7,15 @@ import {
   GraduationCap,
   LandmarkIcon,
 } from "lucide-react";
-import { Lead } from "./type";
 
-// Status badge rendering
-export const renderStatusBadge = (status?: string) => {
-  let badgeClass = "";
-  switch (status) {
-    case "contacted":
-      badgeClass = "bg-yellow-100 text-yellow-800 border-yellow-200";
-      break;
-    case "converted":
-      badgeClass = "bg-green-100 text-green-800 border-green-200";
-      break;
-    case "rejected":
-      badgeClass = "bg-red-100 text-red-800 border-red-200";
-      break;
-    default:
-      badgeClass = "bg-gray-100 text-gray-800 border-gray-200";
-  }
-
-  return (
-    <Badge variant="outline" className={badgeClass}>
-      {status || "Pending"}
-    </Badge>
-  );
-};
-
-// Status color function - used in multiple components
-export const getStatusColor = (status: string) => {
+// Status color function
+export const getStatusColor = (status: string): string => {
   switch (status) {
     case "NEW":
       return "bg-blue-500 text-white";
     case "Attempted to Contact":
       return "bg-amber-500 text-white";
-    case "Not Contact":
+    case "Not Contacted":
       return "bg-gray-500 text-white";
     case "In-conversation":
       return "bg-purple-500 text-white";
@@ -68,13 +41,13 @@ export const getStatusColor = (status: string) => {
 };
 
 // For badge variants
-export const getStatusBadgeColor = (status: string) => {
+export const getStatusBadgeColor = (status: string): string => {
   switch (status) {
     case "NEW":
       return "bg-blue-100 text-blue-800 border-blue-200";
     case "Attempted to Contact":
       return "bg-amber-100 text-amber-800 border-amber-200";
-    case "Not Contact":
+    case "Not Contacted":
       return "bg-gray-100 text-gray-800 border-gray-200";
     case "In-conversation":
       return "bg-purple-100 text-purple-800 border-purple-200";
@@ -99,79 +72,112 @@ export const getStatusBadgeColor = (status: string) => {
   }
 };
 
-// Type badge rendering
-export const renderTypeBadge = (type: string) => {
-  let badgeClass = "";
+// Type badge color
+export const getTypeBadgeColor = (type: string): string => {
   switch (type) {
     case "b2i":
-      badgeClass = "bg-indigo-100 text-indigo-800 border-indigo-200";
-      break;
+      return "bg-indigo-100 text-indigo-800 border-indigo-200";
     case "b2b":
-      badgeClass = "bg-blue-100 text-blue-800 border-blue-200";
-      break;
+      return "bg-blue-100 text-blue-800 border-blue-200";
     case "b2c":
-      badgeClass = "bg-green-100 text-green-800 border-green-200";
-      break;
+      return "bg-green-100 text-green-800 border-green-200";
     case "b2g":
-      badgeClass = "bg-orange-100 text-orange-800 border-orange-200";
-      break;
+      return "bg-orange-100 text-orange-800 border-orange-200";
     default:
-      badgeClass = "bg-gray-100 text-gray-800 border-gray-200";
+      return "bg-gray-100 text-gray-800 border-gray-200";
   }
-
-  return (
-    <Badge variant="outline" className={badgeClass}>
-      {type.toUpperCase()}
-    </Badge>
-  );
 };
 
 // Category icon rendering
-export const renderCategoryIcon = (category: string) => {
-  switch (category) {
+export const getCategoryIcon = (category: string) => {
+  switch (category?.toLowerCase()) {
     case "individual_course":
-      return <UserSquare className="h-5 w-5 text-blue-500" />;
+      return { icon: UserSquare, color: "text-blue-500" };
     case "corporate_training":
-      return <Briefcase className="h-5 w-5 text-purple-500" />;
+      return { icon: Briefcase, color: "text-purple-500" };
     case "institutional":
-      return <GraduationCap className="h-5 w-5 text-green-500" />;
+      return { icon: GraduationCap, color: "text-green-500" };
     case "government":
-      return <LandmarkIcon className="h-5 w-5 text-red-500" />;
+      return { icon: LandmarkIcon, color: "text-red-500" };
     default:
-      return <Building2 className="h-5 w-5 text-gray-500" />;
+      return { icon: Building2, color: "text-gray-500" };
   }
 };
 
 // Get counts for each type
-export const getLeadCounts = (leads: Lead[]) => {
-  const counts = {
+export const getLeadCounts = (leads: Lead[]): LeadCounts => {
+  return {
     all: leads.length,
     b2i: leads.filter((lead) => lead.type === "b2i").length,
     b2b: leads.filter((lead) => lead.type === "b2b").length,
     b2c: leads.filter((lead) => lead.type === "b2c").length,
     b2g: leads.filter((lead) => lead.type === "b2g").length,
   };
-  return counts;
 };
 
 // Filter leads based on criteria
-export const filterLeads = (leads: Lead[], filters: any, activeTab: string) => {
+export const filterLeads = (
+  leads: Lead[],
+  filters: FilterOptions,
+  activeTab: string
+): Lead[] => {
   return leads.filter((lead) => {
-    // Filter by tab first
+    // Filter by tab first (type filter)
     if (activeTab !== "all" && lead.type !== activeTab) {
       return false;
     }
 
     // Then apply additional filters
+    const matchesType = filters.type === "" || lead.type === filters.type;
+    const matchesSubCategory =
+      filters.subCategory === "" || lead.subCategory === filters.subCategory;
+    const matchesStatus =
+      filters.status === "" || lead.status === filters.status;
+    const matchesCategory =
+      !filters.category || lead.course?.category?._id === filters.category;
+    const matchesCourse =
+      !filters.courseId || lead.course?._id === filters.courseId;
+
+    const matchesSearch =
+      filters.searchQuery === "" ||
+      lead.name.toLowerCase().includes(filters.searchQuery.toLowerCase()) ||
+      lead.email.toLowerCase().includes(filters.searchQuery.toLowerCase()) ||
+      lead.query.toLowerCase().includes(filters.searchQuery.toLowerCase()) ||
+      (lead.course?.title &&
+        lead.course.title
+          .toLowerCase()
+          .includes(filters.searchQuery.toLowerCase()));
+
     return (
-      (filters.type === "" || lead.type === filters.type) &&
-      (filters.subCategory === "" ||
-        lead.subCategory === filters.subCategory) &&
-      (filters.status === "" || lead.status === filters.status) &&
-      (filters.searchQuery === "" ||
-        lead.name.toLowerCase().includes(filters.searchQuery.toLowerCase()) ||
-        lead.email.toLowerCase().includes(filters.searchQuery.toLowerCase()) ||
-        lead.query.toLowerCase().includes(filters.searchQuery.toLowerCase()))
+      matchesType &&
+      matchesSubCategory &&
+      matchesStatus &&
+      matchesSearch &&
+      matchesCategory &&
+      matchesCourse
     );
+  });
+};
+
+// Format date nicely
+export const formatDate = (dateString: string): string => {
+  try {
+    const date = new Date(dateString);
+    return date.toLocaleString("en-US", {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+    });
+  } catch (e) {
+    return dateString;
+  }
+};
+
+// Sort notes by date (most recent first)
+export const sortNotesByDate = (notes: Note[]): Note[] => {
+  return [...notes].sort((a, b) => {
+    return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
   });
 };

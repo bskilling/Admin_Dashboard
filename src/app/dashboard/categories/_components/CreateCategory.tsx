@@ -96,7 +96,10 @@ export default function CreateCategory({
   const uploadCategory = useMutation({
     mutationKey: ["uploadCategory"],
     mutationFn: async (data: TCreateCategoryForm) => {
-      const res = await axios.post(env?.BACKEND_URL + "/api/categories", data);
+      const res = await axios.post(
+        env?.BACKEND_URL + "/api/blogs/categories",
+        data
+      );
       return res.data.data;
     },
     onSuccess: () => {
@@ -118,7 +121,7 @@ export default function CreateCategory({
     mutationKey: ["deleteCategory"],
     mutationFn: async (id: string) => {
       const res = await axios.delete(
-        env?.BACKEND_URL + `/api/categories/${id}`
+        env?.BACKEND_URL + `/api/blogs/categories/${id}`
       );
       return res.data.data;
     },
@@ -135,7 +138,7 @@ export default function CreateCategory({
   const categoryQuery = useQuery<ICategories>({
     queryKey: ["categories", selectedType, searchParams],
     queryFn: async () => {
-      const res = await axios.get(env?.BACKEND_URL + "/api/categories", {
+      const res = await axios.get(env?.BACKEND_URL + "/api/blogs/categories", {
         params: {
           limit: 100,
           page: 1,
@@ -169,7 +172,7 @@ export default function CreateCategory({
     mutationKey: ["updateCategory"],
     mutationFn: async (data: { _id: string; isPublished: boolean }) => {
       const res = await axios.put(
-        env?.BACKEND_URL + `/api/categories/${data?._id}`,
+        env?.BACKEND_URL + `/api/blogs/categories/${data?._id}`,
         data
       );
       return res.data.data;

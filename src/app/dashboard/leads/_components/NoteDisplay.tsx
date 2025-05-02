@@ -68,7 +68,7 @@ import {
   Clock,
 } from "lucide-react";
 import { toast } from "sonner";
-import { Lead } from "./type";
+import { Lead } from "./types";
 
 const NotesDisplay: React.FC<{
   notes: Array<{
