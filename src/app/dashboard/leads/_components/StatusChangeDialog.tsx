@@ -1,3 +1,6 @@
+"use client";
+
+import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -10,27 +13,21 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { useState } from "react";
-import { toast } from "sonner";
-import { getStatusBadgeColor } from "./leadUtils";
-import { formatDistanceToNow } from "date-fns";
 import { Clock, MessageSquare, History } from "lucide-react";
+import { Note } from "./types";
+import { getStatusBadgeColor, formatDate, sortNotesByDate } from "./leadUtils";
 
-// Status Change Dialog Component
-const StatusChangeDialog: React.FC<{
+interface StatusChangeDialogProps {
   isOpen: boolean;
   onClose: () => void;
   leadId: string;
   currentStatus: string;
   newStatus: string;
-  notes: Array<{
-    text: string;
-    status: string;
-    addedBy?: string;
-    createdAt: string;
-  }>;
-  onStatusChange: (id: string, status: string, note: string) => void;
-}> = ({
+  notes: Note[];
+  onStatusChange: (id: string, status: string, note: string) => Promise<void>;
+}
+
+const StatusChangeDialog: React.FC<StatusChangeDialogProps> = ({
   isOpen,
   onClose,
   leadId,
@@ -41,32 +38,27 @@ const StatusChangeDialog: React.FC<{
 }) => {
   const [noteText, setNoteText] = useState("");
   const [activeTab, setActiveTab] = useState("new");
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (!noteText.trim()) {
-      toast.error("Please add a note about this status change");
-      return;
+      return; // Prevent submission if note is empty
     }
 
-    onStatusChange(leadId, newStatus, noteText.trim());
-    setNoteText("");
-    onClose();
-  };
-
-  // Format date to be more readable
-  const formatDate = (dateString: string) => {
     try {
-      const date = new Date(dateString);
-      return `${date.toLocaleDateString()} at ${date.toLocaleTimeString()} (${formatDistanceToNow(
-        date,
-        { addSuffix: true }
-      )})`;
-    } catch (e) {
-      return dateString;
+      setIsSubmitting(true);
+      await onStatusChange(leadId, newStatus, noteText.trim());
+      setNoteText("");
+      onClose();
+    } catch (error) {
+      console.error("Error updating status:", error);
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
-  const reversedNotes = [...(notes || [])].reverse();
+  // Sort notes by date (most recent first)
+  const sortedNotes = sortNotesByDate(notes);
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
@@ -106,7 +98,7 @@ const StatusChangeDialog: React.FC<{
             </TabsTrigger>
             <TabsTrigger value="history" className="flex items-center gap-2">
               <History className="h-4 w-4" /> Note History
-              {notes && notes.length > 0 && (
+              {notes.length > 0 && (
                 <Badge variant="secondary" className="ml-1 bg-gray-200">
                   {notes.length}
                 </Badge>
@@ -135,23 +127,23 @@ const StatusChangeDialog: React.FC<{
             </div>
 
             <DialogFooter className="mt-auto">
-              <Button variant="outline" onClick={onClose}>
+              <Button variant="outline" onClick={onClose} type="button">
                 Cancel
               </Button>
               <Button
                 onClick={handleSubmit}
-                disabled={!noteText.trim()}
+                disabled={!noteText.trim() || isSubmitting}
                 className="bg-blue-600 hover:bg-blue-700"
               >
-                Save &amp; Update Status
+                {isSubmitting ? "Saving..." : "Save & Update Status"}
               </Button>
             </DialogFooter>
           </TabsContent>
 
           <TabsContent value="history" className="flex-1 overflow-auto pt-2">
-            {reversedNotes && reversedNotes.length > 0 ? (
+            {sortedNotes.length > 0 ? (
               <div className="space-y-4 max-h-[300px] overflow-y-auto pr-2">
-                {reversedNotes.map((note, index) => (
+                {sortedNotes.map((note, index) => (
                   <div
                     key={index}
                     className="p-4 bg-white rounded-lg border border-slate-200 shadow-sm"

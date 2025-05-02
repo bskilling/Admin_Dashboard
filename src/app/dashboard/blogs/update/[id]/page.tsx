@@ -92,7 +92,7 @@ export default function UpdateBlog({ params }: any) {
   useEffect(() => {
     if (isSuccess) {
       toast.success("Blog updated successfully");
-      router.replace(`/blogs/${params.id}`);
+      router.replace(`/dashboard/blogs/${params.id}`);
     }
   }, [isSuccess, params.id, router]);
 
