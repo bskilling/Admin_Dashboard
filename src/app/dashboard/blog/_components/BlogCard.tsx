@@ -21,7 +21,10 @@ export default function BlogCard({ blog }: BlogCardProps) {
       <div className="relative h-48 w-full">
         {blog.featuredImage ? (
           <Image
-            src={blog.featuredImage as string}
+            src={
+              // @ts-expect-error
+              blog.featuredImage as string
+            }
             alt={blog.title}
             fill
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"

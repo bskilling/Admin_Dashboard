@@ -55,18 +55,33 @@ export default function MetadataForm({ id }: { id: string }) {
   const [ogImage, setOgImage] = useState("");
 
   const queryClient = useQueryClient();
-  const { register, handleSubmit, setValue, reset, watch, formState } =
-    useForm<MetadataFormValues>({
-      resolver: zodResolver(draftMetaSchema),
-      defaultValues: {
-        robotsIndex: true,
-        robotsFollow: true,
-        courseId: id,
-        sitemapPriority: 0.5,
-      },
-    });
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    reset,
+    watch,
+    formState,
+    getValues,
+  } = useForm<MetadataFormValues>({
+    resolver: zodResolver(draftMetaSchema),
+    defaultValues: {
+      robotsIndex: true,
+      robotsFollow: true,
+      courseId: id,
+      sitemapPriority: 0.5,
+    },
+  });
   const errors = formState.errors;
   const isSubmitting = formState.isSubmitting;
+  console.log("check rendring outside");
+
+  useEffect(() => {
+    console.log("check rendring");
+    if (id) {
+      setValue("courseId", id);
+    }
+  }, [id]);
 
   // Fetch metadata from API
   const draftQuery = useQuery({
@@ -79,6 +94,8 @@ export default function MetadataForm({ id }: { id: string }) {
 
       reset({
         ...data,
+        courseId: id,
+        metaKeywords: data?.metaKeywords?.join(", ") || "",
         sitemapPriority: data?.sitemapPriority || 0.5,
       });
 
@@ -139,7 +156,26 @@ export default function MetadataForm({ id }: { id: string }) {
           </DialogDescription>
         </DialogHeader>
         <form
-          onSubmit={handleSubmit(onSubmit)}
+          onSubmit={(e) => {
+            e.preventDefault();
+            const allErrrors = draftMetaSchema.safeParse(watch())?.error;
+            const path =
+              draftMetaSchema.safeParse(watch())?.error?.errors?.[0]?.path;
+            const error =
+              draftMetaSchema.safeParse(watch())?.error?.errors?.[0]?.message;
+
+            if (path && error) {
+              toast.error(
+                `path: ${path}, message: ${error}, JSon : ${JSON.stringify({
+                  allErrrors: allErrrors,
+                })}`
+              );
+
+              return;
+            }
+
+            handleSubmit(onSubmit)();
+          }}
           className="p-4 grid grid-cols-2 gap-5"
         >
           {/* Basic Meta Section */}

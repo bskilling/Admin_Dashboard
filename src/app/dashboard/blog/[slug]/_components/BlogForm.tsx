@@ -9,11 +9,13 @@ import { z } from "zod";
 import { format } from "date-fns";
 import RichTextEditor from "./RichTextEditor";
 import Image from "next/image";
-import { toast } from "react-hot-toast";
+import { toast } from "sonner";
 import { useCategories } from "../../_components/useCategories";
 import { useTags } from "../../_components/useTags";
 import { useCreateBlog, useUpdateBlog } from "../../_components/useblog";
 import { Blog, BlogCategory, Tag } from "../../_components/types";
+import FileUploader from "@/app/dashboard/categories/add-course/draft/[id]/_components/FileUploader";
+import RelatedContents from "./RelatedContents";
 
 // Validation schema
 const blogFormSchema = z.object({
@@ -26,38 +28,79 @@ const blogFormSchema = z.object({
     .regex(
       /^[a-z0-9]+(?:-[a-z0-9]+)*$/,
       "Slug must contain only lowercase letters, numbers, and hyphens"
-    )
-    .optional(),
+    ),
   summary: z
     .string()
     .min(10, "Summary must be at least 10 characters")
     .max(500, "Summary is too long"),
   content: z.string().min(50, "Content must be at least 50 characters"),
-  categories: z.array(z.string()).min(1, "At least one category is required"),
-  tags: z.array(z.string()).optional(),
-  featuredImage: z.string().optional(),
+
+  author: z.string().optional(), // Assuming this will be ObjectId as string
+  adminUser: z.string().optional(), // Assuming this will be ObjectId as string
+  coAuthors: z.array(z.string()).optional(), // Array of ObjectIds
+  categories: z.array(z.string()).min(1, "At least one category is required"), // Array of ObjectIds
+  tags: z.array(z.string()).optional(), // Array of ObjectIds
+  featuredImage: z.string().optional(), // Assuming this will be ObjectId as string
   status: z.enum(["draft", "published", "archived", "scheduled"]),
   visibility: z.enum(["public", "private", "password_protected"]),
   password: z.string().optional(),
-  scheduledFor: z.string().optional(),
+  publishedAt: z.string().optional(), // Date as ISO string
+  scheduledFor: z.string().optional(), // Date as ISO string
   isTopPick: z.boolean().optional(),
   isFeatured: z.boolean().optional(),
   isPinned: z.boolean().optional(),
-  difficulty: z.enum(["beginner", "intermediate", "advanced"]).optional(),
+  relatedBlogs: z.array(z.string()).optional(), // Array of ObjectIds
+  relatedCourses: z.array(z.string()).optional(), // Array of ObjectIds
+
   seo: z.object({
-    metaTitle: z
-      .string()
-      .max(70, "Meta title should be 70 characters or less")
-      .optional(),
+    metaTitle: z.string().max(70, "Meta title should be 70 characters or less"),
     metaDescription: z
       .string()
-      .max(160, "Meta description should be 160 characters or less")
-      .optional(),
+      .max(160, "Meta description should be 160 characters or less"),
     keywords: z.array(z.string()).optional(),
+    ogImage: z.string().optional(), // ObjectId as string
+    canonicalUrl: z.string().url(),
     focusKeyword: z.string().optional(),
+    robots: z.string().optional(),
+    structuredData: z.any().optional(),
+    twitterCard: z
+      .enum(["summary", "summary_large_image", "app", "player"])
+      .optional(),
+    twitterCreator: z.string().optional(),
+    ogType: z.enum(["article", "website", "profile"]).optional(),
+    ogLocale: z.string().optional(),
+    schema: z
+      .object({
+        type: z.string().optional(),
+        data: z.any().optional(),
+      })
+      .optional(),
   }),
+  difficulty: z.enum(["beginner", "intermediate", "advanced"]).optional(),
+  language: z.string().optional(),
+  translations: z
+    .array(
+      z.object({
+        language: z.string(),
+        blogId: z.string(), // ObjectId as string
+      })
+    )
+    .optional(),
+  fileAttachments: z.array(z.string()).optional(), // Array of ObjectIds
+  lastUpdatedAt: z.string().optional(), // Date as ISO string
+  tableOfContents: z
+    .array(
+      z.object({
+        id: z.string(),
+        text: z.string(),
+        level: z.number(),
+      })
+    )
+    .optional(),
+  metadata: z.any().optional(),
 });
 
+// type BlogFormValues = z.infer<typeof blogFormSchema>;
 type BlogFormValues = z.infer<typeof blogFormSchema>;
 
 interface BlogFormProps {
@@ -70,7 +113,8 @@ const BlogForm: React.FC<BlogFormProps> = ({
   isEditing = false,
 }) => {
   const router = useRouter();
-
+  const [currentUrl, setCurrentUrl] = useState<string>("");
+  const [urls, setUrls] = useState<string[]>([]);
   // Get categories and tags for select inputs
   const { data: categoryData, isLoading: categoriesLoading } = useCategories();
   const { data: tagData, isLoading: tagsLoading } = useTags();
@@ -82,6 +126,7 @@ const BlogForm: React.FC<BlogFormProps> = ({
     handleSubmit,
     watch,
     setValue,
+    getValues,
     formState: { errors, isSubmitting },
   } = useForm<BlogFormValues>({
     resolver: zodResolver(blogFormSchema),
@@ -101,7 +146,7 @@ const BlogForm: React.FC<BlogFormProps> = ({
                 typeof tag === "string" ? tag : tag._id
               )
             : [],
-          featuredImage: initialData.featuredImage as string,
+          featuredImage: initialData.featuredImage?._id as string,
           status: initialData.status,
           visibility: initialData.visibility,
           password: initialData.password,
@@ -144,6 +189,10 @@ const BlogForm: React.FC<BlogFormProps> = ({
 
   // Auto-generate slug from title
   useEffect(() => {
+    if (initialData?.featuredImage?.viewUrl) {
+      setCurrentUrl(initialData.featuredImage?.viewUrl);
+    }
+
     if (title && !isEditing) {
       const slug = title
         .toLowerCase()
@@ -185,8 +234,10 @@ const BlogForm: React.FC<BlogFormProps> = ({
       };
 
       if (isEditing && initialData) {
+        // @ts-expect-error
         await updateBlogMutation.mutateAsync(blogData);
       } else {
+        // @ts-expect-error
         await createBlogMutation.mutateAsync(blogData);
       }
     } catch (error) {
@@ -231,7 +282,28 @@ const BlogForm: React.FC<BlogFormProps> = ({
   }
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
+    <form
+      onSubmit={(e) => {
+        e.preventDefault();
+        console.log("submitted");
+        const data = getValues();
+        // console.log(blogFormSchema.safeParse(data).error.);
+        const path = blogFormSchema.safeParse(data)?.error?.errors?.[0]?.path;
+        const error =
+          blogFormSchema.safeParse(data)?.error?.errors?.[0]?.message;
+        console.log("error", error);
+        if (error) {
+          toast.error(`${path} : ${error}`);
+          return;
+        }
+        handleSubmit((data) => {
+          console.log("data", data);
+
+          onSubmit(data);
+        })(e);
+      }}
+      className="space-y-8"
+    >
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Main content column */}
         <div className="lg:col-span-2 space-y-6">
@@ -315,6 +387,96 @@ const BlogForm: React.FC<BlogFormProps> = ({
                 {errors.content.message}
               </p>
             )}
+          </div>
+
+          {/* Related Contents */}
+          <RelatedContents control={control} initialData={initialData} />
+
+          {/* Advanced SEO Options */}
+          <div className="mt-6 space-y-4">
+            <div>
+              <label className="block text-sm font-medium mb-1">
+                Canonical URL
+              </label>
+              <input
+                type="text"
+                {...register("seo.canonicalUrl")}
+                className="w-full px-4 py-2 border rounded-lg"
+                placeholder="https://example.com/canonical-path"
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium mb-1">
+                Robots Meta
+              </label>
+              <input
+                type="text"
+                {...register("seo.robots")}
+                className="w-full px-4 py-2 border rounded-lg"
+                placeholder="index, follow"
+              />
+            </div>
+
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-medium mb-1">
+                  OG Type
+                </label>
+                <select
+                  {...register("seo.ogType")}
+                  className="w-full px-4 py-2 border rounded-lg"
+                >
+                  <option value="article">Article</option>
+                  <option value="website">Website</option>
+                  <option value="profile">Profile</option>
+                </select>
+              </div>
+              <div>
+                <label className="block text-sm font-medium mb-1">
+                  Twitter Card
+                </label>
+                <select
+                  {...register("seo.twitterCard")}
+                  className="w-full px-4 py-2 border rounded-lg"
+                >
+                  <option value="summary">Summary</option>
+                  <option value="summary_large_image">
+                    Summary Large Image
+                  </option>
+                  <option value="app">App</option>
+                  <option value="player">Player</option>
+                </select>
+              </div>
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium mb-1">
+                Twitter Creator
+              </label>
+              <input
+                type="text"
+                {...register("seo.twitterCreator")}
+                className="w-full px-4 py-2 border rounded-lg"
+                placeholder="@username"
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium mb-1">OG Image</label>
+              <FileUploader
+                setFileId={(id) => {
+                  if (!id) return;
+                  setValue("seo.ogImage", id);
+                }}
+                title="Upload OG Image"
+                id={watch("seo.ogImage")}
+                label="Upload Image"
+                setUrl={(url) => {
+                  /* Handle URL if needed */
+                }}
+              />
+            </div>
           </div>
         </div>
 
@@ -461,95 +623,122 @@ const BlogForm: React.FC<BlogFormProps> = ({
 
           {/* Categories & Tags */}
           <div className="bg-white p-6 border rounded-lg shadow-sm">
-            <h3 className="text-lg font-medium mb-4">Categories & Tags</h3>
+            <h3 className="text-lg font-semibold mb-6">Categories & Tags aa</h3>
 
             {/* Categories */}
-            <div className="mb-4">
-              <label
-                htmlFor="categories"
-                className="block text-sm font-medium mb-1"
-              >
+            <div className="mb-6">
+              <label className="block text-sm font-medium mb-2">
                 Categories <span className="text-red-500">*</span>
               </label>
               <Controller
                 control={control}
                 name="categories"
                 render={({ field }) => (
-                  <select
-                    multiple
-                    className="w-full px-4 py-2 border rounded-lg"
-                    value={field.value}
-                    onChange={(e) => {
-                      const options = Array.from(e.target.selectedOptions);
-                      field.onChange(options.map((option) => option.value));
-                    }}
-                  >
-                    {categoryData?.categories.map((category: BlogCategory) => (
-                      <option key={category._id} value={category._id}>
-                        {category.name}
-                      </option>
-                    ))}
-                  </select>
+                  <div className="flex flex-wrap gap-2">
+                    {categoryData?.categories.map((category: BlogCategory) => {
+                      const isSelected = field.value?.includes(category._id);
+                      return (
+                        <button
+                          type="button"
+                          key={category._id}
+                          onClick={() => {
+                            const newValue = isSelected
+                              ? field.value.filter(
+                                  (id: string) => id !== category._id
+                                )
+                              : [...(field.value || []), category._id];
+                            field.onChange(newValue);
+                          }}
+                          className={`px-3 py-1.5 rounded-full text-sm border transition ${
+                            isSelected
+                              ? "bg-blue-600 text-white border-blue-600"
+                              : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                          }`}
+                        >
+                          {category.name}
+                        </button>
+                      );
+                    })}
+                  </div>
                 )}
               />
               {errors.categories && (
-                <p className="mt-1 text-sm text-red-500">
+                <p className="mt-2 text-sm text-red-500">
                   {errors.categories.message}
                 </p>
               )}
-              <p className="mt-1 text-xs text-gray-500">
-                Hold Ctrl/Cmd to select multiple
-              </p>
             </div>
 
             {/* Tags */}
             <div>
-              <label htmlFor="tags" className="block text-sm font-medium mb-1">
-                Tags
-              </label>
+              <label className="block text-sm font-medium mb-2">Tags</label>
               <Controller
                 control={control}
                 name="tags"
                 render={({ field }) => (
-                  <select
-                    multiple
-                    className="w-full px-4 py-2 border rounded-lg"
-                    value={field.value || []}
-                    onChange={(e) => {
-                      const options = Array.from(e.target.selectedOptions);
-                      field.onChange(options.map((option) => option.value));
-                    }}
-                  >
-                    {tagData?.tags.map((tag: Tag) => (
-                      <option key={tag._id} value={tag._id}>
-                        {tag.name}
-                      </option>
-                    ))}
-                  </select>
+                  <div className="flex flex-wrap gap-2">
+                    {tagData?.tags.map((tag: Tag) => {
+                      const isSelected = field.value?.includes(tag._id);
+                      return (
+                        <button
+                          type="button"
+                          key={tag._id}
+                          onClick={() => {
+                            const newValue = isSelected
+                              ? // @ts-expect-error
+                                field.value.filter(
+                                  (id: string) => id !== tag._id
+                                )
+                              : [...(field.value || []), tag._id];
+                            field.onChange(newValue);
+                          }}
+                          className={`px-3 py-1.5 rounded-full text-sm border transition ${
+                            isSelected
+                              ? "bg-green-600 text-white border-green-600"
+                              : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                          }`}
+                        >
+                          {tag.name}
+                        </button>
+                      );
+                    })}
+                  </div>
                 )}
               />
-              // Continuing from the previous BlogForm component
               {errors.tags && (
-                <p className="mt-1 text-sm text-red-500">
+                <p className="mt-2 text-sm text-red-500">
                   {errors.tags.message}
                 </p>
               )}
-              <p className="mt-1 text-xs text-gray-500">
-                Hold Ctrl/Cmd to select multiple
-              </p>
             </div>
           </div>
 
           {/* Featured Image */}
           <div className="bg-white p-6 border rounded-lg shadow-sm">
-            <h3 className="text-lg font-medium mb-4">Featured Image</h3>
+            <h3 className="text-lg font-medium mb-4">Featured Image aaa</h3>
+            <FileUploader
+              setFileId={(id) => {
+                if (id) {
+                  setValue("featuredImage", id);
+                }
+              }}
+              title="Upload Featured Image"
+              id={watch("featuredImage")}
+              label="Upload Image"
+              setUrl={(url) => {
+                if (url) {
+                  setCurrentUrl(url);
+                }
+              }}
+              url={currentUrl}
+            />
 
             {/* Current image preview */}
             {watch("featuredImage") && (
               <div className="mb-4">
                 <div className="relative w-full h-40 rounded-lg overflow-hidden">
                   <img
-                    src={watch("featuredImage") ?? ""}
+                    src={currentUrl}
                     alt="Featured Image"
                     className="object-cover"
                   />

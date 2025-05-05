@@ -19,6 +19,7 @@ interface RichTextEditorProps {
   content: string;
   onChange: (content: string) => void;
   placeholder?: string;
+  onSubmit?: (e: React.FormEvent) => void;
 }
 
 const MenuBar = ({ editor }: { editor: any }) => {
@@ -90,17 +91,26 @@ const MenuBar = ({ editor }: { editor: any }) => {
     setShowTableModal(false);
   }, [editor, tableSize]);
 
+  // Prevent default to avoid form submission when clicking buttons
+  const handleButtonClick = (callback: () => void) => (e: React.MouseEvent) => {
+    e.preventDefault();
+    callback();
+  };
+
   return (
     <div className="border border-gray-300 rounded-t-lg">
       <div className="flex flex-wrap gap-1 p-2 border-b border-gray-300 bg-gray-50">
         {/* Text formatting */}
         <div className="flex gap-1 mr-2">
           <button
-            onClick={() => editor.chain().focus().toggleBold().run()}
+            onClick={handleButtonClick(() =>
+              editor.chain().focus().toggleBold().run()
+            )}
             className={`w-8 h-8 flex items-center justify-center rounded ${
               editor.isActive("bold") ? "bg-gray-200" : "hover:bg-gray-100"
             }`}
             title="Bold"
+            type="button"
           >
             <svg
               className="w-4 h-4"
@@ -118,11 +128,14 @@ const MenuBar = ({ editor }: { editor: any }) => {
           </button>
 
           <button
-            onClick={() => editor.chain().focus().toggleItalic().run()}
+            onClick={handleButtonClick(() =>
+              editor.chain().focus().toggleItalic().run()
+            )}
             className={`w-8 h-8 flex items-center justify-center rounded ${
               editor.isActive("italic") ? "bg-gray-200" : "hover:bg-gray-100"
             }`}
             title="Italic"
+            type="button"
           >
             <svg
               className="w-4 h-4"
@@ -151,11 +164,14 @@ const MenuBar = ({ editor }: { editor: any }) => {
           </button>
 
           <button
-            onClick={() => editor.chain().focus().toggleStrike().run()}
+            onClick={handleButtonClick(() =>
+              editor.chain().focus().toggleStrike().run()
+            )}
             className={`w-8 h-8 flex items-center justify-center rounded ${
               editor.isActive("strike") ? "bg-gray-200" : "hover:bg-gray-100"
             }`}
             title="Strikethrough"
+            type="button"
           >
             <svg
               className="w-4 h-4"
@@ -184,43 +200,46 @@ const MenuBar = ({ editor }: { editor: any }) => {
         {/* Headings */}
         <div className="flex gap-1 mr-2">
           <button
-            onClick={() =>
+            onClick={handleButtonClick(() =>
               editor.chain().focus().toggleHeading({ level: 1 }).run()
-            }
+            )}
             className={`px-2 h-8 flex items-center justify-center rounded ${
               editor.isActive("heading", { level: 1 })
                 ? "bg-gray-200"
                 : "hover:bg-gray-100"
             }`}
             title="Heading 1"
+            type="button"
           >
             H1
           </button>
 
           <button
-            onClick={() =>
+            onClick={handleButtonClick(() =>
               editor.chain().focus().toggleHeading({ level: 2 }).run()
-            }
+            )}
             className={`px-2 h-8 flex items-center justify-center rounded ${
               editor.isActive("heading", { level: 2 })
                 ? "bg-gray-200"
                 : "hover:bg-gray-100"
             }`}
             title="Heading 2"
+            type="button"
           >
             H2
           </button>
 
           <button
-            onClick={() =>
+            onClick={handleButtonClick(() =>
               editor.chain().focus().toggleHeading({ level: 3 }).run()
-            }
+            )}
             className={`px-2 h-8 flex items-center justify-center rounded ${
               editor.isActive("heading", { level: 3 })
                 ? "bg-gray-200"
                 : "hover:bg-gray-100"
             }`}
             title="Heading 3"
+            type="button"
           >
             H3
           </button>
@@ -231,13 +250,16 @@ const MenuBar = ({ editor }: { editor: any }) => {
         {/* Lists */}
         <div className="flex gap-1 mr-2">
           <button
-            onClick={() => editor.chain().focus().toggleBulletList().run()}
+            onClick={handleButtonClick(() =>
+              editor.chain().focus().toggleBulletList().run()
+            )}
             className={`w-8 h-8 flex items-center justify-center rounded ${
               editor.isActive("bulletList")
                 ? "bg-gray-200"
                 : "hover:bg-gray-100"
             }`}
             title="Bullet List"
+            type="button"
           >
             <svg
               className="w-4 h-4"
@@ -276,13 +298,16 @@ const MenuBar = ({ editor }: { editor: any }) => {
           </button>
 
           <button
-            onClick={() => editor.chain().focus().toggleOrderedList().run()}
+            onClick={handleButtonClick(() =>
+              editor.chain().focus().toggleOrderedList().run()
+            )}
             className={`w-8 h-8 flex items-center justify-center rounded ${
               editor.isActive("orderedList")
                 ? "bg-gray-200"
                 : "hover:bg-gray-100"
             }`}
             title="Ordered List"
+            type="button"
           >
             <svg
               className="w-4 h-4"
@@ -331,13 +356,16 @@ const MenuBar = ({ editor }: { editor: any }) => {
         {/* Alignment */}
         <div className="flex gap-1 mr-2">
           <button
-            onClick={() => editor.chain().focus().setTextAlign("left").run()}
+            onClick={handleButtonClick(() =>
+              editor.chain().focus().setTextAlign("left").run()
+            )}
             className={`w-8 h-8 flex items-center justify-center rounded ${
               editor.isActive({ textAlign: "left" })
                 ? "bg-gray-200"
                 : "hover:bg-gray-100"
             }`}
             title="Align Left"
+            type="button"
           >
             <svg
               className="w-4 h-4"
@@ -373,13 +401,16 @@ const MenuBar = ({ editor }: { editor: any }) => {
           </button>
 
           <button
-            onClick={() => editor.chain().focus().setTextAlign("center").run()}
+            onClick={handleButtonClick(() =>
+              editor.chain().focus().setTextAlign("center").run()
+            )}
             className={`w-8 h-8 flex items-center justify-center rounded ${
               editor.isActive({ textAlign: "center" })
                 ? "bg-gray-200"
                 : "hover:bg-gray-100"
             }`}
             title="Align Center"
+            type="button"
           >
             <svg
               className="w-4 h-4"
@@ -415,13 +446,16 @@ const MenuBar = ({ editor }: { editor: any }) => {
           </button>
 
           <button
-            onClick={() => editor.chain().focus().setTextAlign("right").run()}
+            onClick={handleButtonClick(() =>
+              editor.chain().focus().setTextAlign("right").run()
+            )}
             className={`w-8 h-8 flex items-center justify-center rounded ${
               editor.isActive({ textAlign: "right" })
                 ? "bg-gray-200"
                 : "hover:bg-gray-100"
             }`}
             title="Align Right"
+            type="button"
           >
             <svg
               className="w-4 h-4"
@@ -462,13 +496,16 @@ const MenuBar = ({ editor }: { editor: any }) => {
         {/* Block elements */}
         <div className="flex gap-1 mr-2">
           <button
-            onClick={() => editor.chain().focus().toggleBlockquote().run()}
+            onClick={handleButtonClick(() =>
+              editor.chain().focus().toggleBlockquote().run()
+            )}
             className={`w-8 h-8 flex items-center justify-center rounded ${
               editor.isActive("blockquote")
                 ? "bg-gray-200"
                 : "hover:bg-gray-100"
             }`}
             title="Blockquote"
+            type="button"
           >
             <svg
               className="w-4 h-4"
@@ -492,11 +529,14 @@ const MenuBar = ({ editor }: { editor: any }) => {
           </button>
 
           <button
-            onClick={() => editor.chain().focus().toggleCodeBlock().run()}
+            onClick={handleButtonClick(() =>
+              editor.chain().focus().toggleCodeBlock().run()
+            )}
             className={`w-8 h-8 flex items-center justify-center rounded ${
               editor.isActive("codeBlock") ? "bg-gray-200" : "hover:bg-gray-100"
             }`}
             title="Code Block"
+            type="button"
           >
             <svg
               className="w-4 h-4"
@@ -520,9 +560,12 @@ const MenuBar = ({ editor }: { editor: any }) => {
           </button>
 
           <button
-            onClick={() => editor.chain().focus().setHorizontalRule().run()}
+            onClick={handleButtonClick(() =>
+              editor.chain().focus().setHorizontalRule().run()
+            )}
             className="w-8 h-8 flex items-center justify-center rounded hover:bg-gray-100"
             title="Horizontal Rule"
+            type="button"
           >
             <svg
               className="w-4 h-4"
@@ -547,11 +590,12 @@ const MenuBar = ({ editor }: { editor: any }) => {
         {/* Special elements */}
         <div className="flex gap-1">
           <button
-            onClick={() => setShowLinkModal(true)}
+            onClick={handleButtonClick(() => setShowLinkModal(true))}
             className={`w-8 h-8 flex items-center justify-center rounded ${
               editor.isActive("link") ? "bg-gray-200" : "hover:bg-gray-100"
             }`}
             title="Add Link"
+            type="button"
           >
             <svg
               className="w-4 h-4"
@@ -575,9 +619,10 @@ const MenuBar = ({ editor }: { editor: any }) => {
           </button>
 
           <button
-            onClick={() => setShowImageModal(true)}
+            onClick={handleButtonClick(() => setShowImageModal(true))}
             className="w-8 h-8 flex items-center justify-center rounded hover:bg-gray-100"
             title="Add Image"
+            type="button"
           >
             <svg
               className="w-4 h-4"
@@ -614,9 +659,10 @@ const MenuBar = ({ editor }: { editor: any }) => {
           </button>
 
           <button
-            onClick={() => setShowTableModal(true)}
+            onClick={handleButtonClick(() => setShowTableModal(true))}
             className="w-8 h-8 flex items-center justify-center rounded hover:bg-gray-100"
             title="Add Table"
+            type="button"
           >
             <svg
               className="w-4 h-4"
@@ -658,14 +704,16 @@ const MenuBar = ({ editor }: { editor: any }) => {
           </div>
           <div className="flex justify-end gap-2">
             <button
-              onClick={() => setShowLinkModal(false)}
+              onClick={handleButtonClick(() => setShowLinkModal(false))}
               className="px-4 py-2 bg-gray-200 rounded-lg hover:bg-gray-300"
+              type="button"
             >
               Cancel
             </button>
             <button
-              onClick={setLink}
+              onClick={handleButtonClick(setLink)}
               className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
+              type="button"
             >
               Add
             </button>
@@ -689,14 +737,16 @@ const MenuBar = ({ editor }: { editor: any }) => {
           </div>
           <div className="flex justify-end gap-2">
             <button
-              onClick={() => setShowImageModal(false)}
+              onClick={handleButtonClick(() => setShowImageModal(false))}
               className="px-4 py-2 bg-gray-200 rounded-lg hover:bg-gray-300"
+              type="button"
             >
               Cancel
             </button>
             <button
-              onClick={addImage}
+              onClick={handleButtonClick(addImage)}
               className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
+              type="button"
             >
               Add
             </button>
@@ -744,14 +794,16 @@ const MenuBar = ({ editor }: { editor: any }) => {
           </div>
           <div className="flex justify-end gap-2">
             <button
-              onClick={() => setShowTableModal(false)}
+              onClick={handleButtonClick(() => setShowTableModal(false))}
               className="px-4 py-2 bg-gray-200 rounded-lg hover:bg-gray-300"
+              type="button"
             >
               Cancel
             </button>
             <button
-              onClick={addTable}
+              onClick={handleButtonClick(addTable)}
               className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
+              type="button"
             >
               Add
             </button>
@@ -766,10 +818,18 @@ const RichTextEditor: React.FC<RichTextEditorProps> = ({
   content,
   onChange,
   placeholder = "Start writing your blog post...",
+  onSubmit,
 }) => {
   const editor = useEditor({
     extensions: [
-      StarterKit,
+      StarterKit.configure({
+        heading: {
+          levels: [1, 2, 3],
+          HTMLAttributes: {
+            class: "font-sans font-bold my-4",
+          },
+        },
+      }),
       Placeholder.configure({
         placeholder,
       }),
@@ -781,12 +841,12 @@ const RichTextEditor: React.FC<RichTextEditorProps> = ({
       }),
       Image.configure({
         HTMLAttributes: {
-          class: "rounded-lg max-w-full",
+          class: "rounded-lg max-w-full my-4",
         },
       }),
       Table.configure({
         HTMLAttributes: {
-          class: "border-collapse table-auto w-full",
+          class: "border-collapse table-auto w-full my-4",
         },
       }),
       TableRow.configure({
@@ -806,7 +866,7 @@ const RichTextEditor: React.FC<RichTextEditorProps> = ({
       }),
       CodeBlock.configure({
         HTMLAttributes: {
-          class: "bg-gray-100 rounded-md p-4 font-mono text-sm",
+          class: "bg-gray-100 rounded-md p-4 font-mono text-sm my-4",
         },
       }),
       Highlight.configure({
@@ -831,8 +891,16 @@ const RichTextEditor: React.FC<RichTextEditorProps> = ({
     }
   }, [content, editor]);
 
+  // Prevent form submission
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (onSubmit) {
+      onSubmit(e);
+    }
+  };
+
   return (
-    <div className="relative">
+    <div className="relative" onSubmit={handleSubmit}>
       <MenuBar editor={editor} />
       <EditorContent
         editor={editor}
