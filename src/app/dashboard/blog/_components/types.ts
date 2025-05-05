@@ -70,6 +70,17 @@ export interface TableOfContentsEntry {
   level: number;
 }
 
+export interface relatedCourses {
+  _id: string;
+  title: string;
+  slug: string;
+  previewImage?: {
+    _id: string;
+    viewUrl: string;
+  };
+  description?: string;
+}
+
 export interface Blog {
   _id: string;
   title: string;
@@ -82,8 +93,10 @@ export interface Blog {
   coAuthors?: (string | Author)[];
   categories: (string | BlogCategory)[];
   tags: (string | Tag)[];
-  featuredImage?: string;
-  galleryImages?: string[];
+  featuredImage?: {
+    _id: string;
+    viewUrl: string;
+  };
   status: "draft" | "published" | "archived" | "scheduled";
   visibility: "public" | "private" | "password_protected";
   password?: string;
@@ -92,12 +105,13 @@ export interface Blog {
   isTopPick: boolean;
   isFeatured: boolean;
   isPinned: boolean;
-  relatedBlogs?: (string | Blog)[];
-  relatedCourses?: string[];
-  series?: {
-    seriesId: string;
-    order: number;
-  };
+  relatedBlogs?: {
+    _id: string;
+    title: string;
+    slug: string;
+  }[];
+  relatedCourses?: relatedCourses[];
+
   seo: {
     metaTitle: string;
     metaDescription: string;

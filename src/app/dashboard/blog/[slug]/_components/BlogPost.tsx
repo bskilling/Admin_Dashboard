@@ -393,7 +393,10 @@ export default function BlogPost({ slug }: BlogPostProps) {
       {blog.featuredImage && (
         <div className="w-full h-96 relative mb-10 rounded-lg overflow-hidden">
           <Image
-            src={blog.featuredImage as string}
+            src={
+              // @ts-expect-error
+              blog.featuredImage as string
+            }
             alt={blog.title}
             fill
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 85vw, 75vw"
@@ -423,7 +426,20 @@ export default function BlogPost({ slug }: BlogPostProps) {
 
       {/* Blog content */}
       <div
-        className="prose lg:prose-lg max-w-none"
+        className="[&>h1]:text-3xl [&>h1]:font-bold [&>h1]:mb-4 [&>h1]:mt-8
+               [&>h2]:text-2xl [&>h2]:font-bold [&>h2]:mb-3 [&>h2]:mt-6
+               [&>h3]:text-xl [&>h3]:font-bold [&>h3]:mb-2 [&>h3]:mt-4
+               [&>p]:mb-4 [&>p]:text-gray-700
+               [&>ul]:list-disc [&>ul]:pl-6 [&>ul]:mb-4
+               [&>ol]:list-decimal [&>ol]:pl-6 [&>ol]:mb-4
+               [&>a]:text-blue-600 [&>a]:underline [&>a:hover]:text-blue-800
+               [&>img]:my-4 [&>img]:rounded-lg [&>img]:max-w-full
+               [&>blockquote]:border-l-4 [&>blockquote]:border-gray-300 [&>blockquote]:pl-4 [&>blockquote]:italic [&>blockquote]:text-gray-600
+               [&>pre]:bg-gray-100 [&>pre]:p-4 [&>pre]:rounded [&>pre]:overflow-x-auto
+               [&>code]:bg-gray-100 [&>code]:px-1 [&>code]:rounded [&>code]:text-sm
+               [&>table]:w-full [&>table]:my-4 [&>table]:border-collapse
+               [&>th]:bg-gray-100 [&>th]:p-2 [&>th]:text-left [&>th]:border [&>th]:border-gray-300
+               [&>td]:p-2 [&>td]:border [&>td]:border-gray-300"
         dangerouslySetInnerHTML={{ __html: blog.content }}
       />
 
