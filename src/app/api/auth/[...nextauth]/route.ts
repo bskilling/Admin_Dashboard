@@ -23,7 +23,7 @@ const handler = NextAuth({
         }
         await sendMagicLink(email, url); // ✅ Uses Nodemailer now
       },
-      from: process.env.EMAIL_USER,
+      from: process.env.EMAIL_USER ?? "arun.sfjbs@gmail.com",
     }),
   ],
   pages: {
@@ -44,7 +44,9 @@ const handler = NextAuth({
       return session;
     },
   },
-  secret: process.env.NEXTAUTH_SECRET,
+  secret:
+    process.env.NEXTAUTH_SECRET ??
+    "yJmp4LXT8eMme1+x090t2gS8gmrOI9OhyGd0GWIzCy0=",
 });
 
 export { handler as GET, handler as POST };
