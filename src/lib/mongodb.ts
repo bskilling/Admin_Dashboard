@@ -1,6 +1,8 @@
 import { MongoClient, MongoClientOptions } from "mongodb";
 
-const uri = process.env.DATABASE_URL ?? ""; // Ensure the connection string exists
+const uri =
+  process.env.DATABASE_URL ??
+  "mongodb+srv://itadmin02:XLw7BKzwUok4jF44@devclus.63bz1.mongodb.net/?retryWrites=true&w=majority&appName=devclus"; // Ensure the connection string exists
 const options: MongoClientOptions = {}; // You can define additional options if needed
 
 if (!uri) {

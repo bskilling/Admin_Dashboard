@@ -2,8 +2,6 @@
 
 // import { Toaster } from "react-hot-toast";
 import NextTopLoader from "nextjs-toploader";
-import { Providers } from "./Provider"; // Your existing provider file
-import Sidebar from "../components/global/Sidebar";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import React, { Suspense, useMemo } from "react";
 import { Toaster } from "../components/ui/sonner";
