@@ -27,7 +27,8 @@ export interface Lead {
     category: {
       _id: string;
       name: string;
-    };
+      type: string;
+    }[];
   };
   notes: Note[];
   comment?: string;

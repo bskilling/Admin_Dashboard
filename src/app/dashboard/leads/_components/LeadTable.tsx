@@ -27,6 +27,7 @@ import { Lead } from "./types";
 import { getStatusColor, getTypeBadgeColor } from "./leadUtils";
 import { EmptyState, StatusBadge, TypeBadge } from "./LeadComponents";
 import LeadDetailDialog from "./LeadDetails";
+import { category } from "@/utils/list";
 
 interface LeadTableProps {
   leads: Lead[];
@@ -54,6 +55,25 @@ const LeadTable: React.FC<LeadTableProps> = ({
 }) => {
   const [selectedLead, setSelectedLead] = useState<Lead | null>(null);
   const [isDetailDialogOpen, setIsDetailDialogOpen] = useState(false);
+
+  function constructLink(
+    type: string,
+    slug: string,
+    category: Lead["course"]["category"]
+  ) {
+    if (type === "b2c" || type === "b2b") {
+      return `/course/${slug}`;
+    } else if (type === "b2g") {
+      const cat = category.find((c) => c.type === type);
+      if (cat?.name === "nasscom") {
+        return `/government-training-program/nasscom-future-skills/${slug}`;
+      }
+      if (cat?.name === "nsdc") {
+        return `/government-training-program/nsdc-future-skills/${slug}`;
+      }
+      return `/courses/${slug}`;
+    }
+  }
 
   if (leads.length === 0) {
     return (
@@ -146,7 +166,9 @@ const LeadTable: React.FC<LeadTableProps> = ({
                           variant="outline"
                           className="bg-slate-100 text-xs mb-2"
                         >
-                          {lead.course.category.name}
+                          {lead.course.category.map(
+                            (category) => category.name
+                          )}
                         </Badge>
                       )}
                       <p className="text-slate-700 text-sm line-clamp-2 mt-1">
@@ -287,7 +309,6 @@ const LeadTable: React.FC<LeadTableProps> = ({
           </div>
         </div>
       </div>
-      Lead Detail Dialog
       {selectedLead && (
         <LeadDetailDialog
           lead={selectedLead}

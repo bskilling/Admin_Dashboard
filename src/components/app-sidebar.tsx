@@ -39,7 +39,7 @@ const menuItems = [
   { title: "Lead Management", url: "/dashboard/leads", icon: Users },
   { title: "Edmingle Users", url: "/dashboard/edmingle-users", icon: Inbox },
   { title: "EMI Applications", url: "/dashboard/emi-leads", icon: Database },
-  { title: "Data Migration", url: "/dashboard/migration", icon: ArrowUpDown },
+  // { title: "Data Migration", url: "/dashboard/migration", icon: ArrowUpDown },
   {
     title: "Categories",
     url: "/dashboard/categories?type=b2c",

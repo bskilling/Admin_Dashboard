@@ -207,7 +207,7 @@ export function EmiLeadFilter({
             <SelectValue placeholder="Filter by status" />
           </SelectTrigger>
           <SelectContent>
-            {/* <SelectItem value="">All Statuses</SelectItem> */}
+            {/* <SelectItem value="rr">All Statuses</SelectItem> */}
             <SelectItem value="NEW">New</SelectItem>
             <SelectItem value="Attempted to Contact">
               Attempted to Contact
@@ -270,7 +270,7 @@ export function EmiLeadFilter({
                     <SelectValue placeholder="Select status" />
                   </SelectTrigger>
                   <SelectContent>
-                    {/* <SelectItem value="">All Statuses</SelectItem> */}
+                    {/* <SelectItem value="rr">All Statuses</SelectItem> */}
                     <SelectItem value="NEW">New</SelectItem>
                     <SelectItem value="Attempted to Contact">
                       Attempted to Contact
