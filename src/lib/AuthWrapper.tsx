@@ -13,6 +13,7 @@ export default function AuthWrapper({ children }: AuthWrapperProps) {
   const router = useRouter();
 
   useEffect(() => {
+    console.log(session, status);
     if (status === "unauthenticated") {
       router.push("/auth/signin"); // Redirect if not logged in
     }
