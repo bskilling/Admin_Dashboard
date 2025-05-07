@@ -132,7 +132,7 @@ const LeadFilter: React.FC<LeadFilterProps> = ({
                     <SelectValue placeholder="Select type" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="">All Types</SelectItem>
+                    <SelectItem value="rr">All Types</SelectItem>
                     {TYPE_OPTIONS.map((type) => (
                       <SelectItem key={type.value} value={type.value}>
                         {type.label}
@@ -157,7 +157,7 @@ const LeadFilter: React.FC<LeadFilterProps> = ({
                     <SelectValue placeholder="Select status" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="">All Statuses</SelectItem>
+                    <SelectItem value="rr">All Statuses</SelectItem>
                     {STATUS_OPTIONS.map((status) => (
                       <SelectItem key={status} value={status}>
                         {status}
@@ -182,7 +182,7 @@ const LeadFilter: React.FC<LeadFilterProps> = ({
                     <SelectValue placeholder="Select sub-category" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="">All Sub-Categories</SelectItem>
+                    <SelectItem value="rr">All Sub-Categories</SelectItem>
                     <SelectItem value="jobs">Jobs</SelectItem>
                     <SelectItem value="skills">Skills</SelectItem>
                   </SelectContent>
@@ -204,7 +204,7 @@ const LeadFilter: React.FC<LeadFilterProps> = ({
                     <SelectValue placeholder="Select category" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="">All Categories</SelectItem>
+                    <SelectItem value="rr">All Categories</SelectItem>
                     {/* This would be populated from API */}
                     <SelectItem value="cat1">Web Development</SelectItem>
                     <SelectItem value="cat2">Data Science</SelectItem>

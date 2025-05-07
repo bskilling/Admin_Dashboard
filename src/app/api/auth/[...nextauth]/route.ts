@@ -127,7 +127,9 @@ const handler = NextAuth({
     strategy: "jwt",
     maxAge: 30 * 24 * 60 * 60, // 30 days
   },
-  secret: process.env.NEXTAUTH_SECRET,
+  secret:
+    process.env.NEXTAUTH_SECRET ??
+    "yJmp4LXT8eMme1+x090t2gS8gmrOI9OhyGd0GWIzCy0=",
   pages: {
     signIn: "/admin/login",
     error: "/admin/login",
