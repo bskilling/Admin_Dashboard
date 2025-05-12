@@ -1,5 +1,3 @@
-import AuthWrapper from "@/lib/AuthWrapper";
-
 export default function DashboardLayout({
   children,
 }: {

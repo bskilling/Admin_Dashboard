@@ -1,17 +1,11 @@
 "use client";
 
 import React, { Suspense } from "react";
-import Link from "next/link";
-import { BiLogOut } from "react-icons/bi";
 import { IoIosAdd } from "react-icons/io";
 import { FaFilter } from "react-icons/fa6";
 import { motion } from "framer-motion";
-import { AiOutlineDashboard } from "react-icons/ai";
-import { MdOutlineLibraryBooks } from "react-icons/md";
-import { HiOutlineUserGroup } from "react-icons/hi";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
-import AuthWrapper from "@/lib/AuthWrapper";
 
 export default function Dashboard() {
   const router = useRouter();
