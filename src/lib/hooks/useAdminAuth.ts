@@ -1,6 +1,6 @@
 // hooks/useAdminAuth.ts
-import { useSession } from "next-auth/react";
-import { AdminRole } from "@/models/AdminUser";
+import { useSession } from 'next-auth/react';
+import { AdminRole } from '@/models/AdminUser';
 
 export const useAdminAuth = () => {
   const { data: session, status } = useSession();
@@ -12,6 +12,6 @@ export const useAdminAuth = () => {
     user: session?.user,
     isAdmin,
     isSuperAdmin,
-    isLoading: status === "loading",
+    isLoading: status === 'loading',
   };
 };

@@ -1,20 +1,20 @@
-"use client";
+'use client';
 
-import Image from "next/image";
-import { motion } from "framer-motion";
-import { cn } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
-import { ICourse } from "./types";
+import Image from 'next/image';
+import { motion } from 'framer-motion';
+import { cn } from '@/lib/utils';
+import { Button } from '@/components/ui/button';
+import { ICourse } from './types';
 import {
   AcademicCapIcon,
   DocumentTextIcon,
   ClockIcon,
   BookOpenIcon,
   ShieldCheckIcon,
-} from "@heroicons/react/24/solid";
+} from '@heroicons/react/24/solid';
 
 interface HeroSectionProps {
-  category?: ICourse["category"];
+  category?: ICourse['category'];
   title: string;
   description: string;
   bannerImage: string;

@@ -1,13 +1,13 @@
 /* eslint-disable @next/next/no-img-element */
-import { Calendar, Clock } from "lucide-react";
-import { BiSolidCertification } from "react-icons/bi";
-import { FaChalkboardTeacher } from "react-icons/fa";
-import { format } from "date-fns";
+import { Calendar, Clock } from 'lucide-react';
+import { BiSolidCertification } from 'react-icons/bi';
+import { FaChalkboardTeacher } from 'react-icons/fa';
+import { format } from 'date-fns';
 
 interface CourseDetailsProps {
   durationHours: number;
   enrolledStudents?: number;
-  trainingMode: "Online" | "Offline" | "Hybrid";
+  trainingMode: 'Online' | 'Offline' | 'Hybrid';
   enrollmentStart: string;
   enrollmentEnd: string;
   certification?: {
@@ -39,9 +39,7 @@ const CourseDetails: React.FC<CourseDetailsProps> = ({
           <Calendar className="w-7 h-7 text-green-500" />
           <div>
             <p className="font-semibold text-gray-800">Enrolled Students</p>
-            <p className="text-gray-600 text-lg">
-              {enrolledStudents}+ Students
-            </p>
+            <p className="text-gray-600 text-lg">{enrolledStudents}+ Students</p>
           </div>
         </div>
 
@@ -58,10 +56,8 @@ const CourseDetails: React.FC<CourseDetailsProps> = ({
           <div>
             <p className="font-semibold text-gray-800">Enrollment Period</p>
             <p className="text-gray-600 text-lg">
-              {enrollmentStart &&
-                format(new Date(enrollmentStart), "dd MMM yyyy")}{" "}
-              -{" "}
-              {enrollmentEnd && format(new Date(enrollmentEnd), "dd MMM yyyy")}
+              {enrollmentStart && format(new Date(enrollmentStart), 'dd MMM yyyy')} -{' '}
+              {enrollmentEnd && format(new Date(enrollmentEnd), 'dd MMM yyyy')}
             </p>
           </div>
         </div>
@@ -74,13 +70,11 @@ const CourseDetails: React.FC<CourseDetailsProps> = ({
           Certification
         </p>
         {certification?.title && (
-          <p className="font-semibold text-lg mt-2 text-gray-700">
-            {certification.title}
-          </p>
+          <p className="font-semibold text-lg mt-2 text-gray-700">{certification.title}</p>
         )}
         <p className="text-gray-600 text-sm mt-3">
-          Completing this course grants an industry-recognized certification to
-          enhance your professional skills.
+          Completing this course grants an industry-recognized certification to enhance your
+          professional skills.
         </p>
         <img
           src="/assets/certificate.png"

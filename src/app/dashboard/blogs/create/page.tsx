@@ -1,14 +1,14 @@
-"use client";
-import React, { Suspense, useEffect, useMemo, useState } from "react";
-import "react-quill/dist/quill.snow.css";
-import dynamic from "next/dynamic";
-import { useCreateBlogMutation } from "@/redux/features/blog/blogApi";
-import toast from "react-hot-toast";
-import { getCookie } from "@/utils/AuthUser";
-import Protected from "@/app/hooks/useProtected";
-import { ThreeCircles } from "react-loader-spinner";
-import { useUploadImageMutation } from "@/redux/features/upload/uploadApi";
-import Image from "next/image";
+'use client';
+import React, { Suspense, useEffect, useMemo, useState } from 'react';
+import 'react-quill/dist/quill.snow.css';
+import dynamic from 'next/dynamic';
+import { useCreateBlogMutation } from '@/redux/features/blog/blogApi';
+import toast from 'react-hot-toast';
+import { getCookie } from '@/utils/AuthUser';
+import Protected from '@/app/hooks/useProtected';
+import { ThreeCircles } from 'react-loader-spinner';
+import { useUploadImageMutation } from '@/redux/features/upload/uploadApi';
+import Image from 'next/image';
 
 export default function Page() {
   const [isImageLoading, setIsImageLoading] = useState(false);
@@ -17,34 +17,18 @@ export default function Page() {
   const [createBlog, { isLoading, isSuccess, error }] = useCreateBlogMutation();
   const [
     uploadImage,
-    {
-      isLoading: uploadLoading,
-      isSuccess: isUploadSuccess,
-      error: uploadError,
-    },
+    { isLoading: uploadLoading, isSuccess: isUploadSuccess, error: uploadError },
   ] = useUploadImageMutation();
-  const ReactQuill = useMemo(
-    () => dynamic(() => import("react-quill"), { ssr: false }),
-    []
-  );
+  const ReactQuill = useMemo(() => dynamic(() => import('react-quill'), { ssr: false }), []);
 
   const modules = {
     toolbar: [
-      [
-        { header: "1" },
-        { header: "2" },
-        { font: ["arial", "comic-sans", "georgia"] },
-      ],
+      [{ header: '1' }, { header: '2' }, { font: ['arial', 'comic-sans', 'georgia'] }],
       [{ size: [] }],
-      ["bold", "italic", "underline", "strike", "script", "blockquote"],
-      [
-        { list: "ordered" },
-        { list: "bullet" },
-        { indent: "-1" },
-        { indent: "+1" },
-      ],
-      ["link", "image", "video", "code-block", "formula"],
-      ["clean"],
+      ['bold', 'italic', 'underline', 'strike', 'script', 'blockquote'],
+      [{ list: 'ordered' }, { list: 'bullet' }, { indent: '-1' }, { indent: '+1' }],
+      ['link', 'image', 'video', 'code-block', 'formula'],
+      ['clean'],
     ],
     clipboard: {
       matchVisual: false,
@@ -53,42 +37,42 @@ export default function Page() {
 
   // Formats objects for setting up the Quill editor
   const formats = [
-    "header",
-    "font",
-    "size",
-    "bold",
-    "italic",
-    "underline",
-    "align",
-    "strike",
-    "script",
-    "blockquote",
-    "background",
-    "list",
-    "bullet",
-    "indent",
-    "link",
-    "image",
-    "color",
-    "code-block",
+    'header',
+    'font',
+    'size',
+    'bold',
+    'italic',
+    'underline',
+    'align',
+    'strike',
+    'script',
+    'blockquote',
+    'background',
+    'list',
+    'bullet',
+    'indent',
+    'link',
+    'image',
+    'color',
+    'code-block',
   ];
 
   const [formData, setFormData] = useState({
-    userId: "",
-    title: "",
-    content: "",
-    banner: "",
+    userId: '',
+    title: '',
+    content: '',
+    banner: '',
   });
 
   useEffect(() => {
     if (isSuccess) {
-      toast.success("Course created successfully");
+      toast.success('Course created successfully');
     }
   }, [isSuccess]);
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
-    const userData = JSON.parse(getCookie("user") as string);
+    const userData = JSON.parse(getCookie('user') as string);
     if (userData.id) {
       const updatedFormData = {
         ...formData,
@@ -97,16 +81,14 @@ export default function Page() {
       if (formData.title && formData?.content) {
         await createBlog(updatedFormData);
       } else {
-        toast.error("please provide a title and content");
+        toast.error('please provide a title and content');
       }
     } else {
-      toast.error("user not found, Login to access this section");
+      toast.error('user not found, Login to access this section');
     }
   };
 
-  const handleImageInputChange = async (
-    e: React.ChangeEvent<HTMLInputElement>
-  ) => {
+  const handleImageInputChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
     if (files && files.length > 0) {
       setIsImageLoading(true);
@@ -114,10 +96,10 @@ export default function Page() {
 
       if (file) {
         const formData = new FormData();
-        formData.append("file", file);
+        formData.append('file', file);
 
         const data = await uploadImage(formData);
-        setFormData((prev) => ({
+        setFormData(prev => ({
           ...prev,
           banner: data.data.url,
         }));
@@ -146,10 +128,10 @@ export default function Page() {
 
       if (file) {
         const formData = new FormData();
-        formData.append("file", file);
+        formData.append('file', file);
 
         const data = await uploadImage(formData);
-        setFormData((prev) => ({
+        setFormData(prev => ({
           ...prev,
           banner: data.data.url,
         }));
@@ -177,19 +159,14 @@ export default function Page() {
               <label
                 htmlFor="banner"
                 className={`w-full min-h-[10vh] dark:border-white border-[#00000026] p-3 border flex items-center justify-center hover:cursor-pointer ${
-                  dragging ? "bg-blue-500" : "bg-transparent"
+                  dragging ? 'bg-blue-500' : 'bg-transparent'
                 }`}
                 onDragOver={handleDragOver}
                 onDragLeave={handleDragLeave}
                 onDrop={handleDrop}
               >
                 {formData?.banner ? (
-                  <Image
-                    src={formData?.banner}
-                    alt=""
-                    width={400}
-                    height={300}
-                  />
+                  <Image src={formData?.banner} alt="" width={400} height={300} />
                 ) : (
                   <span className="text-black dark:text-white border-dotted">
                     Drag and drop your thumbnail here or click to browse
@@ -205,9 +182,7 @@ export default function Page() {
                 required
                 id="title"
                 className="px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:border-blue-500"
-                onChange={(e) =>
-                  setFormData({ ...formData, title: e.target.value })
-                }
+                onChange={e => setFormData({ ...formData, title: e.target.value })}
               />
 
               <ReactQuill
@@ -217,7 +192,7 @@ export default function Page() {
                 formats={formats}
                 placeholder="Write something awesome..."
                 value={formData.content}
-                onChange={(value) => {
+                onChange={value => {
                   setFormData({ ...formData, content: value });
                 }}
               />
@@ -236,7 +211,7 @@ export default function Page() {
                       ariaLabel="three-circles-loading"
                     />
                   ) : (
-                    "Publish"
+                    'Publish'
                   )}
                 </button>
               </div>

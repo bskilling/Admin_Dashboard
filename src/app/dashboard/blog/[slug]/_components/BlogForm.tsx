@@ -1,48 +1,45 @@
 // components/blog/BlogForm.tsx
-"use client";
+'use client';
 
-import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
-import { useForm, Controller } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
-import { format } from "date-fns";
-import RichTextEditor from "./RichTextEditor";
-import Image from "next/image";
-import { toast } from "sonner";
-import { useCategories } from "../../_components/useCategories";
-import { useTags } from "../../_components/useTags";
-import { useCreateBlog, useUpdateBlog } from "../../_components/useblog";
-import { Blog, BlogCategory, Tag } from "../../_components/types";
-import FileUploader from "@/app/dashboard/categories/add-course/draft/[id]/_components/FileUploader";
-import RelatedContents from "./RelatedContents";
+import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+import { useForm, Controller } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { z } from 'zod';
+import { format } from 'date-fns';
+import RichTextEditor from './RichTextEditor';
+import Image from 'next/image';
+import { toast } from 'sonner';
+import { useCategories } from '../../_components/useCategories';
+import { useTags } from '../../_components/useTags';
+import { useCreateBlog, useUpdateBlog } from '../../_components/useblog';
+import { Blog, BlogCategory, Tag } from '../../_components/types';
+import FileUploader from '@/app/dashboard/categories/add-course/draft/[id]/_components/FileUploader';
+import RelatedContents from './RelatedContents';
 
 // Validation schema
 const blogFormSchema = z.object({
-  title: z
-    .string()
-    .min(3, "Title must be at least 3 characters")
-    .max(200, "Title is too long"),
+  title: z.string().min(3, 'Title must be at least 3 characters').max(200, 'Title is too long'),
   slug: z
     .string()
     .regex(
       /^[a-z0-9]+(?:-[a-z0-9]+)*$/,
-      "Slug must contain only lowercase letters, numbers, and hyphens"
+      'Slug must contain only lowercase letters, numbers, and hyphens'
     ),
   summary: z
     .string()
-    .min(10, "Summary must be at least 10 characters")
-    .max(500, "Summary is too long"),
-  content: z.string().min(50, "Content must be at least 50 characters"),
+    .min(10, 'Summary must be at least 10 characters')
+    .max(500, 'Summary is too long'),
+  content: z.string().min(50, 'Content must be at least 50 characters'),
 
   author: z.string().optional(), // Assuming this will be ObjectId as string
   adminUser: z.string().optional(), // Assuming this will be ObjectId as string
   coAuthors: z.array(z.string()).optional(), // Array of ObjectIds
-  categories: z.array(z.string()).min(1, "At least one category is required"), // Array of ObjectIds
+  categories: z.array(z.string()).min(1, 'At least one category is required'), // Array of ObjectIds
   tags: z.array(z.string()).optional(), // Array of ObjectIds
   featuredImage: z.string().optional(), // Assuming this will be ObjectId as string
-  status: z.enum(["draft", "published", "archived", "scheduled"]),
-  visibility: z.enum(["public", "private", "password_protected"]),
+  status: z.enum(['draft', 'published', 'archived', 'scheduled']),
+  visibility: z.enum(['public', 'private', 'password_protected']),
   password: z.string().optional(),
   publishedAt: z.string().optional(), // Date as ISO string
   scheduledFor: z.string().optional(), // Date as ISO string
@@ -53,21 +50,17 @@ const blogFormSchema = z.object({
   relatedCourses: z.array(z.string()).optional(), // Array of ObjectIds
 
   seo: z.object({
-    metaTitle: z.string().max(70, "Meta title should be 70 characters or less"),
-    metaDescription: z
-      .string()
-      .max(160, "Meta description should be 160 characters or less"),
+    metaTitle: z.string().max(70, 'Meta title should be 70 characters or less'),
+    metaDescription: z.string().max(160, 'Meta description should be 160 characters or less'),
     keywords: z.array(z.string()).optional(),
     ogImage: z.string().optional(), // ObjectId as string
     canonicalUrl: z.string().url(),
     focusKeyword: z.string().optional(),
     robots: z.string().optional(),
     structuredData: z.any().optional(),
-    twitterCard: z
-      .enum(["summary", "summary_large_image", "app", "player"])
-      .optional(),
+    twitterCard: z.enum(['summary', 'summary_large_image', 'app', 'player']).optional(),
     twitterCreator: z.string().optional(),
-    ogType: z.enum(["article", "website", "profile"]).optional(),
+    ogType: z.enum(['article', 'website', 'profile']).optional(),
     ogLocale: z.string().optional(),
     schema: z
       .object({
@@ -76,7 +69,7 @@ const blogFormSchema = z.object({
       })
       .optional(),
   }),
-  difficulty: z.enum(["beginner", "intermediate", "advanced"]).optional(),
+  difficulty: z.enum(['beginner', 'intermediate', 'advanced']).optional(),
   language: z.string().optional(),
   translations: z
     .array(
@@ -108,12 +101,9 @@ interface BlogFormProps {
   isEditing?: boolean;
 }
 
-const BlogForm: React.FC<BlogFormProps> = ({
-  initialData,
-  isEditing = false,
-}) => {
+const BlogForm: React.FC<BlogFormProps> = ({ initialData, isEditing = false }) => {
   const router = useRouter();
-  const [currentUrl, setCurrentUrl] = useState<string>("");
+  const [currentUrl, setCurrentUrl] = useState<string>('');
   const [urls, setUrls] = useState<string[]>([]);
   // Get categories and tags for select inputs
   const { data: categoryData, isLoading: categoriesLoading } = useCategories();
@@ -137,14 +127,12 @@ const BlogForm: React.FC<BlogFormProps> = ({
           summary: initialData.summary,
           content: initialData.content,
           categories: Array.isArray(initialData.categories)
-            ? initialData.categories.map((category) =>
-                typeof category === "string" ? category : category._id
+            ? initialData.categories.map(category =>
+                typeof category === 'string' ? category : category._id
               )
             : [],
           tags: Array.isArray(initialData.tags)
-            ? initialData.tags.map((tag) =>
-                typeof tag === "string" ? tag : tag._id
-              )
+            ? initialData.tags.map(tag => (typeof tag === 'string' ? tag : tag._id))
             : [],
           featuredImage: initialData.featuredImage?._id as string,
           status: initialData.status,
@@ -159,33 +147,32 @@ const BlogForm: React.FC<BlogFormProps> = ({
           difficulty: initialData.difficulty,
           seo: {
             metaTitle: initialData.seo?.metaTitle || initialData.title,
-            metaDescription:
-              initialData.seo?.metaDescription || initialData.summary,
+            metaDescription: initialData.seo?.metaDescription || initialData.summary,
             keywords: initialData.seo?.keywords || [],
             focusKeyword: initialData.seo?.focusKeyword,
           },
         }
       : {
-          title: "",
-          summary: "",
-          content: "",
+          title: '',
+          summary: '',
+          content: '',
           categories: [],
           tags: [],
-          status: "draft",
-          visibility: "public",
+          status: 'draft',
+          visibility: 'public',
           seo: {
-            metaTitle: "",
-            metaDescription: "",
+            metaTitle: '',
+            metaDescription: '',
             keywords: [],
-            focusKeyword: "",
+            focusKeyword: '',
           },
         },
   });
 
   // Watch form values for dynamic updates
-  const title = watch("title");
-  const status = watch("status");
-  const visibility = watch("visibility");
+  const title = watch('title');
+  const status = watch('status');
+  const visibility = watch('visibility');
 
   // Auto-generate slug from title
   useEffect(() => {
@@ -196,30 +183,30 @@ const BlogForm: React.FC<BlogFormProps> = ({
     if (title && !isEditing) {
       const slug = title
         .toLowerCase()
-        .replace(/[^\w\s-]/g, "")
-        .replace(/\s+/g, "-")
-        .replace(/-+/g, "-");
+        .replace(/[^\w\s-]/g, '')
+        .replace(/\s+/g, '-')
+        .replace(/-+/g, '-');
 
-      setValue("slug", slug);
+      setValue('slug', slug);
 
       // Also update SEO title if not manually set
-      if (!watch("seo.metaTitle")) {
-        setValue("seo.metaTitle", title);
+      if (!watch('seo.metaTitle')) {
+        setValue('seo.metaTitle', title);
       }
     }
   }, [title, setValue, watch, isEditing]);
 
   // Update SEO summary when blog summary changes
   useEffect(() => {
-    const summary = watch("summary");
-    if (summary && !watch("seo.metaDescription")) {
-      setValue("seo.metaDescription", summary);
+    const summary = watch('summary');
+    if (summary && !watch('seo.metaDescription')) {
+      setValue('seo.metaDescription', summary);
     }
   }, [watch, setValue]);
 
   // Mutations for creating and updating blogs
   const createBlogMutation = useCreateBlog();
-  const updateBlogMutation = useUpdateBlog(initialData?._id || "");
+  const updateBlogMutation = useUpdateBlog(initialData?._id || '');
 
   // Handle form submission
   const onSubmit = async (data: BlogFormValues) => {
@@ -228,9 +215,7 @@ const BlogForm: React.FC<BlogFormProps> = ({
       const blogData = {
         ...data,
         // Convert scheduled date to ISO string if exists
-        scheduledFor: data.scheduledFor
-          ? new Date(data.scheduledFor).toISOString()
-          : undefined,
+        scheduledFor: data.scheduledFor ? new Date(data.scheduledFor).toISOString() : undefined,
       };
 
       if (isEditing && initialData) {
@@ -241,8 +226,8 @@ const BlogForm: React.FC<BlogFormProps> = ({
         await createBlogMutation.mutateAsync(blogData);
       }
     } catch (error) {
-      console.error("Error saving blog:", error);
-      toast.error("Failed to save blog");
+      console.error('Error saving blog:', error);
+      toast.error('Failed to save blog');
     }
   };
 
@@ -258,17 +243,17 @@ const BlogForm: React.FC<BlogFormProps> = ({
 
     // Create FormData for file upload
     const formData = new FormData();
-    formData.append("file", file);
+    formData.append('file', file);
 
     try {
       // In a real app, you would upload to your API
       // This is a placeholder for actual upload functionality
-      toast.error("Image upload functionality needs to be implemented");
+      toast.error('Image upload functionality needs to be implemented');
       // After upload succeeds, set the image URL:
       // setValue('featuredImage', response.data.url);
     } catch (error) {
-      console.error("Error uploading image:", error);
-      toast.error("Failed to upload image");
+      console.error('Error uploading image:', error);
+      toast.error('Failed to upload image');
     }
   };
 
@@ -283,21 +268,20 @@ const BlogForm: React.FC<BlogFormProps> = ({
 
   return (
     <form
-      onSubmit={(e) => {
+      onSubmit={e => {
         e.preventDefault();
-        console.log("submitted");
+        console.log('submitted');
         const data = getValues();
         // console.log(blogFormSchema.safeParse(data).error.);
         const path = blogFormSchema.safeParse(data)?.error?.errors?.[0]?.path;
-        const error =
-          blogFormSchema.safeParse(data)?.error?.errors?.[0]?.message;
-        console.log("error", error);
+        const error = blogFormSchema.safeParse(data)?.error?.errors?.[0]?.message;
+        console.log('error', error);
         if (error) {
           toast.error(`${path} : ${error}`);
           return;
         }
-        handleSubmit((data) => {
-          console.log("data", data);
+        handleSubmit(data => {
+          console.log('data', data);
 
           onSubmit(data);
         })(e);
@@ -315,15 +299,11 @@ const BlogForm: React.FC<BlogFormProps> = ({
             <input
               id="title"
               type="text"
-              {...register("title")}
+              {...register('title')}
               className="w-full px-4 py-2 border rounded-lg"
               placeholder="Your blog title"
             />
-            {errors.title && (
-              <p className="mt-1 text-sm text-red-500">
-                {errors.title.message}
-              </p>
-            )}
+            {errors.title && <p className="mt-1 text-sm text-red-500">{errors.title.message}</p>}
           </div>
 
           {/* Slug */}
@@ -338,14 +318,12 @@ const BlogForm: React.FC<BlogFormProps> = ({
               <input
                 id="slug"
                 type="text"
-                {...register("slug")}
+                {...register('slug')}
                 className="w-full px-4 py-2 border rounded-r-lg"
                 placeholder="your-blog-title"
               />
             </div>
-            {errors.slug && (
-              <p className="mt-1 text-sm text-red-500">{errors.slug.message}</p>
-            )}
+            {errors.slug && <p className="mt-1 text-sm text-red-500">{errors.slug.message}</p>}
           </div>
 
           {/* Summary */}
@@ -355,15 +333,13 @@ const BlogForm: React.FC<BlogFormProps> = ({
             </label>
             <textarea
               id="summary"
-              {...register("summary")}
+              {...register('summary')}
               rows={3}
               className="w-full px-4 py-2 border rounded-lg"
               placeholder="A brief summary of your blog post"
             />
             {errors.summary && (
-              <p className="mt-1 text-sm text-red-500">
-                {errors.summary.message}
-              </p>
+              <p className="mt-1 text-sm text-red-500">{errors.summary.message}</p>
             )}
           </div>
 
@@ -376,16 +352,11 @@ const BlogForm: React.FC<BlogFormProps> = ({
               name="content"
               control={control}
               render={({ field }) => (
-                <RichTextEditor
-                  content={field.value}
-                  onChange={field.onChange}
-                />
+                <RichTextEditor content={field.value} onChange={field.onChange} />
               )}
             />
             {errors.content && (
-              <p className="mt-1 text-sm text-red-500">
-                {errors.content.message}
-              </p>
+              <p className="mt-1 text-sm text-red-500">{errors.content.message}</p>
             )}
           </div>
 
@@ -395,24 +366,20 @@ const BlogForm: React.FC<BlogFormProps> = ({
           {/* Advanced SEO Options */}
           <div className="mt-6 space-y-4">
             <div>
-              <label className="block text-sm font-medium mb-1">
-                Canonical URL
-              </label>
+              <label className="block text-sm font-medium mb-1">Canonical URL</label>
               <input
                 type="text"
-                {...register("seo.canonicalUrl")}
+                {...register('seo.canonicalUrl')}
                 className="w-full px-4 py-2 border rounded-lg"
                 placeholder="https://example.com/canonical-path"
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium mb-1">
-                Robots Meta
-              </label>
+              <label className="block text-sm font-medium mb-1">Robots Meta</label>
               <input
                 type="text"
-                {...register("seo.robots")}
+                {...register('seo.robots')}
                 className="w-full px-4 py-2 border rounded-lg"
                 placeholder="index, follow"
               />
@@ -420,30 +387,21 @@ const BlogForm: React.FC<BlogFormProps> = ({
 
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium mb-1">
-                  OG Type
-                </label>
-                <select
-                  {...register("seo.ogType")}
-                  className="w-full px-4 py-2 border rounded-lg"
-                >
+                <label className="block text-sm font-medium mb-1">OG Type</label>
+                <select {...register('seo.ogType')} className="w-full px-4 py-2 border rounded-lg">
                   <option value="article">Article</option>
                   <option value="website">Website</option>
                   <option value="profile">Profile</option>
                 </select>
               </div>
               <div>
-                <label className="block text-sm font-medium mb-1">
-                  Twitter Card
-                </label>
+                <label className="block text-sm font-medium mb-1">Twitter Card</label>
                 <select
-                  {...register("seo.twitterCard")}
+                  {...register('seo.twitterCard')}
                   className="w-full px-4 py-2 border rounded-lg"
                 >
                   <option value="summary">Summary</option>
-                  <option value="summary_large_image">
-                    Summary Large Image
-                  </option>
+                  <option value="summary_large_image">Summary Large Image</option>
                   <option value="app">App</option>
                   <option value="player">Player</option>
                 </select>
@@ -451,12 +409,10 @@ const BlogForm: React.FC<BlogFormProps> = ({
             </div>
 
             <div>
-              <label className="block text-sm font-medium mb-1">
-                Twitter Creator
-              </label>
+              <label className="block text-sm font-medium mb-1">Twitter Creator</label>
               <input
                 type="text"
-                {...register("seo.twitterCreator")}
+                {...register('seo.twitterCreator')}
                 className="w-full px-4 py-2 border rounded-lg"
                 placeholder="@username"
               />
@@ -465,14 +421,14 @@ const BlogForm: React.FC<BlogFormProps> = ({
             <div>
               <label className="block text-sm font-medium mb-1">OG Image</label>
               <FileUploader
-                setFileId={(id) => {
+                setFileId={id => {
                   if (!id) return;
-                  setValue("seo.ogImage", id);
+                  setValue('seo.ogImage', id);
                 }}
                 title="Upload OG Image"
-                id={watch("seo.ogImage")}
+                id={watch('seo.ogImage')}
                 label="Upload Image"
-                setUrl={(url) => {
+                setUrl={url => {
                   /* Handle URL if needed */
                 }}
               />
@@ -488,15 +444,12 @@ const BlogForm: React.FC<BlogFormProps> = ({
 
             {/* Status */}
             <div className="mb-4">
-              <label
-                htmlFor="status"
-                className="block text-sm font-medium mb-1"
-              >
+              <label htmlFor="status" className="block text-sm font-medium mb-1">
                 Status <span className="text-red-500">*</span>
               </label>
               <select
                 id="status"
-                {...register("status")}
+                {...register('status')}
                 className="w-full px-4 py-2 border rounded-lg"
               >
                 <option value="draft">Draft</option>
@@ -505,46 +458,36 @@ const BlogForm: React.FC<BlogFormProps> = ({
                 <option value="scheduled">Scheduled</option>
               </select>
               {errors.status && (
-                <p className="mt-1 text-sm text-red-500">
-                  {errors.status.message}
-                </p>
+                <p className="mt-1 text-sm text-red-500">{errors.status.message}</p>
               )}
             </div>
 
             {/* Scheduled date (show only if status is scheduled) */}
-            {status === "scheduled" && (
+            {status === 'scheduled' && (
               <div className="mb-4">
-                <label
-                  htmlFor="scheduledFor"
-                  className="block text-sm font-medium mb-1"
-                >
+                <label htmlFor="scheduledFor" className="block text-sm font-medium mb-1">
                   Schedule Date <span className="text-red-500">*</span>
                 </label>
                 <input
                   id="scheduledFor"
                   type="datetime-local"
-                  {...register("scheduledFor")}
+                  {...register('scheduledFor')}
                   className="w-full px-4 py-2 border rounded-lg"
                 />
                 {errors.scheduledFor && (
-                  <p className="mt-1 text-sm text-red-500">
-                    {errors.scheduledFor.message}
-                  </p>
+                  <p className="mt-1 text-sm text-red-500">{errors.scheduledFor.message}</p>
                 )}
               </div>
             )}
 
             {/* Visibility */}
             <div className="mb-4">
-              <label
-                htmlFor="visibility"
-                className="block text-sm font-medium mb-1"
-              >
+              <label htmlFor="visibility" className="block text-sm font-medium mb-1">
                 Visibility <span className="text-red-500">*</span>
               </label>
               <select
                 id="visibility"
-                {...register("visibility")}
+                {...register('visibility')}
                 className="w-full px-4 py-2 border rounded-lg"
               >
                 <option value="public">Public</option>
@@ -552,31 +495,24 @@ const BlogForm: React.FC<BlogFormProps> = ({
                 <option value="password_protected">Password Protected</option>
               </select>
               {errors.visibility && (
-                <p className="mt-1 text-sm text-red-500">
-                  {errors.visibility.message}
-                </p>
+                <p className="mt-1 text-sm text-red-500">{errors.visibility.message}</p>
               )}
             </div>
 
             {/* Password (show only if visibility is password_protected) */}
-            {visibility === "password_protected" && (
+            {visibility === 'password_protected' && (
               <div className="mb-4">
-                <label
-                  htmlFor="password"
-                  className="block text-sm font-medium mb-1"
-                >
+                <label htmlFor="password" className="block text-sm font-medium mb-1">
                   Password <span className="text-red-500">*</span>
                 </label>
                 <input
                   id="password"
                   type="password"
-                  {...register("password")}
+                  {...register('password')}
                   className="w-full px-4 py-2 border rounded-lg"
                 />
                 {errors.password && (
-                  <p className="mt-1 text-sm text-red-500">
-                    {errors.password.message}
-                  </p>
+                  <p className="mt-1 text-sm text-red-500">{errors.password.message}</p>
                 )}
               </div>
             )}
@@ -587,7 +523,7 @@ const BlogForm: React.FC<BlogFormProps> = ({
                 <input
                   id="isFeatured"
                   type="checkbox"
-                  {...register("isFeatured")}
+                  {...register('isFeatured')}
                   className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
                 />
                 <label htmlFor="isFeatured" className="ml-2 text-sm">
@@ -599,7 +535,7 @@ const BlogForm: React.FC<BlogFormProps> = ({
                 <input
                   id="isTopPick"
                   type="checkbox"
-                  {...register("isTopPick")}
+                  {...register('isTopPick')}
                   className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
                 />
                 <label htmlFor="isTopPick" className="ml-2 text-sm">
@@ -611,7 +547,7 @@ const BlogForm: React.FC<BlogFormProps> = ({
                 <input
                   id="isPinned"
                   type="checkbox"
-                  {...register("isPinned")}
+                  {...register('isPinned')}
                   className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
                 />
                 <label htmlFor="isPinned" className="ml-2 text-sm">
@@ -643,16 +579,14 @@ const BlogForm: React.FC<BlogFormProps> = ({
                           key={category._id}
                           onClick={() => {
                             const newValue = isSelected
-                              ? field.value.filter(
-                                  (id: string) => id !== category._id
-                                )
+                              ? field.value.filter((id: string) => id !== category._id)
                               : [...(field.value || []), category._id];
                             field.onChange(newValue);
                           }}
                           className={`px-3 py-1.5 rounded-full text-sm border transition ${
                             isSelected
-                              ? "bg-blue-600 text-white border-blue-600"
-                              : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                              ? 'bg-blue-600 text-white border-blue-600'
+                              : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                           }`}
                         >
                           {category.name}
@@ -663,9 +597,7 @@ const BlogForm: React.FC<BlogFormProps> = ({
                 )}
               />
               {errors.categories && (
-                <p className="mt-2 text-sm text-red-500">
-                  {errors.categories.message}
-                </p>
+                <p className="mt-2 text-sm text-red-500">{errors.categories.message}</p>
               )}
             </div>
 
@@ -686,16 +618,14 @@ const BlogForm: React.FC<BlogFormProps> = ({
                           onClick={() => {
                             const newValue = isSelected
                               ? // @ts-expect-error
-                                field.value.filter(
-                                  (id: string) => id !== tag._id
-                                )
+                                field.value.filter((id: string) => id !== tag._id)
                               : [...(field.value || []), tag._id];
                             field.onChange(newValue);
                           }}
                           className={`px-3 py-1.5 rounded-full text-sm border transition ${
                             isSelected
-                              ? "bg-green-600 text-white border-green-600"
-                              : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                              ? 'bg-green-600 text-white border-green-600'
+                              : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                           }`}
                         >
                           {tag.name}
@@ -705,11 +635,7 @@ const BlogForm: React.FC<BlogFormProps> = ({
                   </div>
                 )}
               />
-              {errors.tags && (
-                <p className="mt-2 text-sm text-red-500">
-                  {errors.tags.message}
-                </p>
-              )}
+              {errors.tags && <p className="mt-2 text-sm text-red-500">{errors.tags.message}</p>}
             </div>
           </div>
 
@@ -717,15 +643,15 @@ const BlogForm: React.FC<BlogFormProps> = ({
           <div className="bg-white p-6 border rounded-lg shadow-sm">
             <h3 className="text-lg font-medium mb-4">Featured Image aaa</h3>
             <FileUploader
-              setFileId={(id) => {
+              setFileId={id => {
                 if (id) {
-                  setValue("featuredImage", id);
+                  setValue('featuredImage', id);
                 }
               }}
               title="Upload Featured Image"
-              id={watch("featuredImage")}
+              id={watch('featuredImage')}
               label="Upload Image"
-              setUrl={(url) => {
+              setUrl={url => {
                 if (url) {
                   setCurrentUrl(url);
                 }
@@ -734,19 +660,15 @@ const BlogForm: React.FC<BlogFormProps> = ({
             />
 
             {/* Current image preview */}
-            {watch("featuredImage") && (
+            {watch('featuredImage') && (
               <div className="mb-4">
                 <div className="relative w-full h-40 rounded-lg overflow-hidden">
-                  <img
-                    src={currentUrl}
-                    alt="Featured Image"
-                    className="object-cover"
-                  />
+                  <img src={currentUrl} alt="Featured Image" className="object-cover" />
                 </div>
 
                 <button
                   type="button"
-                  onClick={() => setValue("featuredImage", "")}
+                  onClick={() => setValue('featuredImage', '')}
                   className="mt-2 text-red-500 text-sm hover:text-red-700"
                 >
                   Remove Image
@@ -755,7 +677,7 @@ const BlogForm: React.FC<BlogFormProps> = ({
             )}
 
             {/* Image upload */}
-            {!watch("featuredImage") && (
+            {!watch('featuredImage') && (
               <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center">
                 <svg
                   className="mx-auto h-12 w-12 text-gray-400"
@@ -786,9 +708,7 @@ const BlogForm: React.FC<BlogFormProps> = ({
                     />
                   </label>
                 </div>
-                <p className="mt-1 text-xs text-gray-500">
-                  PNG, JPG, GIF up to 10MB
-                </p>
+                <p className="mt-1 text-xs text-gray-500">PNG, JPG, GIF up to 10MB</p>
               </div>
             )}
           </div>
@@ -799,66 +719,53 @@ const BlogForm: React.FC<BlogFormProps> = ({
 
             {/* Meta Title */}
             <div className="mb-4">
-              <label
-                htmlFor="seo.metaTitle"
-                className="block text-sm font-medium mb-1"
-              >
+              <label htmlFor="seo.metaTitle" className="block text-sm font-medium mb-1">
                 Meta Title
               </label>
               <input
                 id="seo.metaTitle"
                 type="text"
-                {...register("seo.metaTitle")}
+                {...register('seo.metaTitle')}
                 className="w-full px-4 py-2 border rounded-lg"
                 placeholder="SEO Title (defaults to post title)"
               />
               {errors.seo?.metaTitle && (
-                <p className="mt-1 text-sm text-red-500">
-                  {errors.seo.metaTitle.message}
-                </p>
+                <p className="mt-1 text-sm text-red-500">{errors.seo.metaTitle.message}</p>
               )}
               <p className="mt-1 text-xs text-gray-500">
-                {watch("seo.metaTitle")?.length || 0}/70 characters
+                {watch('seo.metaTitle')?.length || 0}/70 characters
               </p>
             </div>
 
             {/* Meta Description */}
             <div className="mb-4">
-              <label
-                htmlFor="seo.metaDescription"
-                className="block text-sm font-medium mb-1"
-              >
+              <label htmlFor="seo.metaDescription" className="block text-sm font-medium mb-1">
                 Meta Description
               </label>
               <textarea
                 id="seo.metaDescription"
-                {...register("seo.metaDescription")}
+                {...register('seo.metaDescription')}
                 rows={3}
                 className="w-full px-4 py-2 border rounded-lg"
                 placeholder="SEO Description (defaults to post summary)"
               />
               {errors.seo?.metaDescription && (
-                <p className="mt-1 text-sm text-red-500">
-                  {errors.seo.metaDescription.message}
-                </p>
+                <p className="mt-1 text-sm text-red-500">{errors.seo.metaDescription.message}</p>
               )}
               <p className="mt-1 text-xs text-gray-500">
-                {watch("seo.metaDescription")?.length || 0}/160 characters
+                {watch('seo.metaDescription')?.length || 0}/160 characters
               </p>
             </div>
 
             {/* Focus Keyword */}
             <div className="mb-4">
-              <label
-                htmlFor="seo.focusKeyword"
-                className="block text-sm font-medium mb-1"
-              >
+              <label htmlFor="seo.focusKeyword" className="block text-sm font-medium mb-1">
                 Focus Keyword
               </label>
               <input
                 id="seo.focusKeyword"
                 type="text"
-                {...register("seo.focusKeyword")}
+                {...register('seo.focusKeyword')}
                 className="w-full px-4 py-2 border rounded-lg"
                 placeholder="Main keyword for this post"
               />
@@ -866,9 +773,7 @@ const BlogForm: React.FC<BlogFormProps> = ({
 
             {/* Keywords */}
             <div>
-              <label className="block text-sm font-medium mb-1">
-                Additional Keywords
-              </label>
+              <label className="block text-sm font-medium mb-1">Additional Keywords</label>
               <Controller
                 control={control}
                 name="seo.keywords"
@@ -878,15 +783,15 @@ const BlogForm: React.FC<BlogFormProps> = ({
                       type="text"
                       placeholder="Add keywords and press Enter"
                       className="w-full px-4 py-2 border rounded-lg"
-                      onKeyDown={(e) => {
-                        if (e.key === "Enter") {
+                      onKeyDown={e => {
+                        if (e.key === 'Enter') {
                           e.preventDefault();
                           const target = e.target as HTMLInputElement;
                           const value = target.value.trim();
 
                           if (value && !field.value?.includes(value)) {
                             field.onChange([...(field.value || []), value]);
-                            target.value = "";
+                            target.value = '';
                           }
                         }
                       }}
@@ -935,15 +840,12 @@ const BlogForm: React.FC<BlogFormProps> = ({
             <h3 className="text-lg font-medium mb-4">Additional Settings</h3>
 
             <div>
-              <label
-                htmlFor="difficulty"
-                className="block text-sm font-medium mb-1"
-              >
+              <label htmlFor="difficulty" className="block text-sm font-medium mb-1">
                 Difficulty Level
               </label>
               <select
                 id="difficulty"
-                {...register("difficulty")}
+                {...register('difficulty')}
                 className="w-full px-4 py-2 border rounded-lg"
               >
                 <option value="">Not specified</option>
@@ -952,9 +854,7 @@ const BlogForm: React.FC<BlogFormProps> = ({
                 <option value="advanced">Advanced</option>
               </select>
               {errors.difficulty && (
-                <p className="mt-1 text-sm text-red-500">
-                  {errors.difficulty.message}
-                </p>
+                <p className="mt-1 text-sm text-red-500">{errors.difficulty.message}</p>
               )}
             </div>
           </div>
@@ -975,7 +875,7 @@ const BlogForm: React.FC<BlogFormProps> = ({
           type="submit"
           disabled={isSubmitting}
           className={`px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 ${
-            isSubmitting ? "opacity-50 cursor-not-allowed" : ""
+            isSubmitting ? 'opacity-50 cursor-not-allowed' : ''
           }`}
         >
           {isSubmitting ? (
@@ -984,9 +884,9 @@ const BlogForm: React.FC<BlogFormProps> = ({
               Saving...
             </div>
           ) : isEditing ? (
-            "Update Post"
+            'Update Post'
           ) : (
-            "Create Post"
+            'Create Post'
           )}
         </button>
       </div>

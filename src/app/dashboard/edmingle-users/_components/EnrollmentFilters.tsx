@@ -1,26 +1,20 @@
 // components/EnrollmentFilters.tsx
-import { useState } from "react";
-import { IFilterState } from "./filters";
-import { ICategory } from "./enrollments";
-import { Check, ChevronDown, Filter } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import {
-  Sheet,
-  SheetContent,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from "@/components/ui/sheet";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Label } from "@/components/ui/label";
+import { useState } from 'react';
+import { IFilterState } from './filters';
+import { ICategory } from './enrollments';
+import { Check, ChevronDown, Filter } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
+import { Checkbox } from '@/components/ui/checkbox';
+import { Label } from '@/components/ui/label';
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-} from "@/components/ui/accordion";
-import { cn } from "@/lib/utils";
-import { Badge } from "@/components/ui/badge";
+} from '@/components/ui/accordion';
+import { cn } from '@/lib/utils';
+import { Badge } from '@/components/ui/badge';
 
 interface EnrollmentFiltersProps {
   filters: IFilterState;
@@ -38,41 +32,41 @@ export default function EnrollmentFilters({
   const [isOpen, setIsOpen] = useState(false);
 
   const courseTypes = [
-    { value: "b2i", label: "Business to Individual" },
-    { value: "b2b", label: "Business to Business" },
-    { value: "b2c", label: "Business to Consumer" },
-    { value: "b2g", label: "Business to Government" },
+    { value: 'b2i', label: 'Business to Individual' },
+    { value: 'b2b', label: 'Business to Business' },
+    { value: 'b2c', label: 'Business to Consumer' },
+    { value: 'b2g', label: 'Business to Government' },
   ] as const;
 
   const statusTypes = [
-    { value: "pending", label: "Pending" },
-    { value: "enrolled", label: "Enrolled" },
-    { value: "failed", label: "Failed" },
+    { value: 'pending', label: 'Pending' },
+    { value: 'enrolled', label: 'Enrolled' },
+    { value: 'failed', label: 'Failed' },
   ] as const;
 
   const handleCategoryChange = (categoryId: string) => {
     setFilters({
       ...filters,
       categories: filters.categories.includes(categoryId)
-        ? filters.categories.filter((id) => id !== categoryId)
+        ? filters.categories.filter(id => id !== categoryId)
         : [...filters.categories, categoryId],
     });
   };
 
-  const handleTypeChange = (type: "b2i" | "b2b" | "b2c" | "b2g") => {
+  const handleTypeChange = (type: 'b2i' | 'b2b' | 'b2c' | 'b2g') => {
     setFilters({
       ...filters,
       types: filters.types.includes(type)
-        ? filters.types.filter((t) => t !== type)
+        ? filters.types.filter(t => t !== type)
         : [...filters.types, type],
     });
   };
 
-  const handleStatusChange = (status: "pending" | "enrolled" | "failed") => {
+  const handleStatusChange = (status: 'pending' | 'enrolled' | 'failed') => {
     setFilters({
       ...filters,
       status: filters.status.includes(status)
-        ? filters.status.filter((s) => s !== status)
+        ? filters.status.filter(s => s !== status)
         : [...filters.status, status],
     });
   };
@@ -106,41 +100,26 @@ export default function EnrollmentFilters({
         </SheetHeader>
 
         <div className="pt-6 pb-20">
-          <Accordion
-            type="multiple"
-            defaultValue={["categories", "types", "status", "payment"]}
-          >
+          <Accordion type="multiple" defaultValue={['categories', 'types', 'status', 'payment']}>
             {/* Categories filter */}
             <AccordionItem value="categories">
-              <AccordionTrigger className="text-sm font-medium">
-                Categories
-              </AccordionTrigger>
+              <AccordionTrigger className="text-sm font-medium">Categories</AccordionTrigger>
               <AccordionContent>
                 <div className="space-y-2">
-                  {categories.map((category) => (
-                    <div
-                      key={category._id}
-                      className="flex items-center space-x-2"
-                    >
+                  {categories.map(category => (
+                    <div key={category._id} className="flex items-center space-x-2">
                       <Checkbox
                         id={`category-${category._id}`}
                         checked={filters.categories.includes(category._id)}
-                        onCheckedChange={() =>
-                          handleCategoryChange(category._id)
-                        }
+                        onCheckedChange={() => handleCategoryChange(category._id)}
                       />
-                      <Label
-                        htmlFor={`category-${category._id}`}
-                        className="flex-1 text-sm"
-                      >
+                      <Label htmlFor={`category-${category._id}`} className="flex-1 text-sm">
                         {category.name}
                       </Label>
                     </div>
                   ))}
                   {categories.length === 0 && (
-                    <div className="text-sm text-muted-foreground">
-                      No categories available
-                    </div>
+                    <div className="text-sm text-muted-foreground">No categories available</div>
                   )}
                 </div>
               </AccordionContent>
@@ -148,25 +127,17 @@ export default function EnrollmentFilters({
 
             {/* Course type filter */}
             <AccordionItem value="types">
-              <AccordionTrigger className="text-sm font-medium">
-                Course Type
-              </AccordionTrigger>
+              <AccordionTrigger className="text-sm font-medium">Course Type</AccordionTrigger>
               <AccordionContent>
                 <div className="space-y-2">
-                  {courseTypes.map((type) => (
-                    <div
-                      key={type.value}
-                      className="flex items-center space-x-2"
-                    >
+                  {courseTypes.map(type => (
+                    <div key={type.value} className="flex items-center space-x-2">
                       <Checkbox
                         id={`type-${type.value}`}
                         checked={filters.types.includes(type.value)}
                         onCheckedChange={() => handleTypeChange(type.value)}
                       />
-                      <Label
-                        htmlFor={`type-${type.value}`}
-                        className="flex-1 text-sm"
-                      >
+                      <Label htmlFor={`type-${type.value}`} className="flex-1 text-sm">
                         {type.label}
                       </Label>
                     </div>
@@ -177,25 +148,17 @@ export default function EnrollmentFilters({
 
             {/* Status filter */}
             <AccordionItem value="status">
-              <AccordionTrigger className="text-sm font-medium">
-                Enrollment Status
-              </AccordionTrigger>
+              <AccordionTrigger className="text-sm font-medium">Enrollment Status</AccordionTrigger>
               <AccordionContent>
                 <div className="space-y-2">
-                  {statusTypes.map((status) => (
-                    <div
-                      key={status.value}
-                      className="flex items-center space-x-2"
-                    >
+                  {statusTypes.map(status => (
+                    <div key={status.value} className="flex items-center space-x-2">
                       <Checkbox
                         id={`status-${status.value}`}
                         checked={filters.status.includes(status.value)}
                         onCheckedChange={() => handleStatusChange(status.value)}
                       />
-                      <Label
-                        htmlFor={`status-${status.value}`}
-                        className="flex-1 text-sm"
-                      >
+                      <Label htmlFor={`status-${status.value}`} className="flex-1 text-sm">
                         {status.label}
                       </Label>
                     </div>
@@ -206,9 +169,7 @@ export default function EnrollmentFilters({
 
             {/* Payment filter */}
             <AccordionItem value="payment">
-              <AccordionTrigger className="text-sm font-medium">
-                Payment Type
-              </AccordionTrigger>
+              <AccordionTrigger className="text-sm font-medium">Payment Type</AccordionTrigger>
               <AccordionContent>
                 <div className="space-y-2">
                   <div className="flex items-center space-x-2">

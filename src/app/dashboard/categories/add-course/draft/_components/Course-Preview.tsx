@@ -1,14 +1,14 @@
 /* eslint-disable @next/next/no-img-element */
-"use client";
-import { format } from "date-fns";
-import { Link } from "react-scroll";
+'use client';
+import { format } from 'date-fns';
+import { Link } from 'react-scroll';
 import {
   PlayIcon,
   CheckIcon,
   BookOpenIcon,
   AcademicCapIcon,
   CurrencyDollarIcon,
-} from "@heroicons/react/24/outline";
+} from '@heroicons/react/24/outline';
 import {
   Calendar,
   CheckCircle,
@@ -17,41 +17,37 @@ import {
   ShieldCheckIcon,
   UserPlus,
   Users,
-} from "lucide-react";
-import {
-  IoIosCheckbox,
-  IoIosCheckmarkCircle,
-  IoIosCheckmarkCircleOutline,
-} from "react-icons/io";
-import { useState } from "react";
-import { cn } from "@/lib/utils";
-import { ICourse } from "./types";
+} from 'lucide-react';
+import { IoIosCheckbox, IoIosCheckmarkCircle, IoIosCheckmarkCircleOutline } from 'react-icons/io';
+import { useState } from 'react';
+import { cn } from '@/lib/utils';
+import { ICourse } from './types';
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-} from "@/components/ui/accordion";
-import { BsFillBookmarkCheckFill, BsFolderCheck } from "react-icons/bs";
-import { CreditCardIcon, ClockIcon } from "@heroicons/react/24/solid";
-import Image from "next/image";
-import { LuRadioTower } from "react-icons/lu";
-import { Button } from "@/components/ui/button";
-import { BiSolidCertification } from "react-icons/bi";
+} from '@/components/ui/accordion';
+import { BsFillBookmarkCheckFill, BsFolderCheck } from 'react-icons/bs';
+import { CreditCardIcon, ClockIcon } from '@heroicons/react/24/solid';
+import Image from 'next/image';
+import { LuRadioTower } from 'react-icons/lu';
+import { Button } from '@/components/ui/button';
+import { BiSolidCertification } from 'react-icons/bi';
 // import ContactForm from "./ContactForm";
 // @ts-ignore
-import { heroVariants } from "../[id]/_components/HeroSection";
-import { HeroSection } from "./HeroSection";
-import CourseDetails from "./Certificate";
-import CourseContent from "@/app/_components/CourseContent";
-import CourseOverview from "./CourseOverview";
-import Highlights from "./Highlights";
-import Outcomes from "./Outcomes";
-import CourseEnrollment from "./Price";
-import FAQSection from "./faqs";
-import WhyJoinSection from "./Whychoose";
-import Footer from "./Footer";
-import Modules from "./Modules";
+import { heroVariants } from '../[id]/_components/HeroSection';
+import { HeroSection } from './HeroSection';
+import CourseDetails from './Certificate';
+import CourseContent from '@/app/_components/CourseContent';
+import CourseOverview from './CourseOverview';
+import Highlights from './Highlights';
+import Outcomes from './Outcomes';
+import CourseEnrollment from './Price';
+import FAQSection from './faqs';
+import WhyJoinSection from './Whychoose';
+import Footer from './Footer';
+import Modules from './Modules';
 // Adjust this type as needed.
 export interface TDraftCourseForm {
   _id: string;
@@ -113,11 +109,7 @@ export interface TDraftCourseForm {
   isPublished: boolean;
 }
 
-const CourseLandingPage = ({
-  courseData,
-}: {
-  courseData: { course: ICourse };
-}) => {
+const CourseLandingPage = ({ courseData }: { courseData: { course: ICourse } }) => {
   const {
     title,
     description,
@@ -145,21 +137,19 @@ const CourseLandingPage = ({
     // logoUrl, previewImage, slug not used in this single-page layout
   } = courseData.course;
 
-  const [activeTab, setActiveTab] = useState("home");
+  const [activeTab, setActiveTab] = useState('home');
 
   // Use a default banner image if not provided.
   const bannerImage =
-    banner?.viewUrl ||
-    "https://www.svgrepo.com/show/508699/landscape-placeholder.svg";
-  const placeholder =
-    "https://www.svgrepo.com/show/508699/landscape-placeholder.svg";
+    banner?.viewUrl || 'https://www.svgrepo.com/show/508699/landscape-placeholder.svg';
+  const placeholder = 'https://www.svgrepo.com/show/508699/landscape-placeholder.svg';
 
   // Format price (assuming price is in cents)
-  const formattedPrice = price ? price?.amount?.toFixed(2) : "Free";
+  const formattedPrice = price ? price?.amount?.toFixed(2) : 'Free';
   const dateOptions: Intl.DateTimeFormatOptions = {
-    month: "short",
-    day: "numeric",
-    year: "numeric",
+    month: 'short',
+    day: 'numeric',
+    year: 'numeric',
   };
   return (
     <div className="min-h-screen  ">
@@ -173,12 +163,11 @@ const CourseLandingPage = ({
                 spy={true}
                 smooth={true}
                 onClick={() => {
-                  setActiveTab("home");
+                  setActiveTab('home');
                 }}
                 className={cn(
-                  "cursor-pointer text-gray-600 hover:text-blue-600",
-                  activeTab === "home" &&
-                    "text-blue-500 font-bold border-b border-blue-500"
+                  'cursor-pointer text-gray-600 hover:text-blue-600',
+                  activeTab === 'home' && 'text-blue-500 font-bold border-b border-blue-500'
                 )}
               >
                 Home
@@ -187,11 +176,11 @@ const CourseLandingPage = ({
                 to="overview"
                 smooth={true}
                 onClick={() => {
-                  setActiveTab("overview");
+                  setActiveTab('overview');
                 }}
                 className={cn(
-                  "cursor-pointer text-gray-600 hover:text-blue-600",
-                  activeTab === "overview" && "text-blue-600 font-bold"
+                  'cursor-pointer text-gray-600 hover:text-blue-600',
+                  activeTab === 'overview' && 'text-blue-600 font-bold'
                 )}
               >
                 Overview
@@ -200,11 +189,11 @@ const CourseLandingPage = ({
                 to="curriculum"
                 smooth={true}
                 onClick={() => {
-                  setActiveTab("curriculum");
+                  setActiveTab('curriculum');
                 }}
                 className={cn(
-                  "cursor-pointer text-gray-600 hover:text-blue-600",
-                  activeTab === "curriculum" && "text-blue-600 font-bold"
+                  'cursor-pointer text-gray-600 hover:text-blue-600',
+                  activeTab === 'curriculum' && 'text-blue-600 font-bold'
                 )}
               >
                 Curriculum
@@ -214,11 +203,11 @@ const CourseLandingPage = ({
                   to="skills"
                   smooth={true}
                   className={cn(
-                    "cursor-pointer text-gray-600 hover:text-blue-600",
-                    activeTab === "skills" && "text-blue-600 font-bold"
+                    'cursor-pointer text-gray-600 hover:text-blue-600',
+                    activeTab === 'skills' && 'text-blue-600 font-bold'
                   )}
                   onClick={() => {
-                    setActiveTab("skills");
+                    setActiveTab('skills');
                   }}
                 >
                   Skills
@@ -228,11 +217,11 @@ const CourseLandingPage = ({
                 to="why-join"
                 smooth={true}
                 onClick={() => {
-                  setActiveTab("why-join");
+                  setActiveTab('why-join');
                 }}
                 className={cn(
-                  "cursor-pointer text-gray-600 hover:text-blue-600",
-                  activeTab === "why-join" && "text-blue-600 font-bold"
+                  'cursor-pointer text-gray-600 hover:text-blue-600',
+                  activeTab === 'why-join' && 'text-blue-600 font-bold'
                 )}
               >
                 Why Join
@@ -241,12 +230,12 @@ const CourseLandingPage = ({
                 to="faqs"
                 spy={true}
                 onClick={() => {
-                  setActiveTab("faqs");
+                  setActiveTab('faqs');
                 }}
                 smooth={true}
                 className={cn(
-                  "cursor-pointer text-gray-600 hover:text-blue-600",
-                  activeTab === "faqs" && "text-blue-600 font-bold"
+                  'cursor-pointer text-gray-600 hover:text-blue-600',
+                  activeTab === 'faqs' && 'text-blue-600 font-bold'
                 )}
               >
                 FAQs
@@ -255,11 +244,11 @@ const CourseLandingPage = ({
                 to="pricing"
                 smooth={true}
                 onClick={() => {
-                  setActiveTab("pricing");
+                  setActiveTab('pricing');
                 }}
                 className={cn(
-                  "cursor-pointer text-gray-600 hover:text-blue-600",
-                  activeTab === "pricing" && "text-blue-600 font-bold"
+                  'cursor-pointer text-gray-600 hover:text-blue-600',
+                  activeTab === 'pricing' && 'text-blue-600 font-bold'
                 )}
               >
                 Pricing
@@ -283,7 +272,7 @@ const CourseLandingPage = ({
         certification={certification}
         enrollmentEnd={endTime}
         enrollmentStart={startTime}
-        trainingMode={"Hybrid"}
+        trainingMode={'Hybrid'}
       />
 
       <div className="w-[80vw]  m-auto flex">
@@ -294,12 +283,8 @@ const CourseLandingPage = ({
 
           {overview && (
             <section id="overview" className="mt-6 space-y-3">
-              <h3 className="text-lg font-medium text-gray-800">
-                {overview.title}
-              </h3>
-              <p className="text-sm text-gray-600 leading-relaxed">
-                {overview.description}
-              </p>
+              <h3 className="text-lg font-medium text-gray-800">{overview.title}</h3>
+              <p className="text-sm text-gray-600 leading-relaxed">{overview.description}</p>
             </section>
           )}
 
@@ -308,15 +293,9 @@ const CourseLandingPage = ({
             {overview?.keyFeatures && overview?.keyFeatures.length > 0 && (
               <div className="flex flex-col gap-y-5 mt-5">
                 {overview?.keyFeatures.map((feature, index) => (
-                  <div
-                    key={index}
-                    className="flex items-center gap-x-2 text-sm"
-                  >
+                  <div key={index} className="flex items-center gap-x-2 text-sm">
                     <div className="w-fit">
-                      <IoIosCheckmarkCircle
-                        className=" text-blue-500"
-                        size={20}
-                      />
+                      <IoIosCheckmarkCircle className=" text-blue-500" size={20} />
                     </div>
                     <p>{feature}</p>
                   </div>
@@ -329,9 +308,7 @@ const CourseLandingPage = ({
         <div className="hidden lg:flex flex-col gap-6 w-full  top-10">
           {/* Inquiry Form */}
           <div className="bg-white shadow-lg rounded-2xl p-6 flex flex-col gap-4">
-            <h3 className="text-xl font-semibold text-gray-800">
-              Quick Inquiry
-            </h3>
+            <h3 className="text-xl font-semibold text-gray-800">Quick Inquiry</h3>
             <p className="text-gray-600 text-sm">
               Want more details? Fill in your info and we’ll get in touch!
             </p>
@@ -356,8 +333,7 @@ const CourseLandingPage = ({
           <div className="bg-purple-100 text-purple-900 shadow-lg rounded-2xl p-6 text-center">
             <h3 className="text-lg font-semibold">🚀 Ready to Upskill?</h3>
             <p className="text-sm mt-2">
-              Take the first step towards a brighter future with our
-              cutting-edge program.
+              Take the first step towards a brighter future with our cutting-edge program.
             </p>
             <button className="mt-4 bg-purple-600 text-white py-2 px-4 rounded-lg hover:bg-purple-700 transition">
               Apply Now
@@ -372,9 +348,7 @@ const CourseLandingPage = ({
             {/* Chapters */}
 
             <div className="rounded-xl  mt-10">
-              <h3 className="text-lg  mb-4 font-medium text-gray-800">
-                Course Ciricullum
-              </h3>
+              <h3 className="text-lg  mb-4 font-medium text-gray-800">Course Ciricullum</h3>
               <Modules chapters={curriculum.chapters} />
 
               <div>
@@ -384,10 +358,7 @@ const CourseLandingPage = ({
                     <>
                       {skills.map((skill, index) => (
                         <div key={index} className="flex gap-x-3 items-center ">
-                          <IoIosCheckmarkCircleOutline
-                            className="text-blue-400 "
-                            size={30}
-                          />
+                          <IoIosCheckmarkCircleOutline className="text-blue-400 " size={30} />
                           <p key={index} className="text-xl font-semibold">
                             {skill}
                           </p>
@@ -452,33 +423,25 @@ const CourseLandingPage = ({
 
             {
               // @ts-expect-error
-              category?.type !== "b2i" && (
+              category?.type !== 'b2i' && (
                 <div className=" rounded-xl  mt-10">
                   {/* <h3 className="text-xl font-bold mb-4">Projects Covered</h3> */}
                   {curriculum.projects?.length >= 1 && (
                     <div className="text-gray-600">No projects covered</div>
                   )}
                   <div className="space-y-4">
-                    {curriculum.projects?.map((project) => (
-                      <div
-                        key={project._id}
-                        className="border-l-4 border-purple-500 pl-4"
-                      >
+                    {curriculum.projects?.map(project => (
+                      <div key={project._id} className="border-l-4 border-purple-500 pl-4">
                         <Accordion type="single" collapsible>
                           <AccordionItem value="item-1">
                             <AccordionTrigger>
-                              {" "}
-                              <h4 className="font-semibold capitalize">
-                                {project.title}
-                              </h4>
+                              {' '}
+                              <h4 className="font-semibold capitalize">{project.title}</h4>
                             </AccordionTrigger>
                             <AccordionContent>
                               <div className="mt-2 space-y-2">
                                 {project.content?.map((lesson: string) => (
-                                  <div
-                                    key={lesson}
-                                    className="flex items-center space-x-2"
-                                  >
+                                  <div key={lesson} className="flex items-center space-x-2">
                                     {/* <PlayIcon className="h-4 w-4 text-gray-500" /> */}
                                     <BsFolderCheck className="h-4 w-4 text-purple-500" />
                                     <span>{lesson}</span>
@@ -499,7 +462,7 @@ const CourseLandingPage = ({
 
             {
               // @ts-expect-error
-              category?.type !== "b2i" && (
+              category?.type !== 'b2i' && (
                 <section className="mt-10">
                   <h3 className="text-xl font-bold mb-4">Creteria</h3>
                   <section className=" flex flex-col gap-y-5  ">
@@ -508,20 +471,13 @@ const CourseLandingPage = ({
                         <div className="bg-blue-50 p-4 rounded-lg flex flex-col">
                           <h4 className="font-semibold mb-2">Prerequisites</h4>
                           {/* <p>{curriculum.prerequisites}</p> */}
-                          {curriculum.prerequisites.map(
-                            (prerequisite, index) => (
-                              <p
-                                key={index}
-                                className="mt-5 inline-flex gap-x-4"
-                              >
-                                {" "}
-                                <IoIosCheckmarkCircle className="w-6 h-6 text-blue-500" />{" "}
-                                <span className="text-sm font-semibold">
-                                  {prerequisite}
-                                </span>
-                              </p>
-                            )
-                          )}
+                          {curriculum.prerequisites.map((prerequisite, index) => (
+                            <p key={index} className="mt-5 inline-flex gap-x-4">
+                              {' '}
+                              <IoIosCheckmarkCircle className="w-6 h-6 text-blue-500" />{' '}
+                              <span className="text-sm font-semibold">{prerequisite}</span>
+                            </p>
+                          ))}
                         </div>
                       )}
                     </div>
@@ -531,19 +487,12 @@ const CourseLandingPage = ({
                           <h4 className="font-semibold mb-2">Eligibility</h4>
                           {/* <p>{curriculum.eligibility}</p> */}
                           <div className="flex flex-col ">
-                            {curriculum.eligibility.map(
-                              (eligibility, index) => (
-                                <p
-                                  key={index}
-                                  className="mt-5 inline-flex gap-x-4 items-center"
-                                >
-                                  <IoIosCheckmarkCircle className="w-6 h-6 text-purple-500" />{" "}
-                                  <span className="text-sm font-semibold">
-                                    {eligibility}
-                                  </span>
-                                </p>
-                              )
-                            )}
+                            {curriculum.eligibility.map((eligibility, index) => (
+                              <p key={index} className="mt-5 inline-flex gap-x-4 items-center">
+                                <IoIosCheckmarkCircle className="w-6 h-6 text-purple-500" />{' '}
+                                <span className="text-sm font-semibold">{eligibility}</span>
+                              </p>
+                            ))}
                           </div>
                         </div>
                       )}
@@ -558,10 +507,7 @@ const CourseLandingPage = ({
           <div className="mt-6"></div>
         </section>
       </section>
-      <CourseEnrollment
-        formattedPrice={formattedPrice}
-        durationHours={durationHours}
-      />
+      <CourseEnrollment formattedPrice={formattedPrice} durationHours={durationHours} />
 
       {/* Overview Section */}
       <WhyJoinSection whyJoin={whyJoin} />

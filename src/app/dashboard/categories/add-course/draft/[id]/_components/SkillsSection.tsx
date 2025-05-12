@@ -1,14 +1,14 @@
-"use client";
+'use client';
 
-import { MdDelete } from "react-icons/md";
+import { MdDelete } from 'react-icons/md';
 // import { Combobox } from "@/components/ui/combobox";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { toast } from "react-hot-toast";
-import Image from "next/image";
-import { UseFormReturn } from "react-hook-form";
-import { TDraftCourseForm } from "../page";
-import { Combobox } from "@/components/global/combox";
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
+import { toast } from 'react-hot-toast';
+import Image from 'next/image';
+import { UseFormReturn } from 'react-hook-form';
+import { TDraftCourseForm } from '../page';
+import { Combobox } from '@/components/global/combox';
 
 export default function SkillsSection({
   watch,
@@ -18,8 +18,8 @@ export default function SkillsSection({
   isLoading,
   data,
 }: {
-  watch: UseFormReturn<TDraftCourseForm>["watch"];
-  setValue: UseFormReturn<TDraftCourseForm>["setValue"];
+  watch: UseFormReturn<TDraftCourseForm>['watch'];
+  setValue: UseFormReturn<TDraftCourseForm>['setValue'];
   skills: string[];
   setSkill: React.Dispatch<React.SetStateAction<string[]>>;
   isLoading: boolean;
@@ -33,39 +33,34 @@ export default function SkillsSection({
           frameworks={data}
           nofound="No Skills found"
           placeholder="Add New Skill"
-          key={"skills"}
-          setAdd={(skill) => {
-            const currentSkillIds = watch("skills") || [];
+          key={'skills'}
+          setAdd={skill => {
+            const currentSkillIds = watch('skills') || [];
             const skillsSet = new Set(currentSkillIds);
 
             if (skillsSet.has(skill._id)) {
-              toast.error("Skill already added");
+              toast.error('Skill already added');
               return;
             }
 
             skillsSet.add(skill._id);
-            setValue("skills", Array.from(skillsSet));
+            setValue('skills', Array.from(skillsSet));
             // @ts-expect-error error
-            setSkill((prev) => [...prev, skill]);
+            setSkill(prev => [...prev, skill]);
           }}
         />
       )}
 
       <div className="flex flex-col gap-y-5 mt-5">
         {skills?.map((skill, index) => (
-          <div
-            key={index}
-            className="flex gap-x-4 items-center bg-white p-2 rounded-md shadow-sm"
-          >
+          <div key={index} className="flex gap-x-4 items-center bg-white p-2 rounded-md shadow-sm">
             <p className="capitalize">{skill}</p>
             <button
               type="button"
               onClick={() => {
-                const updatedSkills = watch("skills")?.filter(
-                  (_, i) => i !== index
-                );
-                setValue("skills", updatedSkills);
-                setSkill((prev) => prev.filter((s) => s !== skill));
+                const updatedSkills = watch('skills')?.filter((_, i) => i !== index);
+                setValue('skills', updatedSkills);
+                setSkill(prev => prev.filter(s => s !== skill));
               }}
             >
               <MdDelete size={20} className="text-red-500" />

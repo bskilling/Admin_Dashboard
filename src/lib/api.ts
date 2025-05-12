@@ -1,24 +1,24 @@
 // lib/api.ts
-import axios from "axios";
+import axios from 'axios';
 
-const API_URL = process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:3001";
+const API_URL = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:3001';
 
 export const api = axios.create({
   baseURL: `${API_URL}/api`,
   headers: {
-    "Content-Type": "application/json",
+    'Content-Type': 'application/json',
   },
 });
 
 // Blog API endpoints
 export const blogApi = {
-  getAll: (params?: Record<string, any>) => api.get("/blogs", { params }),
+  getAll: (params?: Record<string, any>) => api.get('/blogs', { params }),
 
   getById: (id: string) => api.get(`/blogs/${id}`),
 
   getBySlug: (slug: string) => api.get(`/blogs/${slug}`),
 
-  create: (data: any) => api.post("/blogs", data),
+  create: (data: any) => api.post('/blogs', data),
 
   update: (id: string, data: any) => api.put(`/blogs/${id}`, data),
 
@@ -33,12 +33,11 @@ export const blogApi = {
 
 // Category API endpoints
 export const categoryApi = {
-  getAll: (params?: Record<string, any>) =>
-    api.get("/blogs/categories", { params }),
+  getAll: (params?: Record<string, any>) => api.get('/blogs/categories', { params }),
 
   getBySlug: (slug: string) => api.get(`/blogs/categories/${slug}`),
 
-  create: (data: any) => api.post("/blogs/categories", data),
+  create: (data: any) => api.post('/blogs/categories', data),
 
   update: (id: string, data: any) => api.put(`/blogs/categories/${id}`, data),
 
@@ -47,11 +46,11 @@ export const categoryApi = {
 
 // Tag API endpoints
 export const tagApi = {
-  getAll: (params?: Record<string, any>) => api.get("/blogs/tags", { params }),
+  getAll: (params?: Record<string, any>) => api.get('/blogs/tags', { params }),
 
   getBySlug: (slug: string) => api.get(`/blogs/tags/${slug}`),
 
-  create: (data: any) => api.post("/blogs/tags", data),
+  create: (data: any) => api.post('/blogs/tags', data),
 
   update: (id: string, data: any) => api.put(`/blogs/tags/${id}`, data),
 
@@ -60,12 +59,11 @@ export const tagApi = {
 
 // Author API endpoints
 export const authorApi = {
-  getAll: (params?: Record<string, any>) =>
-    api.get("/blogs/authors", { params }),
+  getAll: (params?: Record<string, any>) => api.get('/blogs/authors', { params }),
 
   getById: (id: string) => api.get(`/blogs/authors/${id}`),
 
-  create: (data: any) => api.post("/blogs/authors", data),
+  create: (data: any) => api.post('/blogs/authors', data),
 
   update: (id: string, data: any) => api.put(`/blogs/authors/${id}`, data),
 
@@ -74,12 +72,11 @@ export const authorApi = {
 
 // Series API endpoints
 export const seriesApi = {
-  getAll: (params?: Record<string, any>) =>
-    api.get("/blogs/series", { params }),
+  getAll: (params?: Record<string, any>) => api.get('/blogs/series', { params }),
 
   getBySlug: (slug: string) => api.get(`/blogs/series/${slug}`),
 
-  create: (data: any) => api.post("/blogs/series", data),
+  create: (data: any) => api.post('/blogs/series', data),
 
   update: (id: string, data: any) => api.put(`/blogs/series/${id}`, data),
 
@@ -88,5 +85,5 @@ export const seriesApi = {
 
 // Blog stats endpoint
 export const statsApi = {
-  getBlogStats: () => api.get("/blogs/stats"),
+  getBlogStats: () => api.get('/blogs/stats'),
 };

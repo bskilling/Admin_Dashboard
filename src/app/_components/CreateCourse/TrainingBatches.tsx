@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from "react";
-import { BiSolidDownArrow, BiSolidUpArrow } from "react-icons/bi";
-import { batch_status } from "@/utils/list";
-import { useSelector } from "react-redux";
-import { useEditCourseMutation } from "@/redux/features/courses/coursesApi";
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
+import React, { useEffect, useState } from 'react';
+import { BiSolidDownArrow, BiSolidUpArrow } from 'react-icons/bi';
+import { batch_status } from '@/utils/list';
+import { useSelector } from 'react-redux';
+import { useEditCourseMutation } from '@/redux/features/courses/coursesApi';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
 
 type Props = {
   course_data: any;
@@ -40,18 +40,14 @@ export default function TrainingBatches({
   return (
     <>
       <div className="overflow-auto h-[100%] w-[100%] relative">
-        <p className="block mb-6 text-sm font-[700] text-gray-600 pt-8">
-          Create Batch
-        </p>
+        <p className="block mb-6 text-sm font-[700] text-gray-600 pt-8">Create Batch</p>
         <div className="flex flex-wrap justify-between gap-4 mt-2 h-[350px] overflow-auto pb-28">
           <div className="w-[30%] mb-6">
-            <label className="block mb-2 text-sm font-[700] text-gray-600">
-              Batch Name
-            </label>
+            <label className="block mb-2 text-sm font-[700] text-gray-600">Batch Name</label>
             <div className="relative h-[45px]">
               <div
                 className={`flex bg-transparent w-[100%] bg-white rounded-md border-2 justify-center items-center ${
-                  !trainingBatchesData.batch_name && "border-red-600 border-1"
+                  !trainingBatchesData.batch_name && 'border-red-600 border-1'
                 }`}
               >
                 <input
@@ -69,16 +65,14 @@ export default function TrainingBatches({
             </div>
           </div>
           <div className="w-[30%] mb-6">
-            <label className="block mb-2 text-sm font-[700] text-gray-600">
-              Paid
-            </label>
+            <label className="block mb-2 text-sm font-[700] text-gray-600">Paid</label>
             <div className="relative h-[45px]">
               <div className="flex bg-transparent w-[100%] bg-white rounded-md border-2 justify-center items-center hover:border-2 hover:border-[#292929]">
                 <button
                   className={`bg-violet-950 w-[50%] pl-2 border-none left-[50px] rounded-l-md h-[45px] outline-none text-[14px] font-[500] font-Josefin ${
                     !trainingBatchesData.isPaid
-                      ? "bg-violet-950 text-white"
-                      : "bg-white text-sky-800"
+                      ? 'bg-violet-950 text-white'
+                      : 'bg-white text-sky-800'
                   }`}
                   type="button"
                   onClick={() => {
@@ -94,8 +88,8 @@ export default function TrainingBatches({
                   type="button"
                   className={`bg-transparent w-[50%] pl-2 border-none left-[50px] h-[45px] rounded-r-md outline-none text-sky-800 text-[14px] font-[500] font-Josefin ${
                     trainingBatchesData.isPaid
-                      ? "bg-violet-950 text-white"
-                      : "bg-white text-sky-800"
+                      ? 'bg-violet-950 text-white'
+                      : 'bg-white text-sky-800'
                   }`}
                   onClick={() => {
                     setTrainingBatchesData((prevData: any) => ({
@@ -110,13 +104,11 @@ export default function TrainingBatches({
             </div>
           </div>
           <div className="w-[30%] mb-6">
-            <label className="block mb-2 text-sm font-[700] text-gray-600">
-              Trainer
-            </label>
+            <label className="block mb-2 text-sm font-[700] text-gray-600">Trainer</label>
             <div className="relative h-[45px]">
               <div
                 className={`flex bg-transparent w-[100%] bg-white rounded-md border-2 justify-center items-center ${
-                  !trainingBatchesData.trainer && "border-red-600 border-1"
+                  !trainingBatchesData.trainer && 'border-red-600 border-1'
                 }`}
               >
                 <input
@@ -151,19 +143,17 @@ export default function TrainingBatches({
             </div>
           </div>
           <div className="w-[30%] mb-6">
-            <label className="block mb-2 text-sm font-[700] text-gray-600">
-              Start Time
-            </label>
+            <label className="block mb-2 text-sm font-[700] text-gray-600">Start Time</label>
             <div className="relative h-[45px]">
               <div
                 className={`flex bg-transparent w-[100%] bg-white rounded-md border-2 justify-center items-center ${
-                  !trainingBatchesData.start_time && "border-1 border-red-600"
+                  !trainingBatchesData.start_time && 'border-1 border-red-600'
                 }`}
               >
                 <DatePicker
                   showTimeSelect
                   withPortal
-                  dateFormat={"MM/dd/yyyy h:mm aa"}
+                  dateFormat={'MM/dd/yyyy h:mm aa'}
                   selected={trainingBatchesData.start_time}
                   placeholderText="Select Start Time"
                   onChange={(date: any) => {
@@ -188,14 +178,13 @@ export default function TrainingBatches({
             <div className="relative h-[45px]">
               <div
                 className={`flex bg-transparent w-[100%] bg-white rounded-md border-2 justify-center items-center ${
-                  !trainingBatchesData.enrollment_end_date &&
-                  "border-1 border-red-600"
+                  !trainingBatchesData.enrollment_end_date && 'border-1 border-red-600'
                 }`}
               >
                 <DatePicker
                   showTimeSelect
                   withPortal
-                  dateFormat={"MM/dd/yyyy h:mm aa"}
+                  dateFormat={'MM/dd/yyyy h:mm aa'}
                   selected={trainingBatchesData.enrollment_end_date}
                   placeholderText="Select Enrollment End Date"
                   onChange={(date: any) => {
@@ -208,26 +197,22 @@ export default function TrainingBatches({
                 />
               </div>
               {!trainingBatchesData.enrollment_end_date && (
-                <p className="text-red-600 text-sm">
-                  End Registration Date is required
-                </p>
+                <p className="text-red-600 text-sm">End Registration Date is required</p>
               )}
             </div>
           </div>
           <div className="w-[30%] mb-6">
-            <label className="block mb-2 text-sm font-[700] text-gray-600">
-              End Date
-            </label>
+            <label className="block mb-2 text-sm font-[700] text-gray-600">End Date</label>
             <div className="relative h-[45px]">
               <div
                 className={`flex bg-transparent w-[100%] bg-white rounded-md border-2 justify-center items-center ${
-                  !trainingBatchesData.end_date && "border-1 border-red-600"
+                  !trainingBatchesData.end_date && 'border-1 border-red-600'
                 }`}
               >
                 <DatePicker
                   showTimeSelect
                   withPortal
-                  dateFormat={"MM/dd/yyyy h:mm aa"}
+                  dateFormat={'MM/dd/yyyy h:mm aa'}
                   selected={trainingBatchesData.end_date}
                   placeholderText="Select End Date"
                   onChange={(date: any) => {
@@ -245,13 +230,11 @@ export default function TrainingBatches({
             </div>
           </div>
           <div className="w-[30%] mb-6">
-            <label className="block mb-2 text-sm font-[700] text-gray-600">
-              Capacity
-            </label>
+            <label className="block mb-2 text-sm font-[700] text-gray-600">Capacity</label>
             <div className="relative h-[45px]">
               <div
                 className={`flex bg-transparent w-[100%] bg-white rounded-md border-2 justify-center items-center ${
-                  trainingBatchesData.capacity <= 0 && "border-1 border-red-600"
+                  trainingBatchesData.capacity <= 0 && 'border-1 border-red-600'
                 }`}
               >
                 <input
@@ -264,20 +247,16 @@ export default function TrainingBatches({
                 />
               </div>
               {trainingBatchesData.capacity <= 0 && (
-                <p className="text-red-600 text-sm">
-                  Capacity should be {">"} 0
-                </p>
+                <p className="text-red-600 text-sm">Capacity should be {'>'} 0</p>
               )}
             </div>
           </div>
           <div className="w-[30%] mb-6">
-            <label className="block mb-2 text-sm font-[700] text-gray-600">
-              Batch Status
-            </label>
+            <label className="block mb-2 text-sm font-[700] text-gray-600">Batch Status</label>
             <div className="relative h-[45px]">
               <div
                 className={`flex bg-transparent w-[100%] bg-white rounded-md border-2 justify-center items-center ${
-                  !trainingBatchesData.batch_status && "border-1 border-red-600"
+                  !trainingBatchesData.batch_status && 'border-1 border-red-600'
                 }`}
               >
                 <input
@@ -333,9 +312,7 @@ export default function TrainingBatches({
             </div>
           </div>
           <div className="w-[100%]">
-            <label className="block mb-2 text-sm font-[700] text-gray-600">
-              Description
-            </label>
+            <label className="block mb-2 text-sm font-[700] text-gray-600">Description</label>
 
             <div className="flex bg-transparent w-[100%] bg-white rounded-md border-2 justify-center items-center hover:border-2 hover:border-[#292929]">
               <textarea
@@ -344,7 +321,7 @@ export default function TrainingBatches({
                 name="description"
                 id="description"
                 className="bg-transparent w-full p-2 border-none rounded-[5px] h-[100px] outline-none text-[#292929] text-[14px] font-[500] font-Josefin"
-                style={{ resize: "none" }}
+                style={{ resize: 'none' }}
               />
             </div>
           </div>

@@ -1,12 +1,12 @@
 // components/UserEnrollmentTable.tsx
-"use client";
+'use client';
 
-import { useState } from "react";
-import { ChevronDown, MoreHorizontal, Search, Eye } from "lucide-react";
-import { useQuery } from "@tanstack/react-query";
-import { fetchEnrollments, IEdmingleUser } from "./enrollments";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import { useState } from 'react';
+import { ChevronDown, MoreHorizontal, Search, Eye } from 'lucide-react';
+import { useQuery } from '@tanstack/react-query';
+import { fetchEnrollments, IEdmingleUser } from './enrollments';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 import {
   Table,
   TableBody,
@@ -14,13 +14,13 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table";
+} from '@/components/ui/table';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+} from '@/components/ui/dropdown-menu';
 import {
   Pagination,
   PaginationContent,
@@ -28,25 +28,25 @@ import {
   PaginationLink,
   PaginationNext,
   PaginationPrevious,
-} from "@/components/ui/pagination";
-import { Badge } from "@/components/ui/badge";
-import { formatDate } from "@/lib/utils";
-import Link from "next/link";
+} from '@/components/ui/pagination';
+import { Badge } from '@/components/ui/badge';
+import { formatDate } from '@/lib/utils';
+import Link from 'next/link';
 
 export default function UserEnrollmentTable() {
   const [page, setPage] = useState(1);
-  const [searchQuery, setSearchQuery] = useState("");
+  const [searchQuery, setSearchQuery] = useState('');
 
   // Fetch users with enrollments
   const { data, isLoading, isError } = useQuery({
-    queryKey: ["enrollments", page],
+    queryKey: ['enrollments', page],
     queryFn: () => fetchEnrollments(page, 10),
     staleTime: 1000 * 60 * 60 * 24 * 200,
   });
 
   // Filter users based on search query
   const filteredUsers =
-    data?.data?.enrollments.filter((user) => {
+    data?.data?.enrollments.filter(user => {
       if (!searchQuery) return true;
 
       const query = searchQuery.toLowerCase();
@@ -87,15 +87,13 @@ export default function UserEnrollmentTable() {
       <div className="flex items-center justify-between pb-4">
         <div>
           <h2 className="text-xl font-semibold">User Enrollments</h2>
-          <p className="text-sm text-gray-600">
-            Manage and view all user course enrollments
-          </p>
+          <p className="text-sm text-gray-600">Manage and view all user course enrollments</p>
         </div>
         <div className="flex w-full max-w-sm items-center space-x-2">
           <Input
             placeholder="Search users..."
             value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
+            onChange={e => setSearchQuery(e.target.value)}
             className="max-w-xs"
           />
           <Button variant="outline" size="icon">
@@ -111,11 +109,7 @@ export default function UserEnrollmentTable() {
       ) : isError ? (
         <div className="text-center py-10">
           <p className="text-lg text-red-600">Failed to load enrollments</p>
-          <Button
-            variant="outline"
-            className="mt-2"
-            onClick={() => window.location.reload()}
-          >
+          <Button variant="outline" className="mt-2" onClick={() => window.location.reload()}>
             Try again
           </Button>
         </div>
@@ -126,32 +120,21 @@ export default function UserEnrollmentTable() {
               <TableRow>
                 <TableHead className="font-semibold">User</TableHead>
                 <TableHead className="font-semibold">Contact</TableHead>
-                <TableHead className="font-semibold text-center">
-                  Total Enrollments
-                </TableHead>
+                <TableHead className="font-semibold text-center">Total Enrollments</TableHead>
                 <TableHead className="font-semibold">Status</TableHead>
-                <TableHead className="font-semibold">
-                  Latest Enrollment
-                </TableHead>
-                <TableHead className="font-semibold text-right">
-                  Actions
-                </TableHead>
+                <TableHead className="font-semibold">Latest Enrollment</TableHead>
+                <TableHead className="font-semibold text-right">Actions</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {filteredUsers.length === 0 ? (
                 <TableRow>
-                  <TableCell
-                    colSpan={6}
-                    className="text-center py-10 text-gray-500"
-                  >
-                    {searchQuery
-                      ? "No users match your search"
-                      : "No enrollments found"}
+                  <TableCell colSpan={6} className="text-center py-10 text-gray-500">
+                    {searchQuery ? 'No users match your search' : 'No enrollments found'}
                   </TableCell>
                 </TableRow>
               ) : (
-                filteredUsers.map((user) => {
+                filteredUsers.map(user => {
                   const totalEnrollments = countEnrollments(user);
                   const statusCounts = getStatusCounts(user);
                   const latestEnrollment = getLatestEnrollment(user);
@@ -161,15 +144,11 @@ export default function UserEnrollmentTable() {
                       <TableCell className="font-medium">
                         <div className="flex flex-col">
                           <span>{user.name}</span>
-                          <span className="text-sm text-gray-500">
-                            {user.email}
-                          </span>
+                          <span className="text-sm text-gray-500">{user.email}</span>
                         </div>
                       </TableCell>
                       <TableCell>{user.contactNumber}</TableCell>
-                      <TableCell className="text-center">
-                        {totalEnrollments}
-                      </TableCell>
+                      <TableCell className="text-center">{totalEnrollments}</TableCell>
                       <TableCell>
                         <div className="flex flex-wrap gap-1">
                           {statusCounts.enrolled && (
@@ -178,10 +157,7 @@ export default function UserEnrollmentTable() {
                             </Badge>
                           )}
                           {statusCounts.pending && (
-                            <Badge
-                              variant="outline"
-                              className="border-yellow-300 text-yellow-700"
-                            >
+                            <Badge variant="outline" className="border-yellow-300 text-yellow-700">
                               {statusCounts.pending} Pending
                             </Badge>
                           )}
@@ -221,9 +197,7 @@ export default function UserEnrollmentTable() {
                           </DropdownMenuTrigger>
                           <DropdownMenuContent align="end">
                             <DropdownMenuItem asChild>
-                              <Link
-                                href={`/dashboard/edmingle-users/${user._id}`}
-                              >
+                              <Link href={`/dashboard/edmingle-users/${user._id}`}>
                                 <Eye className="mr-2 h-4 w-4" />
                                 View Details
                               </Link>
@@ -245,13 +219,11 @@ export default function UserEnrollmentTable() {
                   <PaginationItem>
                     <PaginationPrevious
                       href="#"
-                      onClick={(e) => {
+                      onClick={e => {
                         e.preventDefault();
                         if (page > 1) setPage(page - 1);
                       }}
-                      className={
-                        page <= 1 ? "pointer-events-none opacity-50" : ""
-                      }
+                      className={page <= 1 ? 'pointer-events-none opacity-50' : ''}
                     />
                   </PaginationItem>
 
@@ -268,15 +240,12 @@ export default function UserEnrollmentTable() {
                       pageNumber = page - 2 + i;
                     }
 
-                    if (
-                      pageNumber > 0 &&
-                      pageNumber <= data.data.pagination.totalPages
-                    ) {
+                    if (pageNumber > 0 && pageNumber <= data.data.pagination.totalPages) {
                       return (
                         <PaginationItem key={pageNumber}>
                           <PaginationLink
                             href="#"
-                            onClick={(e) => {
+                            onClick={e => {
                               e.preventDefault();
                               setPage(pageNumber);
                             }}
@@ -293,15 +262,14 @@ export default function UserEnrollmentTable() {
                   <PaginationItem>
                     <PaginationNext
                       href="#"
-                      onClick={(e) => {
+                      onClick={e => {
                         e.preventDefault();
-                        if (page < data.data.pagination.totalPages)
-                          setPage(page + 1);
+                        if (page < data.data.pagination.totalPages) setPage(page + 1);
                       }}
                       className={
                         page >= data.data.pagination.totalPages
-                          ? "pointer-events-none opacity-50"
-                          : ""
+                          ? 'pointer-events-none opacity-50'
+                          : ''
                       }
                     />
                   </PaginationItem>

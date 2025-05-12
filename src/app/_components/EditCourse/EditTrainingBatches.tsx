@@ -1,12 +1,12 @@
-import { useEditCourseMutation } from "@/redux/features/courses/coursesApi";
-import { formattDate } from "@/utils/formatter";
-import { batch_status } from "@/utils/list";
-import React, { useState } from "react";
-import toast from "react-hot-toast";
-import { BiSolidDownArrow, BiSolidUpArrow } from "react-icons/bi";
-import { ThreeCircles } from "react-loader-spinner";
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
+import { useEditCourseMutation } from '@/redux/features/courses/coursesApi';
+import { formattDate } from '@/utils/formatter';
+import { batch_status } from '@/utils/list';
+import React, { useState } from 'react';
+import toast from 'react-hot-toast';
+import { BiSolidDownArrow, BiSolidUpArrow } from 'react-icons/bi';
+import { ThreeCircles } from 'react-loader-spinner';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
 
 function EditTrainingBatches({ courseData, setCourseData, setActive }: any) {
   const [editCourse, { isLoading: createCourseLoading, isSuccess, error }] =
@@ -19,27 +19,25 @@ function EditTrainingBatches({ courseData, setCourseData, setActive }: any) {
       data: courseData,
     });
 
-    toast.success("Training Batch updated successfully");
+    toast.success('Training Batch updated successfully');
     if (isSuccess) {
       setActive(3);
     }
   };
 
-  console.log(courseData, "Trainindaksjdn asjdla sd[0a-0=-0p0-=p");
+  console.log(courseData, 'Trainindaksjdn asjdla sd[0a-0=-0p0-=p');
   return (
     <>
       <div className="overflow-auto h-[100%] w-[100%] relative">
         <div className="flex flex-wrap justify-start gap-4 mt-6 h-[420px] overflow-auto pb-24">
           <div className="w-[30%] mb-6">
-            <label className="block mb-2 text-sm font-[700] text-gray-600">
-              Batch Name
-            </label>
+            <label className="block mb-2 text-sm font-[700] text-gray-600">Batch Name</label>
             <div className="relative h-[45px]">
               <div className="flex bg-transparent w-[100%] bg-white rounded-md border-2 justify-center items-center hover:border-2 hover:border-[#292929]">
                 <input
                   type="search"
                   value={courseData?.training_batches?.batch_name}
-                  onChange={(e) => {
+                  onChange={e => {
                     setCourseData((prevData: any) => ({
                       ...prevData,
                       training_batches: {
@@ -56,16 +54,14 @@ function EditTrainingBatches({ courseData, setCourseData, setActive }: any) {
             </div>
           </div>
           <div className="w-[30%] mb-6">
-            <label className="block mb-2 text-sm font-[700] text-gray-600">
-              Paid
-            </label>
+            <label className="block mb-2 text-sm font-[700] text-gray-600">Paid</label>
             <div className="relative h-[45px]">
               <div className="flex bg-transparent w-[100%] bg-white rounded-md border-2 justify-center items-center hover:border-2 hover:border-[#292929]">
                 <button
                   className={`w-[50%] pl-2 border-none left-[50px] rounded-l-md h-[45px] outline-none text-[14px] font-[500] font-Josefin  ${
                     !courseData?.training_batches?.isPaid
-                      ? "bg-violet-950 text-white"
-                      : "bg-white text-sky-800"
+                      ? 'bg-violet-950 text-white'
+                      : 'bg-white text-sky-800'
                   }`}
                   type="button"
                   onClick={() => {
@@ -84,8 +80,8 @@ function EditTrainingBatches({ courseData, setCourseData, setActive }: any) {
                   type="button"
                   className={`w-[50%] pl-2 border-none left-[50px] rounded-l-md h-[45px] outline-none text-[14px] font-[500] font-Josefin  ${
                     courseData?.training_batches?.isPaid
-                      ? "bg-violet-950 text-white"
-                      : "bg-white text-sky-800"
+                      ? 'bg-violet-950 text-white'
+                      : 'bg-white text-sky-800'
                   }`}
                   onClick={() => {
                     setCourseData((prevData: any) => ({
@@ -103,15 +99,13 @@ function EditTrainingBatches({ courseData, setCourseData, setActive }: any) {
             </div>
           </div>
           <div className="w-[30%] mb-6">
-            <label className="block mb-2 text-sm font-[700] text-gray-600">
-              Trainer
-            </label>
+            <label className="block mb-2 text-sm font-[700] text-gray-600">Trainer</label>
             <div className="relative h-[45px]">
               <div className="flex bg-transparent w-[100%] bg-white rounded-md border-2 justify-center items-center hover:border-2 hover:border-[#292929]">
                 <input
                   type="search"
                   value={courseData?.training_batches?.trainer}
-                  onChange={(e) => {
+                  onChange={e => {
                     setCourseData((prevData: any) => ({
                       ...prevData,
                       training_batches: {
@@ -145,15 +139,13 @@ function EditTrainingBatches({ courseData, setCourseData, setActive }: any) {
             </div>
           </div>
           <div className="w-[30%] mb-6">
-            <label className="block mb-2 text-sm font-[700] text-gray-600">
-              Start Time
-            </label>
+            <label className="block mb-2 text-sm font-[700] text-gray-600">Start Time</label>
             <div className="relative h-[45px]">
               <div className="flex bg-transparent w-[100%] bg-white rounded-md border-2 justify-center items-center hover:border-2 hover:border-[#292929]">
                 <DatePicker
                   showTimeSelect
                   withPortal
-                  dateFormat={"MM/dd/yyyy h:mm aa"}
+                  dateFormat={'MM/dd/yyyy h:mm aa'}
                   selected={new Date(courseData?.training_batches?.start_time)}
                   onChange={(date: any) => {
                     setCourseData((prevData: any) => ({
@@ -178,10 +170,8 @@ function EditTrainingBatches({ courseData, setCourseData, setActive }: any) {
                 <DatePicker
                   showTimeSelect
                   withPortal
-                  dateFormat={"MM/dd/yyyy h:mm aa"}
-                  selected={
-                    new Date(courseData?.training_batches?.enrollment_end_date)
-                  }
+                  dateFormat={'MM/dd/yyyy h:mm aa'}
+                  selected={new Date(courseData?.training_batches?.enrollment_end_date)}
                   onChange={(date: any) => {
                     setCourseData((prevData: any) => ({
                       ...prevData,
@@ -197,15 +187,13 @@ function EditTrainingBatches({ courseData, setCourseData, setActive }: any) {
             </div>
           </div>
           <div className="w-[30%] mb-6">
-            <label className="block mb-2 text-sm font-[700] text-gray-600">
-              End Date
-            </label>
+            <label className="block mb-2 text-sm font-[700] text-gray-600">End Date</label>
             <div className="relative h-[45px]">
               <div className="flex bg-transparent w-[100%] bg-white rounded-md border-2 justify-center items-center hover:border-2 hover:border-[#292929]">
                 <DatePicker
                   showTimeSelect
                   withPortal
-                  dateFormat={"MM/dd/yyyy h:mm aa"}
+                  dateFormat={'MM/dd/yyyy h:mm aa'}
                   selected={new Date(courseData?.training_batches?.end_date)}
                   onChange={(date: any) => {
                     setCourseData((prevData: any) => ({
@@ -222,15 +210,13 @@ function EditTrainingBatches({ courseData, setCourseData, setActive }: any) {
             </div>
           </div>
           <div className="w-[30%] mb-6">
-            <label className="block mb-2 text-sm font-[700] text-gray-600">
-              Capacity
-            </label>
+            <label className="block mb-2 text-sm font-[700] text-gray-600">Capacity</label>
             <div className="relative h-[45px]">
               <div className="flex bg-transparent w-[100%] bg-white rounded-md border-2 justify-center items-center hover:border-2 hover:border-[#292929]">
                 <input
                   type="number"
                   value={courseData?.training_batches?.capacity || 0}
-                  onChange={(e) => {
+                  onChange={e => {
                     setCourseData((prevData: any) => ({
                       ...prevData,
                       training_batches: {
@@ -247,9 +233,7 @@ function EditTrainingBatches({ courseData, setCourseData, setActive }: any) {
             </div>
           </div>
           <div className="w-[30%] mb-6">
-            <label className="block mb-2 text-sm font-[700] text-gray-600">
-              Batch Status
-            </label>
+            <label className="block mb-2 text-sm font-[700] text-gray-600">Batch Status</label>
             <div className="relative h-[45px]">
               <div className="flex bg-transparent w-[100%] bg-white rounded-md border-2 justify-center items-center hover:border-2 hover:border-[#292929]">
                 <input
@@ -305,14 +289,12 @@ function EditTrainingBatches({ courseData, setCourseData, setActive }: any) {
             </div>
           </div>
           <div className="w-[100%]">
-            <label className="block mb-2 text-sm font-[700] text-gray-600">
-              Description
-            </label>
+            <label className="block mb-2 text-sm font-[700] text-gray-600">Description</label>
 
             <div className="flex bg-transparent w-[100%] bg-white rounded-md border-2 justify-center items-center hover:border-2 hover:border-[#292929]">
               <textarea
                 value={courseData?.training_batches?.description}
-                onChange={(e) => {
+                onChange={e => {
                   setCourseData((prevData: any) => ({
                     ...prevData,
                     training_batches: {
@@ -324,7 +306,7 @@ function EditTrainingBatches({ courseData, setCourseData, setActive }: any) {
                 name="description"
                 id="description"
                 className="bg-transparent w-full p-2 border-none rounded-[5px] h-[100px] outline-none text-[#292929] text-[14px] font-[500] font-Josefin"
-                style={{ resize: "none" }}
+                style={{ resize: 'none' }}
               />
             </div>
           </div>
@@ -333,7 +315,7 @@ function EditTrainingBatches({ courseData, setCourseData, setActive }: any) {
       <div className="absolute bottom-0 right-0 bg-gray-100 w-full h-20 flex justify-end items-center pb-2">
         <button
           className="mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-          style={{ position: "absolute", bottom: "1rem", right: "1rem" }}
+          style={{ position: 'absolute', bottom: '1rem', right: '1rem' }}
           onClick={handleCourseCreate}
         >
           {createCourseLoading ? (
@@ -347,7 +329,7 @@ function EditTrainingBatches({ courseData, setCourseData, setActive }: any) {
               wrapperClass=""
             />
           ) : (
-            "save"
+            'save'
           )}
         </button>
       </div>

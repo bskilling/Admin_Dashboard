@@ -1,9 +1,9 @@
 // models/AdminUser.ts
-import mongoose, { Document, Schema } from "mongoose";
+import mongoose, { Document, Schema } from 'mongoose';
 
 export enum AdminRole {
-  SUPER_ADMIN = "superadmin",
-  ADMIN = "admin",
+  SUPER_ADMIN = 'superadmin',
+  ADMIN = 'admin',
 }
 
 export interface IAdminUser extends Document {
@@ -30,4 +30,4 @@ const AdminUserSchema = new Schema<IAdminUser>(
 );
 
 export default mongoose.models.AdminUser ||
-  mongoose.model<IAdminUser>("AdminUser", AdminUserSchema);
+  mongoose.model<IAdminUser>('AdminUser', AdminUserSchema);

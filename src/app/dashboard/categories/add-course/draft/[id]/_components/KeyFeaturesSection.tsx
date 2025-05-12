@@ -1,11 +1,11 @@
-"use client";
+'use client';
 
-import { IoKeyOutline } from "react-icons/io5";
-import { MdDelete } from "react-icons/md";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { UseFormReturn } from "react-hook-form";
-import { TDraftCourseForm } from "../page";
+import { IoKeyOutline } from 'react-icons/io5';
+import { MdDelete } from 'react-icons/md';
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
+import { UseFormReturn } from 'react-hook-form';
+import { TDraftCourseForm } from '../page';
 
 export default function KeyFeaturesSection({
   watch,
@@ -13,8 +13,8 @@ export default function KeyFeaturesSection({
   keyFeature,
   setKeyFeature,
 }: {
-  watch: UseFormReturn<TDraftCourseForm>["watch"];
-  setValue: UseFormReturn<TDraftCourseForm>["setValue"];
+  watch: UseFormReturn<TDraftCourseForm>['watch'];
+  setValue: UseFormReturn<TDraftCourseForm>['setValue'];
   keyFeature: string;
   setKeyFeature: React.Dispatch<React.SetStateAction<string>>;
 }) {
@@ -25,21 +25,16 @@ export default function KeyFeaturesSection({
       </h2>
 
       <div className="grid gap-5 mt-4">
-        {watch("overview.keyFeatures")?.map((field, index) => (
-          <div
-            key={index}
-            className="flex items-center bg-white p-2 rounded-md shadow-sm"
-          >
+        {watch('overview.keyFeatures')?.map((field, index) => (
+          <div key={index} className="flex items-center bg-white p-2 rounded-md shadow-sm">
             <Input key={field} value={field} className="flex-1" />
             <MdDelete
               size={30}
               className="cursor-pointer text-red-500"
               onClick={() => {
                 setValue(
-                  "overview.keyFeatures",
-                  watch("overview.keyFeatures")?.filter(
-                    (item) => item !== field
-                  )
+                  'overview.keyFeatures',
+                  watch('overview.keyFeatures')?.filter(item => item !== field)
                 );
               }}
             />
@@ -49,16 +44,16 @@ export default function KeyFeaturesSection({
         <div className="flex items-center gap-x-4">
           <Input
             value={keyFeature}
-            onChange={(e) => setKeyFeature(e.target.value)}
+            onChange={e => setKeyFeature(e.target.value)}
             placeholder="Enter a key feature"
             className="flex-1"
           />
           <Button
             type="button"
             onClick={() => {
-              const keyFeatures = watch("overview.keyFeatures") || [];
-              setValue("overview.keyFeatures", [...keyFeatures, keyFeature]);
-              setKeyFeature("");
+              const keyFeatures = watch('overview.keyFeatures') || [];
+              setValue('overview.keyFeatures', [...keyFeatures, keyFeature]);
+              setKeyFeature('');
             }}
           >
             Add

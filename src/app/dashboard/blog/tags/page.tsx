@@ -1,19 +1,19 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import { useTags, useDeleteTag } from "../_components/useTags";
-import { Tag } from "../_components/types";
-import { toast } from "react-hot-toast";
-import { useRouter } from "next/navigation";
-import Link from "next/link";
-import TagForm from "../_components/TagForm";
+import { useState } from 'react';
+import { useTags, useDeleteTag } from '../_components/useTags';
+import { Tag } from '../_components/types';
+import { toast } from 'react-hot-toast';
+import { useRouter } from 'next/navigation';
+import Link from 'next/link';
+import TagForm from '../_components/TagForm';
 
 export default function TagsManagementPage() {
   const router = useRouter();
   const [showModal, setShowModal] = useState(false);
   const [editingTag, setEditingTag] = useState<Tag | null>(null);
   const [isDeleting, setIsDeleting] = useState<string | null>(null);
-  const [searchQuery, setSearchQuery] = useState("");
+  const [searchQuery, setSearchQuery] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
 
   // Fetch tags
@@ -28,19 +28,15 @@ export default function TagsManagementPage() {
 
   // Handle delete
   const handleDelete = async (id: string) => {
-    if (
-      confirm(
-        "Are you sure you want to delete this tag? This action cannot be undone."
-      )
-    ) {
+    if (confirm('Are you sure you want to delete this tag? This action cannot be undone.')) {
       setIsDeleting(id);
 
       try {
         await deleteMutation.mutateAsync(id);
-        toast.success("Tag deleted successfully");
+        toast.success('Tag deleted successfully');
         refetch();
       } catch (error) {
-        toast.error("Failed to delete tag");
+        toast.error('Failed to delete tag');
       } finally {
         setIsDeleting(null);
       }
@@ -97,7 +93,7 @@ export default function TagsManagementPage() {
             <input
               type="text"
               value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
+              onChange={e => setSearchQuery(e.target.value)}
               placeholder="Search tags..."
               className="px-4 py-2 border rounded-l-lg w-full"
             />
@@ -142,19 +138,14 @@ export default function TagsManagementPage() {
               <div className="flex justify-between items-start mb-2">
                 <div
                   className="w-4 h-4 rounded-full"
-                  style={{ backgroundColor: tag.color || "#3B82F6" }}
+                  style={{ backgroundColor: tag.color || '#3B82F6' }}
                 ></div>
                 <div className="space-x-1">
                   <button
                     onClick={() => handleEdit(tag)}
                     className="text-indigo-600 hover:text-indigo-900"
                   >
-                    <svg
-                      className="w-4 h-4"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path
                         strokeLinecap="round"
                         strokeLinejoin="round"
@@ -167,17 +158,10 @@ export default function TagsManagementPage() {
                     onClick={() => handleDelete(tag._id)}
                     disabled={isDeleting === tag._id}
                     className={`text-red-600 hover:text-red-900 ${
-                      isDeleting === tag._id
-                        ? "opacity-50 cursor-not-allowed"
-                        : ""
+                      isDeleting === tag._id ? 'opacity-50 cursor-not-allowed' : ''
                     }`}
                   >
-                    <svg
-                      className="w-4 h-4"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path
                         strokeLinecap="round"
                         strokeLinejoin="round"
@@ -188,34 +172,27 @@ export default function TagsManagementPage() {
                   </button>
                 </div>
               </div>
-              <Link
-                href={`/dashboard/blog?tag=${tag.slug}`}
-                className="hover:text-blue-600"
-              >
+              <Link href={`/dashboard/blog?tag=${tag.slug}`} className="hover:text-blue-600">
                 <h3 className="text-lg font-medium">{tag.name}</h3>
               </Link>
               <div className="text-sm text-gray-500 mt-1">/{tag.slug}</div>
               {tag.description && (
-                <p className="text-sm text-gray-600 mt-2 line-clamp-2">
-                  {tag.description}
-                </p>
+                <p className="text-sm text-gray-600 mt-2 line-clamp-2">{tag.description}</p>
               )}
               <div className="mt-2 flex items-center">
                 <span
                   className={`inline-block w-2 h-2 rounded-full ${
-                    tag.isActive ? "bg-green-500" : "bg-red-500"
+                    tag.isActive ? 'bg-green-500' : 'bg-red-500'
                   } mr-1`}
                 ></span>
                 <span className="text-xs text-gray-500">
-                  {tag.isActive ? "Active" : "Inactive"}
+                  {tag.isActive ? 'Active' : 'Inactive'}
                 </span>
               </div>
             </div>
           ))
         ) : (
-          <div className="col-span-full text-center py-10 text-gray-500">
-            No tags found
-          </div>
+          <div className="col-span-full text-center py-10 text-gray-500">No tags found</div>
         )}
       </div>
 
@@ -224,12 +201,12 @@ export default function TagsManagementPage() {
         <div className="flex justify-center mt-6">
           <nav className="flex items-center space-x-2">
             <button
-              onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+              onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
               disabled={!data.pagination.hasPrevPage}
               className={`px-3 py-1 rounded-md ${
                 data.pagination.hasPrevPage
-                  ? "bg-gray-200 hover:bg-gray-300"
-                  : "bg-gray-100 text-gray-400 cursor-not-allowed"
+                  ? 'bg-gray-200 hover:bg-gray-300'
+                  : 'bg-gray-100 text-gray-400 cursor-not-allowed'
               }`}
             >
               Previous
@@ -240,12 +217,12 @@ export default function TagsManagementPage() {
             </span>
 
             <button
-              onClick={() => setCurrentPage((prev) => prev + 1)}
+              onClick={() => setCurrentPage(prev => prev + 1)}
               disabled={!data.pagination.hasNextPage}
               className={`px-3 py-1 rounded-md ${
                 data.pagination.hasNextPage
-                  ? "bg-gray-200 hover:bg-gray-300"
-                  : "bg-gray-100 text-gray-400 cursor-not-allowed"
+                  ? 'bg-gray-200 hover:bg-gray-300'
+                  : 'bg-gray-100 text-gray-400 cursor-not-allowed'
               }`}
             >
               Next
@@ -259,19 +236,9 @@ export default function TagsManagementPage() {
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
           <div className="bg-white rounded-lg w-full max-w-md p-6">
             <div className="flex justify-between items-center mb-4">
-              <h3 className="text-lg font-medium">
-                {editingTag ? "Edit Tag" : "Add Tag"}
-              </h3>
-              <button
-                onClick={handleModalClose}
-                className="text-gray-400 hover:text-gray-500"
-              >
-                <svg
-                  className="w-6 h-6"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
+              <h3 className="text-lg font-medium">{editingTag ? 'Edit Tag' : 'Add Tag'}</h3>
+              <button onClick={handleModalClose} className="text-gray-400 hover:text-gray-500">
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path
                     strokeLinecap="round"
                     strokeLinejoin="round"

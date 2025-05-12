@@ -1,21 +1,21 @@
-"use client";
-import { UseFormReturn } from "react-hook-form";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { MdDelete } from "react-icons/md";
-import { IoCheckmarkCircle } from "react-icons/io5";
-import { useState } from "react";
-import { toast } from "react-hot-toast";
-import { TDraftCourseForm } from "../page";
+'use client';
+import { UseFormReturn } from 'react-hook-form';
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
+import { MdDelete } from 'react-icons/md';
+import { IoCheckmarkCircle } from 'react-icons/io5';
+import { useState } from 'react';
+import { toast } from 'react-hot-toast';
+import { TDraftCourseForm } from '../page';
 
 export default function HighlightsSection({
   watch,
   setValue,
 }: {
-  watch: UseFormReturn<TDraftCourseForm>["watch"];
-  setValue: UseFormReturn<TDraftCourseForm>["setValue"];
+  watch: UseFormReturn<TDraftCourseForm>['watch'];
+  setValue: UseFormReturn<TDraftCourseForm>['setValue'];
 }) {
-  const [currentHighlight, setCurrentHighlight] = useState("");
+  const [currentHighlight, setCurrentHighlight] = useState('');
 
   return (
     <div className="">
@@ -27,25 +27,22 @@ export default function HighlightsSection({
         <div className="flex flex-col gap-4">
           {
             // @ts-ignore
-            watch("highlights") && watch("highlights")?.length > 0 ? (
-              watch("highlights")?.map((field, index) => (
+            watch('highlights') && watch('highlights')?.length > 0 ? (
+              watch('highlights')?.map((field, index) => (
                 <div
                   key={index}
                   className="flex items-center justify-between border border-gray-300 p-4 rounded-lg shadow-md bg-white transition hover:shadow-lg"
                 >
                   <div className="flex items-center gap-3">
                     <IoCheckmarkCircle size={24} className="text-green-500" />
-                    <p className="text-[15px] font-medium text-gray-800">
-                      {field}
-                    </p>
+                    <p className="text-[15px] font-medium text-gray-800">{field}</p>
                   </div>
                   <button
                     type="button"
                     onClick={() => {
                       const updatedHighlights =
-                        watch("highlights")?.filter((_, i) => i !== index) ||
-                        [];
-                      setValue("highlights", updatedHighlights);
+                        watch('highlights')?.filter((_, i) => i !== index) || [];
+                      setValue('highlights', updatedHighlights);
                     }}
                     className="p-2 rounded-full bg-red-500 hover:bg-red-600 text-white shadow-md hover:shadow-lg transition-all duration-200"
                   >
@@ -54,9 +51,7 @@ export default function HighlightsSection({
                 </div>
               ))
             ) : (
-              <p className="text-gray-500 italic text-center">
-                No highlights added yet.
-              </p>
+              <p className="text-gray-500 italic text-center">No highlights added yet.</p>
             )
           }
 
@@ -65,18 +60,18 @@ export default function HighlightsSection({
             <Input
               value={currentHighlight}
               placeholder="Enter a highlight..."
-              onChange={(e) => setCurrentHighlight(e.target.value)}
+              onChange={e => setCurrentHighlight(e.target.value)}
               className="flex-1 text-[14px] !border-none focus:ring-0"
             />
             <button
               type="button"
               onClick={() => {
                 if (currentHighlight.trim().length < 5) {
-                  return toast.error("Please enter a valid highlight");
+                  return toast.error('Please enter a valid highlight');
                 }
-                const highlights = watch("highlights") || [];
-                setValue("highlights", [...highlights, currentHighlight]);
-                setCurrentHighlight("");
+                const highlights = watch('highlights') || [];
+                setValue('highlights', [...highlights, currentHighlight]);
+                setCurrentHighlight('');
               }}
               className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-md shadow-md hover:shadow-lg transition"
             >

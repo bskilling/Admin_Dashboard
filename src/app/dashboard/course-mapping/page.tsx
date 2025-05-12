@@ -1,12 +1,12 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import axios from "axios";
-import { Loader2, CheckCircle2, AlertCircle } from "lucide-react";
-import { toast } from "sonner";
-import env from "@/lib/env";
-import { Input } from "@/components/ui/input";
+import { useState } from 'react';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import axios from 'axios';
+import { Loader2, CheckCircle2, AlertCircle } from 'lucide-react';
+import { toast } from 'sonner';
+import env from '@/lib/env';
+import { Input } from '@/components/ui/input';
 
 interface Course {
   _id: string;
@@ -22,30 +22,26 @@ interface FormData {
 }
 
 export default function ExternalCourseMappingForm() {
-  const [selectedMappingId, setSelectedMappingId] = useState<string | null>(
-    null
-  );
+  const [selectedMappingId, setSelectedMappingId] = useState<string | null>(null);
   const queryClient = useQueryClient();
   const [formData, setFormData] = useState<FormData>({
-    courseId: "",
+    courseId: '',
     externalBundleId: undefined,
     externalOrgId: undefined,
     isActive: true,
   });
 
   // Handle form input changes
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
-  ) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value, type } = e.target;
 
-    if (type === "checkbox") {
+    if (type === 'checkbox') {
       const checkbox = e.target as HTMLInputElement;
       setFormData({
         ...formData,
         [name]: checkbox.checked,
       });
-    } else if (type === "number") {
+    } else if (type === 'number') {
       setFormData({
         ...formData,
         [name]: value ? Number(value) : undefined,
@@ -60,20 +56,18 @@ export default function ExternalCourseMappingForm() {
 
   // Fetch available courses
   const { data: courses, isLoading: isLoadingCourses } = useQuery({
-    queryKey: ["courses"],
+    queryKey: ['courses'],
     queryFn: async () => {
-      const { data } = await axios.get(env?.BACKEND_URL + "/api/courses");
+      const { data } = await axios.get(env?.BACKEND_URL + '/api/courses');
       return data.data.courses as Course[];
     },
   });
 
   // Fetch existing mappings
   const { data: mappings, isLoading: isLoadingMappings } = useQuery({
-    queryKey: ["courseMappings"],
+    queryKey: ['courseMappings'],
     queryFn: async () => {
-      const { data } = await axios.get(
-        env?.BACKEND_URL + "/api/edmingle/external/mappings"
-      );
+      const { data } = await axios.get(env?.BACKEND_URL + '/api/edmingle/external/mappings');
       return data.data.mappings;
     },
   });
@@ -82,18 +76,18 @@ export default function ExternalCourseMappingForm() {
   const createMapping = useMutation({
     mutationFn: async (values: FormData) => {
       const { data } = await axios.post(
-        env?.BACKEND_URL + "/api/edmingle/external/mappings",
+        env?.BACKEND_URL + '/api/edmingle/external/mappings',
         values
       );
       return data;
     },
     onSuccess: () => {
-      toast.success("Mapping created successfully");
+      toast.success('Mapping created successfully');
       resetForm();
-      queryClient.invalidateQueries({ queryKey: ["courseMappings"] });
+      queryClient.invalidateQueries({ queryKey: ['courseMappings'] });
     },
     onError: (error: any) => {
-      toast.error(error.response?.data?.message || "Error creating mapping");
+      toast.error(error.response?.data?.message || 'Error creating mapping');
     },
   });
 
@@ -108,12 +102,12 @@ export default function ExternalCourseMappingForm() {
       return data;
     },
     onSuccess: () => {
-      toast.success("Mapping updated successfully");
+      toast.success('Mapping updated successfully');
       resetForm();
-      queryClient.invalidateQueries({ queryKey: ["courseMappings"] });
+      queryClient.invalidateQueries({ queryKey: ['courseMappings'] });
     },
     onError: (error: any) => {
-      toast.error(error.response?.data?.message || "Error updating mapping");
+      toast.error(error.response?.data?.message || 'Error updating mapping');
     },
   });
 
@@ -126,11 +120,11 @@ export default function ExternalCourseMappingForm() {
       return data;
     },
     onSuccess: () => {
-      toast.success("Mapping deleted successfully");
-      queryClient.invalidateQueries({ queryKey: ["courseMappings"] });
+      toast.success('Mapping deleted successfully');
+      queryClient.invalidateQueries({ queryKey: ['courseMappings'] });
     },
     onError: (error: any) => {
-      toast.error(error.response?.data?.message || "Error deleting mapping");
+      toast.error(error.response?.data?.message || 'Error deleting mapping');
     },
   });
 
@@ -140,17 +134,17 @@ export default function ExternalCourseMappingForm() {
 
     // Validate form
     if (!formData.courseId) {
-      toast.error("Please select a course");
+      toast.error('Please select a course');
       return;
     }
 
     if (!formData.externalBundleId) {
-      toast.error("Please enter the Edmingle bundle ID");
+      toast.error('Please enter the Edmingle bundle ID');
       return;
     }
 
     if (!formData.externalOrgId) {
-      toast.error("Please enter the Edmingle organization ID");
+      toast.error('Please enter the Edmingle organization ID');
       return;
     }
 
@@ -165,7 +159,7 @@ export default function ExternalCourseMappingForm() {
   const resetForm = () => {
     setSelectedMappingId(null);
     setFormData({
-      courseId: "",
+      courseId: '',
       externalBundleId: undefined,
       externalOrgId: undefined,
       isActive: true,
@@ -186,9 +180,7 @@ export default function ExternalCourseMappingForm() {
   return (
     <div className="bg-white rounded-lg shadow-md p-6">
       <h2 className="text-2xl font-bold mb-6">
-        {selectedMappingId
-          ? "Edit Course Mapping"
-          : "Create New Course Mapping"}
+        {selectedMappingId ? 'Edit Course Mapping' : 'Create New Course Mapping'}
       </h2>
 
       <form onSubmit={handleSubmit} className="space-y-6">
@@ -201,9 +193,7 @@ export default function ExternalCourseMappingForm() {
             name="courseId"
             value={formData.courseId}
             placeholder="Enter Course ID"
-            onChange={(e) =>
-              setFormData({ ...formData, courseId: e.target.value })
-            }
+            onChange={e => setFormData({ ...formData, courseId: e.target.value })}
           />
           {/* <select
             name="courseId"
@@ -237,7 +227,7 @@ export default function ExternalCourseMappingForm() {
           <input
             type="number"
             name="externalBundleId"
-            value={formData.externalBundleId || ""}
+            value={formData.externalBundleId || ''}
             onChange={handleChange}
             placeholder="Enter the Edmingle bundle ID"
             className="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
@@ -252,7 +242,7 @@ export default function ExternalCourseMappingForm() {
           <input
             type="number"
             name="externalOrgId"
-            value={formData.externalOrgId || ""}
+            value={formData.externalOrgId || ''}
             onChange={handleChange}
             placeholder="Enter the Edmingle organization ID"
             className="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
@@ -270,10 +260,7 @@ export default function ExternalCourseMappingForm() {
             className="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
           />
           <div>
-            <label
-              htmlFor="isActive"
-              className="text-sm font-medium text-gray-700"
-            >
+            <label htmlFor="isActive" className="text-sm font-medium text-gray-700">
               Active
             </label>
             <p className="text-sm text-gray-500">
@@ -292,12 +279,12 @@ export default function ExternalCourseMappingForm() {
             {createMapping.isPending || updateMapping.isPending ? (
               <>
                 <Loader2 className="inline mr-2 h-4 w-4 animate-spin" />
-                {selectedMappingId ? "Updating..." : "Creating..."}
+                {selectedMappingId ? 'Updating...' : 'Creating...'}
               </>
             ) : selectedMappingId ? (
-              "Update Mapping"
+              'Update Mapping'
             ) : (
-              "Create Mapping"
+              'Create Mapping'
             )}
           </button>
 
@@ -313,9 +300,7 @@ export default function ExternalCourseMappingForm() {
               <button
                 type="button"
                 onClick={() => {
-                  if (
-                    confirm("Are you sure you want to delete this mapping?")
-                  ) {
+                  if (confirm('Are you sure you want to delete this mapping?')) {
                     deleteMapping.mutate(selectedMappingId);
                     resetForm();
                   }
@@ -329,7 +314,7 @@ export default function ExternalCourseMappingForm() {
                     Deleting...
                   </>
                 ) : (
-                  "Delete"
+                  'Delete'
                 )}
               </button>
             </>
@@ -376,21 +361,17 @@ export default function ExternalCourseMappingForm() {
                       </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="text-sm text-gray-500">
-                        {mapping.externalBundleId}
-                      </div>
+                      <div className="text-sm text-gray-500">{mapping.externalBundleId}</div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="text-sm text-gray-500">
-                        {mapping.externalOrgId}
-                      </div>
+                      <div className="text-sm text-gray-500">{mapping.externalOrgId}</div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <span
                         className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
                           mapping.isActive
-                            ? "bg-green-100 text-green-800"
-                            : "bg-red-100 text-red-800"
+                            ? 'bg-green-100 text-green-800'
+                            : 'bg-red-100 text-red-800'
                         }`}
                       >
                         {mapping.isActive ? (
@@ -421,9 +402,7 @@ export default function ExternalCourseMappingForm() {
           </div>
         ) : (
           <div className="text-center py-8 border rounded-md">
-            <p className="text-gray-500">
-              No mappings found. Create your first mapping above.
-            </p>
+            <p className="text-gray-500">No mappings found. Create your first mapping above.</p>
           </div>
         )}
       </div>

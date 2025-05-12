@@ -1,12 +1,12 @@
-"use client";
+'use client';
 
-import { useGetBlogByIdQuery } from "@/redux/features/blog/blogApi";
-import React from "react";
+import { useGetBlogByIdQuery } from '@/redux/features/blog/blogApi';
+import React from 'react';
 // import loginBg from "../../../public/assets/loginBg.png";
-import BlogHeader from "@/app/_components/Blog/BlogHeader";
-import BlogBody from "@/app/_components/Blog/BlogBody";
-import BlogNav from "@/app/_components/Blog/BlogNav";
-import Protected from "@/app/hooks/useProtected";
+import BlogHeader from '@/app/_components/Blog/BlogHeader';
+import BlogBody from '@/app/_components/Blog/BlogBody';
+import BlogNav from '@/app/_components/Blog/BlogNav';
+import Protected from '@/app/hooks/useProtected';
 
 export default function Page({ params }: any) {
   const { isLoading, data, refetch } = useGetBlogByIdQuery(params.id);
@@ -20,7 +20,7 @@ export default function Page({ params }: any) {
         <BlogHeader
           id={params.id}
           title={data?.blog?.title}
-          coverImage={data?.blog?.banner ?? "/assets/loginBg.png"}
+          coverImage={data?.blog?.banner ?? '/assets/loginBg.png'}
           date={data?.blog?.createdAt}
           slug={data?.blog?.slug}
           contentLength={data?.blog?.content.length}

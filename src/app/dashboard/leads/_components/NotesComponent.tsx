@@ -1,12 +1,12 @@
-"use client";
+'use client';
 
-import React, { useState } from "react";
-import { Button } from "@/components/ui/button";
-import { Textarea } from "@/components/ui/textarea";
-import { Badge } from "@/components/ui/badge";
-import { Plus, MessageSquare } from "lucide-react";
-import { Note } from "./types";
-import { getStatusBadgeColor, formatDate, sortNotesByDate } from "./leadUtils";
+import React, { useState } from 'react';
+import { Button } from '@/components/ui/button';
+import { Textarea } from '@/components/ui/textarea';
+import { Badge } from '@/components/ui/badge';
+import { Plus, MessageSquare } from 'lucide-react';
+import { Note } from './types';
+import { getStatusBadgeColor, formatDate, sortNotesByDate } from './leadUtils';
 
 interface NotesComponentProps {
   notes: Note[];
@@ -21,7 +21,7 @@ const NotesComponent: React.FC<NotesComponentProps> = ({
   currentStatus,
   onAddNote,
 }) => {
-  const [newNoteText, setNewNoteText] = useState("");
+  const [newNoteText, setNewNoteText] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   // Sort notes by date (most recent first)
@@ -33,9 +33,9 @@ const NotesComponent: React.FC<NotesComponentProps> = ({
     try {
       setIsSubmitting(true);
       await onAddNote(leadId, newNoteText.trim(), currentStatus);
-      setNewNoteText(""); // Clear input after successful submission
+      setNewNoteText(''); // Clear input after successful submission
     } catch (error) {
-      console.error("Error adding note:", error);
+      console.error('Error adding note:', error);
     } finally {
       setIsSubmitting(false);
     }
@@ -54,15 +54,13 @@ const NotesComponent: React.FC<NotesComponentProps> = ({
         <Textarea
           placeholder="Type your note here..."
           value={newNoteText}
-          onChange={(e) => setNewNoteText(e.target.value)}
+          onChange={e => setNewNoteText(e.target.value)}
           className="min-h-[100px] bg-white"
         />
         <div className="flex items-center justify-between">
           <div className="text-xs text-slate-500 flex items-center gap-1">
-            Current status:{" "}
-            <Badge className={getStatusBadgeColor(currentStatus)}>
-              {currentStatus}
-            </Badge>
+            Current status:{' '}
+            <Badge className={getStatusBadgeColor(currentStatus)}>{currentStatus}</Badge>
           </div>
           <Button
             onClick={handleAddNote}
@@ -70,7 +68,7 @@ const NotesComponent: React.FC<NotesComponentProps> = ({
             className="bg-blue-600 hover:bg-blue-700"
           >
             <Plus className="h-4 w-4 mr-1" />
-            {isSubmitting ? "Adding..." : "Add Note"}
+            {isSubmitting ? 'Adding...' : 'Add Note'}
           </Button>
         </div>
       </div>
@@ -79,24 +77,16 @@ const NotesComponent: React.FC<NotesComponentProps> = ({
       <div className="max-h-[400px] overflow-y-auto space-y-3 pr-2">
         {sortedNotes.length > 0 ? (
           sortedNotes.map((note, index) => (
-            <div
-              key={index}
-              className="p-4 bg-white rounded-lg border border-slate-200 shadow-sm"
-            >
+            <div key={index} className="p-4 bg-white rounded-lg border border-slate-200 shadow-sm">
               <div className="flex justify-between items-start mb-2">
-                <Badge
-                  variant="outline"
-                  className={getStatusBadgeColor(note.status)}
-                >
+                <Badge variant="outline" className={getStatusBadgeColor(note.status)}>
                   {note.status}
                 </Badge>
                 <div className="flex items-center gap-2">
                   <span className="text-xs font-medium text-slate-500">
-                    {note.addedBy || "Admin"}
+                    {note.addedBy || 'Admin'}
                   </span>
-                  <span className="text-xs text-slate-400">
-                    {formatDate(note.createdAt)}
-                  </span>
+                  <span className="text-xs text-slate-400">{formatDate(note.createdAt)}</span>
                 </div>
               </div>
               <p className="text-slate-700 whitespace-pre-wrap">{note.text}</p>

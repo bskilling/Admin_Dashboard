@@ -1,11 +1,11 @@
-import { PayloadAction, createSlice } from "@reduxjs/toolkit";
+import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
   courseData: null,
 };
 
 const courseSlice = createSlice({
-  name: "Course",
+  name: 'Course',
   initialState,
   reducers: {
     setCourse: (state, action: PayloadAction<{ course: any }>) => {

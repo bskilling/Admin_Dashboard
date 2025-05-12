@@ -1,18 +1,15 @@
-import { useFormik } from "formik";
-import React, { useEffect, useState } from "react";
-import { BiSearch, BiSolidDownArrow, BiSolidUpArrow } from "react-icons/bi";
+import { useFormik } from 'formik';
+import React, { useEffect, useState } from 'react';
+import { BiSearch, BiSolidDownArrow, BiSolidUpArrow } from 'react-icons/bi';
 import {
   useCreateCourseMutation,
   useGetCourseByIdQuery,
   useGetCoursesTitleQuery,
-} from "../../../redux/features/courses/coursesApi";
-import { language, mode, category, level } from "@/utils/list";
-import { ThreeCircles } from "react-loader-spinner";
-import toast from "react-hot-toast";
-import {
-  useUploadFileMutation,
-  useUploadImageMutation,
-} from "@/redux/features/upload/uploadApi";
+} from '../../../redux/features/courses/coursesApi';
+import { language, mode, category, level } from '@/utils/list';
+import { ThreeCircles } from 'react-loader-spinner';
+import toast from 'react-hot-toast';
+import { useUploadFileMutation, useUploadImageMutation } from '@/redux/features/upload/uploadApi';
 
 type Props = {
   setIsCourseCreated: any;
@@ -20,17 +17,13 @@ type Props = {
   setCourseData: any;
 };
 
-export default function TrainingDetails({
-  setIsCourseCreated,
-  courseData,
-  setCourseData,
-}: Props) {
+export default function TrainingDetails({ setIsCourseCreated, courseData, setCourseData }: Props) {
   const [lanIsActive, setLanIsActive] = useState(false);
   const [modeIsActive, setModeIsActive] = useState(false);
   const [categoryIsActive, setCategoryIsActive] = useState(false);
   const [levelIsActive, setLevelIsActive] = useState(false);
-  const [traingData, setTraingingData] = useState("");
-  const [selectedCourse, setSelectedCourse] = useState({ id: "", title: "" });
+  const [traingData, setTraingingData] = useState('');
+  const [selectedCourse, setSelectedCourse] = useState({ id: '', title: '' });
 
   const [createCourse, { isLoading: createCourseLoading, isSuccess, error }] =
     useCreateCourseMutation();
@@ -42,51 +35,43 @@ export default function TrainingDetails({
 
   const [
     uploadImage,
-    {
-      isLoading: uploadLoading,
-      isSuccess: isUploadSuccess,
-      error: uploadError,
-    },
+    { isLoading: uploadLoading, isSuccess: isUploadSuccess, error: uploadError },
   ] = useUploadImageMutation();
 
   const [
     uploadFile,
-    {
-      isLoading: uploadFileLoading,
-      isSuccess: isUploadFileSuccess,
-      error: uploadFileError,
-    },
+    { isLoading: uploadFileLoading, isSuccess: isUploadFileSuccess, error: uploadFileError },
   ] = useUploadFileMutation();
 
   const {
     isLoading: courseDataLoading,
     data: refetchData,
     refetch: refetchCourseData,
-  } = useGetCourseByIdQuery(selectedCourse?.id || "662e6189474738cd09c9d978");
+  } = useGetCourseByIdQuery(selectedCourse?.id || '662e6189474738cd09c9d978');
 
   useEffect(() => {
     if (selectedCourse && refetchData) {
       setCourseData((prevData: any) => ({
         ...prevData,
-        title: refetchData?.course?.title || "",
-        category: refetchData?.course?.category || "",
-        duration: refetchData?.course?.duration || "",
-        level: refetchData?.course?.level || "",
-        language: refetchData?.course?.language || "",
-        owned_by: refetchData?.course?.owned_by || "",
-        endorsed_by: refetchData?.course?.endorsed_by || "",
-        training_mode: refetchData?.course?.training_mode || "",
-        description: refetchData?.course?.description || "",
+        title: refetchData?.course?.title || '',
+        category: refetchData?.course?.category || '',
+        duration: refetchData?.course?.duration || '',
+        level: refetchData?.course?.level || '',
+        language: refetchData?.course?.language || '',
+        owned_by: refetchData?.course?.owned_by || '',
+        endorsed_by: refetchData?.course?.endorsed_by || '',
+        training_mode: refetchData?.course?.training_mode || '',
+        description: refetchData?.course?.description || '',
         assessment_required: refetchData?.course?.assessment_required || false,
         isPaid: refetchData?.course?.isPaid || false,
-        preview_image_uri: refetchData?.course?.preview_image_uri || "",
-        file_attach: refetchData?.course?.file_attach || "",
-        assessment: refetchData?.course?.assessment || "",
+        preview_image_uri: refetchData?.course?.preview_image_uri || '',
+        file_attach: refetchData?.course?.file_attach || '',
+        assessment: refetchData?.course?.assessment || '',
         price: refetchData?.course?.price || 0,
-        currency: refetchData?.course?.currency || "",
+        currency: refetchData?.course?.currency || '',
         discount: refetchData?.course?.discount || 0,
-        url: refetchData?.course?.url || "",
-        coupon_code: refetchData?.course?.coupon_code || "",
+        url: refetchData?.course?.url || '',
+        coupon_code: refetchData?.course?.coupon_code || '',
       }));
     }
   }, [selectedCourse, refetchData, setCourseData]);
@@ -104,7 +89,7 @@ export default function TrainingDetails({
 
       if (file) {
         const formData = new FormData();
-        formData.append("file", file);
+        formData.append('file', file);
 
         const data = await uploadImage(formData);
         setCourseData((prev: any) => ({
@@ -129,7 +114,7 @@ export default function TrainingDetails({
 
     if (file) {
       const formData = new FormData();
-      formData.append("file", file);
+      formData.append('file', file);
 
       const data = await uploadFile(formData);
       setCourseData((prev: any) => ({
@@ -144,7 +129,7 @@ export default function TrainingDetails({
     if (!isLoading) {
       await createCourse(data);
       setIsCourseCreated(true);
-      toast.success("Course created successfully");
+      toast.success('Course created successfully');
     }
   };
 
@@ -156,14 +141,12 @@ export default function TrainingDetails({
       >
         <div className="flex flex-wrap justify-between gap-4 mt-2 pb-32">
           <div className="w-[23%] mt-4">
-            <label className="block mb-2 text-sm font-[700] text-gray-600">
-              Training Name
-            </label>
+            <label className="block mb-2 text-sm font-[700] text-gray-600">Training Name</label>
             <div className="relative h-[45px]">
               <div className="flex bg-transparent w-[100%] bg-white rounded-md border-2 justify-center items-center hover:border-2 hover:border-[#292929]">
                 <input
                   type="search"
-                  value={courseData?.title || ""}
+                  value={courseData?.title || ''}
                   onChange={handleChange}
                   name="title"
                   id="title"
@@ -171,16 +154,12 @@ export default function TrainingDetails({
                 />
               </div>
               {!courseData?.title && (
-                <p className="text-red-600 text-sm">
-                  Training Name is required
-                </p>
+                <p className="text-red-600 text-sm">Training Name is required</p>
               )}
             </div>
           </div>
           <div className="w-[23%] mt-4">
-            <label className="block mb-2 text-sm font-[700] text-gray-600">
-              Category
-            </label>
+            <label className="block mb-2 text-sm font-[700] text-gray-600">Category</label>
             <div className="relative h-[45px]">
               <div className="flex bg-transparent w-[100%] bg-white rounded-md border-2 justify-center items-center hover:border-2 hover:border-[#292929]">
                 <input
@@ -238,7 +217,7 @@ export default function TrainingDetails({
           </div>
           <div className="w-[23%] mt-4">
             <label className="block mb-2 text-sm font-[700] text-gray-600">
-              Duration{"(Hours)"}
+              Duration{'(Hours)'}
             </label>
             <div className="relative h-[45px]">
               <div className="flex bg-transparent w-[100%] bg-white rounded-md border-2 justify-center items-center hover:border-2 hover:border-[#292929]">
@@ -253,16 +232,12 @@ export default function TrainingDetails({
                 />
               </div>
               {!courseData?.duration && (
-                <p className="text-red-600 text-sm">
-                  Duration should be greater than 0
-                </p>
+                <p className="text-red-600 text-sm">Duration should be greater than 0</p>
               )}
             </div>
           </div>
           <div className="w-[23%] mt-4">
-            <label className="block mb-2 text-sm font-[700] text-gray-600">
-              Level
-            </label>
+            <label className="block mb-2 text-sm font-[700] text-gray-600">Level</label>
             <div className="relative h-[45px]">
               <div className="flex bg-transparent w-[100%] bg-white rounded-md border-2 justify-center items-center hover:border-2 hover:border-[#292929]">
                 <input
@@ -291,9 +266,7 @@ export default function TrainingDetails({
                   </div>
                 </div>
               </div>
-              {!courseData?.level && (
-                <p className="text-red-600 text-sm">Level is required</p>
-              )}
+              {!courseData?.level && <p className="text-red-600 text-sm">Level is required</p>}
               {levelIsActive && level && level.length > 0 && (
                 <div className="z-50 absolute mt-1 w-[100%] p-2 bg-white shadow-lg rounded-bl-md rounded-br-md max-h-52 overflow-y-auto">
                   {levelIsActive &&
@@ -319,9 +292,7 @@ export default function TrainingDetails({
             </div>
           </div>
           <div className="w-[23%] mt-4">
-            <label className="block mb-2 text-sm font-[700] text-gray-600">
-              Language
-            </label>
+            <label className="block mb-2 text-sm font-[700] text-gray-600">Language</label>
             <div className="relative h-[45px]">
               <div className="flex bg-transparent w-[100%] bg-white rounded-md border-2 justify-center items-center hover:border-2 hover:border-[#292929]">
                 <input
@@ -379,9 +350,7 @@ export default function TrainingDetails({
             </div>
           </div>
           <div className="w-[23%] mt-4">
-            <label className="block mb-2 text-sm font-[700] text-gray-600">
-              Owned By
-            </label>
+            <label className="block mb-2 text-sm font-[700] text-gray-600">Owned By</label>
             <div className="relative h-[45px]">
               <div className="flex bg-transparent w-[100%] bg-white rounded-md border-2 justify-center items-center hover:border-2 hover:border-[#292929]">
                 <input
@@ -399,9 +368,7 @@ export default function TrainingDetails({
             </div>
           </div>
           <div className="w-[23%] mt-4">
-            <label className="block mb-2 text-sm font-[700] text-gray-600">
-              Endorsed By
-            </label>
+            <label className="block mb-2 text-sm font-[700] text-gray-600">Endorsed By</label>
             <div className="relative h-[45px]">
               <div className="flex bg-transparent w-[100%] bg-white rounded-md border-2 justify-center items-center hover:border-2 hover:border-[#292929]">
                 <input
@@ -420,9 +387,7 @@ export default function TrainingDetails({
             </div>
           </div>
           <div className="w-[23%] mt-4">
-            <label className="block mb-2 text-sm font-[700] text-gray-600">
-              Training Mode
-            </label>
+            <label className="block mb-2 text-sm font-[700] text-gray-600">Training Mode</label>
             <div className="relative h-[45px]">
               <div className="flex bg-transparent w-[100%] bg-white rounded-md border-2 justify-center items-center hover:border-2 hover:border-[#292929]">
                 <input
@@ -452,9 +417,7 @@ export default function TrainingDetails({
                 </div>
               </div>
               {!courseData?.training_mode && (
-                <p className="text-red-600 text-sm">
-                  Training Mode is required
-                </p>
+                <p className="text-red-600 text-sm">Training Mode is required</p>
               )}
               {modeIsActive && mode && mode.length > 0 && (
                 <div className="z-50 absolute mt-1 w-[100%] p-2 bg-white shadow-lg rounded-bl-md rounded-br-md max-h-52 overflow-y-auto">
@@ -490,8 +453,8 @@ export default function TrainingDetails({
                   type="button"
                   className={`w-[50%] pl-2 border-none left-[50px] rounded-l-md h-[45px] outline-none text-[14px] font-[500] font-Josefin  ${
                     !courseData.assessment_required
-                      ? "bg-violet-950 text-white"
-                      : "bg-white text-sky-800"
+                      ? 'bg-violet-950 text-white'
+                      : 'bg-white text-sky-800'
                   }`}
                   onClick={() => {
                     setCourseData((prevData: any) => ({
@@ -505,7 +468,7 @@ export default function TrainingDetails({
                 <button
                   type="button"
                   className={`bg-transparent w-[50%] pl-2 border-none left-[50px] h-[45px] rounded-r-md outline-none text-sky-800 text-[14px] font-[500] font-Josefin ${
-                    courseData.assessment_required && "bg-violet-950 text-white"
+                    courseData.assessment_required && 'bg-violet-950 text-white'
                   }`}
                   onClick={() => {
                     setCourseData((prevData: any) => ({
@@ -521,9 +484,7 @@ export default function TrainingDetails({
           </div>
           {courseData.assessment_required && (
             <div className="w-[23%] mt-4">
-              <label className="block mb-2 text-sm font-[700] text-gray-600">
-                Assessment
-              </label>
+              <label className="block mb-2 text-sm font-[700] text-gray-600">Assessment</label>
               <div className="relative h-[45px]">
                 <div className="flex bg-transparent w-[100%] bg-white rounded-md border-2 justify-center items-center hover:border-2 hover:border-[#292929]">
                   <input
@@ -581,16 +542,12 @@ export default function TrainingDetails({
             </div>
           )}
           <div className="w-[23%] mt-4">
-            <label className="block mb-2 text-sm font-[700] text-gray-600">
-              Paid
-            </label>
+            <label className="block mb-2 text-sm font-[700] text-gray-600">Paid</label>
             <div className="relative h-[45px]">
               <div className="flex bg-transparent w-[100%] bg-white rounded-md border-2 justify-center items-center hover:border-2 hover:border-[#292929]">
                 <button
                   className={`bg-violet-950 w-[50%] pl-2 border-none left-[50px] rounded-l-md h-[45px] outline-none text-[14px] font-[500] font-Josefin ${
-                    !courseData.isPaid
-                      ? "bg-violet-950 text-white"
-                      : "bg-white text-sky-800"
+                    !courseData.isPaid ? 'bg-violet-950 text-white' : 'bg-white text-sky-800'
                   }`}
                   type="button"
                   onClick={() => {
@@ -605,7 +562,7 @@ export default function TrainingDetails({
                 <button
                   type="button"
                   className={`bg-transparent w-[50%] pl-2 border-none left-[50px] h-[45px] rounded-r-md outline-none text-sky-800 text-[14px] font-[500] font-Josefin ${
-                    courseData.isPaid && "bg-violet-950 text-white"
+                    courseData.isPaid && 'bg-violet-950 text-white'
                   }`}
                   onClick={() => {
                     {
@@ -625,9 +582,7 @@ export default function TrainingDetails({
           {courseData.isPaid && (
             <>
               <div className="w-[23%] mt-4">
-                <label className="block mb-2 text-sm font-[700] text-gray-600">
-                  Price
-                </label>
+                <label className="block mb-2 text-sm font-[700] text-gray-600">Price</label>
                 <div className="relative h-[45px]">
                   <div className="flex bg-transparent w-[100%] bg-white rounded-md border-2 justify-center items-center hover:border-2 hover:border-[#292929]">
                     <input
@@ -645,14 +600,12 @@ export default function TrainingDetails({
                 </div>
               </div>
               <div className="w-[23%] mt-4">
-                <label className="block mb-2 text-sm font-[700] text-gray-600">
-                  Currency
-                </label>
+                <label className="block mb-2 text-sm font-[700] text-gray-600">Currency</label>
                 <div className="relative h-[45px]">
                   <div className="flex bg-transparent w-[100%] bg-white rounded-md border-2 justify-center items-center hover:border-2 hover:border-[#292929]">
                     <input
                       type="text"
-                      value={courseData.currency || "IN"}
+                      value={courseData.currency || 'IN'}
                       name="currency"
                       id="currency"
                       onChange={handleChange}
@@ -662,9 +615,7 @@ export default function TrainingDetails({
                 </div>
               </div>
               <div className="w-[23%] mt-4">
-                <label className="block mb-2 text-sm font-[700] text-gray-600">
-                  Discount
-                </label>
+                <label className="block mb-2 text-sm font-[700] text-gray-600">Discount</label>
                 <div className="relative h-[45px]">
                   <div className="flex bg-transparent w-[100%] bg-white rounded-md border-2 justify-center items-center hover:border-2 hover:border-[#292929]">
                     <input
@@ -679,9 +630,7 @@ export default function TrainingDetails({
                 </div>
               </div>
               <div className="w-[23%] mt-4">
-                <label className="block mb-2 text-sm font-[700] text-gray-600">
-                  Coupon Code
-                </label>
+                <label className="block mb-2 text-sm font-[700] text-gray-600">Coupon Code</label>
                 <div className="relative h-[45px]">
                   <div className="flex bg-transparent w-[100%] bg-white rounded-md border-2 justify-center items-center hover:border-2 hover:border-[#292929]">
                     <input
@@ -699,9 +648,7 @@ export default function TrainingDetails({
           )}
 
           <div className="w-[23%] mt-4">
-            <label className="block mb-2 text-sm font-[700] text-gray-600">
-              Preview Image
-            </label>
+            <label className="block mb-2 text-sm font-[700] text-gray-600">Preview Image</label>
             <div className="relative h-[45px] ">
               <div className="flex bg-transparent w-full h-full rounded-md border-2 justify-center items-center hover:border-2 hover:border-[#292929]">
                 <label className="block rounded-md h-full">
@@ -723,9 +670,7 @@ export default function TrainingDetails({
             </div>
           </div>
           <div className="w-[23%] mt-4">
-            <label className="block mb-2 text-sm font-[700] text-gray-600">
-              File Attachment
-            </label>
+            <label className="block mb-2 text-sm font-[700] text-gray-600">File Attachment</label>
             <div className="relative h-[45px] ">
               <div className="flex bg-transparent w-full h-full rounded-md border-2 justify-center items-center hover:border-2 hover:border-[#292929]">
                 <label className="block rounded-md h-full">
@@ -747,9 +692,7 @@ export default function TrainingDetails({
             </div>
           </div>
           <div className="w-[100%] mt-4">
-            <label className="block mb-2 text-sm font-[700] text-gray-600">
-              Url
-            </label>
+            <label className="block mb-2 text-sm font-[700] text-gray-600">Url</label>
             <div className="h-[65px]">
               <div className="flex bg-transparent w-[100%] bg-white rounded-md border-2 justify-center items-center hover:border-2 hover:border-[#292929]">
                 <textarea
@@ -758,15 +701,13 @@ export default function TrainingDetails({
                   name="url"
                   id="url"
                   className="bg-transparent w-full p-2 border-none rounded-[5px] h-[40px] outline-none text-[#292929] text-[14px] font-[500] font-Josefin"
-                  style={{ resize: "none" }}
+                  style={{ resize: 'none' }}
                 />
               </div>
             </div>
           </div>
           <div className="w-[100%] mt-4">
-            <label className="block mb-2 text-sm font-[700] text-gray-600">
-              Description
-            </label>
+            <label className="block mb-2 text-sm font-[700] text-gray-600">Description</label>
             <div className="h-[65px]">
               <div className="flex bg-transparent w-[100%] bg-white rounded-md border-2 justify-center items-center hover:border-2 hover:border-[#292929]">
                 <textarea
@@ -775,7 +716,7 @@ export default function TrainingDetails({
                   name="description"
                   id="description"
                   className="bg-transparent w-full p-2 border-none rounded-[5px] h-[80px] outline-none text-[#292929] text-[14px] font-[500] font-Josefin"
-                  style={{ resize: "none" }}
+                  style={{ resize: 'none' }}
                 />
               </div>
               {!courseData?.description && (
@@ -800,7 +741,7 @@ export default function TrainingDetails({
                 wrapperClass=""
               />
             ) : (
-              "save"
+              'save'
             )}
           </button>
         </div>

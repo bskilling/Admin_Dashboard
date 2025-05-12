@@ -1,10 +1,10 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
-import { useRouter, usePathname } from "next/navigation";
-import Link from "next/link";
+import { useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
+import axios from 'axios';
+import { useRouter, usePathname } from 'next/navigation';
+import Link from 'next/link';
 import {
   Table,
   TableBody,
@@ -12,15 +12,15 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table";
-import { Badge } from "@/components/ui/badge";
-import { ExternalLink } from "lucide-react";
+} from '@/components/ui/table';
+import { Badge } from '@/components/ui/badge';
+import { ExternalLink } from 'lucide-react';
 
-import { EmiLeadActions } from "./emi-leads-actions";
-import { EmiLeadStatus } from "./emi-leads-status";
-import { EmiLeadFilter } from "./emi-leads-filter";
-import { PaginationControls } from "./pagination-controls";
-import { formatDate, formatCurrency } from "@/lib/utils";
+import { EmiLeadActions } from './emi-leads-actions';
+import { EmiLeadStatus } from './emi-leads-status';
+import { EmiLeadFilter } from './emi-leads-filter';
+import { PaginationControls } from './pagination-controls';
+import { formatDate, formatCurrency } from '@/lib/utils';
 
 // Types based on our MongoDB schema with updated courseId structure
 export interface Category {
@@ -32,7 +32,7 @@ export interface Course {
   _id: string;
   name: string;
   price: number;
-  type: "b2i" | "b2b" | "b2c" | "b2g";
+  type: 'b2i' | 'b2b' | 'b2c' | 'b2g';
   category: Category[];
   slug: string;
 }
@@ -93,14 +93,14 @@ interface EmiLeadsTableProps {
 // Convert course type to readable format
 const formatCourseType = (type: string) => {
   switch (type) {
-    case "b2i":
-      return "Individual";
-    case "b2b":
-      return "Business";
-    case "b2c":
-      return "Consumer";
-    case "b2g":
-      return "Government";
+    case 'b2i':
+      return 'Individual';
+    case 'b2b':
+      return 'Business';
+    case 'b2c':
+      return 'Consumer';
+    case 'b2g':
+      return 'Government';
     default:
       return type.toUpperCase();
   }
@@ -124,7 +124,7 @@ export function EmiLeadsTable({
   // Fetch EMI leads data
   const { data, isLoading, isError } = useQuery<EmiLeadsResponse>({
     queryKey: [
-      "emiLeads",
+      'emiLeads',
       page,
       limit,
       search,
@@ -138,22 +138,20 @@ export function EmiLeadsTable({
     ],
     queryFn: async () => {
       const params = new URLSearchParams();
-      params.append("page", page.toString());
-      params.append("limit", limit.toString());
+      params.append('page', page.toString());
+      params.append('limit', limit.toString());
 
-      if (search) params.append("search", search);
-      if (status) params.append("status", status);
-      if (sort) params.append("sort", sort);
-      if (order) params.append("order", order);
-      if (startDate) params.append("startDate", startDate);
-      if (endDate) params.append("endDate", endDate);
-      if (courseType) params.append("courseType", courseType);
-      if (categoryId) params.append("categoryId", categoryId);
+      if (search) params.append('search', search);
+      if (status) params.append('status', status);
+      if (sort) params.append('sort', sort);
+      if (order) params.append('order', order);
+      if (startDate) params.append('startDate', startDate);
+      if (endDate) params.append('endDate', endDate);
+      if (courseType) params.append('courseType', courseType);
+      if (categoryId) params.append('categoryId', categoryId);
 
       const response = await axios.get(
-        `${
-          process.env.NEXT_PUBLIC_BACKEND_URL
-        }/api/emi-leads?${params.toString()}`
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/emi-leads?${params.toString()}`
       );
       return response.data;
     },
@@ -161,19 +159,19 @@ export function EmiLeadsTable({
 
   // Handle sorting change
   const handleSortChange = (column: string) => {
-    const newOrder = sort === column && order === "asc" ? "desc" : "asc";
+    const newOrder = sort === column && order === 'asc' ? 'desc' : 'asc';
     const params = new URLSearchParams();
 
-    params.append("page", page.toString());
-    params.append("limit", limit.toString());
-    if (search) params.append("search", search);
-    if (status) params.append("status", status);
-    params.append("sort", column);
-    params.append("order", newOrder);
-    if (startDate) params.append("startDate", startDate);
-    if (endDate) params.append("endDate", endDate);
-    if (courseType) params.append("courseType", courseType);
-    if (categoryId) params.append("categoryId", categoryId);
+    params.append('page', page.toString());
+    params.append('limit', limit.toString());
+    if (search) params.append('search', search);
+    if (status) params.append('status', status);
+    params.append('sort', column);
+    params.append('order', newOrder);
+    if (startDate) params.append('startDate', startDate);
+    if (endDate) params.append('endDate', endDate);
+    if (courseType) params.append('courseType', courseType);
+    if (categoryId) params.append('categoryId', categoryId);
 
     router.push(`${pathname}?${params.toString()}`);
   };
@@ -181,9 +179,7 @@ export function EmiLeadsTable({
   if (isError) {
     return (
       <div className="text-center py-10">
-        <p className="text-red-500">
-          Failed to load EMI leads. Please try again later.
-        </p>
+        <p className="text-red-500">Failed to load EMI leads. Please try again later.</p>
       </div>
     );
   }
@@ -205,47 +201,39 @@ export function EmiLeadsTable({
             <TableRow>
               <TableHead className="w-[180px]">
                 <button
-                  onClick={() => handleSortChange("name")}
+                  onClick={() => handleSortChange('name')}
                   className="flex items-center gap-1"
                 >
                   Name
-                  {sort === "name" && (
-                    <span>{order === "asc" ? "↑" : "↓"}</span>
-                  )}
+                  {sort === 'name' && <span>{order === 'asc' ? '↑' : '↓'}</span>}
                 </button>
               </TableHead>
               <TableHead>Contact</TableHead>
               <TableHead>
                 <button
-                  onClick={() => handleSortChange("courseId.name")}
+                  onClick={() => handleSortChange('courseId.name')}
                   className="flex items-center gap-1"
                 >
                   Course
-                  {sort === "courseId.name" && (
-                    <span>{order === "asc" ? "↑" : "↓"}</span>
-                  )}
+                  {sort === 'courseId.name' && <span>{order === 'asc' ? '↑' : '↓'}</span>}
                 </button>
               </TableHead>
               <TableHead>
                 <button
-                  onClick={() => handleSortChange("status")}
+                  onClick={() => handleSortChange('status')}
                   className="flex items-center gap-1"
                 >
                   Status
-                  {sort === "status" && (
-                    <span>{order === "asc" ? "↑" : "↓"}</span>
-                  )}
+                  {sort === 'status' && <span>{order === 'asc' ? '↑' : '↓'}</span>}
                 </button>
               </TableHead>
               <TableHead>
                 <button
-                  onClick={() => handleSortChange("createdAt")}
+                  onClick={() => handleSortChange('createdAt')}
                   className="flex items-center gap-1"
                 >
                   Date
-                  {sort === "createdAt" && (
-                    <span>{order === "asc" ? "↑" : "↓"}</span>
-                  )}
+                  {sort === 'createdAt' && <span>{order === 'asc' ? '↑' : '↓'}</span>}
                 </button>
               </TableHead>
               <TableHead>Last Note</TableHead>
@@ -264,7 +252,7 @@ export function EmiLeadsTable({
                 </TableRow>
               ))
             ) : data?.data.emiForms.length ? (
-              data.data.emiForms.map((lead) => (
+              data.data.emiForms.map(lead => (
                 <TableRow key={lead._id}>
                   <TableCell className="font-medium">{lead.name}</TableCell>
                   <TableCell>
@@ -275,7 +263,7 @@ export function EmiLeadsTable({
                     {lead.courseId ? (
                       <div className="space-y-1">
                         <div className="font-medium">
-                          {lead.courseId.type === "b2c" && (
+                          {lead.courseId.type === 'b2c' && (
                             <Link
                               href={`https://www.bskilling.com/course/${lead.courseId.slug}`}
                               target="_blank"
@@ -294,7 +282,7 @@ export function EmiLeadsTable({
                               lead.courseId.title
                             }
                           </p>
-                          {lead.courseId.category?.map((cat) => (
+                          {lead.courseId.category?.map(cat => (
                             <p key={cat._id} className="text-xs">
                               {cat.name}
                             </p>
@@ -305,16 +293,11 @@ export function EmiLeadsTable({
                         </div>
                       </div>
                     ) : (
-                      <span className="text-gray-400 text-sm">
-                        No course selected
-                      </span>
+                      <span className="text-gray-400 text-sm">No course selected</span>
                     )}
                   </TableCell>
                   <TableCell>
-                    <EmiLeadStatus
-                      leadId={lead._id}
-                      currentStatus={lead.status}
-                    />
+                    <EmiLeadStatus leadId={lead._id} currentStatus={lead.status} />
                   </TableCell>
                   <TableCell>{formatDate(lead.createdAt)}</TableCell>
                   <TableCell>
@@ -326,9 +309,7 @@ export function EmiLeadsTable({
                         {lead.notes[lead.notes.length - 1].text}
                       </div>
                     ) : (
-                      <span className="text-gray-400 text-sm">
-                        No notes yet
-                      </span>
+                      <span className="text-gray-400 text-sm">No notes yet</span>
                     )}
                   </TableCell>
                   <TableCell className="text-right">

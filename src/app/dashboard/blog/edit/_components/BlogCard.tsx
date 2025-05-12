@@ -1,10 +1,10 @@
 // components/blog/BlogCard.tsx
-"use client";
+'use client';
 
-import { Blog } from "./types";
-import Link from "next/link";
-import Image from "next/image";
-import { formatDistanceToNow } from "date-fns";
+import { Blog } from './types';
+import Link from 'next/link';
+import Image from 'next/image';
+import { formatDistanceToNow } from 'date-fns';
 
 interface BlogCardProps {
   blog: Blog;
@@ -12,8 +12,7 @@ interface BlogCardProps {
 
 export default function BlogCard({ blog }: BlogCardProps) {
   const isNew =
-    new Date(blog.publishedAt || blog.createdAt).getTime() >
-    Date.now() - 7 * 24 * 60 * 60 * 1000; // Less than 7 days old
+    new Date(blog.publishedAt || blog.createdAt).getTime() > Date.now() - 7 * 24 * 60 * 60 * 1000; // Less than 7 days old
 
   return (
     <div className="bg-white rounded-lg shadow-md overflow-hidden transition-all duration-300 hover:shadow-lg h-full flex flex-col">
@@ -69,15 +68,14 @@ export default function BlogCard({ blog }: BlogCardProps) {
           {blog.difficulty && (
             <span
               className={`text-white text-xs font-semibold px-2 py-1 rounded ${
-                blog.difficulty === "beginner"
-                  ? "bg-blue-500"
-                  : blog.difficulty === "intermediate"
-                    ? "bg-orange-500"
-                    : "bg-red-500"
+                blog.difficulty === 'beginner'
+                  ? 'bg-blue-500'
+                  : blog.difficulty === 'intermediate'
+                    ? 'bg-orange-500'
+                    : 'bg-red-500'
               }`}
             >
-              {blog.difficulty.charAt(0).toUpperCase() +
-                blog.difficulty.slice(1)}
+              {blog.difficulty.charAt(0).toUpperCase() + blog.difficulty.slice(1)}
             </span>
           )}
         </div>
@@ -90,11 +88,11 @@ export default function BlogCard({ blog }: BlogCardProps) {
           {Array.isArray(blog.categories) &&
             blog.categories.map((category: any) => (
               <Link
-                href={`/dashboard/blog?category=${typeof category === "string" ? category : category.slug}`}
-                key={typeof category === "string" ? category : category._id}
+                href={`/dashboard/blog?category=${typeof category === 'string' ? category : category.slug}`}
+                key={typeof category === 'string' ? category : category._id}
                 className="text-xs font-medium text-blue-600 hover:text-blue-800"
               >
-                {typeof category === "string" ? category : category.name}
+                {typeof category === 'string' ? category : category.name}
               </Link>
             ))}
         </div>
@@ -107,34 +105,30 @@ export default function BlogCard({ blog }: BlogCardProps) {
         </Link>
 
         {/* Summary */}
-        <p className="text-gray-600 mb-4 line-clamp-3 flex-grow">
-          {blog.summary}
-        </p>
+        <p className="text-gray-600 mb-4 line-clamp-3 flex-grow">{blog.summary}</p>
 
         {/* Footer */}
         <div className="flex items-center justify-between text-sm text-gray-500 mt-auto pt-4 border-t border-gray-100">
           <div className="flex items-center">
             {/* Author photo if available */}
-            {blog.author &&
-              typeof blog.author !== "string" &&
-              blog.author.profilePicture && (
-                <div className="relative w-6 h-6 rounded-full overflow-hidden mr-2">
-                  <Image
-                    src={blog.author.profilePicture as string}
-                    alt={blog.author.name}
-                    fill
-                    className="object-cover"
-                  />
-                </div>
-              )}
+            {blog.author && typeof blog.author !== 'string' && blog.author.profilePicture && (
+              <div className="relative w-6 h-6 rounded-full overflow-hidden mr-2">
+                <Image
+                  src={blog.author.profilePicture as string}
+                  alt={blog.author.name}
+                  fill
+                  className="object-cover"
+                />
+              </div>
+            )}
 
             {/* Author name */}
             <span>
               {blog.author
-                ? typeof blog.author === "string"
+                ? typeof blog.author === 'string'
                   ? blog.author
                   : blog.author.name
-                : "Unknown Author"}
+                : 'Unknown Author'}
             </span>
           </div>
 
@@ -159,15 +153,10 @@ export default function BlogCard({ blog }: BlogCardProps) {
             </span>
 
             {/* Publication date */}
-            <span
-              title={new Date(
-                blog.publishedAt || blog.createdAt
-              ).toLocaleDateString()}
-            >
-              {formatDistanceToNow(
-                new Date(blog.publishedAt || blog.createdAt),
-                { addSuffix: true }
-              )}
+            <span title={new Date(blog.publishedAt || blog.createdAt).toLocaleDateString()}>
+              {formatDistanceToNow(new Date(blog.publishedAt || blog.createdAt), {
+                addSuffix: true,
+              })}
             </span>
           </div>
         </div>

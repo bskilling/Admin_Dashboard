@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 interface CategoryProps {
   category: Category;
@@ -40,7 +40,7 @@ export interface ICourse {
   faqs: Faq[];
   price: {
     amount: number;
-    currency: "INR" | "USD";
+    currency: 'INR' | 'USD';
   };
   certification?: {
     title: string;

@@ -1,9 +1,9 @@
-"use client";
-import CourseContent from "@/app/_components/CourseContent";
-import React, { useState } from "react";
+'use client';
+import CourseContent from '@/app/_components/CourseContent';
+import React, { useState } from 'react';
 
 const Page = () => {
-  const [searchQuery, setSearchQuery] = useState("");
+  const [searchQuery, setSearchQuery] = useState('');
 
   return (
     <div className="h-screen w-full">

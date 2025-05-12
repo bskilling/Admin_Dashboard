@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import { useState, useEffect } from "react";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import axios from "axios";
+import { useState, useEffect } from 'react';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import axios from 'axios';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -10,7 +10,7 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+} from '@/components/ui/dropdown-menu';
 import {
   Dialog,
   DialogContent,
@@ -20,7 +20,7 @@ import {
   DialogTitle,
   DialogTrigger,
   DialogClose,
-} from "@/components/ui/dialog";
+} from '@/components/ui/dialog';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -31,41 +31,35 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
-import { Button } from "@/components/ui/button";
-import { Textarea } from "@/components/ui/textarea";
-import { Input } from "@/components/ui/input";
+} from '@/components/ui/alert-dialog';
+import { Button } from '@/components/ui/button';
+import { Textarea } from '@/components/ui/textarea';
+import { Input } from '@/components/ui/input';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
-import { Label } from "@/components/ui/label";
-import { toast } from "sonner";
-import {
-  MoreHorizontal,
-  Trash,
-  Edit,
-  MessageSquare,
-  CreditCard,
-} from "lucide-react";
-import { EmiLead } from "./emi-leads-table";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
+} from '@/components/ui/select';
+import { Label } from '@/components/ui/label';
+import { toast } from 'sonner';
+import { MoreHorizontal, Trash, Edit, MessageSquare, CreditCard } from 'lucide-react';
+import { EmiLead } from './emi-leads-table';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { z } from 'zod';
 
 // Zod schema for adding a note
 const addNoteSchema = z.object({
-  text: z.string().min(1, "Note text is required"),
+  text: z.string().min(1, 'Note text is required'),
   status: z.enum([
-    "NEW",
-    "Attempted to Contact",
-    "In-conversation",
-    "Spam",
-    "Converted",
-    "Not-Converted",
+    'NEW',
+    'Attempted to Contact',
+    'In-conversation',
+    'Spam',
+    'Converted',
+    'Not-Converted',
   ]),
   addedBy: z.string().optional(),
 });
@@ -74,18 +68,11 @@ type AddNoteInput = z.infer<typeof addNoteSchema>;
 
 // Zod schema for EMI details
 const emiDetailsSchema = z.object({
-  partner: z.enum(["liquiloans", "shopse"]),
-  loanAmount: z.coerce.number().positive("Loan amount must be positive"),
-  loanTenure: z.coerce
-    .number()
-    .int()
-    .positive("Loan tenure must be a positive integer"),
-  loanInterestRate: z.coerce
-    .number()
-    .positive("Interest rate must be positive"),
-  loanProcessingFee: z.coerce
-    .number()
-    .nonnegative("Processing fee must be non-negative"),
+  partner: z.enum(['liquiloans', 'shopse']),
+  loanAmount: z.coerce.number().positive('Loan amount must be positive'),
+  loanTenure: z.coerce.number().int().positive('Loan tenure must be a positive integer'),
+  loanInterestRate: z.coerce.number().positive('Interest rate must be positive'),
+  loanProcessingFee: z.coerce.number().nonnegative('Processing fee must be non-negative'),
 });
 
 type EmiDetailsInput = z.infer<typeof emiDetailsSchema>;
@@ -113,9 +100,9 @@ export function EmiLeadActions({ leadId, lead }: EmiLeadActionsProps) {
   } = useForm<AddNoteInput>({
     resolver: zodResolver(addNoteSchema),
     defaultValues: {
-      text: "",
+      text: '',
       status: lead.status as any,
-      addedBy: "Admin", // Default value, could be dynamic based on logged-in user
+      addedBy: 'Admin', // Default value, could be dynamic based on logged-in user
     },
   });
 
@@ -124,16 +111,12 @@ export function EmiLeadActions({ leadId, lead }: EmiLeadActionsProps) {
     register: registerEmiDetails,
     handleSubmit: handleEmiDetailsSubmit,
     reset: resetEmiDetailsForm,
-    formState: {
-      errors: emiDetailsErrors,
-      isSubmitting: isEmiDetailsSubmitting,
-    },
+    formState: { errors: emiDetailsErrors, isSubmitting: isEmiDetailsSubmitting },
     setValue,
   } = useForm<EmiDetailsInput>({
     resolver: zodResolver(emiDetailsSchema),
     defaultValues: {
-      partner:
-        (lead.emiDetails?.partner as "liquiloans" | "shopse") || "liquiloans",
+      partner: (lead.emiDetails?.partner as 'liquiloans' | 'shopse') || 'liquiloans',
       loanAmount: lead.emiDetails?.loanAmount || lead.amount || 0,
       loanTenure: lead.emiDetails?.loanTenure || 3,
       loanInterestRate: lead.emiDetails?.loanInterestRate || 0,
@@ -144,66 +127,58 @@ export function EmiLeadActions({ leadId, lead }: EmiLeadActionsProps) {
   // Initialize EMI details form with lead data when dialog opens
   useEffect(() => {
     if (lead.emiDetails && isUpdateEmiDetailsOpen) {
-      setValue("partner", lead.emiDetails.partner as "liquiloans" | "shopse");
-      setValue("loanAmount", lead.emiDetails.loanAmount);
-      setValue("loanTenure", lead.emiDetails.loanTenure);
-      setValue("loanInterestRate", lead.emiDetails.loanInterestRate);
-      setValue("loanProcessingFee", lead.emiDetails.loanProcessingFee);
+      setValue('partner', lead.emiDetails.partner as 'liquiloans' | 'shopse');
+      setValue('loanAmount', lead.emiDetails.loanAmount);
+      setValue('loanTenure', lead.emiDetails.loanTenure);
+      setValue('loanInterestRate', lead.emiDetails.loanInterestRate);
+      setValue('loanProcessingFee', lead.emiDetails.loanProcessingFee);
     }
   }, [lead.emiDetails, isUpdateEmiDetailsOpen, setValue]);
 
   // Add note mutation
   const addNoteMutation = useMutation({
     mutationFn: (data: AddNoteInput) =>
-      axios.post(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/emi-leads/${leadId}/notes`,
-        data
-      ),
+      axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/emi-leads/${leadId}/notes`, data),
     onSuccess: () => {
-      toast.success("Note added successfully");
+      toast.success('Note added successfully');
       resetNoteForm();
       setIsAddNoteOpen(false);
-      queryClient.invalidateQueries({ queryKey: ["emiLeads"] });
+      queryClient.invalidateQueries({ queryKey: ['emiLeads'] });
     },
-    onError: (error) => {
-      toast.error("Failed to add note");
-      console.error("Error adding note:", error);
+    onError: error => {
+      toast.error('Failed to add note');
+      console.error('Error adding note:', error);
     },
   });
 
   // Update EMI details mutation
   const updateEmiDetailsMutation = useMutation({
     mutationFn: (data: { emiDetails: EmiDetailsInput }) =>
-      axios.put(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/emi-leads/${leadId}/emi-details`,
-        data
-      ),
+      axios.put(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/emi-leads/${leadId}/emi-details`, data),
     onSuccess: () => {
-      toast.success("EMI details updated successfully");
+      toast.success('EMI details updated successfully');
       resetEmiDetailsForm();
       setIsUpdateEmiDetailsOpen(false);
-      queryClient.invalidateQueries({ queryKey: ["emiLeads"] });
+      queryClient.invalidateQueries({ queryKey: ['emiLeads'] });
     },
-    onError: (error) => {
-      toast.error("Failed to update EMI details");
-      console.error("Error updating EMI details:", error);
+    onError: error => {
+      toast.error('Failed to update EMI details');
+      console.error('Error updating EMI details:', error);
     },
   });
 
   // Delete lead mutation
   const deleteLeadMutation = useMutation({
     mutationFn: () =>
-      axios.delete(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/emi-leads/${leadId}`
-      ),
+      axios.delete(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/emi-leads/${leadId}`),
     onSuccess: () => {
-      toast.success("EMI lead deleted successfully");
+      toast.success('EMI lead deleted successfully');
       setIsDeleteDialogOpen(false);
-      queryClient.invalidateQueries({ queryKey: ["emiLeads"] });
+      queryClient.invalidateQueries({ queryKey: ['emiLeads'] });
     },
-    onError: (error) => {
-      toast.error("Failed to delete EMI lead");
-      console.error("Error deleting EMI lead:", error);
+    onError: error => {
+      toast.error('Failed to delete EMI lead');
+      console.error('Error deleting EMI lead:', error);
     },
   });
 
@@ -239,7 +214,7 @@ export function EmiLeadActions({ leadId, lead }: EmiLeadActionsProps) {
         {/* Add Note Dialog */}
         <Dialog open={isAddNoteOpen} onOpenChange={setIsAddNoteOpen}>
           <DialogTrigger asChild>
-            <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
+            <DropdownMenuItem onSelect={e => e.preventDefault()}>
               <MessageSquare className="mr-2 h-4 w-4" />
               Add Note
             </DropdownMenuItem>
@@ -247,9 +222,7 @@ export function EmiLeadActions({ leadId, lead }: EmiLeadActionsProps) {
           <DialogContent className="sm:max-w-[425px]">
             <DialogHeader>
               <DialogTitle>Add Note</DialogTitle>
-              <DialogDescription>
-                Add a note and update the status for this lead.
-              </DialogDescription>
+              <DialogDescription>Add a note and update the status for this lead.</DialogDescription>
             </DialogHeader>
             <form onSubmit={handleNoteSubmit(onAddNote)}>
               <div className="grid gap-4 py-4">
@@ -258,23 +231,21 @@ export function EmiLeadActions({ leadId, lead }: EmiLeadActionsProps) {
                   <Textarea
                     id="text"
                     placeholder="Enter your note here..."
-                    {...registerNote("text")}
+                    {...registerNote('text')}
                     className="min-h-[100px]"
                   />
                   {noteErrors.text && (
-                    <p className="text-xs text-red-500">
-                      {noteErrors.text.message}
-                    </p>
+                    <p className="text-xs text-red-500">{noteErrors.text.message}</p>
                   )}
                 </div>
                 <div className="grid gap-2">
                   <Label htmlFor="status">Status</Label>
                   <Select
                     defaultValue={lead.status}
-                    {...registerNote("status")}
-                    onValueChange={(value) => {
-                      console.log(value, "hahahaah");
-                      setValueNote("status", value as any);
+                    {...registerNote('status')}
+                    onValueChange={value => {
+                      console.log(value, 'hahahaah');
+                      setValueNote('status', value as any);
                     }}
                   >
                     <SelectTrigger id="status">
@@ -282,36 +253,24 @@ export function EmiLeadActions({ leadId, lead }: EmiLeadActionsProps) {
                     </SelectTrigger>
                     <SelectContent>
                       <SelectItem value="NEW">New</SelectItem>
-                      <SelectItem value="Attempted to Contact">
-                        Attempted to Contact
-                      </SelectItem>
-                      <SelectItem value="In-conversation">
-                        In Conversation
-                      </SelectItem>
+                      <SelectItem value="Attempted to Contact">Attempted to Contact</SelectItem>
+                      <SelectItem value="In-conversation">In Conversation</SelectItem>
                       <SelectItem value="Spam">Spam</SelectItem>
                       <SelectItem value="Converted">Converted</SelectItem>
-                      <SelectItem value="Not-Converted">
-                        Not Converted
-                      </SelectItem>
+                      <SelectItem value="Not-Converted">Not Converted</SelectItem>
                     </SelectContent>
                   </Select>
                   {noteErrors.status && (
-                    <p className="text-xs text-red-500">
-                      {noteErrors.status.message}
-                    </p>
+                    <p className="text-xs text-red-500">{noteErrors.status.message}</p>
                   )}
                 </div>
               </div>
               <DialogFooter>
-                <Button
-                  type="button"
-                  variant="outline"
-                  onClick={() => setIsAddNoteOpen(false)}
-                >
+                <Button type="button" variant="outline" onClick={() => setIsAddNoteOpen(false)}>
                   Cancel
                 </Button>
                 <Button type="submit" disabled={addNoteMutation.isPending}>
-                  {addNoteMutation.isPending ? "Saving..." : "Save Note"}
+                  {addNoteMutation.isPending ? 'Saving...' : 'Save Note'}
                 </Button>
               </DialogFooter>
             </form>
@@ -319,12 +278,9 @@ export function EmiLeadActions({ leadId, lead }: EmiLeadActionsProps) {
         </Dialog>
 
         {/* Update EMI Details Dialog */}
-        <Dialog
-          open={isUpdateEmiDetailsOpen}
-          onOpenChange={setIsUpdateEmiDetailsOpen}
-        >
+        <Dialog open={isUpdateEmiDetailsOpen} onOpenChange={setIsUpdateEmiDetailsOpen}>
           <DialogTrigger asChild>
-            <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
+            <DropdownMenuItem onSelect={e => e.preventDefault()}>
               <CreditCard className="mr-2 h-4 w-4" />
               Update EMI Details
             </DropdownMenuItem>
@@ -332,18 +288,16 @@ export function EmiLeadActions({ leadId, lead }: EmiLeadActionsProps) {
           <DialogContent className="sm:max-w-[425px]">
             <DialogHeader>
               <DialogTitle>EMI Details</DialogTitle>
-              <DialogDescription>
-                Update the EMI and loan details for this lead.
-              </DialogDescription>
+              <DialogDescription>Update the EMI and loan details for this lead.</DialogDescription>
             </DialogHeader>
             <form onSubmit={handleEmiDetailsSubmit(onUpdateEmiDetails)}>
               <div className="grid gap-4 py-4">
                 <div className="grid gap-2">
                   <Label htmlFor="partner">Partner</Label>
                   <Select
-                    defaultValue={lead.emiDetails?.partner || "liquiloans"}
-                    onValueChange={(value) => {
-                      setValue("partner", value as "liquiloans" | "shopse");
+                    defaultValue={lead.emiDetails?.partner || 'liquiloans'}
+                    onValueChange={value => {
+                      setValue('partner', value as 'liquiloans' | 'shopse');
                     }}
                   >
                     <SelectTrigger id="partner">
@@ -355,9 +309,7 @@ export function EmiLeadActions({ leadId, lead }: EmiLeadActionsProps) {
                     </SelectContent>
                   </Select>
                   {emiDetailsErrors.partner && (
-                    <p className="text-xs text-red-500">
-                      {emiDetailsErrors.partner.message}
-                    </p>
+                    <p className="text-xs text-red-500">{emiDetailsErrors.partner.message}</p>
                   )}
                 </div>
 
@@ -367,12 +319,10 @@ export function EmiLeadActions({ leadId, lead }: EmiLeadActionsProps) {
                     id="loanAmount"
                     type="number"
                     placeholder="Enter loan amount"
-                    {...registerEmiDetails("loanAmount")}
+                    {...registerEmiDetails('loanAmount')}
                   />
                   {emiDetailsErrors.loanAmount && (
-                    <p className="text-xs text-red-500">
-                      {emiDetailsErrors.loanAmount.message}
-                    </p>
+                    <p className="text-xs text-red-500">{emiDetailsErrors.loanAmount.message}</p>
                   )}
                 </div>
 
@@ -382,12 +332,10 @@ export function EmiLeadActions({ leadId, lead }: EmiLeadActionsProps) {
                     id="loanTenure"
                     type="number"
                     placeholder="Enter loan tenure in months"
-                    {...registerEmiDetails("loanTenure")}
+                    {...registerEmiDetails('loanTenure')}
                   />
                   {emiDetailsErrors.loanTenure && (
-                    <p className="text-xs text-red-500">
-                      {emiDetailsErrors.loanTenure.message}
-                    </p>
+                    <p className="text-xs text-red-500">{emiDetailsErrors.loanTenure.message}</p>
                   )}
                 </div>
 
@@ -398,7 +346,7 @@ export function EmiLeadActions({ leadId, lead }: EmiLeadActionsProps) {
                     type="number"
                     step="0.01"
                     placeholder="Enter interest rate"
-                    {...registerEmiDetails("loanInterestRate")}
+                    {...registerEmiDetails('loanInterestRate')}
                   />
                   {emiDetailsErrors.loanInterestRate && (
                     <p className="text-xs text-red-500">
@@ -414,7 +362,7 @@ export function EmiLeadActions({ leadId, lead }: EmiLeadActionsProps) {
                     type="number"
                     step="0.01"
                     placeholder="Enter processing fee"
-                    {...registerEmiDetails("loanProcessingFee")}
+                    {...registerEmiDetails('loanProcessingFee')}
                   />
                   {emiDetailsErrors.loanProcessingFee && (
                     <p className="text-xs text-red-500">
@@ -431,13 +379,8 @@ export function EmiLeadActions({ leadId, lead }: EmiLeadActionsProps) {
                 >
                   Cancel
                 </Button>
-                <Button
-                  type="submit"
-                  disabled={updateEmiDetailsMutation.isPending}
-                >
-                  {updateEmiDetailsMutation.isPending
-                    ? "Saving..."
-                    : "Save Details"}
+                <Button type="submit" disabled={updateEmiDetailsMutation.isPending}>
+                  {updateEmiDetailsMutation.isPending ? 'Saving...' : 'Save Details'}
                 </Button>
               </DialogFooter>
             </form>
@@ -447,15 +390,9 @@ export function EmiLeadActions({ leadId, lead }: EmiLeadActionsProps) {
         <DropdownMenuSeparator />
 
         {/* Delete Alert Dialog */}
-        <AlertDialog
-          open={isDeleteDialogOpen}
-          onOpenChange={setIsDeleteDialogOpen}
-        >
+        <AlertDialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
           <AlertDialogTrigger asChild>
-            <DropdownMenuItem
-              className="text-red-600"
-              onSelect={(e) => e.preventDefault()}
-            >
+            <DropdownMenuItem className="text-red-600" onSelect={e => e.preventDefault()}>
               <Trash className="mr-2 h-4 w-4" />
               Delete
             </DropdownMenuItem>
@@ -464,8 +401,8 @@ export function EmiLeadActions({ leadId, lead }: EmiLeadActionsProps) {
             <AlertDialogHeader>
               <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
               <AlertDialogDescription>
-                This action cannot be undone. This will permanently delete this
-                EMI lead and all its associated notes and details.
+                This action cannot be undone. This will permanently delete this EMI lead and all its
+                associated notes and details.
               </AlertDialogDescription>
             </AlertDialogHeader>
             <AlertDialogFooter>
@@ -475,7 +412,7 @@ export function EmiLeadActions({ leadId, lead }: EmiLeadActionsProps) {
                 className="bg-red-600 hover:bg-red-700"
                 disabled={deleteLeadMutation.isPending}
               >
-                {deleteLeadMutation.isPending ? "Deleting..." : "Delete"}
+                {deleteLeadMutation.isPending ? 'Deleting...' : 'Delete'}
               </AlertDialogAction>
             </AlertDialogFooter>
           </AlertDialogContent>

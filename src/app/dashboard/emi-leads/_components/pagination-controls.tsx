@@ -1,6 +1,6 @@
-"use client";
+'use client';
 
-import { useRouter, usePathname } from "next/navigation";
+import { useRouter, usePathname } from 'next/navigation';
 import {
   Pagination,
   PaginationContent,
@@ -9,15 +9,15 @@ import {
   PaginationLink,
   PaginationNext,
   PaginationPrevious,
-} from "@/components/ui/pagination";
+} from '@/components/ui/pagination';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
-import { Label } from "@/components/ui/label";
+} from '@/components/ui/select';
+import { Label } from '@/components/ui/label';
 
 interface PaginationControlsProps {
   currentPage: number;
@@ -52,17 +52,17 @@ export function PaginationControls({
   // Generate pagination URL with all current filters
   const getPaginationUrl = (page: number, newLimit?: number) => {
     const params = new URLSearchParams();
-    params.append("page", page.toString());
-    params.append("limit", newLimit ? newLimit.toString() : limit.toString());
+    params.append('page', page.toString());
+    params.append('limit', newLimit ? newLimit.toString() : limit.toString());
 
-    if (search) params.append("search", search);
-    if (status) params.append("status", status);
-    if (sort) params.append("sort", sort);
-    if (order) params.append("order", order);
-    if (startDate) params.append("startDate", startDate);
-    if (endDate) params.append("endDate", endDate);
-    if (courseType) params.append("courseType", courseType);
-    if (categoryId) params.append("categoryId", categoryId);
+    if (search) params.append('search', search);
+    if (status) params.append('status', status);
+    if (sort) params.append('sort', sort);
+    if (order) params.append('order', order);
+    if (startDate) params.append('startDate', startDate);
+    if (endDate) params.append('endDate', endDate);
+    if (courseType) params.append('courseType', courseType);
+    if (categoryId) params.append('categoryId', categoryId);
 
     return `${pathname}?${params.toString()}`;
   };
@@ -103,10 +103,7 @@ export function PaginationControls({
       if (i > 1 && i < totalPages) {
         links.push(
           <PaginationItem key={`page-${i}`}>
-            <PaginationLink
-              href={getPaginationUrl(i)}
-              isActive={currentPage === i}
-            >
+            <PaginationLink href={getPaginationUrl(i)} isActive={currentPage === i}>
               {i}
             </PaginationLink>
           </PaginationItem>
@@ -127,10 +124,7 @@ export function PaginationControls({
     if (totalPages > 1) {
       links.push(
         <PaginationItem key={`page-${totalPages}`}>
-          <PaginationLink
-            href={getPaginationUrl(totalPages)}
-            isActive={currentPage === totalPages}
-          >
+          <PaginationLink href={getPaginationUrl(totalPages)} isActive={currentPage === totalPages}>
             {totalPages}
           </PaginationLink>
         </PaginationItem>
@@ -164,10 +158,8 @@ export function PaginationControls({
         <PaginationContent>
           <PaginationItem>
             <PaginationPrevious
-              href={currentPage > 1 ? getPaginationUrl(currentPage - 1) : "#"}
-              className={
-                currentPage <= 1 ? "pointer-events-none opacity-50" : ""
-              }
+              href={currentPage > 1 ? getPaginationUrl(currentPage - 1) : '#'}
+              className={currentPage <= 1 ? 'pointer-events-none opacity-50' : ''}
             />
           </PaginationItem>
 
@@ -175,16 +167,8 @@ export function PaginationControls({
 
           <PaginationItem>
             <PaginationNext
-              href={
-                currentPage < totalPages
-                  ? getPaginationUrl(currentPage + 1)
-                  : "#"
-              }
-              className={
-                currentPage >= totalPages
-                  ? "pointer-events-none opacity-50"
-                  : ""
-              }
+              href={currentPage < totalPages ? getPaginationUrl(currentPage + 1) : '#'}
+              className={currentPage >= totalPages ? 'pointer-events-none opacity-50' : ''}
             />
           </PaginationItem>
         </PaginationContent>

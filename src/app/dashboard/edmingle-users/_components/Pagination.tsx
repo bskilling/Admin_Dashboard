@@ -1,17 +1,14 @@
 // components/Pagination.tsx
-import { Button } from "@/components/ui/button";
-import { ChevronLeft, ChevronRight } from "lucide-react";
-import { IPagination } from "./enrollments";
+import { Button } from '@/components/ui/button';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { IPagination } from './enrollments';
 
 interface PaginationProps {
   pagination: IPagination;
   onPageChange: (page: number) => void;
 }
 
-export default function Pagination({
-  pagination,
-  onPageChange,
-}: PaginationProps) {
+export default function Pagination({ pagination, onPageChange }: PaginationProps) {
   const { currentPage, totalPages, hasNextPage, hasPrevPage } = pagination;
 
   const renderPageNumbers = () => {
@@ -52,7 +49,7 @@ export default function Pagination({
       pages.push(
         <Button
           key={i}
-          variant={i === currentPage ? "default" : "outline"}
+          variant={i === currentPage ? 'default' : 'outline'}
           size="icon"
           className="h-8 w-8"
           onClick={() => onPageChange(i)}

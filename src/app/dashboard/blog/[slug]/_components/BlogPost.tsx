@@ -1,20 +1,15 @@
 // components/blog/BlogPost.tsx
-"use client";
+'use client';
 
-import { useState } from "react";
-import {
-  useBlog,
-  useRelatedBlogs,
-  useLikeBlog,
-  useShareBlog,
-} from "../../_components/useblog";
-import { Blog } from "../../_components/types";
-import Link from "next/link";
-import Image from "next/image";
-import { format } from "date-fns";
-import { useRouter } from "next/navigation";
-import BlogCard from "../../_components/BlogCard";
-import { toast } from "react-hot-toast";
+import { useState } from 'react';
+import { useBlog, useRelatedBlogs, useLikeBlog, useShareBlog } from '../../_components/useblog';
+import { Blog } from '../../_components/types';
+import Link from 'next/link';
+import Image from 'next/image';
+import { format } from 'date-fns';
+import { useRouter } from 'next/navigation';
+import BlogCard from '../../_components/BlogCard';
+import { toast } from 'react-hot-toast';
 
 interface BlogPostProps {
   slug: string;
@@ -28,7 +23,7 @@ export default function BlogPost({ slug }: BlogPostProps) {
   const blog = data?.blog;
 
   // Fetch related blogs if blog id exists
-  const { data: relatedData } = useRelatedBlogs(blog?._id || "");
+  const { data: relatedData } = useRelatedBlogs(blog?._id || '');
   const relatedBlogs = relatedData?.relatedBlogs || [];
 
   // Like and share mutations
@@ -43,7 +38,7 @@ export default function BlogPost({ slug }: BlogPostProps) {
     if (!blog) return;
 
     likeMutation.mutate(blog._id);
-    toast.success("Thanks for liking this article!");
+    toast.success('Thanks for liking this article!');
   };
 
   // Handle share button click
@@ -61,30 +56,30 @@ export default function BlogPost({ slug }: BlogPostProps) {
 
     // Share based on platform
     switch (platform) {
-      case "twitter":
+      case 'twitter':
         window.open(
           `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}&url=${encodeURIComponent(shareUrl)}`,
-          "_blank"
+          '_blank'
         );
         break;
-      case "facebook":
+      case 'facebook':
         window.open(
           `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`,
-          "_blank"
+          '_blank'
         );
         break;
-      case "linkedin":
+      case 'linkedin':
         window.open(
           `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(shareUrl)}`,
-          "_blank"
+          '_blank'
         );
         break;
-      case "copy":
+      case 'copy':
         try {
           await navigator.clipboard.writeText(shareUrl);
-          toast.success("Link copied to clipboard!");
+          toast.success('Link copied to clipboard!');
         } catch (err) {
-          toast.error("Failed to copy link");
+          toast.error('Failed to copy link');
         }
         break;
     }
@@ -108,14 +103,12 @@ export default function BlogPost({ slug }: BlogPostProps) {
     return (
       <div className="container mx-auto px-4 py-12">
         <div className="text-center py-10">
-          <h2 className="text-2xl font-bold text-red-500">
-            Blog post not found
-          </h2>
+          <h2 className="text-2xl font-bold text-red-500">Blog post not found</h2>
           <p className="mt-4">
             The blog post you're looking for doesn't exist or has been removed.
           </p>
           <button
-            onClick={() => router.push("/dashboard/blog")}
+            onClick={() => router.push('/dashboard/blog')}
             className="mt-6 px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"
           >
             Back to Blog
@@ -151,10 +144,7 @@ export default function BlogPost({ slug }: BlogPostProps) {
             </svg>
           </li>
           <li className="flex items-center">
-            <Link
-              href="/dashboard/blog"
-              className="text-gray-500 hover:text-blue-600"
-            >
+            <Link href="/dashboard/blog" className="text-gray-500 hover:text-blue-600">
               Blog
             </Link>
             <svg
@@ -182,11 +172,11 @@ export default function BlogPost({ slug }: BlogPostProps) {
         {Array.isArray(blog.categories) &&
           blog.categories.map((category: any) => (
             <Link
-              href={`/dashboard/blog?category=${typeof category === "string" ? category : category.slug}`}
-              key={typeof category === "string" ? category : category._id}
+              href={`/dashboard/blog?category=${typeof category === 'string' ? category : category.slug}`}
+              key={typeof category === 'string' ? category : category._id}
               className="text-sm font-medium px-3 py-1 bg-blue-100 text-blue-700 rounded-full hover:bg-blue-200 transition-colors"
             >
-              {typeof category === "string" ? category : category.name}
+              {typeof category === 'string' ? category : category.name}
             </Link>
           ))}
       </div>
@@ -198,42 +188,36 @@ export default function BlogPost({ slug }: BlogPostProps) {
       <div className="flex flex-wrap items-center justify-between gap-y-4 pb-6 mb-8 border-b border-gray-200">
         <div className="flex items-center">
           {/* Author photo if available */}
-          {blog.author &&
-            typeof blog.author !== "string" &&
-            blog.author.profilePicture && (
-              <div className="relative w-10 h-10 rounded-full overflow-hidden mr-3">
-                <Image
-                  src={blog.author.profilePicture as string}
-                  alt={blog.author.name}
-                  fill
-                  className="object-cover"
-                />
-              </div>
-            )}
+          {blog.author && typeof blog.author !== 'string' && blog.author.profilePicture && (
+            <div className="relative w-10 h-10 rounded-full overflow-hidden mr-3">
+              <Image
+                src={blog.author.profilePicture as string}
+                alt={blog.author.name}
+                fill
+                className="object-cover"
+              />
+            </div>
+          )}
 
           <div>
             {/* Author name */}
             <div className="font-medium">
               {blog.author
-                ? typeof blog.author === "string"
+                ? typeof blog.author === 'string'
                   ? blog.author
                   : blog.author.name
-                : "Unknown Author"}
+                : 'Unknown Author'}
             </div>
 
             {/* Publication date */}
             <div className="text-sm text-gray-500">
               {blog.publishedAt
-                ? format(new Date(blog.publishedAt), "MMMM d, yyyy")
-                : format(new Date(blog.createdAt), "MMMM d, yyyy")}
+                ? format(new Date(blog.publishedAt), 'MMMM d, yyyy')
+                : format(new Date(blog.createdAt), 'MMMM d, yyyy')}
 
               {/* Show update date if available */}
               {blog.lastUpdatedAt && (
-                <span>
-                  {" "}
-                  · Updated{" "}
-                  {format(new Date(blog.lastUpdatedAt), "MMMM d, yyyy")}
-                </span>
+                <span> · Updated {format(new Date(blog.lastUpdatedAt), 'MMMM d, yyyy')}</span>
               )}
             </div>
           </div>
@@ -310,7 +294,7 @@ export default function BlogPost({ slug }: BlogPostProps) {
                 <ul className="py-2">
                   <li>
                     <button
-                      onClick={() => handleShare("twitter")}
+                      onClick={() => handleShare('twitter')}
                       className="flex items-center w-full px-4 py-2 text-gray-800 hover:bg-gray-100"
                     >
                       <svg
@@ -327,7 +311,7 @@ export default function BlogPost({ slug }: BlogPostProps) {
                   </li>
                   <li>
                     <button
-                      onClick={() => handleShare("facebook")}
+                      onClick={() => handleShare('facebook')}
                       className="flex items-center w-full px-4 py-2 text-gray-800 hover:bg-gray-100"
                     >
                       <svg
@@ -344,7 +328,7 @@ export default function BlogPost({ slug }: BlogPostProps) {
                   </li>
                   <li>
                     <button
-                      onClick={() => handleShare("linkedin")}
+                      onClick={() => handleShare('linkedin')}
                       className="flex items-center w-full px-4 py-2 text-gray-800 hover:bg-gray-100"
                     >
                       <svg
@@ -361,7 +345,7 @@ export default function BlogPost({ slug }: BlogPostProps) {
                   </li>
                   <li>
                     <button
-                      onClick={() => handleShare("copy")}
+                      onClick={() => handleShare('copy')}
                       className="flex items-center w-full px-4 py-2 text-gray-800 hover:bg-gray-100"
                     >
                       <svg
@@ -411,7 +395,7 @@ export default function BlogPost({ slug }: BlogPostProps) {
         <div className="mb-10 lg:float-right lg:ml-10 lg:mb-5 w-full lg:w-64 p-5 bg-gray-50 rounded-lg">
           <h2 className="text-lg font-semibold mb-3">Table of Contents</h2>
           <ul className="space-y-2">
-            {blog.tableOfContents.map((item) => (
+            {blog.tableOfContents.map(item => (
               <li
                 key={item.id}
                 className="text-blue-600 hover:text-blue-800"
@@ -450,11 +434,11 @@ export default function BlogPost({ slug }: BlogPostProps) {
           <div className="flex flex-wrap gap-2">
             {blog.tags.map((tag: any) => (
               <Link
-                href={`/dashboard/blog?tag=${typeof tag === "string" ? tag : tag.slug}`}
-                key={typeof tag === "string" ? tag : tag._id}
+                href={`/dashboard/blog?tag=${typeof tag === 'string' ? tag : tag.slug}`}
+                key={typeof tag === 'string' ? tag : tag._id}
                 className="px-3 py-1 bg-gray-100 text-gray-700 rounded-full hover:bg-gray-200 transition-colors"
               >
-                {typeof tag === "string" ? tag : tag.name}
+                {typeof tag === 'string' ? tag : tag.name}
               </Link>
             ))}
           </div>
@@ -462,7 +446,7 @@ export default function BlogPost({ slug }: BlogPostProps) {
       )}
 
       {/* Author bio if available */}
-      {blog.author && typeof blog.author !== "string" && blog.author.bio && (
+      {blog.author && typeof blog.author !== 'string' && blog.author.bio && (
         <div className="mt-12 pt-6 border-t border-gray-200">
           <div className="flex flex-col md:flex-row items-start gap-5 p-6 bg-gray-50 rounded-lg">
             {/* Author photo */}
@@ -478,16 +462,12 @@ export default function BlogPost({ slug }: BlogPostProps) {
             )}
 
             <div>
-              <h3 className="text-xl font-bold mb-2">
-                About {blog.author.name}
-              </h3>
+              <h3 className="text-xl font-bold mb-2">About {blog.author.name}</h3>
               <p className="text-gray-700">{blog.author.bio}</p>
 
               {/* Social links */}
               {blog.author.socialLinks &&
-                Object.values(blog.author.socialLinks).some(
-                  (link) => !!link
-                ) && (
+                Object.values(blog.author.socialLinks).some(link => !!link) && (
                   <div className="mt-3 flex space-x-4">
                     {blog.author.socialLinks.twitter && (
                       <a

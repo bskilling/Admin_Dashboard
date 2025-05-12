@@ -1,10 +1,10 @@
 /* eslint-disable @next/next/no-img-element */
-import React, { useRef, useState } from "react";
-import axios from "axios";
-import env from "@/lib/env";
-import { toast } from "sonner";
-import Image from "next/image";
-import { AiOutlineCloudUpload, AiOutlineDelete } from "react-icons/ai";
+import React, { useRef, useState } from 'react';
+import axios from 'axios';
+import env from '@/lib/env';
+import { toast } from 'sonner';
+import Image from 'next/image';
+import { AiOutlineCloudUpload, AiOutlineDelete } from 'react-icons/ai';
 
 interface FileUploaderProps {
   setFileId: (id: string | null) => void;
@@ -29,34 +29,28 @@ const FileUploader: React.FC<FileUploaderProps> = ({
   const [previewUrl, setPreviewUrl] = useState(url || null);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
-  const handleFileChange = async (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
+  const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (!file) return;
 
     setIsLoading(true);
     try {
       const formData = new FormData();
-      formData.append("file", file);
-      formData.append("purpose", purpose ?? "default");
-      formData.append("type", "image");
+      formData.append('file', file);
+      formData.append('purpose', purpose ?? 'default');
+      formData.append('type', 'image');
 
-      const response = await axios.post(
-        env.BACKEND_URL + "/api/files",
-        formData,
-        {
-          headers: { "Content-Type": "multipart/form-data" },
-        }
-      );
+      const response = await axios.post(env.BACKEND_URL + '/api/files', formData, {
+        headers: { 'Content-Type': 'multipart/form-data' },
+      });
 
       const { _id, viewUrl } = response.data.data;
       setFileId(_id);
       setPreviewUrl(viewUrl);
       if (setUrl) setUrl(viewUrl);
     } catch (error) {
-      console.error("Error uploading file:", error);
-      toast.error("Upload failed. Try again.");
+      console.error('Error uploading file:', error);
+      toast.error('Upload failed. Try again.');
     } finally {
       setIsLoading(false);
     }
@@ -70,9 +64,9 @@ const FileUploader: React.FC<FileUploaderProps> = ({
       await axios.delete(`${env.BACKEND_URL}/api/files/${id}`);
       setFileId(null);
       setPreviewUrl(null);
-      toast.success("File deleted successfully");
+      toast.success('File deleted successfully');
     } catch (error) {
-      toast.error("Failed to delete file.");
+      toast.error('Failed to delete file.');
     } finally {
       setIsLoading(false);
     }

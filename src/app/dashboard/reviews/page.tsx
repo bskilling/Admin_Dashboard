@@ -1,13 +1,13 @@
-"use client";
+'use client';
 
 /* eslint-disable @next/next/no-img-element */
-import { useEffect, useState } from "react";
-import { FaLinkedin, FaStar } from "react-icons/fa"; // Import icons
-import axios from "axios";
-import { useRouter } from "next/navigation";
+import { useEffect, useState } from 'react';
+import { FaLinkedin, FaStar } from 'react-icons/fa'; // Import icons
+import axios from 'axios';
+import { useRouter } from 'next/navigation';
 // import { useQuery } from '@tanstack/react-query';
-import Link from "next/link";
-import { set } from "react-datepicker/dist/date_utils";
+import Link from 'next/link';
+import { set } from 'react-datepicker/dist/date_utils';
 // import NavbarSection from 'components/navbar/NavbarSection';
 import {
   Dialog,
@@ -18,7 +18,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog";
+} from '@/components/ui/dialog';
 
 const fetchReviews = async (page: number) => {
   const { data } = await axios.get(
@@ -30,7 +30,7 @@ const fetchReviews = async (page: number) => {
 const LinkedInLogin = () => {
   const [userData, setUserData] = useState<any>(null);
   const [loading, setLoading] = useState<boolean>(false);
-  const [error, setError] = useState<string>("");
+  const [error, setError] = useState<string>('');
   const [dialogOpen, setDialogOpen] = useState<boolean>(false);
   const router = useRouter();
 
@@ -60,7 +60,7 @@ const LinkedInLogin = () => {
 
       // setIsPublished(response.data.review.published);
     } catch (err) {
-      setError("Failed to update publish status");
+      setError('Failed to update publish status');
     } finally {
       setLoading(false);
     }
@@ -89,8 +89,7 @@ const LinkedInLogin = () => {
   }, [page]);
 
   if (isLoading) return <p className="text-center">Loading reviews...</p>;
-  if (isError)
-    return <p className="text-red-500 text-center">{(err as Error).message}</p>;
+  if (isError) return <p className="text-red-500 text-center">{(err as Error).message}</p>;
 
   const handleLogin = () => {
     const authUrl = `https://www.linkedin.com/oauth/v2/authorization?response_type=code&client_id=${process.env.NEXT_PUBLIC_LINKEDIN_CLIENT_ID}&redirect_uri=http://localhost:3000/reviews/give-a-review&scope=openid%20profile`;
@@ -109,19 +108,16 @@ const LinkedInLogin = () => {
       setUserData(response.data); // Save user data to state
       setDialogOpen(false); // Close dialog after successful fetch
     } catch (err) {
-      setError("Failed to fetch user data");
+      setError('Failed to fetch user data');
     } finally {
       setLoading(false);
     }
   };
 
   // Check for the authorization code in the URL query params when the page loads
-  if (
-    typeof window !== "undefined" &&
-    window.location.search.includes("code=")
-  ) {
+  if (typeof window !== 'undefined' && window.location.search.includes('code=')) {
     const urlParams = new URLSearchParams(window.location.search);
-    const code = urlParams.get("code");
+    const code = urlParams.get('code');
     if (code) {
       fetchLinkedInData(code); // Fetch user data with the code
     }
@@ -143,12 +139,9 @@ const LinkedInLogin = () => {
       <div className="min-h-screen bg-gray-50">
         {/* Banner Section */}
         <div className="bg-blue-600 text-white py-20 text-center">
-          <h2 className="text-4xl font-semibold">
-            We&apos;d Love Your Feedback!
-          </h2>
+          <h2 className="text-4xl font-semibold">We&apos;d Love Your Feedback!</h2>
           <p className="mt-3 text-lg">
-            Share your experience by writing a review with your LinkedIn
-            profile.
+            Share your experience by writing a review with your LinkedIn profile.
           </p>
           <button
             className="bg-white text-blue-600 flex items-center p-4 rounded-lg text-xl mt-6 hover:bg-gray-200 transition duration-200 mx-auto"
@@ -197,7 +190,7 @@ const LinkedInLogin = () => {
                   <Dialog>
                     <DialogTrigger>
                       <button className="bg-blue-600 text-white px-4 py-2 rounded-md">
-                        {review.published ? "Unpublish" : "Publish"}
+                        {review.published ? 'Unpublish' : 'Publish'}
                       </button>
                     </DialogTrigger>
                     <DialogContent>
@@ -205,8 +198,8 @@ const LinkedInLogin = () => {
                         <DialogTitle>Are you absolutely sure ?</DialogTitle>
                         <DialogDescription>
                           {review.isPublished
-                            ? "You are about to unpublish this review"
-                            : "You are about to publish this review"}
+                            ? 'You are about to unpublish this review'
+                            : 'You are about to publish this review'}
                         </DialogDescription>
                       </DialogHeader>
                       <DialogFooter>
@@ -236,9 +229,7 @@ const LinkedInLogin = () => {
           </div>
           {reviews?.reviews.length === 0 && (
             <div className="flex justify-center items-center  bg-gray-50">
-              <h2 className="text-3xl font-semibold text-blue-500 mt-20">
-                No Reviews Yet
-              </h2>
+              <h2 className="text-3xl font-semibold text-blue-500 mt-20">No Reviews Yet</h2>
             </div>
           )}
           {/* Load More Button */}
@@ -252,7 +243,7 @@ const LinkedInLogin = () => {
                 {loading ? 'Loading...' : 'Load More'}
               </button> */}
               <button
-                onClick={() => setPage((prev) => prev + 1)}
+                onClick={() => setPage(prev => prev + 1)}
                 disabled={reviews?.reviews.length === 0}
                 className="bg-blue-600 text-white px-6 py-3 rounded-md mt-6 hover:bg-blue-800"
               >

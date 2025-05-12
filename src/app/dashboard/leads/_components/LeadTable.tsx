@@ -1,6 +1,6 @@
-"use client";
+'use client';
 
-import React, { useState } from "react";
+import React, { useState } from 'react';
 import {
   Table,
   TableBody,
@@ -8,10 +8,10 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { Dialog, DialogTrigger, DialogContent } from "@/components/ui/dialog";
+} from '@/components/ui/table';
+import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
+import { Dialog, DialogTrigger, DialogContent } from '@/components/ui/dialog';
 import {
   Phone,
   Mail,
@@ -22,12 +22,12 @@ import {
   ChevronRight,
   ChevronsLeft,
   ChevronsRight,
-} from "lucide-react";
-import { Lead } from "./types";
-import { getStatusColor, getTypeBadgeColor } from "./leadUtils";
-import { EmptyState, StatusBadge, TypeBadge } from "./LeadComponents";
-import LeadDetailDialog from "./LeadDetails";
-import { category } from "@/utils/list";
+} from 'lucide-react';
+import { Lead } from './types';
+import { getStatusColor, getTypeBadgeColor } from './leadUtils';
+import { EmptyState, StatusBadge, TypeBadge } from './LeadComponents';
+import LeadDetailDialog from './LeadDetails';
+import { category } from '@/utils/list';
 
 interface LeadTableProps {
   leads: Lead[];
@@ -56,19 +56,15 @@ const LeadTable: React.FC<LeadTableProps> = ({
   const [selectedLead, setSelectedLead] = useState<Lead | null>(null);
   const [isDetailDialogOpen, setIsDetailDialogOpen] = useState(false);
 
-  function constructLink(
-    type: string,
-    slug: string,
-    category: Lead["course"]["category"]
-  ) {
-    if (type === "b2c" || type === "b2b") {
+  function constructLink(type: string, slug: string, category: Lead['course']['category']) {
+    if (type === 'b2c' || type === 'b2b') {
       return `/course/${slug}`;
-    } else if (type === "b2g") {
-      const cat = category.find((c) => c.type === type);
-      if (cat?.name === "nasscom") {
+    } else if (type === 'b2g') {
+      const cat = category.find(c => c.type === type);
+      if (cat?.name === 'nasscom') {
         return `/government-training-program/nasscom-future-skills/${slug}`;
       }
-      if (cat?.name === "nsdc") {
+      if (cat?.name === 'nsdc') {
         return `/government-training-program/nsdc-future-skills/${slug}`;
       }
       return `/courses/${slug}`;
@@ -98,16 +94,12 @@ const LeadTable: React.FC<LeadTableProps> = ({
                   <MessageSquare className="h-4 w-4" /> Course / Query
                 </div>
               </TableHead>
-              <TableHead className="p-4 text-white font-medium whitespace-nowrap">
-                Status
-              </TableHead>
-              <TableHead className="p-4 text-white font-medium text-right">
-                Actions
-              </TableHead>
+              <TableHead className="p-4 text-white font-medium whitespace-nowrap">Status</TableHead>
+              <TableHead className="p-4 text-white font-medium text-right">Actions</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
-            {leads.map((lead) => (
+            {leads.map(lead => (
               <TableRow key={lead._id} className="hover:bg-slate-50">
                 <TableCell className="p-4">
                   <div className="flex flex-col">
@@ -116,9 +108,7 @@ const LeadTable: React.FC<LeadTableProps> = ({
                         {lead.name.charAt(0).toUpperCase()}
                       </div>
                       <div>
-                        <p className="font-semibold text-slate-800">
-                          {lead.name}
-                        </p>
+                        <p className="font-semibold text-slate-800">{lead.name}</p>
                         <div className="flex gap-2 mt-1">
                           <TypeBadge type={lead.type} />
                           {lead.subCategory && (
@@ -148,9 +138,7 @@ const LeadTable: React.FC<LeadTableProps> = ({
                     </p>
                     <p className="flex items-center gap-2 text-slate-700 text-sm">
                       <Mail className="h-4 w-4 text-slate-500" />
-                      <span className="truncate max-w-[150px]">
-                        {lead.email}
-                      </span>
+                      <span className="truncate max-w-[150px]">{lead.email}</span>
                     </p>
                   </div>
                 </TableCell>
@@ -159,21 +147,14 @@ const LeadTable: React.FC<LeadTableProps> = ({
                   <div className="flex items-start">
                     <div className="p-3 bg-slate-50 rounded-lg border border-slate-100 w-full">
                       <p className="text-sm font-medium text-slate-800 mb-1 truncate">
-                        {lead.course?.title || "Unknown Course"}
+                        {lead.course?.title || 'Unknown Course'}
                       </p>
                       {lead.course?.category && (
-                        <Badge
-                          variant="outline"
-                          className="bg-slate-100 text-xs mb-2"
-                        >
-                          {lead.course.category.map(
-                            (category) => category.name
-                          )}
+                        <Badge variant="outline" className="bg-slate-100 text-xs mb-2">
+                          {lead.course.category.map(category => category.name)}
                         </Badge>
                       )}
-                      <p className="text-slate-700 text-sm line-clamp-2 mt-1">
-                        {lead.query}
-                      </p>
+                      <p className="text-slate-700 text-sm line-clamp-2 mt-1">{lead.query}</p>
                     </div>
                   </div>
                 </TableCell>
@@ -226,9 +207,7 @@ const LeadTable: React.FC<LeadTableProps> = ({
             variant="outline"
             size="sm"
             onClick={() => onPageChange(pagination.currentPage + 1)}
-            disabled={
-              pagination.currentPage === pagination.totalPages || loading
-            }
+            disabled={pagination.currentPage === pagination.totalPages || loading}
           >
             Next
           </Button>
@@ -237,19 +216,15 @@ const LeadTable: React.FC<LeadTableProps> = ({
         <div className="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
           <div>
             <p className="text-sm text-gray-700">
-              Showing{" "}
+              Showing{' '}
               <span className="font-medium">
                 {(pagination.currentPage - 1) * pagination.pageSize + 1}
-              </span>{" "}
-              to{" "}
+              </span>{' '}
+              to{' '}
               <span className="font-medium">
-                {Math.min(
-                  pagination.currentPage * pagination.pageSize,
-                  pagination.totalLeads
-                )}
-              </span>{" "}
-              of <span className="font-medium">{pagination.totalLeads}</span>{" "}
-              results
+                {Math.min(pagination.currentPage * pagination.pageSize, pagination.totalLeads)}
+              </span>{' '}
+              of <span className="font-medium">{pagination.totalLeads}</span> results
             </p>
           </div>
           <div>
@@ -286,9 +261,7 @@ const LeadTable: React.FC<LeadTableProps> = ({
                 variant="outline"
                 size="sm"
                 onClick={() => onPageChange(pagination.currentPage + 1)}
-                disabled={
-                  pagination.currentPage === pagination.totalPages || loading
-                }
+                disabled={pagination.currentPage === pagination.totalPages || loading}
               >
                 <span className="sr-only">Next</span>
                 <ChevronRight className="h-4 w-4" />
@@ -298,9 +271,7 @@ const LeadTable: React.FC<LeadTableProps> = ({
                 size="sm"
                 className="rounded-r-md"
                 onClick={() => onPageChange(pagination.totalPages)}
-                disabled={
-                  pagination.currentPage === pagination.totalPages || loading
-                }
+                disabled={pagination.currentPage === pagination.totalPages || loading}
               >
                 <span className="sr-only">Last</span>
                 <ChevronsRight className="h-4 w-4" />

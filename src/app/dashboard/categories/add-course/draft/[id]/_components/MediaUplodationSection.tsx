@@ -1,9 +1,9 @@
-"use client";
-import { UseFormReturn } from "react-hook-form";
-import { Input } from "@/components/ui/input";
-import { ImYoutube } from "react-icons/im";
-import { TDraftCourseForm } from "../page";
-import FileUploader from "./FileUploader";
+'use client';
+import { UseFormReturn } from 'react-hook-form';
+import { Input } from '@/components/ui/input';
+import { ImYoutube } from 'react-icons/im';
+import { TDraftCourseForm } from '../page';
+import FileUploader from './FileUploader';
 // import FileUploader from "@/components/global/FileUploader";
 
 export default function MediaUploadSection({
@@ -15,9 +15,9 @@ export default function MediaUploadSection({
   logoUrl,
   previewImage,
 }: {
-  register: UseFormReturn<TDraftCourseForm>["register"];
-  watch: UseFormReturn<TDraftCourseForm>["watch"];
-  setValue: UseFormReturn<TDraftCourseForm>["setValue"];
+  register: UseFormReturn<TDraftCourseForm>['register'];
+  watch: UseFormReturn<TDraftCourseForm>['watch'];
+  setValue: UseFormReturn<TDraftCourseForm>['setValue'];
   setLogoUrl: (url: string) => void;
   setPreviewImage: (url: string) => void;
   logoUrl: string;
@@ -32,18 +32,14 @@ export default function MediaUploadSection({
         <h3 className="text-lg font-semibold flex items-center gap-2 text-gray-700">
           <ImYoutube className="text-red-600 w-6 h-6" /> YouTube Preview
         </h3>
-        {watch("videoUrl") && (
+        {watch('videoUrl') && (
           <iframe
             className="w-full aspect-video rounded-lg border"
-            src={watch("videoUrl")}
+            src={watch('videoUrl')}
             allowFullScreen
           />
         )}
-        <Input
-          {...register("videoUrl")}
-          placeholder="Enter YouTube Video URL"
-          className="mt-2"
-        />
+        <Input {...register('videoUrl')} placeholder="Enter YouTube Video URL" className="mt-2" />
       </div>
 
       {/* Upload Sections */}
@@ -53,8 +49,8 @@ export default function MediaUploadSection({
           label="Course Logo"
           title="Upload Course Logo"
           purpose="course-logo"
-          setFileId={(fileId) => setValue("logoUrl", fileId as string)}
-          id={watch("logoUrl")}
+          setFileId={fileId => setValue('logoUrl', fileId as string)}
+          id={watch('logoUrl')}
           // @ts-ignore
           setUrl={setLogoUrl}
           url={logoUrl}
@@ -65,8 +61,8 @@ export default function MediaUploadSection({
           label="Preview Image"
           title="Upload Preview Image"
           purpose="course-preview"
-          setFileId={(fileId) => setValue("previewImage", fileId as string)}
-          id={watch("previewImage")}
+          setFileId={fileId => setValue('previewImage', fileId as string)}
+          id={watch('previewImage')}
           // @ts-ignore
           setUrl={setPreviewImage}
           url={previewImage}

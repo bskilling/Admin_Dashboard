@@ -1,23 +1,23 @@
-"use client";
-import { useState } from "react";
-import { MdDelete, MdEdit, MdAdd, MdCheck, MdClose } from "react-icons/md";
-import { toast } from "sonner";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { UseFormReturn } from "react-hook-form";
-import { TDraftCourseForm } from "../page";
-import { motion, AnimatePresence } from "framer-motion";
+'use client';
+import { useState } from 'react';
+import { MdDelete, MdEdit, MdAdd, MdCheck, MdClose } from 'react-icons/md';
+import { toast } from 'sonner';
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
+import { UseFormReturn } from 'react-hook-form';
+import { TDraftCourseForm } from '../page';
+import { motion, AnimatePresence } from 'framer-motion';
 
 const SkillsSelector = ({
   formWatch,
   formSetValue,
 }: {
-  formWatch: UseFormReturn<TDraftCourseForm>["watch"];
-  formSetValue: UseFormReturn<TDraftCourseForm>["setValue"];
+  formWatch: UseFormReturn<TDraftCourseForm>['watch'];
+  formSetValue: UseFormReturn<TDraftCourseForm>['setValue'];
 }) => {
-  const [newSkill, setNewSkill] = useState("");
+  const [newSkill, setNewSkill] = useState('');
   const [editingIndex, setEditingIndex] = useState<number | null>(null);
-  const [editValue, setEditValue] = useState("");
+  const [editValue, setEditValue] = useState('');
 
   // Handle adding a new skill
   const handleAddSkill = () => {
@@ -29,32 +29,28 @@ const SkillsSelector = ({
     }
 
     // Get current skills from the form
-    const currentSkills = formWatch("skills") || [];
+    const currentSkills = formWatch('skills') || [];
 
     // Check if the skill is already added (case-insensitive)
-    if (
-      currentSkills.some(
-        (skill) => skill.toLowerCase() === skillToAdd.toLowerCase()
-      )
-    ) {
-      toast.error("Skill already added");
+    if (currentSkills.some(skill => skill.toLowerCase() === skillToAdd.toLowerCase())) {
+      toast.error('Skill already added');
       return;
     }
 
     // Update the form value with the new skill added
-    formSetValue("skills", [...currentSkills, skillToAdd]);
+    formSetValue('skills', [...currentSkills, skillToAdd]);
 
     // Clear the input
-    setNewSkill("");
+    setNewSkill('');
 
     // Show success toast
-    toast.success("Skill added successfully");
+    toast.success('Skill added successfully');
   };
 
   // Handle removing a skill
   const handleRemoveSkill = (index: number) => {
     // Get current skills
-    const currentSkills = formWatch("skills") || [];
+    const currentSkills = formWatch('skills') || [];
 
     // Get the skill name for the toast
     const skillName = currentSkills[index];
@@ -63,7 +59,7 @@ const SkillsSelector = ({
     const updatedSkills = currentSkills.filter((_, i) => i !== index);
 
     // Update the form
-    formSetValue("skills", updatedSkills);
+    formSetValue('skills', updatedSkills);
 
     // Show success toast
     toast.success(`"${skillName}" removed successfully`);
@@ -71,7 +67,7 @@ const SkillsSelector = ({
 
   // Start editing a skill
   const handleStartEdit = (index: number) => {
-    const currentSkills = formWatch("skills") || [];
+    const currentSkills = formWatch('skills') || [];
     setEditingIndex(index);
     setEditValue(currentSkills[index]);
   };
@@ -82,21 +78,19 @@ const SkillsSelector = ({
 
     const trimmedValue = editValue.trim();
     if (!trimmedValue) {
-      toast.error("Skill cannot be empty");
+      toast.error('Skill cannot be empty');
       return;
     }
 
-    const currentSkills = formWatch("skills") || [];
+    const currentSkills = formWatch('skills') || [];
 
     // Check if the edited skill would be a duplicate (excluding the current one being edited)
     const isDuplicate = currentSkills.some(
-      (skill, idx) =>
-        idx !== editingIndex &&
-        skill.toLowerCase() === trimmedValue.toLowerCase()
+      (skill, idx) => idx !== editingIndex && skill.toLowerCase() === trimmedValue.toLowerCase()
     );
 
     if (isDuplicate) {
-      toast.error("Skill already exists");
+      toast.error('Skill already exists');
       return;
     }
 
@@ -105,25 +99,25 @@ const SkillsSelector = ({
     updatedSkills[editingIndex] = trimmedValue;
 
     // Update the form
-    formSetValue("skills", updatedSkills);
+    formSetValue('skills', updatedSkills);
 
     // Reset editing state
     setEditingIndex(null);
-    setEditValue("");
+    setEditValue('');
 
     // Show success toast
-    toast.success("Skill updated successfully");
+    toast.success('Skill updated successfully');
   };
 
   // Cancel editing
   const handleCancelEdit = () => {
     setEditingIndex(null);
-    setEditValue("");
+    setEditValue('');
   };
 
   // Handle key press (add skill on Enter)
   const handleKeyPress = (e: React.KeyboardEvent) => {
-    if (e.key === "Enter") {
+    if (e.key === 'Enter') {
       e.preventDefault();
       handleAddSkill();
     }
@@ -131,16 +125,16 @@ const SkillsSelector = ({
 
   // Handle key press when editing (save on Enter, cancel on Escape)
   const handleEditKeyPress = (e: React.KeyboardEvent) => {
-    if (e.key === "Enter") {
+    if (e.key === 'Enter') {
       e.preventDefault();
       handleSaveEdit();
-    } else if (e.key === "Escape") {
+    } else if (e.key === 'Escape') {
       e.preventDefault();
       handleCancelEdit();
     }
   };
 
-  const skills = formWatch("skills") || [];
+  const skills = formWatch('skills') || [];
 
   return (
     <div className="bg-slate-50 p-6 rounded-lg shadow-md border border-slate-200">
@@ -156,7 +150,7 @@ const SkillsSelector = ({
         <Input
           placeholder="Add new skill"
           value={newSkill}
-          onChange={(e) => setNewSkill(e.target.value)}
+          onChange={e => setNewSkill(e.target.value)}
           onKeyDown={handleKeyPress}
           className="flex-1 bg-white"
         />
@@ -183,15 +177,15 @@ const SkillsSelector = ({
                 transition={{ duration: 0.2 }}
                 className={`flex items-center ${
                   editingIndex === index
-                    ? "bg-blue-50 border-blue-300"
-                    : "bg-white hover:bg-blue-50"
+                    ? 'bg-blue-50 border-blue-300'
+                    : 'bg-white hover:bg-blue-50'
                 } border px-3 py-1.5 rounded-full shadow-sm`}
               >
                 {editingIndex === index ? (
                   <div className="flex items-center">
                     <Input
                       value={editValue}
-                      onChange={(e) => setEditValue(e.target.value)}
+                      onChange={e => setEditValue(e.target.value)}
                       onKeyDown={handleEditKeyPress}
                       className="py-0 h-6 w-auto min-w-[100px] text-sm border-none focus-visible:ring-0 focus-visible:ring-offset-0"
                       autoFocus
@@ -217,9 +211,7 @@ const SkillsSelector = ({
                   </div>
                 ) : (
                   <>
-                    <span className="mr-2 text-sm font-medium text-slate-700">
-                      {skill}
-                    </span>
+                    <span className="mr-2 text-sm font-medium text-slate-700">{skill}</span>
                     <div className="flex">
                       <button
                         type="button"
@@ -246,14 +238,13 @@ const SkillsSelector = ({
         </div>
       ) : (
         <div className="text-center py-4 bg-slate-100 rounded-md text-slate-500 italic">
-          No skills added yet. Add skills to help students understand what
-          they'll learn.
+          No skills added yet. Add skills to help students understand what they'll learn.
         </div>
       )}
 
       {skills.length > 0 && (
         <div className="mt-4 text-xs text-slate-500">
-          {skills.length} skill{skills.length !== 1 ? "s" : ""} added
+          {skills.length} skill{skills.length !== 1 ? 's' : ''} added
         </div>
       )}
     </div>

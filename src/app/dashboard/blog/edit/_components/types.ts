@@ -50,16 +50,16 @@ export interface Author {
 
 export interface ContentBlock {
   type:
-    | "paragraph"
-    | "heading"
-    | "list"
-    | "quote"
-    | "image"
-    | "video"
-    | "code"
-    | "table"
-    | "callout"
-    | "custom";
+    | 'paragraph'
+    | 'heading'
+    | 'list'
+    | 'quote'
+    | 'image'
+    | 'video'
+    | 'code'
+    | 'table'
+    | 'callout'
+    | 'custom';
   data: any;
   order: number;
 }
@@ -84,8 +84,8 @@ export interface Blog {
   tags: (string | Tag)[];
   featuredImage?: string;
   galleryImages?: string[];
-  status: "draft" | "published" | "archived" | "scheduled";
-  visibility: "public" | "private" | "password_protected";
+  status: 'draft' | 'published' | 'archived' | 'scheduled';
+  visibility: 'public' | 'private' | 'password_protected';
   password?: string;
   publishedAt?: string;
   scheduledFor?: string;
@@ -107,9 +107,9 @@ export interface Blog {
     focusKeyword?: string;
     robots?: string;
     structuredData?: any;
-    twitterCard?: "summary" | "summary_large_image" | "app" | "player";
+    twitterCard?: 'summary' | 'summary_large_image' | 'app' | 'player';
     twitterCreator?: string;
-    ogType?: "article" | "website" | "profile";
+    ogType?: 'article' | 'website' | 'profile';
     ogLocale?: string;
     schema?: {
       type: string;
@@ -121,7 +121,7 @@ export interface Blog {
   likeCount: number;
   shareCount: number;
   readTime: number;
-  difficulty?: "beginner" | "intermediate" | "advanced";
+  difficulty?: 'beginner' | 'intermediate' | 'advanced';
   language?: string;
   translations?: Array<{
     language: string;
@@ -192,13 +192,13 @@ export interface BlogQueryParams {
   tag?: string;
   author?: string;
   adminUser?: string;
-  status?: "draft" | "published" | "archived" | "scheduled";
+  status?: 'draft' | 'published' | 'archived' | 'scheduled';
   isFeatured?: boolean;
   isTopPick?: boolean;
   dateFrom?: string;
   dateTo?: string;
-  sort?: "title" | "oldest" | "popular" | "trending" | "updated";
-  difficulty?: "beginner" | "intermediate" | "advanced";
+  sort?: 'title' | 'oldest' | 'popular' | 'trending' | 'updated';
+  difficulty?: 'beginner' | 'intermediate' | 'advanced';
 }
 
 export interface BlogFormData {
@@ -213,8 +213,8 @@ export interface BlogFormData {
   tags: string[];
   featuredImage?: string;
   galleryImages?: string[];
-  status: "draft" | "published" | "archived" | "scheduled";
-  visibility: "public" | "private" | "password_protected";
+  status: 'draft' | 'published' | 'archived' | 'scheduled';
+  visibility: 'public' | 'private' | 'password_protected';
   password?: string;
   scheduledFor?: string;
   isTopPick?: boolean;
@@ -234,13 +234,13 @@ export interface BlogFormData {
     canonicalUrl?: string;
     focusKeyword?: string;
     robots?: string;
-    twitterCard?: "summary" | "summary_large_image" | "app" | "player";
+    twitterCard?: 'summary' | 'summary_large_image' | 'app' | 'player';
     twitterCreator?: string;
-    ogType?: "article" | "website" | "profile";
+    ogType?: 'article' | 'website' | 'profile';
     ogLocale?: string;
   };
   readTime?: number;
-  difficulty?: "beginner" | "intermediate" | "advanced";
+  difficulty?: 'beginner' | 'intermediate' | 'advanced';
   language?: string;
   fileAttachments?: string[];
 }

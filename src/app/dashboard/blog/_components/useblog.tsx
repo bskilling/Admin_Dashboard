@@ -1,15 +1,15 @@
 // hooks/useBlogs.ts
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { blogApi } from "@/lib/api";
-import { Blog, BlogFormData, BlogListResponse, BlogQueryParams } from "./types";
-import { useRouter } from "next/navigation";
-import { toast } from "react-hot-toast";
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { blogApi } from '@/lib/api';
+import { Blog, BlogFormData, BlogListResponse, BlogQueryParams } from './types';
+import { useRouter } from 'next/navigation';
+import { toast } from 'react-hot-toast';
 
 // Blog list query hook
 export const useBlogs = (params: BlogQueryParams = {}) => {
   return useQuery<BlogListResponse>({
-    queryKey: ["blogs", params],
-    queryFn: () => blogApi.getAll(params).then((res) => res.data.data),
+    queryKey: ['blogs', params],
+    queryFn: () => blogApi.getAll(params).then(res => res.data.data),
     staleTime: 5 * 60 * 1000, // 5 minutes
   });
 };
@@ -17,8 +17,8 @@ export const useBlogs = (params: BlogQueryParams = {}) => {
 // Single blog query hook
 export const useBlog = (slug: string) => {
   return useQuery<{ blog: Blog }>({
-    queryKey: ["blog", slug],
-    queryFn: () => blogApi.getBySlug(slug).then((res) => res.data.data),
+    queryKey: ['blog', slug],
+    queryFn: () => blogApi.getBySlug(slug).then(res => res.data.data),
     staleTime: 5 * 60 * 1000, // 5 minutes
     enabled: !!slug, // Only fetch when slug is available
   });
@@ -27,8 +27,8 @@ export const useBlog = (slug: string) => {
 // Related blogs query hook
 export const useRelatedBlogs = (id: string) => {
   return useQuery<{ relatedBlogs: Blog[] }>({
-    queryKey: ["relatedBlogs", id],
-    queryFn: () => blogApi.getRelated(id).then((res) => res.data.data),
+    queryKey: ['relatedBlogs', id],
+    queryFn: () => blogApi.getRelated(id).then(res => res.data.data),
     staleTime: 10 * 60 * 1000, // 10 minutes
     enabled: !!id, // Only fetch when id is available
   });
@@ -40,20 +40,19 @@ export const useCreateBlog = () => {
   const router = useRouter();
 
   return useMutation({
-    mutationFn: (data: BlogFormData) =>
-      blogApi.create(data).then((res) => res.data.data),
-    onSuccess: (data) => {
-      queryClient.invalidateQueries({ queryKey: ["blogs"] });
-      toast.success("Blog created successfully");
+    mutationFn: (data: BlogFormData) => blogApi.create(data).then(res => res.data.data),
+    onSuccess: data => {
+      queryClient.invalidateQueries({ queryKey: ['blogs'] });
+      toast.success('Blog created successfully');
       // Navigate to the new blog
-      if (data.blog.status === "published") {
+      if (data.blog.status === 'published') {
         router.push(`/dashboard/blog/${data.blog.slug}`);
       } else {
-        router.push("/dashboard/blog"); // Go back to blog list
+        router.push('/dashboard/blog'); // Go back to blog list
       }
     },
     onError: () => {
-      toast.error("Failed to create blog");
+      toast.error('Failed to create blog');
     },
   });
 };
@@ -64,22 +63,21 @@ export const useUpdateBlog = (id: string) => {
   const router = useRouter();
 
   return useMutation({
-    mutationFn: (data: BlogFormData) =>
-      blogApi.update(id, data).then((res) => res.data.data),
-    onSuccess: (data) => {
-      queryClient.invalidateQueries({ queryKey: ["blogs"] });
-      queryClient.invalidateQueries({ queryKey: ["blog", data.blog.slug] });
-      toast.success("Blog updated successfully");
+    mutationFn: (data: BlogFormData) => blogApi.update(id, data).then(res => res.data.data),
+    onSuccess: data => {
+      queryClient.invalidateQueries({ queryKey: ['blogs'] });
+      queryClient.invalidateQueries({ queryKey: ['blog', data.blog.slug] });
+      toast.success('Blog updated successfully');
 
       // Navigate to the blog
-      if (data.blog.status === "published") {
+      if (data.blog.status === 'published') {
         router.push(`/dashboard/blog/${data.blog.slug}`);
       } else {
-        router.push("/dashboard/blog"); // Go back to blog list
+        router.push('/dashboard/blog'); // Go back to blog list
       }
     },
     onError: () => {
-      toast.error("Failed to update blog");
+      toast.error('Failed to update blog');
     },
   });
 };
@@ -90,14 +88,14 @@ export const useDeleteBlog = () => {
   const router = useRouter();
 
   return useMutation({
-    mutationFn: (id: string) => blogApi.delete(id).then((res) => res.data),
+    mutationFn: (id: string) => blogApi.delete(id).then(res => res.data),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["blogs"] });
-      toast.success("Blog deleted successfully");
-      router.push("/dashboard/blog");
+      queryClient.invalidateQueries({ queryKey: ['blogs'] });
+      toast.success('Blog deleted successfully');
+      router.push('/dashboard/blog');
     },
     onError: () => {
-      toast.error("Failed to delete blog");
+      toast.error('Failed to delete blog');
     },
   });
 };
@@ -107,10 +105,10 @@ export const useLikeBlog = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (id: string) => blogApi.like(id).then((res) => res.data.data),
+    mutationFn: (id: string) => blogApi.like(id).then(res => res.data.data),
     onSuccess: (data, variables) => {
       // Update blog data in cache
-      queryClient.setQueriesData({ queryKey: ["blog"] }, (oldData: any) => {
+      queryClient.setQueriesData({ queryKey: ['blog'] }, (oldData: any) => {
         if (oldData && oldData.blog) {
           return {
             ...oldData,
@@ -131,10 +129,10 @@ export const useShareBlog = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (id: string) => blogApi.share(id).then((res) => res.data.data),
+    mutationFn: (id: string) => blogApi.share(id).then(res => res.data.data),
     onSuccess: (data, variables) => {
       // Update blog data in cache
-      queryClient.setQueriesData({ queryKey: ["blog"] }, (oldData: any) => {
+      queryClient.setQueriesData({ queryKey: ['blog'] }, (oldData: any) => {
         if (oldData && oldData.blog) {
           return {
             ...oldData,

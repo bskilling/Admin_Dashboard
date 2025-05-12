@@ -1,10 +1,10 @@
-"use client";
+'use client';
 
-import * as React from "react";
-import { Check, ChevronsUpDown } from "lucide-react";
+import * as React from 'react';
+import { Check, ChevronsUpDown } from 'lucide-react';
 
-import { cn } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
+import { cn } from '@/lib/utils';
+import { Button } from '@/components/ui/button';
 import {
   Command,
   CommandEmpty,
@@ -12,13 +12,9 @@ import {
   CommandInput,
   CommandItem,
   CommandList,
-} from "@/components/ui/command";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
-import { TTool } from "@/lib/hooks/useTools";
+} from '@/components/ui/command';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { TTool } from '@/lib/hooks/useTools';
 // import { TTool } from "@/routes/_app/tools/-components/useTools";
 
 // const frameworks = [
@@ -56,7 +52,7 @@ export function Combobox({
   setAdd: (value: TTool) => void;
 }) {
   const [open, setOpen] = React.useState(false);
-  const [value, setValue] = React.useState("");
+  const [value, setValue] = React.useState('');
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -67,9 +63,7 @@ export function Combobox({
           aria-expanded={open}
           className="w-full h-14 justify-between"
         >
-          {value
-            ? frameworks.find((framework) => framework.title === value)?.title
-            : placeholder}
+          {value ? frameworks.find(framework => framework.title === value)?.title : placeholder}
           <ChevronsUpDown className="opacity-50" />
         </Button>
       </PopoverTrigger>
@@ -79,12 +73,12 @@ export function Combobox({
           <CommandList>
             <CommandEmpty>{nofound}</CommandEmpty>
             <CommandGroup>
-              {frameworks.map((framework) => (
+              {frameworks.map(framework => (
                 <CommandItem
                   key={framework.title}
                   value={framework.title}
-                  onSelect={(currentValue) => {
-                    setValue(currentValue === value ? "" : currentValue);
+                  onSelect={currentValue => {
+                    setValue(currentValue === value ? '' : currentValue);
                     setOpen(false);
                     setAdd(framework);
                   }}
@@ -92,8 +86,8 @@ export function Combobox({
                   {framework.title}
                   <Check
                     className={cn(
-                      "ml-auto",
-                      value === framework.title ? "opacity-100" : "opacity-0"
+                      'ml-auto',
+                      value === framework.title ? 'opacity-100' : 'opacity-0'
                     )}
                   />
                 </CommandItem>

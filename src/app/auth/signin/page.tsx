@@ -1,10 +1,10 @@
-"use client";
-import { useState } from "react";
-import { signIn } from "next-auth/react";
-import { useRouter } from "next/navigation";
+'use client';
+import { useState } from 'react';
+import { signIn } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
 
 export default function SignIn() {
-  const [email, setEmail] = useState("");
+  const [email, setEmail] = useState('');
   const [loading, setLoading] = useState(false);
   const router = useRouter();
 
@@ -17,18 +17,18 @@ export default function SignIn() {
 
     //   redirect: false, // Ensures NextAuth doesn't handle redirection
     // });
-    const result = await signIn("email", {
+    const result = await signIn('email', {
       email,
-      callbackUrl: "/dashboard", // ✅ Force redirect to dashboard
+      callbackUrl: '/dashboard', // ✅ Force redirect to dashboard
       redirect: false, // Prevent immediate redirect
     });
     if (result?.error) {
-      alert("Error sending Magic Link. Please try again.");
+      alert('Error sending Magic Link. Please try again.');
     } else {
-      alert("Check your email for the login link.");
+      alert('Check your email for the login link.');
       // Optionally, redirect user after confirmation
       setTimeout(() => {
-        router.push("/dashboard");
+        router.push('/dashboard');
       }, 2000);
     }
 
@@ -49,7 +49,7 @@ export default function SignIn() {
             className="w-full p-3 border rounded-lg"
             placeholder="your@email.com"
             value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            onChange={e => setEmail(e.target.value)}
             required
             autoComplete="email"
           />
@@ -58,7 +58,7 @@ export default function SignIn() {
             className="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition"
             disabled={loading}
           >
-            {loading ? "Sending..." : "Send Magic Link"}
+            {loading ? 'Sending...' : 'Send Magic Link'}
           </button>
         </form>
       </div>

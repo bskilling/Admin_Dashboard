@@ -1,16 +1,16 @@
 /* eslint-disable @next/next/no-img-element */
-"use client";
-import { UseFormReturn } from "react-hook-form";
-import { TDraftCourseForm } from "../page";
-import { Input } from "@/components/ui/input";
-import { LuRadioTower } from "react-icons/lu";
-import { BiSolidCertification } from "react-icons/bi";
-import { Clock } from "lucide-react";
+'use client';
+import { UseFormReturn } from 'react-hook-form';
+import { TDraftCourseForm } from '../page';
+import { Input } from '@/components/ui/input';
+import { LuRadioTower } from 'react-icons/lu';
+import { BiSolidCertification } from 'react-icons/bi';
+import { Clock } from 'lucide-react';
 
 export default function CertificationSection({
   register,
 }: {
-  register: UseFormReturn<TDraftCourseForm>["register"];
+  register: UseFormReturn<TDraftCourseForm>['register'];
 }) {
   return (
     <section className="relative z-[40] w-[85vw] mx-auto bg-white shadow-lg rounded-2xl p-10 flex flex-col gap-8 border border-gray-200">
@@ -30,7 +30,7 @@ export default function CertificationSection({
           </p>
           <Input
             type="text"
-            {...register("certification.title")}
+            {...register('certification.title')}
             placeholder="Enter certification title"
             className="w-full mt-2 bg-white border border-gray-300 placeholder-gray-500 focus:ring-2 focus:ring-[#00C6FF] rounded-lg p-2"
           />
@@ -48,7 +48,7 @@ export default function CertificationSection({
             <p className="font-semibold text-gray-800">Duration (Hours)</p>
             <Input
               type="number"
-              {...register("durationHours")}
+              {...register('durationHours')}
               placeholder="Enter hours"
               className="w-full mt-2 bg-white border border-gray-300 placeholder-gray-500 focus:ring-2 focus:ring-[#00C6FF] rounded-lg p-2"
             />
@@ -60,7 +60,7 @@ export default function CertificationSection({
           <p className="font-semibold text-gray-800">Start Date</p>
           <Input
             type="date"
-            {...register("startTime")}
+            {...register('startTime')}
             className="w-full bg-white border border-gray-300 focus:ring-2 focus:ring-[#00C6FF] rounded-lg p-2"
           />
         </div>
@@ -70,7 +70,7 @@ export default function CertificationSection({
           <p className="font-semibold text-gray-800">End Date</p>
           <Input
             type="date"
-            {...register("endTime")}
+            {...register('endTime')}
             className="w-full bg-white border border-gray-300 focus:ring-2 focus:ring-[#00C6FF] rounded-lg p-2"
           />
         </div>

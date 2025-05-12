@@ -1,9 +1,9 @@
-"use client";
+'use client';
 
-import { useEffect } from "react";
-import { useRouter } from "next/navigation";
-import { getCookie } from "@/utils/AuthUser";
-import { useAuthMutation } from "@/redux/features/auth/authApi";
+import { useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+import { getCookie } from '@/utils/AuthUser';
+import { useAuthMutation } from '@/redux/features/auth/authApi';
 
 interface ProtectedProps {
   children: React.ReactNode;
@@ -20,20 +20,20 @@ export default function Protected({ children }: ProtectedProps) {
   useEffect(() => {
     const isAuthenticated = async () => {
       try {
-        const token = getCookie("token");
+        const token = getCookie('token');
         if (!token) {
-          router.push("/"); // Redirect to login page if token is not present
+          router.push('/'); // Redirect to login page if token is not present
           return;
         }
 
         const response = await auth({ token });
 
-        if ("data" in response && !response?.data?.isLog) {
-          router.push("/dashboard/learning/trainings");
+        if ('data' in response && !response?.data?.isLog) {
+          router.push('/dashboard/learning/trainings');
         }
       } catch (error) {
-        console.error("Error checking authentication:", error);
-        router.push("/");
+        console.error('Error checking authentication:', error);
+        router.push('/');
       }
     };
 

@@ -2,13 +2,13 @@ import {
   useEditCourseMutation,
   useGetCourseByIdQuery,
   useGetCoursesTitleQuery,
-} from "@/redux/features/courses/coursesApi";
-import React, { useState } from "react";
-import { AiOutlinePlus, AiOutlineMinus } from "react-icons/ai";
-import { BiSolidDownArrow, BiSolidUpArrow } from "react-icons/bi";
-import { useSelector } from "react-redux";
-import { ThreeCircles } from "react-loader-spinner";
-import toast from "react-hot-toast";
+} from '@/redux/features/courses/coursesApi';
+import React, { useState } from 'react';
+import { AiOutlinePlus, AiOutlineMinus } from 'react-icons/ai';
+import { BiSolidDownArrow, BiSolidUpArrow } from 'react-icons/bi';
+import { useSelector } from 'react-redux';
+import { ThreeCircles } from 'react-loader-spinner';
+import toast from 'react-hot-toast';
 
 type Props = {
   course_data: any;
@@ -24,7 +24,7 @@ export default function TrainingMetadata({
   const { courseData } = useSelector((state: any) => state.courses);
   const [searchIsActive, setSearchIsActive] = useState(false);
 
-  console.log(trainingMetadata, "trainingMetadatatrainingMetadata");
+  console.log(trainingMetadata, 'trainingMetadatatrainingMetadata');
 
   const [editCourse, { isLoading: createCourseLoading, isSuccess, error }] =
     useEditCourseMutation();
@@ -44,7 +44,7 @@ export default function TrainingMetadata({
 
   const handleObjectiveChange = (index: number, value: any) => {
     const updatedObjectives = { ...trainingMetadata };
-    console.log(updatedObjectives, "-==-=-");
+    console.log(updatedObjectives, '-==-=-');
     updatedObjectives.objectives[index].title = value;
     setTrainingMetadata(updatedObjectives);
   };
@@ -74,7 +74,7 @@ export default function TrainingMetadata({
   const handleAddSkills = () => {
     const updatedTrainingMetadata = { ...trainingMetadata };
 
-    updatedTrainingMetadata.skills_covered.push({ title: "" });
+    updatedTrainingMetadata.skills_covered.push({ title: '' });
 
     setTrainingMetadata(updatedTrainingMetadata);
   };
@@ -92,7 +92,7 @@ export default function TrainingMetadata({
   const handleAddPrerequisites = () => {
     const updatedTrainingMetadata = { ...trainingMetadata };
 
-    updatedTrainingMetadata.prerequisites.push({ title: "" });
+    updatedTrainingMetadata.prerequisites.push({ title: '' });
 
     setTrainingMetadata(updatedTrainingMetadata);
   };
@@ -110,7 +110,7 @@ export default function TrainingMetadata({
   const handleAddObjectives = () => {
     const updatedTrainingMetadata = { ...trainingMetadata };
 
-    updatedTrainingMetadata.objectives.push({ title: "" });
+    updatedTrainingMetadata.objectives.push({ title: '' });
 
     setTrainingMetadata(updatedTrainingMetadata);
   };
@@ -134,7 +134,7 @@ export default function TrainingMetadata({
   const handleAddAudience = () => {
     const updatedTrainingMetadata = { ...trainingMetadata };
 
-    updatedTrainingMetadata.audience.push({ title: "" });
+    updatedTrainingMetadata.audience.push({ title: '' });
 
     setTrainingMetadata(updatedTrainingMetadata);
   };
@@ -158,7 +158,7 @@ export default function TrainingMetadata({
   const handleAddKeyFeatures = () => {
     const updatedTrainingMetadata = { ...trainingMetadata };
 
-    updatedTrainingMetadata.key_features.push({ title: "" });
+    updatedTrainingMetadata.key_features.push({ title: '' });
 
     setTrainingMetadata(updatedTrainingMetadata);
   };
@@ -182,7 +182,7 @@ export default function TrainingMetadata({
   const handleAddBenefits = () => {
     const updatedTrainingMetadata = { ...trainingMetadata };
 
-    updatedTrainingMetadata.benefits.push({ title: "" });
+    updatedTrainingMetadata.benefits.push({ title: '' });
 
     setTrainingMetadata(updatedTrainingMetadata);
   };
@@ -206,7 +206,7 @@ export default function TrainingMetadata({
   const handleAddOutcomes = () => {
     const updatedTrainingMetadata = { ...trainingMetadata };
 
-    updatedTrainingMetadata.outcomes.push({ title: "" });
+    updatedTrainingMetadata.outcomes.push({ title: '' });
 
     setTrainingMetadata(updatedTrainingMetadata);
   };
@@ -229,7 +229,7 @@ export default function TrainingMetadata({
   const handleAddResources = () => {
     const updatedTrainingMetadata = { ...trainingMetadata };
 
-    updatedTrainingMetadata.resources.push({ title: "" });
+    updatedTrainingMetadata.resources.push({ title: '' });
 
     setTrainingMetadata(updatedTrainingMetadata);
   };
@@ -237,9 +237,9 @@ export default function TrainingMetadata({
   const handleFaqsChange = (index: number, value: any, type: string) => {
     const updatedObjectives = { ...trainingMetadata };
 
-    if (type === "question") {
+    if (type === 'question') {
       updatedObjectives.FAQs[index].question = value;
-    } else if (type === "answer") {
+    } else if (type === 'answer') {
       updatedObjectives.FAQs[index].answer = value;
     }
     setTrainingMetadata(updatedObjectives);
@@ -258,7 +258,7 @@ export default function TrainingMetadata({
   const handleAddFaqs = () => {
     const updatedTrainingMetadata = { ...trainingMetadata };
 
-    updatedTrainingMetadata.FAQs.push({ question: "", answer: "" });
+    updatedTrainingMetadata.FAQs.push({ question: '', answer: '' });
 
     setTrainingMetadata(updatedTrainingMetadata);
   };
@@ -266,9 +266,9 @@ export default function TrainingMetadata({
   const addCurriculumSection = () => {
     const updatedTrainingMetadata = { ...trainingMetadata };
     updatedTrainingMetadata.curriculum.push({
-      title: "",
-      videoSection: "",
-      section_parts: [{ title: "" }],
+      title: '',
+      videoSection: '',
+      section_parts: [{ title: '' }],
     });
     setTrainingMetadata(updatedTrainingMetadata);
   };
@@ -301,7 +301,7 @@ export default function TrainingMetadata({
   const handleAddShouldAttend = () => {
     const updatedTrainingMetadata = { ...trainingMetadata };
     updatedTrainingMetadata.who_should_attend.push({
-      title: "",
+      title: '',
     });
     setTrainingMetadata(updatedTrainingMetadata);
   };
@@ -312,36 +312,23 @@ export default function TrainingMetadata({
     setTrainingMetadata({ ...trainingMetadata, curriculum: newCurriculum });
   };
 
-  const handleSectionTitleChange = (
-    curriculumIndex: number,
-    sectionIndex: number,
-    value: any
-  ) => {
+  const handleSectionTitleChange = (curriculumIndex: number, sectionIndex: number, value: any) => {
     const newCurriculum = [...trainingMetadata.curriculum];
     newCurriculum[curriculumIndex].section_parts[sectionIndex].title = value;
     setTrainingMetadata({ ...trainingMetadata, curriculum: newCurriculum });
   };
 
-  const addCurriculumSectionTitle = (
-    curriculumIndex: number,
-    sectionIndex: number
-  ) => {
+  const addCurriculumSectionTitle = (curriculumIndex: number, sectionIndex: number) => {
     const updatedTrainingMetadata = { ...trainingMetadata };
     updatedTrainingMetadata.curriculum[curriculumIndex].section_parts.push({
-      title: "",
+      title: '',
     });
     setTrainingMetadata(updatedTrainingMetadata);
   };
 
-  const removeCurriculumSectionTitle = (
-    curriculumIndex: number,
-    sectionIndex: number
-  ) => {
+  const removeCurriculumSectionTitle = (curriculumIndex: number, sectionIndex: number) => {
     const updatedTrainingMetadata = { ...trainingMetadata };
-    if (
-      updatedTrainingMetadata.curriculum[curriculumIndex].section_parts.length >
-      0
-    ) {
+    if (updatedTrainingMetadata.curriculum[curriculumIndex].section_parts.length > 0) {
       updatedTrainingMetadata.curriculum[curriculumIndex].section_parts.pop();
       setTrainingMetadata(updatedTrainingMetadata);
     }
@@ -358,7 +345,7 @@ export default function TrainingMetadata({
       id: courseData?.course?._id,
       data,
     });
-    toast.success("course metadata updated successfully");
+    toast.success('course metadata updated successfully');
   };
 
   return (
@@ -366,9 +353,7 @@ export default function TrainingMetadata({
       <form onSubmit={handleFormSubmit}>
         <div className="mt-2 h-[420px] overflow-auto pb-32">
           <div className="w-[100%] mt-4">
-            <label className="block mb-2 text-sm font-[700] text-gray-600">
-              Headline
-            </label>
+            <label className="block mb-2 text-sm font-[700] text-gray-600">Headline</label>
             <div className="relative h-[45px]">
               <div className="flex bg-transparent w-[100%] bg-white rounded-md border-2 justify-center items-center hover:border-2 hover:border-[#292929]">
                 <input
@@ -387,9 +372,7 @@ export default function TrainingMetadata({
             </div>
           </div>
           <div className="w-[100%] mt-10">
-            <label className="block mb-2 text-sm font-[700] text-gray-600">
-              Body
-            </label>
+            <label className="block mb-2 text-sm font-[700] text-gray-600">Body</label>
 
             <div className="flex bg-transparent w-[100%] bg-white rounded-md border-2 justify-center items-center hover:border-2 hover:border-[#292929]">
               <textarea
@@ -398,17 +381,13 @@ export default function TrainingMetadata({
                 name="body"
                 id="body"
                 className="bg-transparent w-full p-2 border-none rounded-[5px] h-[100px] outline-none text-[#292929] text-[14px] font-[500] font-Josefin"
-                style={{ resize: "none" }}
+                style={{ resize: 'none' }}
               />
             </div>
-            {!trainingMetadata?.body && (
-              <p className="text-red-600 text-sm">Body is required</p>
-            )}
+            {!trainingMetadata?.body && <p className="text-red-600 text-sm">Body is required</p>}
           </div>
           <div className="w-[100%] mt-10">
-            <label className="block mb-2 text-sm font-[700] text-gray-600">
-              Overview
-            </label>
+            <label className="block mb-2 text-sm font-[700] text-gray-600">Overview</label>
             <div className="flex bg-transparent w-[100%] bg-white rounded-md border-2 justify-center items-center hover:border-2 hover:border-[#292929]">
               <textarea
                 value={trainingMetadata.overview}
@@ -416,7 +395,7 @@ export default function TrainingMetadata({
                 name="overview"
                 id="overview"
                 className="bg-transparent w-full p-2 border-none rounded-[5px] h-[80px] outline-none text-[#292929] text-[14px] font-[500] font-Josefin"
-                style={{ resize: "none" }}
+                style={{ resize: 'none' }}
               />
             </div>
             {!trainingMetadata?.body && (
@@ -424,9 +403,7 @@ export default function TrainingMetadata({
             )}
           </div>
           <div className="w-[100%] mt-10">
-            <label className="block mb-2 text-sm font-[700] text-gray-600">
-              Preview Video
-            </label>
+            <label className="block mb-2 text-sm font-[700] text-gray-600">Preview Video</label>
             <div className="flex bg-transparent w-[100%] bg-white rounded-md border-2 justify-center items-center hover:border-2 hover:border-[#292929]">
               <input
                 autoComplete="off"
@@ -443,9 +420,7 @@ export default function TrainingMetadata({
             )}
           </div>
           <div className="w-[100%] mt-10">
-            <label className="block mb-2 text-sm font-[700] text-gray-600">
-              Objectives
-            </label>
+            <label className="block mb-2 text-sm font-[700] text-gray-600">Objectives</label>
             {trainingMetadata?.objectives?.map((obj: any, index: number) => {
               return (
                 <>
@@ -454,46 +429,40 @@ export default function TrainingMetadata({
                       autoComplete="off"
                       type="text"
                       value={obj.title}
-                      onChange={(e) =>
-                        handleObjectiveChange(index, e.target.value)
-                      }
+                      onChange={e => handleObjectiveChange(index, e.target.value)}
                       name="objectives"
                       id="objectives"
                       className="bg-transparent w-[90%] pl-2 border-2 left-[50px] rounded-[5px] h-[45px] outline-none text-black text-[14px] font-[500] font-Josefin"
                     />
                     <AiOutlineMinus
                       style={{
-                        cursor: "pointer",
-                        width: "35px",
-                        height: "35px",
-                        color: "white",
+                        cursor: 'pointer',
+                        width: '35px',
+                        height: '35px',
+                        color: 'white',
                       }}
                       className="rounded-full bg-sky-800 p-2 ml-2"
                       onClick={handleRemoveObjective}
                     />
                     <AiOutlinePlus
                       style={{
-                        cursor: "pointer",
-                        width: "35px",
-                        height: "35px",
-                        color: "white",
+                        cursor: 'pointer',
+                        width: '35px',
+                        height: '35px',
+                        color: 'white',
                       }}
                       className="rounded-full bg-sky-800 p-2 ml-2"
                       onClick={handleAddObjectives}
                     />
                   </div>
 
-                  {!obj?.title?.length && (
-                    <p className="text-red-600 text-sm">Body is required</p>
-                  )}
+                  {!obj?.title?.length && <p className="text-red-600 text-sm">Body is required</p>}
                 </>
               );
             })}
           </div>
           <div className="w-[100%] mt-10">
-            <label className="block mb-2 text-sm font-[700] text-gray-600">
-              Prerequisites
-            </label>
+            <label className="block mb-2 text-sm font-[700] text-gray-600">Prerequisites</label>
             {trainingMetadata?.prerequisites?.map((obj: any, index: number) => {
               return (
                 <>
@@ -502,45 +471,39 @@ export default function TrainingMetadata({
                       autoComplete="off"
                       type="text"
                       value={obj.title}
-                      onChange={(e) =>
-                        handlePrerequisitesChange(index, e.target.value)
-                      }
+                      onChange={e => handlePrerequisitesChange(index, e.target.value)}
                       name="prerequisites"
                       id="prerequisites"
                       className="bg-transparent w-[90%] pl-2 border-2 left-[50px] rounded-[5px] h-[45px] outline-none text-black text-[14px] font-[500] font-Josefin"
                     />
                     <AiOutlineMinus
                       style={{
-                        cursor: "pointer",
-                        width: "35px",
-                        height: "35px",
-                        color: "white",
+                        cursor: 'pointer',
+                        width: '35px',
+                        height: '35px',
+                        color: 'white',
                       }}
                       className="rounded-full bg-sky-800 p-2 ml-2"
                       onClick={handleRemovePrerequisites}
                     />
                     <AiOutlinePlus
                       style={{
-                        cursor: "pointer",
-                        width: "35px",
-                        height: "35px",
-                        color: "white",
+                        cursor: 'pointer',
+                        width: '35px',
+                        height: '35px',
+                        color: 'white',
                       }}
                       className="rounded-full bg-sky-800 p-2 ml-2"
                       onClick={handleAddPrerequisites}
                     />
                   </div>
-                  {!obj?.title?.length && (
-                    <p className="text-red-600 text-sm">field required</p>
-                  )}
+                  {!obj?.title?.length && <p className="text-red-600 text-sm">field required</p>}
                 </>
               );
             })}
           </div>
           <div className="w-[100%] mt-10">
-            <label className="block mb-2 text-sm font-[700] text-gray-600">
-              Audience
-            </label>
+            <label className="block mb-2 text-sm font-[700] text-gray-600">Audience</label>
             {trainingMetadata?.audience?.map((obj: any, index: number) => {
               return (
                 <>
@@ -549,143 +512,123 @@ export default function TrainingMetadata({
                       autoComplete="off"
                       type="text"
                       value={obj.title}
-                      onChange={(e) =>
-                        handleAudienceChange(index, e.target.value)
-                      }
+                      onChange={e => handleAudienceChange(index, e.target.value)}
                       name="prerequisites"
                       id="prerequisites"
                       className="bg-transparent w-[90%] pl-2 border-2 left-[50px] rounded-[5px] h-[45px] outline-none text-black text-[14px] font-[500] font-Josefin"
                     />
                     <AiOutlineMinus
                       style={{
-                        cursor: "pointer",
-                        width: "35px",
-                        height: "35px",
-                        color: "white",
+                        cursor: 'pointer',
+                        width: '35px',
+                        height: '35px',
+                        color: 'white',
                       }}
                       className="rounded-full bg-sky-800 p-2 ml-2"
                       onClick={handleRemoveAudience}
                     />
                     <AiOutlinePlus
                       style={{
-                        cursor: "pointer",
-                        width: "35px",
-                        height: "35px",
-                        color: "white",
+                        cursor: 'pointer',
+                        width: '35px',
+                        height: '35px',
+                        color: 'white',
                       }}
                       className="rounded-full bg-sky-800 p-2 ml-2"
                       onClick={handleAddAudience}
                     />
                   </div>
-                  {!obj?.title?.length && (
-                    <p className="text-red-600 text-sm">field required</p>
-                  )}
+                  {!obj?.title?.length && <p className="text-red-600 text-sm">field required</p>}
+                </>
+              );
+            })}
+          </div>
+          <div className="w-[100%] mt-10">
+            <label className="block mb-2 text-sm font-[700] text-gray-600">Skills Covered</label>
+            {trainingMetadata?.skills_covered?.map((obj: any, index: number) => {
+              return (
+                <>
+                  <div className="flex items-center mt-2" key={obj}>
+                    <input
+                      autoComplete="off"
+                      type="text"
+                      value={obj.title}
+                      onChange={e => handleSkillsChange(index, e.target.value)}
+                      name="prerequisites"
+                      id="prerequisites"
+                      className="bg-transparent w-[90%] pl-2 border-2 left-[50px] rounded-[5px] h-[45px] outline-none text-black text-[14px] font-[500] font-Josefin"
+                    />
+                    <AiOutlineMinus
+                      style={{
+                        cursor: 'pointer',
+                        width: '35px',
+                        height: '35px',
+                        color: 'white',
+                      }}
+                      className="rounded-full bg-sky-800 p-2 ml-2"
+                      onClick={handleRemoveSkills}
+                    />
+                    <AiOutlinePlus
+                      style={{
+                        cursor: 'pointer',
+                        width: '35px',
+                        height: '35px',
+                        color: 'white',
+                      }}
+                      className="rounded-full bg-sky-800 p-2 ml-2"
+                      onClick={handleAddSkills}
+                    />
+                  </div>
+                  {!obj?.title?.length && <p className="text-red-600 text-sm">field required</p>}
                 </>
               );
             })}
           </div>
           <div className="w-[100%] mt-10">
             <label className="block mb-2 text-sm font-[700] text-gray-600">
-              Skills Covered
-            </label>
-            {trainingMetadata?.skills_covered?.map(
-              (obj: any, index: number) => {
-                return (
-                  <>
-                    <div className="flex items-center mt-2" key={obj}>
-                      <input
-                        autoComplete="off"
-                        type="text"
-                        value={obj.title}
-                        onChange={(e) =>
-                          handleSkillsChange(index, e.target.value)
-                        }
-                        name="prerequisites"
-                        id="prerequisites"
-                        className="bg-transparent w-[90%] pl-2 border-2 left-[50px] rounded-[5px] h-[45px] outline-none text-black text-[14px] font-[500] font-Josefin"
-                      />
-                      <AiOutlineMinus
-                        style={{
-                          cursor: "pointer",
-                          width: "35px",
-                          height: "35px",
-                          color: "white",
-                        }}
-                        className="rounded-full bg-sky-800 p-2 ml-2"
-                        onClick={handleRemoveSkills}
-                      />
-                      <AiOutlinePlus
-                        style={{
-                          cursor: "pointer",
-                          width: "35px",
-                          height: "35px",
-                          color: "white",
-                        }}
-                        className="rounded-full bg-sky-800 p-2 ml-2"
-                        onClick={handleAddSkills}
-                      />
-                    </div>
-                    {!obj?.title?.length && (
-                      <p className="text-red-600 text-sm">field required</p>
-                    )}
-                  </>
-                );
-              }
-            )}
-          </div>
-          <div className="w-[100%] mt-10">
-            <label className="block mb-2 text-sm font-[700] text-gray-600">
               Who Should Attend?
             </label>
-            {trainingMetadata?.who_should_attend?.map(
-              (obj: any, index: number) => {
-                return (
-                  <>
-                    <div className="flex items-center mt-2" key={obj}>
-                      <input
-                        autoComplete="off"
-                        type="text"
-                        value={obj.title}
-                        onChange={(e) =>
-                          handleShouldAttendChange(index, e.target.value)
-                        }
-                        name="who_should_attend"
-                        id="who_should_attend"
-                        className="bg-transparent w-[90%] pl-2 border-2 left-[50px] rounded-[5px] h-[45px] outline-none text-black text-[14px] font-[500] font-Josefin"
-                      />
-                      <AiOutlineMinus
-                        style={{
-                          cursor: "pointer",
-                          width: "35px",
-                          height: "35px",
-                          color: "white",
-                        }}
-                        className="rounded-full bg-sky-800 p-2 ml-2"
-                        onClick={handleRemoveShouldAttend}
-                      />
-                      <AiOutlinePlus
-                        style={{
-                          cursor: "pointer",
-                          width: "35px",
-                          height: "35px",
-                          color: "white",
-                        }}
-                        className="rounded-full bg-sky-800 p-2 ml-2"
-                        onClick={handleAddShouldAttend}
-                      />
-                    </div>
-                    {!obj?.title?.length && (
-                      <p className="text-red-600 text-sm">field required</p>
-                    )}
-                  </>
-                );
-              }
-            )}
+            {trainingMetadata?.who_should_attend?.map((obj: any, index: number) => {
+              return (
+                <>
+                  <div className="flex items-center mt-2" key={obj}>
+                    <input
+                      autoComplete="off"
+                      type="text"
+                      value={obj.title}
+                      onChange={e => handleShouldAttendChange(index, e.target.value)}
+                      name="who_should_attend"
+                      id="who_should_attend"
+                      className="bg-transparent w-[90%] pl-2 border-2 left-[50px] rounded-[5px] h-[45px] outline-none text-black text-[14px] font-[500] font-Josefin"
+                    />
+                    <AiOutlineMinus
+                      style={{
+                        cursor: 'pointer',
+                        width: '35px',
+                        height: '35px',
+                        color: 'white',
+                      }}
+                      className="rounded-full bg-sky-800 p-2 ml-2"
+                      onClick={handleRemoveShouldAttend}
+                    />
+                    <AiOutlinePlus
+                      style={{
+                        cursor: 'pointer',
+                        width: '35px',
+                        height: '35px',
+                        color: 'white',
+                      }}
+                      className="rounded-full bg-sky-800 p-2 ml-2"
+                      onClick={handleAddShouldAttend}
+                    />
+                  </div>
+                  {!obj?.title?.length && <p className="text-red-600 text-sm">field required</p>}
+                </>
+              );
+            })}
           </div>
           <div className="w-[100%] mt-10">
-            <label className="block mb-2 text-sm font-[700] text-gray-600">
-              Key Featured
-            </label>
+            <label className="block mb-2 text-sm font-[700] text-gray-600">Key Featured</label>
             {trainingMetadata?.key_features?.map((obj: any, index: number) => {
               return (
                 <>
@@ -694,45 +637,39 @@ export default function TrainingMetadata({
                       autoComplete="off"
                       type="text"
                       value={obj.title}
-                      onChange={(e) =>
-                        handleKeyFeaturesChange(index, e.target.value)
-                      }
+                      onChange={e => handleKeyFeaturesChange(index, e.target.value)}
                       name="prerequisites"
                       id="prerequisites"
                       className="bg-transparent w-[90%] pl-2 border-2 left-[50px] rounded-[5px] h-[45px] outline-none text-black text-[14px] font-[500] font-Josefin"
                     />
                     <AiOutlineMinus
                       style={{
-                        cursor: "pointer",
-                        width: "35px",
-                        height: "35px",
-                        color: "white",
+                        cursor: 'pointer',
+                        width: '35px',
+                        height: '35px',
+                        color: 'white',
                       }}
                       className="rounded-full bg-sky-800 p-2 ml-2"
                       onClick={handleRemoveKeyFeatures}
                     />
                     <AiOutlinePlus
                       style={{
-                        cursor: "pointer",
-                        width: "35px",
-                        height: "35px",
-                        color: "white",
+                        cursor: 'pointer',
+                        width: '35px',
+                        height: '35px',
+                        color: 'white',
                       }}
                       className="rounded-full bg-sky-800 p-2 ml-2"
                       onClick={handleAddKeyFeatures}
                     />
                   </div>
-                  {!obj?.title?.length && (
-                    <p className="text-red-600 text-sm">field required</p>
-                  )}
+                  {!obj?.title?.length && <p className="text-red-600 text-sm">field required</p>}
                 </>
               );
             })}
           </div>
           <div className="w-[100%] mt-10">
-            <label className="block mb-2 text-sm font-[700] text-gray-600">
-              Benifits
-            </label>
+            <label className="block mb-2 text-sm font-[700] text-gray-600">Benifits</label>
             {trainingMetadata?.benefits?.map((obj: any, index: number) => {
               return (
                 <>
@@ -741,45 +678,39 @@ export default function TrainingMetadata({
                       autoComplete="off"
                       type="text"
                       value={obj.title}
-                      onChange={(e) =>
-                        handleBenefitsChange(index, e.target.value)
-                      }
+                      onChange={e => handleBenefitsChange(index, e.target.value)}
                       name="prerequisites"
                       id="prerequisites"
                       className="bg-transparent w-[90%] pl-2 border-2 left-[50px] rounded-[5px] h-[45px] outline-none text-black text-[14px] font-[500] font-Josefin"
                     />
                     <AiOutlineMinus
                       style={{
-                        cursor: "pointer",
-                        width: "35px",
-                        height: "35px",
-                        color: "white",
+                        cursor: 'pointer',
+                        width: '35px',
+                        height: '35px',
+                        color: 'white',
                       }}
                       className="rounded-full bg-sky-800 p-2 ml-2"
                       onClick={handleRemoveBenefits}
                     />
                     <AiOutlinePlus
                       style={{
-                        cursor: "pointer",
-                        width: "35px",
-                        height: "35px",
-                        color: "white",
+                        cursor: 'pointer',
+                        width: '35px',
+                        height: '35px',
+                        color: 'white',
                       }}
                       className="rounded-full bg-sky-800 p-2 ml-2"
                       onClick={handleAddBenefits}
                     />
                   </div>
-                  {!obj?.title?.length && (
-                    <p className="text-red-600 text-sm">field required</p>
-                  )}
+                  {!obj?.title?.length && <p className="text-red-600 text-sm">field required</p>}
                 </>
               );
             })}
           </div>
           <div className="w-[100%] mt-10">
-            <label className="block mb-2 text-sm font-[700] text-gray-600">
-              Resources
-            </label>
+            <label className="block mb-2 text-sm font-[700] text-gray-600">Resources</label>
             {trainingMetadata?.resources?.map((obj: any, index: number) => {
               return (
                 <>
@@ -788,45 +719,39 @@ export default function TrainingMetadata({
                       autoComplete="off"
                       type="text"
                       value={obj.title}
-                      onChange={(e) =>
-                        handleResourcesChange(index, e.target.value)
-                      }
+                      onChange={e => handleResourcesChange(index, e.target.value)}
                       name="prerequisites"
                       id="prerequisites"
                       className="bg-transparent w-[90%] pl-2 border-2 left-[50px] rounded-[5px] h-[45px] outline-none text-black text-[14px] font-[500] font-Josefin"
                     />
                     <AiOutlineMinus
                       style={{
-                        cursor: "pointer",
-                        width: "35px",
-                        height: "35px",
-                        color: "white",
+                        cursor: 'pointer',
+                        width: '35px',
+                        height: '35px',
+                        color: 'white',
                       }}
                       className="rounded-full bg-sky-800 p-2 ml-2"
                       onClick={handleRemoveResources}
                     />
                     <AiOutlinePlus
                       style={{
-                        cursor: "pointer",
-                        width: "35px",
-                        height: "35px",
-                        color: "white",
+                        cursor: 'pointer',
+                        width: '35px',
+                        height: '35px',
+                        color: 'white',
                       }}
                       className="rounded-full bg-sky-800 p-2 ml-2"
                       onClick={handleAddResources}
                     />
                   </div>
-                  {!obj?.title?.length && (
-                    <p className="text-red-600 text-sm">field required</p>
-                  )}
+                  {!obj?.title?.length && <p className="text-red-600 text-sm">field required</p>}
                 </>
               );
             })}
           </div>
           <div className="w-[100%] mt-10">
-            <label className="block mb-2 text-sm font-[700] text-gray-600">
-              Outcomes
-            </label>
+            <label className="block mb-2 text-sm font-[700] text-gray-600">Outcomes</label>
             {trainingMetadata?.outcomes?.map((obj: any, index: number) => {
               return (
                 <>
@@ -835,37 +760,33 @@ export default function TrainingMetadata({
                       autoComplete="off"
                       type="text"
                       value={obj.title}
-                      onChange={(e) =>
-                        handleOutcomesChange(index, e.target.value)
-                      }
+                      onChange={e => handleOutcomesChange(index, e.target.value)}
                       name="prerequisites"
                       id="prerequisites"
                       className="bg-transparent w-[90%] pl-2 border-2 left-[50px] rounded-[5px] h-[45px] outline-none text-black text-[14px] font-[500] font-Josefin"
                     />
                     <AiOutlineMinus
                       style={{
-                        cursor: "pointer",
-                        width: "35px",
-                        height: "35px",
-                        color: "white",
+                        cursor: 'pointer',
+                        width: '35px',
+                        height: '35px',
+                        color: 'white',
                       }}
                       className="rounded-full bg-sky-800 p-2 ml-2"
                       onClick={handleRemoveOutcomes}
                     />
                     <AiOutlinePlus
                       style={{
-                        cursor: "pointer",
-                        width: "35px",
-                        height: "35px",
-                        color: "white",
+                        cursor: 'pointer',
+                        width: '35px',
+                        height: '35px',
+                        color: 'white',
                       }}
                       className="rounded-full bg-sky-800 p-2 ml-2"
                       onClick={handleAddOutcomes}
                     />
                   </div>
-                  {!obj?.title?.length && (
-                    <p className="text-red-600 text-sm">field required</p>
-                  )}
+                  {!obj?.title?.length && <p className="text-red-600 text-sm">field required</p>}
                 </>
               );
             })}
@@ -881,7 +802,7 @@ export default function TrainingMetadata({
                 id="certification_text"
                 name="certification_text"
                 className="bg-transparent w-full p-2 border-none rounded-[5px] h-[90px] outline-none text-[#292929] text-[14px] font-[500] font-Josefin"
-                style={{ resize: "none" }}
+                style={{ resize: 'none' }}
               />
             </div>
             {!trainingMetadata.certification_text && (
@@ -913,9 +834,7 @@ export default function TrainingMetadata({
             </div>
           </div>
           <div className="w-[100%] mt-10">
-            <label className="block mb-2 text-sm font-[700] text-gray-600">
-              FAQs
-            </label>
+            <label className="block mb-2 text-sm font-[700] text-gray-600">FAQs</label>
             {trainingMetadata?.FAQs?.map((obj: any, index: number) => {
               return (
                 <div className="flex flex-col mt-2" key={obj}>
@@ -924,29 +843,27 @@ export default function TrainingMetadata({
                       autoComplete="off"
                       type="text"
                       value={obj.question}
-                      onChange={(e) =>
-                        handleFaqsChange(index, e.target.value, "question")
-                      }
+                      onChange={e => handleFaqsChange(index, e.target.value, 'question')}
                       name="prerequisites"
                       id="prerequisites"
                       className="bg-transparent w-[90%] pl-2 border-2 left-[50px] rounded-[5px] h-[45px] outline-none text-black text-[14px] font-[500] font-Josefin"
                     />
                     <AiOutlineMinus
                       style={{
-                        cursor: "pointer",
-                        width: "35px",
-                        height: "35px",
-                        color: "white",
+                        cursor: 'pointer',
+                        width: '35px',
+                        height: '35px',
+                        color: 'white',
                       }}
                       className="rounded-full bg-sky-800 p-2 ml-2"
                       onClick={handleRemoveFaqs}
                     />
                     <AiOutlinePlus
                       style={{
-                        cursor: "pointer",
-                        width: "35px",
-                        height: "35px",
-                        color: "white",
+                        cursor: 'pointer',
+                        width: '35px',
+                        height: '35px',
+                        color: 'white',
                       }}
                       className="rounded-full bg-sky-800 p-2 ml-2"
                       onClick={handleAddFaqs}
@@ -957,11 +874,9 @@ export default function TrainingMetadata({
                     <div className="flex items-center">
                       <textarea
                         value={obj.answer}
-                        onChange={(e) =>
-                          handleFaqsChange(index, e.target.value, "answer")
-                        }
+                        onChange={e => handleFaqsChange(index, e.target.value, 'answer')}
                         className="bg-transparent w-[85%] pl-2 border-2 rounded-[5px] h-[90px] outline-none text-[#292929] text-[14px] font-[500] font-Josefin"
-                        style={{ resize: "none", marginLeft: "50px" }}
+                        style={{ resize: 'none', marginLeft: '50px' }}
                       />
                     </div>
                   </div>
@@ -970,9 +885,7 @@ export default function TrainingMetadata({
             })}
           </div>
           <div className="w-[100%] mt-10">
-            <label className="block mb-2 text-sm font-[700] text-gray-600">
-              Curriculum
-            </label>
+            <label className="block mb-2 text-sm font-[700] text-gray-600">Curriculum</label>
             {trainingMetadata?.curriculum?.map((obj: any, index: number) => {
               return (
                 <div className="flex flex-col mt-2" key={obj}>
@@ -981,27 +894,25 @@ export default function TrainingMetadata({
                       autoComplete="off"
                       type="text"
                       value={obj.title}
-                      onChange={(e) =>
-                        handleCurriculumChange(index, e.target.value)
-                      }
+                      onChange={e => handleCurriculumChange(index, e.target.value)}
                       className="bg-transparent w-[90%] pl-2 border-2 left-[50px] rounded-[5px] h-[45px] outline-none text-black text-[14px] font-[500] font-Josefin"
                     />
                     <AiOutlineMinus
                       style={{
-                        cursor: "pointer",
-                        width: "35px",
-                        height: "35px",
-                        color: "white",
+                        cursor: 'pointer',
+                        width: '35px',
+                        height: '35px',
+                        color: 'white',
                       }}
                       className="rounded-full bg-sky-800 p-2 ml-2"
                       onClick={removeCurriculumSection}
                     />
                     <AiOutlinePlus
                       style={{
-                        cursor: "pointer",
-                        width: "35px",
-                        height: "35px",
-                        color: "white",
+                        cursor: 'pointer',
+                        width: '35px',
+                        height: '35px',
+                        color: 'white',
                       }}
                       className="rounded-full bg-sky-800 p-2 ml-2"
                       onClick={addCurriculumSection}
@@ -1014,28 +925,26 @@ export default function TrainingMetadata({
                           autoComplete="off"
                           type="text"
                           value={item.title}
-                          onChange={(e) =>
-                            handleSectionTitleChange(index, i, e.target.value)
-                          }
+                          onChange={e => handleSectionTitleChange(index, i, e.target.value)}
                           className="bg-transparent w-[85%] pl-2 border-2 rounded-[5px] h-[45px] outline-none text-black text-[14px] font-[500] font-Josefin"
-                          style={{ marginLeft: "50px" }}
+                          style={{ marginLeft: '50px' }}
                         />
                         <AiOutlineMinus
                           style={{
-                            cursor: "pointer",
-                            width: "35px",
-                            height: "35px",
-                            color: "white",
+                            cursor: 'pointer',
+                            width: '35px',
+                            height: '35px',
+                            color: 'white',
                           }}
                           className="rounded-full bg-sky-800 p-2 ml-2"
                           onClick={() => removeCurriculumSectionTitle(index, i)}
                         />
                         <AiOutlinePlus
                           style={{
-                            cursor: "pointer",
-                            width: "35px",
-                            height: "35px",
-                            color: "white",
+                            cursor: 'pointer',
+                            width: '35px',
+                            height: '35px',
+                            color: 'white',
                           }}
                           className="rounded-full bg-sky-800 p-2 ml-2"
                           onClick={() => addCurriculumSectionTitle(index, i)}
@@ -1051,7 +960,7 @@ export default function TrainingMetadata({
         <div className="absolute bottom-0 right-4 bg-gray-100 w-full h-20 flex justify-end items-center pb-2">
           <button
             className="mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-            style={{ position: "absolute", bottom: "1rem", right: "1rem" }}
+            style={{ position: 'absolute', bottom: '1rem', right: '1rem' }}
             type="submit"
           >
             {createCourseLoading ? (
@@ -1065,7 +974,7 @@ export default function TrainingMetadata({
                 wrapperClass=""
               />
             ) : (
-              "save"
+              'save'
             )}
           </button>
         </div>
