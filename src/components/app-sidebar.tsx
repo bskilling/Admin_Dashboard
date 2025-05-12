@@ -49,6 +49,7 @@ const menuItems = [
   // { title: "Skill Library", url: "/dashboard/skills", icon: Cpu },
   { title: 'Tool Repository', url: '/dashboard/tools', icon: Wrench },
   { title: 'Settings', url: '/dashboard/settings', icon: Settings },
+  { title: 'Nsdc Leads', url: '/dashboard/nsdc-leads', icon: Settings },
 ];
 
 // Blog section with children
