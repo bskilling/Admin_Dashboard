@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import React, { useState, useEffect } from "react";
-import axios from "axios";
-import { format } from "date-fns";
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import { format } from 'date-fns';
 import {
   Table,
   TableBody,
@@ -10,19 +10,19 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table";
+} from '@/components/ui/table';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Badge } from "@/components/ui/badge";
-import { Textarea } from "@/components/ui/textarea";
+} from '@/components/ui/select';
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Badge } from '@/components/ui/badge';
+import { Textarea } from '@/components/ui/textarea';
 // import { toast } from "@/components/ui/use-toast";
 import {
   Dialog,
@@ -33,13 +33,13 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog";
+} from '@/components/ui/dialog';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+} from '@/components/ui/dropdown-menu';
 import {
   Building2,
   Users,
@@ -66,9 +66,9 @@ import {
   User,
   TagIcon,
   Clock,
-} from "lucide-react";
-import { toast } from "sonner";
-import { Lead } from "./types";
+} from 'lucide-react';
+import { toast } from 'sonner';
+import { Lead } from './types';
 
 const NotesDisplay: React.FC<{
   notes: Array<{
@@ -82,50 +82,50 @@ const NotesDisplay: React.FC<{
 
   currentStatus: string;
 }> = ({ notes, leadId, currentStatus }) => {
-  const [newNote, setNewNote] = useState("");
+  const [newNote, setNewNote] = useState('');
 
   const handleSubmit = () => {
     if (newNote.trim()) {
       //   onAddNote(leadId, newNote.trim(), currentStatus);
-      setNewNote("");
+      setNewNote('');
     }
   };
 
   // Function to format the note date nicely
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
-    return date.toLocaleString("en-US", {
-      year: "numeric",
-      month: "short",
-      day: "numeric",
-      hour: "2-digit",
-      minute: "2-digit",
+    return date.toLocaleString('en-US', {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
     });
   };
 
   // Function to get status badge color
   const getStatusColor = (status: string) => {
     switch (status) {
-      case "NEW":
-        return "bg-blue-100 text-blue-800 border-blue-200";
-      case "Attempted to Contact":
-        return "bg-amber-100 text-amber-800 border-amber-200";
-      case "In-conversation":
-        return "bg-purple-100 text-purple-800 border-purple-200";
-      case "Prospect":
-        return "bg-emerald-100 text-emerald-800 border-emerald-200";
-      case "Closed-Won":
-        return "bg-green-100 text-green-800 border-green-200";
-      case "Closed-Lost":
-        return "bg-red-100 text-red-800 border-red-200";
-      case "Not-Interested":
-        return "bg-pink-100 text-pink-800 border-pink-200";
-      case "Spam":
-        return "bg-orange-100 text-orange-800 border-orange-200";
-      case "Contact-in-Future":
-        return "bg-indigo-100 text-indigo-800 border-indigo-200";
+      case 'NEW':
+        return 'bg-blue-100 text-blue-800 border-blue-200';
+      case 'Attempted to Contact':
+        return 'bg-amber-100 text-amber-800 border-amber-200';
+      case 'In-conversation':
+        return 'bg-purple-100 text-purple-800 border-purple-200';
+      case 'Prospect':
+        return 'bg-emerald-100 text-emerald-800 border-emerald-200';
+      case 'Closed-Won':
+        return 'bg-green-100 text-green-800 border-green-200';
+      case 'Closed-Lost':
+        return 'bg-red-100 text-red-800 border-red-200';
+      case 'Not-Interested':
+        return 'bg-pink-100 text-pink-800 border-pink-200';
+      case 'Spam':
+        return 'bg-orange-100 text-orange-800 border-orange-200';
+      case 'Contact-in-Future':
+        return 'bg-indigo-100 text-indigo-800 border-indigo-200';
       default:
-        return "bg-slate-100 text-slate-800 border-slate-200";
+        return 'bg-slate-100 text-slate-800 border-slate-200';
     }
   };
 
@@ -137,23 +137,15 @@ const NotesDisplay: React.FC<{
       <div className="max-h-[400px] overflow-y-auto space-y-3 pr-2">
         {notes && notes.length > 0 ? (
           notes.map((note, index) => (
-            <div
-              key={index}
-              className="p-4 bg-white rounded-lg border border-slate-200 shadow-sm"
-            >
+            <div key={index} className="p-4 bg-white rounded-lg border border-slate-200 shadow-sm">
               <div className="flex justify-between items-start mb-2">
                 <div className="flex items-center gap-2">
                   <span className="text-xs font-medium text-slate-500">
-                    {note.addedBy || "Admin"}
+                    {note.addedBy || 'Admin'}
                   </span>
-                  <span className="text-xs text-slate-400">
-                    {formatDate(note.createdAt)}
-                  </span>
+                  <span className="text-xs text-slate-400">{formatDate(note.createdAt)}</span>
                 </div>
-                <Badge
-                  variant="outline"
-                  className={getStatusColor(note.status)}
-                >
+                <Badge variant="outline" className={getStatusColor(note.status)}>
                   {note.status}
                 </Badge>
               </div>
@@ -177,15 +169,12 @@ const NotesDisplay: React.FC<{
         <Textarea
           placeholder="Type your note here..."
           value={newNote}
-          onChange={(e) => setNewNote(e.target.value)}
+          onChange={e => setNewNote(e.target.value)}
           className="min-h-[100px]"
         />
         <div className="flex items-center justify-between">
           <div className="text-xs text-slate-500">
-            Current status:{" "}
-            <Badge className={getStatusColor(currentStatus)}>
-              {currentStatus}
-            </Badge>
+            Current status: <Badge className={getStatusColor(currentStatus)}>{currentStatus}</Badge>
           </div>
           <Button
             onClick={handleSubmit}

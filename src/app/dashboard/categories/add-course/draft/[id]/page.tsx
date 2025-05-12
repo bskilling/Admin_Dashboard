@@ -1,74 +1,68 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-"use client";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
-import { toast } from "sonner";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { ImYoutube } from "react-icons/im";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import FileUploader from "@/components/global/FileUploader";
-import { Textarea } from "@/components/ui/textarea";
-import { Switch } from "@/components/ui/switch";
-import { Label } from "@/components/ui/label";
-import axios from "axios";
-import env from "@/lib/env";
-import { Suspense, useEffect, useState } from "react";
-import { MdDelete } from "react-icons/md";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+'use client';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
+import { toast } from 'sonner';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { ImYoutube } from 'react-icons/im';
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
+import FileUploader from '@/components/global/FileUploader';
+import { Textarea } from '@/components/ui/textarea';
+import { Switch } from '@/components/ui/switch';
+import { Label } from '@/components/ui/label';
+import axios from 'axios';
+import env from '@/lib/env';
+import { Suspense, useEffect, useState } from 'react';
+import { MdDelete } from 'react-icons/md';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 // import { draftCourseSchema } from "../../-components/validators";
-import { IoCheckmarkCircle, IoKeyOutline } from "react-icons/io5";
+import { IoCheckmarkCircle, IoKeyOutline } from 'react-icons/io5';
 
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-} from "@/components/ui/accordion";
+} from '@/components/ui/accordion';
 // import CourseLandingPage from "./-components/Course-Preview";
-import { Link } from "react-scroll";
-import { cn } from "@/lib/utils";
-import { Combobox } from "@/components/global/combox";
+import { Link } from 'react-scroll';
+import { cn } from '@/lib/utils';
+import { Combobox } from '@/components/global/combox';
 // import { ICourse } from "./-components/types";
-import { useSkills } from "@/lib/hooks/useSkills";
-import { TTool, useTools } from "@/lib/hooks/useTools";
-import { useParams, useRouter, useSearchParams } from "next/navigation";
-import { draftCourseSchema } from "../../../_components/validators";
-import { ICourse } from "../_components/types";
-import CourseLandingPage from "../_components/Course-Preview";
-import Image from "next/image";
-import {
-  ArrowLeft,
-  ArrowLeftCircle,
-  Calendar,
-  Clock,
-  PlayIcon,
-} from "lucide-react";
-import { BsFolderCheck } from "react-icons/bs";
-import { LuRadioTower } from "react-icons/lu";
-import { BiSolidCertification } from "react-icons/bi";
+import { useSkills } from '@/lib/hooks/useSkills';
+import { TTool, useTools } from '@/lib/hooks/useTools';
+import { useParams, useRouter, useSearchParams } from 'next/navigation';
+import { draftCourseSchema } from '../../../_components/validators';
+import { ICourse } from '../_components/types';
+import CourseLandingPage from '../_components/Course-Preview';
+import Image from 'next/image';
+import { ArrowLeft, ArrowLeftCircle, Calendar, Clock, PlayIcon } from 'lucide-react';
+import { BsFolderCheck } from 'react-icons/bs';
+import { LuRadioTower } from 'react-icons/lu';
+import { BiSolidCertification } from 'react-icons/bi';
 // @ts-ignore
-import HeroSection, { heroVariants } from "./_components/HeroSection";
-import Navbar from "./_components/Navbar";
-import MetadataForm from "./_components/MetaData";
-import PriceForm from "../_components/PriceForm";
-import CertificationSection from "./_components/CertificationSection";
-import FaqSection from "./_components/FaqSection";
-import MediaUploadSection from "./_components/MediaUplodationSection";
-import HighlightsSection from "./_components/highlights";
-import OutcomesSection from "./_components/Outcomes";
-import CourseModuleSection from "./_components/CourseModuleSection";
-import ProjectsCoveredSection from "./_components/ProjectsSection";
-import EligibilitySection from "./_components/Eligibility";
-import PrerequisitesSection from "./_components/Prerequisites";
-import SkillsSection from "./_components/SkillsSection";
-import ToolsSection from "./_components/ToolsSection";
-import KeyFeaturesSection from "./_components/KeyFeaturesSection";
-import { FiBookOpen } from "react-icons/fi";
-import CoursePricing from "./_components/Pricing";
-import WhyChooseProgram from "./_components/ChooseUs";
-import SkillsSelector from "./_components/Skills";
+import HeroSection, { heroVariants } from './_components/HeroSection';
+import Navbar from './_components/Navbar';
+import MetadataForm from './_components/MetaData';
+import PriceForm from '../_components/PriceForm';
+import CertificationSection from './_components/CertificationSection';
+import FaqSection from './_components/FaqSection';
+import MediaUploadSection from './_components/MediaUplodationSection';
+import HighlightsSection from './_components/highlights';
+import OutcomesSection from './_components/Outcomes';
+import CourseModuleSection from './_components/CourseModuleSection';
+import ProjectsCoveredSection from './_components/ProjectsSection';
+import EligibilitySection from './_components/Eligibility';
+import PrerequisitesSection from './_components/Prerequisites';
+import SkillsSection from './_components/SkillsSection';
+import ToolsSection from './_components/ToolsSection';
+import KeyFeaturesSection from './_components/KeyFeaturesSection';
+import { FiBookOpen } from 'react-icons/fi';
+import CoursePricing from './_components/Pricing';
+import WhyChooseProgram from './_components/ChooseUs';
+import SkillsSelector from './_components/Skills';
 
 export type TDraftCourseForm = z.infer<typeof draftCourseSchema>;
 
@@ -90,48 +84,47 @@ export default function RouteComponent() {
   const { data, isLoading } = useSkills();
   const { data: toolss, isLoading: isLoading1 } = useTools();
   const searchParams = useSearchParams();
-  const isPreview = searchParams.get("preview") === "true";
+  const isPreview = searchParams.get('preview') === 'true';
   const [preview, setPreview] = useState<boolean>(isPreview ?? false);
   const navigate = useRouter();
   const [currentHeader, setCurrentHeader] = useState(-1);
 
-  const { register, handleSubmit, formState, setValue, watch, reset } =
-    useForm<TDraftCourseForm>({
-      resolver: zodResolver(draftCourseSchema),
-      defaultValues: {
-        isPaid: false,
-        isPublished: false,
-        appliedCount: 0,
-        trainedCount: 0,
-        highlights: [],
-        images: [],
-      },
-    });
+  const { register, handleSubmit, formState, setValue, watch, reset } = useForm<TDraftCourseForm>({
+    resolver: zodResolver(draftCourseSchema),
+    defaultValues: {
+      isPaid: false,
+      isPublished: false,
+      appliedCount: 0,
+      trainedCount: 0,
+      highlights: [],
+      images: [],
+    },
+  });
 
-  const [currentHighlight, setCurrentHighlight] = useState("");
+  const [currentHighlight, setCurrentHighlight] = useState('');
   // const [skills, setSkills] = useState<string[]>([]);
   const [skills, setSkill] = useState<string[]>([]);
   const [tools, setTool] = useState<TTool[]>([]);
 
-  const [partnerShip, setPartnerShip] = useState<string>("");
+  const [partnerShip, setPartnerShip] = useState<string>('');
   const router = useRouter();
-  const [bannerUrl, setBannerUrl] = useState("");
-  const [previewImage, setPreviewImage] = useState("");
-  const [logoUrl, setLogoUrl] = useState("");
-  const [whyJoin, setWhyJoin] = useState("");
-  const [keyFeature, setKeyFeature] = useState("");
-  const [chapter, setChapter] = useState("");
-  const [lesson, setLesson] = useState("");
-  const [lessonContent, setLessonContent] = useState("");
+  const [bannerUrl, setBannerUrl] = useState('');
+  const [previewImage, setPreviewImage] = useState('');
+  const [logoUrl, setLogoUrl] = useState('');
+  const [whyJoin, setWhyJoin] = useState('');
+  const [keyFeature, setKeyFeature] = useState('');
+  const [chapter, setChapter] = useState('');
+  const [lesson, setLesson] = useState('');
+  const [lessonContent, setLessonContent] = useState('');
   const [lessons, setLessons] = useState<IChapterLesson[]>([]);
   const [faq, setfaq] = useState({
-    question: "",
-    answer: "",
+    question: '',
+    answer: '',
   });
-  const [activeTab, setActiveTab] = useState("home");
+  const [activeTab, setActiveTab] = useState('home');
 
   const draftQuery = useQuery<{ course: ICourse }>({
-    queryKey: ["course-draft", id],
+    queryKey: ['course-draft', id],
     queryFn: async () => {
       const res = await axios.get(env.BACKEND_URL + `/api/courses/draft/${id}`);
       reset({
@@ -140,12 +133,8 @@ export default function RouteComponent() {
         banner: res.data.data?.course?.banner?._id,
         previewImage: res.data.data?.course?.previewImage?._id,
         logoUrl: res.data.data?.course?.logoUrl?._id,
-        skills: res.data.data?.course?.skills?.map(
-          (skill: ICourse["skills"][number]) => skill
-        ),
-        tools: res.data.data?.course?.tools?.map(
-          (tool: ICourse["tools"][number]) => tool._id
-        ),
+        skills: res.data.data?.course?.skills?.map((skill: ICourse['skills'][number]) => skill),
+        tools: res.data.data?.course?.tools?.map((tool: ICourse['tools'][number]) => tool._id),
       });
 
       const data = res.data.data as { course: ICourse };
@@ -164,43 +153,37 @@ export default function RouteComponent() {
 
   const createDraftMutation = useMutation({
     mutationFn: async (data: TDraftCourseForm) => {
-      const res = await axios.put(
-        env.BACKEND_URL + "/api/courses/draft" + `/${id}`,
-        data
-      );
+      const res = await axios.put(env.BACKEND_URL + '/api/courses/draft' + `/${id}`, data);
       return res.data;
     },
     onSuccess: () => {
-      toast.success("Draft course created successfully");
+      toast.success('Draft course created successfully');
       // Handle additional success logic
       queryClient.invalidateQueries({
-        queryKey: ["course-draft", id],
+        queryKey: ['course-draft', id],
       });
     },
-    onError: (error) => {
-      toast.error("Failed to create draft: " + error.message);
+    onError: error => {
+      toast.error('Failed to create draft: ' + error.message);
     },
   });
 
   const publishCourse = useMutation({
     mutationFn: async (data: TDraftCourseForm) => {
-      const res = await axios.put(
-        env.BACKEND_URL + "/api/courses" + `/${id}` + "/publish",
-        data
-      );
+      const res = await axios.put(env.BACKEND_URL + '/api/courses' + `/${id}` + '/publish', data);
       return res.data;
     },
     onSuccess: () => {
-      toast.success("Published course created successfully");
+      toast.success('Published course created successfully');
       // Handle additional success logic
     },
-    onError: (error) => {
-      toast.error("Failed to create draft: " + error.message);
+    onError: error => {
+      toast.error('Failed to create draft: ' + error.message);
     },
   });
 
   useEffect(() => {
-    console.log("redndering in useffecti");
+    console.log('redndering in useffecti');
     if (draftQuery.data && !preview) {
       const res = draftQuery.data.course as ICourse;
       // @ts-expect-error
@@ -216,8 +199,8 @@ export default function RouteComponent() {
         },
         previewImage: res?.previewImage?._id,
         logoUrl: res?.logoUrl?._id,
-        skills: res?.skills?.map((skill: ICourse["skills"][number]) => skill),
-        tools: res?.tools?.map((tool: ICourse["tools"][number]) => tool._id),
+        skills: res?.skills?.map((skill: ICourse['skills'][number]) => skill),
+        tools: res?.tools?.map((tool: ICourse['tools'][number]) => tool._id),
       });
 
       const data = res as ICourse;
@@ -229,14 +212,14 @@ export default function RouteComponent() {
       setLogoUrl(data?.logoUrl?.viewUrl);
     }
   }, [preview]);
-  console.log("redndering in Normakly");
+  console.log('redndering in Normakly');
   const onSubmit = (data: TDraftCourseForm) => {
     createDraftMutation.mutate(data);
   };
 
   const getYouTubeEmbedUrl = (url: string) => {
-    const videoId = url.split("v=")[1]?.split("&")[0];
-    return videoId ? `https://www.youtube.com/embed/${videoId}` : "";
+    const videoId = url.split('v=')[1]?.split('&')[0];
+    return videoId ? `https://www.youtube.com/embed/${videoId}` : '';
   };
 
   if (draftQuery.isLoading) {
@@ -263,18 +246,14 @@ export default function RouteComponent() {
             <Button
               onClick={() => {
                 setPreview(false);
-                navigate.push(
-                  `/dashboard/categories/add-course/draft/${id}?preview=false`
-                );
+                navigate.push(`/dashboard/categories/add-course/draft/${id}?preview=false`);
               }}
               className="mb-4 fixed top-4 right-4 z-[9999]"
             >
               Switch To Editing
             </Button>
 
-            {draftQuery.data && (
-              <CourseLandingPage courseData={draftQuery.data} />
-            )}
+            {draftQuery.data && <CourseLandingPage courseData={draftQuery.data} />}
           </>
         ) : (
           <div className="p-5">
@@ -282,22 +261,18 @@ export default function RouteComponent() {
               <Button
                 onClick={() => {
                   setPreview(true);
-                  navigate.push(
-                    `/dashboard/categories/add-course/draft/${id}?preview=true`
-                  );
+                  navigate.push(`/dashboard/categories/add-course/draft/${id}?preview=true`);
                 }}
               >
                 Switch To Preview
               </Button>
             </div>
 
-            {draftQuery?.data?.course?._id && (
-              <MetadataForm id={draftQuery?.data?.course?._id} />
-            )}
+            {draftQuery?.data?.course?._id && <MetadataForm id={draftQuery?.data?.course?._id} />}
             <Card className="mt-20">
               <CardContent id="hero" className="px-0 rounded-t-md">
                 <form
-                  onSubmit={handleSubmit(onSubmit, (err) => {
+                  onSubmit={handleSubmit(onSubmit, err => {
                     console.log(err);
                     console.log(watch());
                   })}
@@ -320,7 +295,7 @@ export default function RouteComponent() {
                     register={register}
                     setBannerUrl={setBannerUrl}
                     variants={currentHeader}
-                    key={""}
+                    key={''}
                   />
                   <CertificationSection register={register} />
                   <section className="w-[85vw] mx-auto">
@@ -334,8 +309,7 @@ export default function RouteComponent() {
                           >
                             {/* Heading with Icon */}
                             <h2 className="text-2xl font-bold flex items-center gap-2 text-gray-800">
-                              <FiBookOpen className="text-blue-500 text-3xl" />{" "}
-                              Overview
+                              <FiBookOpen className="text-blue-500 text-3xl" /> Overview
                             </h2>
 
                             {/* Form Inputs */}
@@ -346,10 +320,8 @@ export default function RouteComponent() {
                                   Overview Title
                                 </label>
                                 <Input
-                                  {...register("overview.title")}
-                                  error={
-                                    formState.errors.overview?.title?.message
-                                  }
+                                  {...register('overview.title')}
+                                  error={formState.errors.overview?.title?.message}
                                   placeholder="Enter a captivating title..."
                                   className="mt-2 p-3 rounded-lg border border-gray-300 shadow-sm focus:ring-2 focus:ring-blue-400"
                                 />
@@ -361,11 +333,8 @@ export default function RouteComponent() {
                                   Overview Description
                                 </label>
                                 <Textarea
-                                  {...register("overview.description")}
-                                  error={
-                                    formState.errors.overview?.description
-                                      ?.message
-                                  }
+                                  {...register('overview.description')}
+                                  error={formState.errors.overview?.description?.message}
                                   placeholder="Write a brief and engaging overview..."
                                   className="mt-2 p-3 min-h-40 rounded-lg border border-gray-300 shadow-sm focus:ring-2 focus:ring-blue-400"
                                 />
@@ -385,15 +354,9 @@ export default function RouteComponent() {
                       </div>
                       {/* Course Sections */}
                       <div className="mt-10 space-y-8">
-                        <CourseModuleSection
-                          watch={watch}
-                          setValue={setValue}
-                        />
+                        <CourseModuleSection watch={watch} setValue={setValue} />
 
-                        <SkillsSelector
-                          formSetValue={setValue}
-                          formWatch={watch}
-                        />
+                        <SkillsSelector formSetValue={setValue} formWatch={watch} />
                         <ToolsSection
                           watch={watch}
                           setValue={setValue}
@@ -409,11 +372,7 @@ export default function RouteComponent() {
                           setValue={setValue}
                           register={register}
                         />
-                        <EligibilitySection
-                          register={register}
-                          setValue={setValue}
-                          watch={watch}
-                        />
+                        <EligibilitySection register={register} setValue={setValue} watch={watch} />
                         <PrerequisitesSection
                           register={register}
                           setValue={setValue}
@@ -430,11 +389,7 @@ export default function RouteComponent() {
                     formState={formState}
                   />
 
-                  <FaqSection
-                    register={register}
-                    watch={watch}
-                    setValue={setValue}
-                  />
+                  <FaqSection register={register} watch={watch} setValue={setValue} />
 
                   <WhyChooseProgram watch={watch} setValue={setValue} />
                   <MediaUploadSection

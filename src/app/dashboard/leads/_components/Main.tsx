@@ -1,24 +1,24 @@
-"use client";
+'use client';
 
-import React, { useState, useEffect, useCallback } from "react";
-import { Tabs, TabsContent } from "@/components/ui/tabs";
-import { Button } from "@/components/ui/button";
-import { toast } from "sonner";
-import { XCircle, RefreshCw } from "lucide-react";
-import { FilterOptions, Lead } from "./types";
-import { filterLeads, getLeadCounts } from "./leadUtils";
-import { LeadTabs, EmptyState } from "./LeadComponents";
-import LeadFilter from "./LeadFilter";
-import LeadTable from "./LeadTable";
-import { fetchLeads, updateStatusWithNote, updateLeadComment } from "./leadApi";
+import React, { useState, useEffect, useCallback } from 'react';
+import { Tabs, TabsContent } from '@/components/ui/tabs';
+import { Button } from '@/components/ui/button';
+import { toast } from 'sonner';
+import { XCircle, RefreshCw } from 'lucide-react';
+import { FilterOptions, Lead } from './types';
+import { filterLeads, getLeadCounts } from './leadUtils';
+import { LeadTabs, EmptyState } from './LeadComponents';
+import LeadFilter from './LeadFilter';
+import LeadTable from './LeadTable';
+import { fetchLeads, updateStatusWithNote, updateLeadComment } from './leadApi';
 
 const AdminLeadsDashboard: React.FC = () => {
   // State
   const [leads, setLeads] = useState<Lead[]>([]);
   const [filteredLeads, setFilteredLeads] = useState<Lead[]>([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
-  const [activeTab, setActiveTab] = useState("all");
+  const [error, setError] = useState('');
+  const [activeTab, setActiveTab] = useState('all');
   const [isFilterMenuOpen, setIsFilterMenuOpen] = useState(false);
   const [pagination, setPagination] = useState({
     currentPage: 1,
@@ -27,12 +27,12 @@ const AdminLeadsDashboard: React.FC = () => {
     pageSize: 20,
   });
   const [filters, setFilters] = useState<FilterOptions>({
-    type: "",
-    subCategory: "",
-    status: "",
-    searchQuery: "",
-    category: "",
-    courseId: "",
+    type: '',
+    subCategory: '',
+    status: '',
+    searchQuery: '',
+    category: '',
+    courseId: '',
   });
   const [staleTime, setStaleTime] = useState<Date | null>(null);
   // Add note to lead
@@ -42,15 +42,15 @@ const AdminLeadsDashboard: React.FC = () => {
       const newNote = {
         text,
         status,
-        addedBy: "Admin",
+        addedBy: 'Admin',
         createdAt: new Date().toISOString(),
       };
 
       await updateStatusWithNote(id, status, text);
 
       // Update local state
-      setLeads((currentLeads) =>
-        currentLeads.map((lead) =>
+      setLeads(currentLeads =>
+        currentLeads.map(lead =>
           lead._id === id
             ? {
                 ...lead,
@@ -61,10 +61,10 @@ const AdminLeadsDashboard: React.FC = () => {
         )
       );
 
-      toast.success("Note added successfully");
+      toast.success('Note added successfully');
     } catch (err) {
-      console.error("Error adding note:", err);
-      toast.error("Failed to add note. Please try again.");
+      console.error('Error adding note:', err);
+      toast.error('Failed to add note. Please try again.');
     }
   };
   // Fetch leads data
@@ -76,17 +76,17 @@ const AdminLeadsDashboard: React.FC = () => {
       // Process leads data - ensure notes array exists and proper status
       const processedLeads = response.data.leads.map((lead: any) => ({
         ...lead,
-        status: lead.status || "NEW",
+        status: lead.status || 'NEW',
         notes: lead.notes || [],
       }));
 
       setLeads(processedLeads);
       setPagination(response.data.pagination);
       setStaleTime(new Date());
-      setError("");
+      setError('');
     } catch (err) {
-      console.error("Error fetching leads:", err);
-      setError("Failed to fetch leads. Please try again later.");
+      console.error('Error fetching leads:', err);
+      setError('Failed to fetch leads. Please try again later.');
     } finally {
       setLoading(false);
     }
@@ -118,7 +118,7 @@ const AdminLeadsDashboard: React.FC = () => {
   // Handle refresh
   const handleRefresh = () => {
     fetchLeadsData(pagination.currentPage, pagination.pageSize);
-    toast.success("Data refreshed");
+    toast.success('Data refreshed');
   };
 
   // Handle pagination change
@@ -128,17 +128,13 @@ const AdminLeadsDashboard: React.FC = () => {
   };
 
   // Update lead status with note
-  const handleStatusChange = async (
-    id: string,
-    status: string,
-    note: string
-  ) => {
+  const handleStatusChange = async (id: string, status: string, note: string) => {
     try {
       await updateStatusWithNote(id, status, note);
 
       // Update local state
-      setLeads((currentLeads) =>
-        currentLeads.map((lead) =>
+      setLeads(currentLeads =>
+        currentLeads.map(lead =>
           lead._id === id
             ? {
                 ...lead,
@@ -147,7 +143,7 @@ const AdminLeadsDashboard: React.FC = () => {
                   {
                     text: note,
                     status,
-                    addedBy: "Admin",
+                    addedBy: 'Admin',
                     createdAt: new Date().toISOString(),
                   },
                   ...lead.notes,
@@ -160,8 +156,8 @@ const AdminLeadsDashboard: React.FC = () => {
 
       toast.success(`Lead status updated to ${status}`);
     } catch (err) {
-      console.error("Error updating lead status:", err);
-      toast.error("Failed to update lead status. Please try again.");
+      console.error('Error updating lead status:', err);
+      toast.error('Failed to update lead status. Please try again.');
     }
   };
 
@@ -171,30 +167,28 @@ const AdminLeadsDashboard: React.FC = () => {
       await updateLeadComment(id, comment);
 
       // Update local state
-      setLeads((currentLeads) =>
-        currentLeads.map((lead) =>
-          lead._id === id
-            ? { ...lead, comment, updatedAt: new Date().toISOString() }
-            : lead
+      setLeads(currentLeads =>
+        currentLeads.map(lead =>
+          lead._id === id ? { ...lead, comment, updatedAt: new Date().toISOString() } : lead
         )
       );
 
-      toast.success("Comment saved successfully");
+      toast.success('Comment saved successfully');
     } catch (err) {
-      console.error("Error updating comment:", err);
-      toast.error("Failed to update comment. Please try again.");
+      console.error('Error updating comment:', err);
+      toast.error('Failed to update comment. Please try again.');
     }
   };
 
   // Reset filters
   const resetFilters = () => {
     setFilters({
-      type: "",
-      subCategory: "",
-      status: "",
-      searchQuery: "",
-      category: "",
-      courseId: "",
+      type: '',
+      subCategory: '',
+      status: '',
+      searchQuery: '',
+      category: '',
+      courseId: '',
     });
   };
 
@@ -216,9 +210,7 @@ const AdminLeadsDashboard: React.FC = () => {
       <div className="flex items-center justify-center h-screen">
         <div className="text-center">
           <XCircle className="h-12 w-12 text-red-500 mx-auto mb-4" />
-          <h2 className="text-2xl font-bold text-gray-900 mb-2">
-            Error Loading Leads
-          </h2>
+          <h2 className="text-2xl font-bold text-gray-900 mb-2">Error Loading Leads</h2>
           <p className="text-gray-600">{error}</p>
           <Button onClick={handleRefresh} className="mt-4">
             Try Again
@@ -234,9 +226,7 @@ const AdminLeadsDashboard: React.FC = () => {
       <div className="flex justify-between items-center mb-4">
         <h1 className="text-2xl font-bold">Lead Management</h1>
         <div className="flex items-center gap-2">
-          {isDataStale() && (
-            <p className="text-amber-500 text-sm">Data may be outdated</p>
-          )}
+          {isDataStale() && <p className="text-amber-500 text-sm">Data may be outdated</p>}
           <Button
             variant="outline"
             size="sm"
@@ -244,7 +234,7 @@ const AdminLeadsDashboard: React.FC = () => {
             disabled={loading}
             className="flex items-center gap-1"
           >
-            <RefreshCw className={`h-4 w-4 ${loading ? "animate-spin" : ""}`} />
+            <RefreshCw className={`h-4 w-4 ${loading ? 'animate-spin' : ''}`} />
             Refresh
           </Button>
           {loading && <p className="text-sm text-slate-500">Loading...</p>}
@@ -261,11 +251,7 @@ const AdminLeadsDashboard: React.FC = () => {
       />
 
       {/* Tabs Component */}
-      <LeadTabs
-        activeTab={activeTab}
-        setActiveTab={setActiveTab}
-        counts={counts}
-      />
+      <LeadTabs activeTab={activeTab} setActiveTab={setActiveTab} counts={counts} />
 
       {/* TabsContent */}
       <Tabs value={activeTab} onValueChange={setActiveTab}>

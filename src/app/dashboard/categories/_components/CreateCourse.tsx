@@ -1,10 +1,10 @@
-"use client";
+'use client';
 
-import env from "@/lib/env";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import axios from "axios";
-import { FaPlusSquare, FaFileImport } from "react-icons/fa";
-import { IoMdSearch } from "react-icons/io";
+import env from '@/lib/env';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import axios from 'axios';
+import { FaPlusSquare, FaFileImport } from 'react-icons/fa';
+import { IoMdSearch } from 'react-icons/io';
 
 import {
   Card,
@@ -13,13 +13,13 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
-import { IAllCourses, publishedCourseSchema } from "./types";
-import { Button } from "@/components/ui/button";
-import { toast } from "sonner";
-import { Switch } from "@/components/ui/switch";
-import { Label } from "@/components/ui/label";
-import { useEffect, useState } from "react";
+} from '@/components/ui/card';
+import { IAllCourses, publishedCourseSchema } from './types';
+import { Button } from '@/components/ui/button';
+import { toast } from 'sonner';
+import { Switch } from '@/components/ui/switch';
+import { Label } from '@/components/ui/label';
+import { useEffect, useState } from 'react';
 import {
   Dialog,
   DialogClose,
@@ -29,35 +29,35 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog";
-import { cn } from "@/lib/utils";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
-import Image from "next/image";
-import { ICourse } from "../add-course/draft/_components/types";
-import { ICategories } from "./CreateCategory";
-import { Input } from "@/components/ui/input";
+} from '@/components/ui/dialog';
+import { cn } from '@/lib/utils';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import Image from 'next/image';
+import { ICourse } from '../add-course/draft/_components/types';
+import { ICategories } from './CreateCategory';
+import { Input } from '@/components/ui/input';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+} from '@/components/ui/select';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
 // Define types for category types
 const categoryTypes = [
-  { value: "b2c", label: "B2C" },
-  { value: "b2b", label: "B2B" },
-  { value: "b2g", label: "B2G" },
-  { value: "b2i", label: "B2I" },
+  { value: 'b2c', label: 'B2C' },
+  { value: 'b2b', label: 'B2B' },
+  { value: 'b2g', label: 'B2G' },
+  { value: 'b2i', label: 'B2I' },
 ];
 
 export default function CreateCourse({
   category,
 }: {
-  category: ICategories["categories"][number];
+  category: ICategories['categories'][number];
 }) {
   const categoryQuery = useQueryClient();
   const navigate = useRouter();
@@ -66,17 +66,15 @@ export default function CreateCourse({
 
   // Import functionality states
   const [importModalOpen, setImportModalOpen] = useState(false);
-  const [selectedCategoryType, setSelectedCategoryType] =
-    useState<string>("b2c");
-  const [selectedCategoryId, setSelectedCategoryId] = useState<string>("");
-  const [searchQuery, setSearchQuery] = useState<string>("");
-  const [selectedCourseToImport, setSelectedCourseToImport] =
-    useState<ICourse | null>(null);
+  const [selectedCategoryType, setSelectedCategoryType] = useState<string>('b2c');
+  const [selectedCategoryId, setSelectedCategoryId] = useState<string>('');
+  const [searchQuery, setSearchQuery] = useState<string>('');
+  const [selectedCourseToImport, setSelectedCourseToImport] = useState<ICourse | null>(null);
 
   const { data } = useQuery<{ courses: ICourse[] }>({
-    queryKey: ["courses", category?._id, isPublished],
+    queryKey: ['courses', category?._id, isPublished],
     queryFn: async () => {
-      const res = await axios.get(env?.BACKEND_URL + "/api/courses", {
+      const res = await axios.get(env?.BACKEND_URL + '/api/courses', {
         params: {
           limit: 100,
           page: 1,
@@ -91,11 +89,11 @@ export default function CreateCourse({
 
   // Get all categories based on type
   const { data: categoriesData } = useQuery<{
-    categories: ICategories["categories"];
+    categories: ICategories['categories'];
   }>({
-    queryKey: ["categories", selectedCategoryType],
+    queryKey: ['categories', selectedCategoryType],
     queryFn: async () => {
-      const res = await axios.get(env?.BACKEND_URL + "/api/categories", {
+      const res = await axios.get(env?.BACKEND_URL + '/api/categories', {
         params: {
           type: selectedCategoryType,
         },
@@ -107,25 +105,26 @@ export default function CreateCourse({
   });
 
   // Get courses from selected category for import
-  const { data: importableCoursesData, refetch: refetchImportableCourses } =
-    useQuery<{ courses: ICourse[] }>({
-      queryKey: ["importable-courses", selectedCategoryId, searchQuery],
-      queryFn: async () => {
-        if (!selectedCategoryId) return { courses: [] };
+  const { data: importableCoursesData, refetch: refetchImportableCourses } = useQuery<{
+    courses: ICourse[];
+  }>({
+    queryKey: ['importable-courses', selectedCategoryId, searchQuery],
+    queryFn: async () => {
+      if (!selectedCategoryId) return { courses: [] };
 
-        const res = await axios.get(env?.BACKEND_URL + "/api/courses", {
-          params: {
-            limit: 100,
-            page: 1,
-            category: selectedCategoryId,
-            title: searchQuery.length > 0 ? searchQuery : undefined,
-          },
-        });
-        return res.data.data;
-      },
-      staleTime: 1000 * 60 * 5,
-      enabled: !!selectedCategoryId && importModalOpen,
-    });
+      const res = await axios.get(env?.BACKEND_URL + '/api/courses', {
+        params: {
+          limit: 100,
+          page: 1,
+          category: selectedCategoryId,
+          title: searchQuery.length > 0 ? searchQuery : undefined,
+        },
+      });
+      return res.data.data;
+    },
+    staleTime: 1000 * 60 * 5,
+    enabled: !!selectedCategoryId && importModalOpen,
+  });
 
   // Effect to clear selected course when changing category
   useEffect(() => {
@@ -141,28 +140,20 @@ export default function CreateCourse({
 
       return () => clearTimeout(timer);
     }
-  }, [
-    searchQuery,
-    refetchImportableCourses,
-    selectedCategoryId,
-    importModalOpen,
-  ]);
+  }, [searchQuery, refetchImportableCourses, selectedCategoryId, importModalOpen]);
 
   const createDraftMutation = useMutation({
     mutationFn: async (data: { category: [string]; type: string }) => {
       console.log(data);
-      const res = await axios.post(
-        env.BACKEND_URL + "/api/courses/draft",
-        data
-      );
+      const res = await axios.post(env.BACKEND_URL + '/api/courses/draft', data);
       return res.data;
     },
     onSuccess: (data: any) => {
-      toast.success("Draft course created successfully");
+      toast.success('Draft course created successfully');
       navigate.push(`/dashboard/categories/add-course/draft/${data.data._id}`);
     },
-    onError: (error) => {
-      toast.error("Failed to create draft: " + error.message);
+    onError: error => {
+      toast.error('Failed to create draft: ' + error.message);
     },
   });
 
@@ -201,33 +192,30 @@ export default function CreateCourse({
         isPublished: false,
       };
 
-      const res = await axios.post(
-        env.BACKEND_URL + "/api/courses/draft",
-        importData
-      );
+      const res = await axios.post(env.BACKEND_URL + '/api/courses/draft', importData);
       return res.data;
     },
     onSuccess: (data: any) => {
-      toast.success("Course imported successfully");
+      toast.success('Course imported successfully');
 
       setImportModalOpen(false);
       navigate.push(`/dashboard/categories/add-course/draft/${data.data._id}`);
     },
-    onError: (error) => {
-      toast.error("Failed to import course: " + error.message);
+    onError: error => {
+      toast.error('Failed to import course: ' + error.message);
     },
   });
 
   const publishCourse = useMutation({
     mutationFn: async (data: ICourse) => {
       const res = await axios.post(
-        env.BACKEND_URL + "/api/courses" + `/${data?._id}` + "/publish",
+        env.BACKEND_URL + '/api/courses' + `/${data?._id}` + '/publish',
         data
       );
       return res.data;
     },
     onSuccess: () => {
-      toast.success("Course published successfully");
+      toast.success('Course published successfully');
       // Reset errors on success
       setAllErrors([]);
     },
@@ -240,25 +228,23 @@ export default function CreateCourse({
       } else if (errorResponse?.message) {
         setAllErrors([errorResponse.message]);
       } else {
-        setAllErrors(["Failed to publish course. Please try again."]);
+        setAllErrors(['Failed to publish course. Please try again.']);
       }
 
-      toast.error("Failed to publish course");
+      toast.error('Failed to publish course');
     },
   });
 
   const deleteCourse = useMutation({
     mutationFn: async (data: ICourse) => {
-      const res = await axios.delete(
-        env.BACKEND_URL + "/api/courses" + `/${data?._id}`
-      );
+      const res = await axios.delete(env.BACKEND_URL + '/api/courses' + `/${data?._id}`);
       return res.data;
     },
     onSuccess: () => {
-      toast.success("Course deleted successfully");
+      toast.success('Course deleted successfully');
     },
-    onError: (error) => {
-      toast.error("Failed to delete course: " + error.message);
+    onError: error => {
+      toast.error('Failed to delete course: ' + error.message);
     },
   });
 
@@ -275,16 +261,13 @@ export default function CreateCourse({
           <div className="flex items-center justify-between gap-3">
             {/* Published Toggle */}
             <div className="flex items-center gap-3">
-              <Label
-                htmlFor="airplane-mode"
-                className="text-gray-700 dark:text-gray-300"
-              >
+              <Label htmlFor="airplane-mode" className="text-gray-700 dark:text-gray-300">
                 Published
               </Label>
               <Switch
                 id="airplane-mode"
                 checked={isPublished}
-                onCheckedChange={(checked) => setIsPublished(checked)}
+                onCheckedChange={checked => setIsPublished(checked)}
               />
             </div>
 
@@ -307,25 +290,23 @@ export default function CreateCourse({
 
         <CardContent>
           <div className="grid 2xl:grid-cols-4 xl:grid-cols-3 gap-8 mt-8">
-            {data?.courses.map((category) => (
+            {data?.courses.map(category => (
               <Card
                 key={category._id}
                 className="relative min-h-96 border border-gray-200 rounded-lg shadow-md transition-all hover:shadow-xl hover:scale-[1.02] dark:border-gray-700 dark:bg-gray-800"
               >
-                <Link
-                  href={`/dashboard/categories/add-course/draft/${category?._id}`}
-                >
+                <Link href={`/dashboard/categories/add-course/draft/${category?._id}`}>
                   <CardHeader className="p-0 relative">
                     {/* Status Button */}
                     <Button
                       className={cn(
-                        "absolute top-2 left-2 px-3 py-1 text-xs font-semibold rounded-lg shadow-sm",
+                        'absolute top-2 left-2 px-3 py-1 text-xs font-semibold rounded-lg shadow-sm',
                         category?.isPublished
-                          ? "bg-green-600 text-white"
-                          : "bg-orange-500 text-white"
+                          ? 'bg-green-600 text-white'
+                          : 'bg-orange-500 text-white'
                       )}
                     >
-                      {category?.isPublished ? "Published" : "Draft"}
+                      {category?.isPublished ? 'Published' : 'Draft'}
                     </Button>
 
                     {/* Course Image */}
@@ -347,19 +328,17 @@ export default function CreateCourse({
 
                     {/* Course Title & Description */}
                     <CardTitle className="px-4 py-2 text-lg font-semibold text-gray-900 dark:text-white">
-                      {category?.title || "No Name"}
+                      {category?.title || 'No Name'}
                     </CardTitle>
                     <CardDescription className="px-4 text-gray-600 dark:text-gray-400 text-sm">
-                      {category?.description || "No Description"}
+                      {category?.description || 'No Description'}
                     </CardDescription>
                   </CardHeader>
                 </Link>
 
                 {/* Card Footer Buttons */}
                 <CardFooter className="w-full flex justify-between gap-4 p-4">
-                  <Link
-                    href={`/dashboard/categories/add-course/draft/${category?._id}`}
-                  >
+                  <Link href={`/dashboard/categories/add-course/draft/${category?._id}`}>
                     <Button variant="secondary" className="w-full">
                       Edit
                     </Button>
@@ -376,8 +355,7 @@ export default function CreateCourse({
                       <DialogHeader>
                         <DialogTitle>Are you sure?</DialogTitle>
                         <DialogDescription>
-                          This action cannot be undone. It will permanently
-                          delete the course.
+                          This action cannot be undone. It will permanently delete the course.
                         </DialogDescription>
                       </DialogHeader>
                       <DialogFooter>
@@ -405,9 +383,7 @@ export default function CreateCourse({
                     <DialogContent className="w-[80vw]">
                       <DialogHeader>
                         <DialogTitle>Confirm Publishing</DialogTitle>
-                        <DialogDescription>
-                          This will publish the course.
-                        </DialogDescription>
+                        <DialogDescription>This will publish the course.</DialogDescription>
                       </DialogHeader>
 
                       {/* Error Display - Fixed */}
@@ -447,9 +423,7 @@ export default function CreateCourse({
             <Dialog>
               <DialogTrigger className="min-h-96 hover:bg-gradient-to-br hover:text-white from-blue-700 to-black rounded-lg transition-all">
                 <div className="h-full border-dashed border-2 rounded-lg flex flex-col items-center justify-center cursor-pointer p-6 hover:bg-blue-700 hover:text-white">
-                  <p className="text-center text-lg font-bold">
-                    Create New Course
-                  </p>
+                  <p className="text-center text-lg font-bold">Create New Course</p>
                   <FaPlusSquare size={30} className="text-center mt-3" />
                 </div>
               </DialogTrigger>
@@ -497,10 +471,7 @@ export default function CreateCourse({
           </DialogHeader>
 
           <div className="flex-1 overflow-hidden flex flex-col">
-            <Tabs
-              defaultValue="browse"
-              className="flex-1 flex flex-col overflow-hidden"
-            >
+            <Tabs defaultValue="browse" className="flex-1 flex flex-col overflow-hidden">
               <TabsList className="w-full flex justify-center mb-4">
                 <TabsTrigger value="browse" className="flex-1">
                   Browse Courses
@@ -510,10 +481,7 @@ export default function CreateCourse({
                 </TabsTrigger>
               </TabsList>
 
-              <TabsContent
-                value="browse"
-                className="flex-1 flex flex-col overflow-hidden"
-              >
+              <TabsContent value="browse" className="flex-1 flex flex-col overflow-hidden">
                 <div className="grid grid-cols-2 gap-4 mb-4">
                   {/* Category Type Selection */}
                   <div>
@@ -522,16 +490,16 @@ export default function CreateCourse({
                     </Label>
                     <Select
                       value={selectedCategoryType}
-                      onValueChange={(value) => {
+                      onValueChange={value => {
                         setSelectedCategoryType(value);
-                        setSelectedCategoryId("");
+                        setSelectedCategoryId('');
                       }}
                     >
                       <SelectTrigger id="categoryType">
                         <SelectValue placeholder="Select category type" />
                       </SelectTrigger>
                       <SelectContent>
-                        {categoryTypes.map((type) => (
+                        {categoryTypes.map(type => (
                           <SelectItem key={type.value} value={type.value}>
                             {type.label}
                           </SelectItem>
@@ -554,7 +522,7 @@ export default function CreateCourse({
                         <SelectValue placeholder="Select category" />
                       </SelectTrigger>
                       <SelectContent>
-                        {categoriesData?.categories?.map((cat) => (
+                        {categoriesData?.categories?.map(cat => (
                           <SelectItem key={cat._id} value={cat._id}>
                             {cat.name}
                           </SelectItem>
@@ -568,25 +536,21 @@ export default function CreateCourse({
                 <div className="flex-1 overflow-y-auto border rounded-lg p-2">
                   {!selectedCategoryId ? (
                     <div className="flex items-center justify-center h-full">
-                      <p className="text-gray-500">
-                        Select a category to view courses
-                      </p>
+                      <p className="text-gray-500">Select a category to view courses</p>
                     </div>
                   ) : importableCoursesData?.courses?.length === 0 ? (
                     <div className="flex items-center justify-center h-full">
-                      <p className="text-gray-500">
-                        No courses found in this category
-                      </p>
+                      <p className="text-gray-500">No courses found in this category</p>
                     </div>
                   ) : (
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                      {importableCoursesData?.courses?.map((course) => (
+                      {importableCoursesData?.courses?.map(course => (
                         <Card
                           key={course._id}
                           className={`cursor-pointer transition-all hover:shadow-md ${
                             selectedCourseToImport?._id === course._id
-                              ? "ring-2 ring-blue-500 shadow-lg"
-                              : ""
+                              ? 'ring-2 ring-blue-500 shadow-lg'
+                              : ''
                           }`}
                           onClick={() => setSelectedCourseToImport(course)}
                         >
@@ -608,13 +572,11 @@ export default function CreateCourse({
                                 </div>
                               )}
                             </div>
-                            <CardTitle className="text-lg font-medium">
-                              {course.title}
-                            </CardTitle>
+                            <CardTitle className="text-lg font-medium">{course.title}</CardTitle>
                           </CardHeader>
                           <CardContent className="p-3 pt-0">
                             <p className="text-sm text-gray-500 line-clamp-2">
-                              {course.description || "No description available"}
+                              {course.description || 'No description available'}
                             </p>
                           </CardContent>
                         </Card>
@@ -624,10 +586,7 @@ export default function CreateCourse({
                 </div>
               </TabsContent>
 
-              <TabsContent
-                value="search"
-                className="flex-1 flex flex-col overflow-hidden"
-              >
+              <TabsContent value="search" className="flex-1 flex flex-col overflow-hidden">
                 <div className="mb-4">
                   <Label htmlFor="searchQuery" className="mb-2 block">
                     Search Courses
@@ -637,7 +596,7 @@ export default function CreateCourse({
                       id="searchQuery"
                       placeholder="Enter course title..."
                       value={searchQuery}
-                      onChange={(e) => setSearchQuery(e.target.value)}
+                      onChange={e => setSearchQuery(e.target.value)}
                       className="pr-10"
                     />
                     <div className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400">
@@ -654,16 +613,16 @@ export default function CreateCourse({
                     </Label>
                     <Select
                       value={selectedCategoryType}
-                      onValueChange={(value) => {
+                      onValueChange={value => {
                         setSelectedCategoryType(value);
-                        setSelectedCategoryId("");
+                        setSelectedCategoryId('');
                       }}
                     >
                       <SelectTrigger id="searchCategoryType">
                         <SelectValue placeholder="Select category type" />
                       </SelectTrigger>
                       <SelectContent>
-                        {categoryTypes.map((type) => (
+                        {categoryTypes.map(type => (
                           <SelectItem key={type.value} value={type.value}>
                             {type.label}
                           </SelectItem>
@@ -686,7 +645,7 @@ export default function CreateCourse({
                         <SelectValue placeholder="Select category" />
                       </SelectTrigger>
                       <SelectContent>
-                        {categoriesData?.categories?.map((cat) => (
+                        {categoriesData?.categories?.map(cat => (
                           <SelectItem key={cat._id} value={cat._id}>
                             {cat.name}
                           </SelectItem>
@@ -700,25 +659,21 @@ export default function CreateCourse({
                 <div className="flex-1 overflow-y-auto border rounded-lg p-2">
                   {!selectedCategoryId ? (
                     <div className="flex items-center justify-center h-full">
-                      <p className="text-gray-500">
-                        Select a category to search courses
-                      </p>
+                      <p className="text-gray-500">Select a category to search courses</p>
                     </div>
                   ) : importableCoursesData?.courses?.length === 0 ? (
                     <div className="flex items-center justify-center h-full">
-                      <p className="text-gray-500">
-                        No courses found matching your search
-                      </p>
+                      <p className="text-gray-500">No courses found matching your search</p>
                     </div>
                   ) : (
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-                      {importableCoursesData?.courses?.map((course) => (
+                      {importableCoursesData?.courses?.map(course => (
                         <Card
                           key={course._id}
                           className={`cursor-pointer transition-all hover:shadow-md ${
                             selectedCourseToImport?._id === course._id
-                              ? "ring-2 ring-blue-500 shadow-lg"
-                              : ""
+                              ? 'ring-2 ring-blue-500 shadow-lg'
+                              : ''
                           }`}
                           onClick={() => setSelectedCourseToImport(course)}
                         >
@@ -741,12 +696,9 @@ export default function CreateCourse({
                               )}
                             </div>
                             <div className="flex-1">
-                              <h3 className="font-medium mb-1">
-                                {course.title}
-                              </h3>
+                              <h3 className="font-medium mb-1">{course.title}</h3>
                               <p className="text-sm text-gray-500 line-clamp-2">
-                                {course.description ||
-                                  "No description available"}
+                                {course.description || 'No description available'}
                               </p>
                             </div>
                           </div>
@@ -763,16 +715,12 @@ export default function CreateCourse({
             <div>
               {selectedCourseToImport && (
                 <div className="text-sm text-gray-700 dark:text-gray-300">
-                  <span className="font-semibold">Selected:</span>{" "}
-                  {selectedCourseToImport.title}
+                  <span className="font-semibold">Selected:</span> {selectedCourseToImport.title}
                 </div>
               )}
             </div>
             <div className="flex gap-3">
-              <Button
-                variant="outline"
-                onClick={() => setImportModalOpen(false)}
-              >
+              <Button variant="outline" onClick={() => setImportModalOpen(false)}>
                 Cancel
               </Button>
               <Button

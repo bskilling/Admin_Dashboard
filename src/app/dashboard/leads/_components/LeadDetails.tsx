@@ -1,17 +1,17 @@
-"use client";
+'use client';
 
-import React, { useState } from "react";
+import React, { useState } from 'react';
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
   DialogDescription,
-} from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
-import { Textarea } from "@/components/ui/textarea";
-import { Badge } from "@/components/ui/badge";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+} from '@/components/ui/dialog';
+import { Button } from '@/components/ui/button';
+import { Textarea } from '@/components/ui/textarea';
+import { Badge } from '@/components/ui/badge';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import {
   Phone,
   Mail,
@@ -22,11 +22,11 @@ import {
   User,
   TagIcon,
   BookOpen,
-} from "lucide-react";
-import { Lead } from "./types";
-import { getStatusBadgeColor, getTypeBadgeColor } from "./leadUtils";
-import NotesComponent from "./NotesComponent";
-import StatusChangeDialog from "./StatusChangeDialog";
+} from 'lucide-react';
+import { Lead } from './types';
+import { getStatusBadgeColor, getTypeBadgeColor } from './leadUtils';
+import NotesComponent from './NotesComponent';
+import StatusChangeDialog from './StatusChangeDialog';
 
 interface LeadDetailDialogProps {
   lead: Lead;
@@ -45,10 +45,10 @@ const LeadDetailDialog: React.FC<LeadDetailDialogProps> = ({
   onAddComment,
   onAddNote,
 }) => {
-  const [activeTab, setActiveTab] = useState("details");
-  const [newComment, setNewComment] = useState(lead.comment || "");
+  const [activeTab, setActiveTab] = useState('details');
+  const [newComment, setNewComment] = useState(lead.comment || '');
   const [isStatusDialogOpen, setIsStatusDialogOpen] = useState(false);
-  const [newStatus, setNewStatus] = useState("");
+  const [newStatus, setNewStatus] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleCommentSubmit = async () => {
@@ -59,7 +59,7 @@ const LeadDetailDialog: React.FC<LeadDetailDialogProps> = ({
       await onAddComment(lead._id, newComment);
       // Don't clear the comment after submission to avoid confusion
     } catch (error) {
-      console.error("Error updating comment:", error);
+      console.error('Error updating comment:', error);
     } finally {
       setIsSubmitting(false);
     }
@@ -79,23 +79,19 @@ const LeadDetailDialog: React.FC<LeadDetailDialogProps> = ({
               <div>
                 <DialogTitle className="flex items-center gap-2 text-xl">
                   {lead.name}
-                  <Badge
-                    variant="outline"
-                    className={getTypeBadgeColor(lead.type)}
-                  >
+                  <Badge variant="outline" className={getTypeBadgeColor(lead.type)}>
                     {lead.type.toUpperCase()}
                   </Badge>
                 </DialogTitle>
                 <DialogDescription className="flex items-center gap-2">
-                  <span>Course: {lead.course?.title || "Unknown Course"}</span>
+                  <span>Course: {lead.course?.title || 'Unknown Course'}</span>
                   <span>•</span>
-                  <span>Category: {lead.course?.category?.name || "N/A"}</span>
+                  <span>
+                    Category: {lead.course?.category?.map(c => c.name).join(', ') || 'N/A'}
+                  </span>
                 </DialogDescription>
               </div>
-              <Badge
-                variant="outline"
-                className={getStatusBadgeColor(lead.status)}
-              >
+              <Badge variant="outline" className={getStatusBadgeColor(lead.status)}>
                 {lead.status}
               </Badge>
             </div>
@@ -129,9 +125,7 @@ const LeadDetailDialog: React.FC<LeadDetailDialogProps> = ({
                 {/* Basic info section */}
                 <div className="grid grid-cols-2 gap-6">
                   <div className="space-y-2">
-                    <h4 className="text-sm font-medium text-slate-500">
-                      Contact Information
-                    </h4>
+                    <h4 className="text-sm font-medium text-slate-500">Contact Information</h4>
                     <div className="space-y-3 p-4 bg-slate-50 rounded-lg">
                       <div className="flex items-center gap-3">
                         <Mail className="h-5 w-5 text-slate-400" />
@@ -171,22 +165,17 @@ const LeadDetailDialog: React.FC<LeadDetailDialogProps> = ({
                   </div>
 
                   <div className="space-y-2">
-                    <h4 className="text-sm font-medium text-slate-500">
-                      Lead Information
-                    </h4>
+                    <h4 className="text-sm font-medium text-slate-500">Lead Information</h4>
                     <div className="space-y-3 p-4 bg-slate-50 rounded-lg">
                       <div className="flex items-center gap-3">
                         <BookOpen className="h-5 w-5 text-slate-400" />
                         <div>
                           <p className="text-sm text-slate-800 font-medium">
-                            {lead.course?.title || "Unknown Course"}
+                            {lead.course?.title || 'Unknown Course'}
                           </p>
                           <div className="flex items-center gap-1 mt-1">
-                            <Badge
-                              variant="outline"
-                              className="bg-slate-100 text-xs"
-                            >
-                              {lead.course?.category?.name || "No Category"}
+                            <Badge variant="outline" className="bg-slate-100 text-xs">
+                              {lead.course?.category?.map(c => c.name).join(', ') || 'No Category'}
                             </Badge>
                             {lead.subCategory && (
                               <Badge
@@ -204,7 +193,7 @@ const LeadDetailDialog: React.FC<LeadDetailDialogProps> = ({
                         <Calendar className="h-5 w-5 text-slate-400" />
                         <div>
                           <p className="text-sm text-slate-800">
-                            {new Date(lead.createdAt).toLocaleDateString()} at{" "}
+                            {new Date(lead.createdAt).toLocaleDateString()} at{' '}
                             {new Date(lead.createdAt).toLocaleTimeString()}
                           </p>
                           <p className="text-xs text-slate-500">Created</p>
@@ -215,7 +204,7 @@ const LeadDetailDialog: React.FC<LeadDetailDialogProps> = ({
                         <Clock className="h-5 w-5 text-slate-400" />
                         <div>
                           <p className="text-sm text-slate-800">
-                            {new Date(lead.updatedAt).toLocaleDateString()} at{" "}
+                            {new Date(lead.updatedAt).toLocaleDateString()} at{' '}
                             {new Date(lead.updatedAt).toLocaleTimeString()}
                           </p>
                           <p className="text-xs text-slate-500">Last Updated</p>
@@ -227,25 +216,19 @@ const LeadDetailDialog: React.FC<LeadDetailDialogProps> = ({
 
                 {/* Query section */}
                 <div className="space-y-2">
-                  <h4 className="text-sm font-medium text-slate-500">
-                    Query / Message
-                  </h4>
+                  <h4 className="text-sm font-medium text-slate-500">Query / Message</h4>
                   <div className="p-4 bg-slate-50 rounded-lg border border-slate-100">
-                    <p className="text-slate-700 whitespace-pre-wrap">
-                      {lead.query}
-                    </p>
+                    <p className="text-slate-700 whitespace-pre-wrap">{lead.query}</p>
                   </div>
                 </div>
 
                 {/* Comment section */}
                 <div className="space-y-2">
-                  <h4 className="text-sm font-medium text-slate-500">
-                    Lead Comment
-                  </h4>
+                  <h4 className="text-sm font-medium text-slate-500">Lead Comment</h4>
                   <Textarea
                     placeholder="Add or update general comment about this lead..."
                     value={newComment}
-                    onChange={(e) => setNewComment(e.target.value)}
+                    onChange={e => setNewComment(e.target.value)}
                     className="min-h-[100px]"
                   />
                   <div className="flex justify-end">
@@ -253,11 +236,7 @@ const LeadDetailDialog: React.FC<LeadDetailDialogProps> = ({
                       onClick={handleCommentSubmit}
                       disabled={!newComment.trim() || isSubmitting}
                     >
-                      {isSubmitting
-                        ? "Saving..."
-                        : lead.comment
-                          ? "Update Comment"
-                          : "Add Comment"}
+                      {isSubmitting ? 'Saving...' : lead.comment ? 'Update Comment' : 'Add Comment'}
                     </Button>
                   </div>
                 </div>
@@ -277,42 +256,38 @@ const LeadDetailDialog: React.FC<LeadDetailDialogProps> = ({
             {/* Status Tab */}
             <TabsContent value="status" className="flex-1 overflow-auto p-1">
               <div className="space-y-4">
-                <h3 className="font-medium text-slate-800 mt-6">
-                  Change Status
-                </h3>
+                <h3 className="font-medium text-slate-800 mt-6">Change Status</h3>
 
                 <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2">
                   {[
-                    "NEW",
-                    "Attempted to Contact",
-                    "Not Contacted",
-                    "In-conversation",
-                    "Prospect",
-                    "Not-Eligible",
-                    "Not-Interested",
-                    "Spam",
-                    "Opportunity",
-                    "Contact-in-Future",
-                    "Closed-Won",
-                    "Closed-Lost",
-                  ].map((status) => (
+                    'NEW',
+                    'Attempted to Contact',
+                    'Not Contacted',
+                    'In-conversation',
+                    'Prospect',
+                    'Not-Eligible',
+                    'Not-Interested',
+                    'Spam',
+                    'Opportunity',
+                    'Contact-in-Future',
+                    'Closed-Won',
+                    'Closed-Lost',
+                  ].map(status => (
                     <Button
                       key={status}
                       variant="outline"
                       size="sm"
-                      className={`border ${status === lead.status ? "bg-slate-100 cursor-not-allowed" : "hover:bg-slate-50"}`}
+                      className={`border ${status === lead.status ? 'bg-slate-100 cursor-not-allowed' : 'hover:bg-slate-50'}`}
                       disabled={status === lead.status}
                       onClick={() => handleStatusClick(status)}
                     >
                       <span
-                        className={`w-2 h-2 rounded-full mr-2 ${getStatusBadgeColor(
-                          status
-                        )
-                          .replace("bg-", "")
-                          .replace("text-", "")
-                          .replace("border-", "")
-                          .split(" ")[0]
-                          .replace("100", "500")}`}
+                        className={`w-2 h-2 rounded-full mr-2 ${getStatusBadgeColor(status)
+                          .replace('bg-', '')
+                          .replace('text-', '')
+                          .replace('border-', '')
+                          .split(' ')[0]
+                          .replace('100', '500')}`}
                       />
                       {status}
                     </Button>
@@ -321,9 +296,8 @@ const LeadDetailDialog: React.FC<LeadDetailDialogProps> = ({
 
                 <div className="mt-6">
                   <p className="text-sm text-slate-500">
-                    When you change the status, you'll be asked to add a note
-                    about the change. This helps keep a detailed history of your
-                    interactions with this lead.
+                    When you change the status, you'll be asked to add a note about the change. This
+                    helps keep a detailed history of your interactions with this lead.
                   </p>
                 </div>
               </div>

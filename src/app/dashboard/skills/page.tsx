@@ -1,4 +1,4 @@
-import SkillForm from "./_components/SkillForm";
+import SkillForm from './_components/SkillForm';
 
 export default function RouteComponent() {
   return (

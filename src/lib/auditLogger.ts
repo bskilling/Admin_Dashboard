@@ -1,7 +1,7 @@
 // src/lib/auditLogger.ts
-import AuditLog, { AuditAction } from "@/models/AuditLog";
-import { getSession } from "next-auth/react";
-import { NextApiRequest } from "next";
+import AuditLog, { AuditAction } from '@/models/AuditLog';
+import { getSession } from 'next-auth/react';
+import { NextApiRequest } from 'next';
 
 export async function logAction(
   req: NextApiRequest,

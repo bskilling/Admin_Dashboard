@@ -1,20 +1,20 @@
-"use client";
-import Link from "next/link";
-import React, { useState } from "react";
-import { BiPencil, BiLogOut, BiTrash } from "react-icons/bi";
-import { FaArrowLeftLong } from "react-icons/fa6";
-import { useLogOutQuery } from "@/redux/features/auth/authApi";
-import { useRouter } from "next/navigation";
+'use client';
+import Link from 'next/link';
+import React, { useState } from 'react';
+import { BiPencil, BiLogOut, BiTrash } from 'react-icons/bi';
+import { FaArrowLeftLong } from 'react-icons/fa6';
+import { useLogOutQuery } from '@/redux/features/auth/authApi';
+import { useRouter } from 'next/navigation';
 import {
   useDeleteCourseMutation,
   useGetCourseByIdQuery,
-} from "@/redux/features/courses/coursesApi";
-import Swal from "sweetalert2";
-import toast from "react-hot-toast";
-import CourseEditModal from "@/app/_components/CourseEditModal";
-import Image from "next/image";
+} from '@/redux/features/courses/coursesApi';
+import Swal from 'sweetalert2';
+import toast from 'react-hot-toast';
+import CourseEditModal from '@/app/_components/CourseEditModal';
+import Image from 'next/image';
 // import loginBg from "../../../../public/assets/loginBg.png";
-import { formatToStringDate } from "@/utils/formatter";
+import { formatToStringDate } from '@/utils/formatter';
 
 const Header = ({ courseId, setEditModal }: any) => {
   const router = useRouter();
@@ -27,18 +27,18 @@ const Header = ({ courseId, setEditModal }: any) => {
 
   const logOutHandler = async () => {
     setLogout(true);
-    router.push("/");
+    router.push('/');
   };
 
   const handleDelete = async () => {
     Swal.fire({
-      title: "Are You Sure?",
-      text: "Are you sure to delete this course!",
-      icon: "warning",
+      title: 'Are You Sure?',
+      text: 'Are you sure to delete this course!',
+      icon: 'warning',
       showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, delete it!",
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!',
     }).then((result: any) => {
       if (result.isConfirmed) {
         handleDeleteConfirm();
@@ -51,46 +51,37 @@ const Header = ({ courseId, setEditModal }: any) => {
     try {
       const deletedCourseData = await deleteCourse(id);
 
-      if ("data" in deletedCourseData && deletedCourseData.data.success) {
-        toast.success("Course has been deleted.");
-        router.push("/dashboard/learning/trainings");
+      if ('data' in deletedCourseData && deletedCourseData.data.success) {
+        toast.success('Course has been deleted.');
+        router.push('/dashboard/learning/trainings');
       } else {
-        toast.error("Something went wrong!");
+        toast.error('Something went wrong!');
       }
     } catch (error) {
-      toast.error("An error occurred while deleting the course.");
-      console.error("Error deleting course:", error);
+      toast.error('An error occurred while deleting the course.');
+      console.error('Error deleting course:', error);
     }
   };
 
   return (
     <header className="bg-transparent w-[95%] h-[80px] flex justify-between items-center mx-auto container">
       <Link
-        href={"/learning/trainings"}
+        href={'/learning/trainings'}
         className="container flex gap-2 text-lg items-center text-sky-900 font-[600]"
       >
         <FaArrowLeftLong />
         Back To Training List
       </Link>
       <div className="flex gap-2">
-        <button
-          className="p-3 bg-sky-900 rounded-md"
-          onClick={() => setEditModal(true)}
-        >
+        <button className="p-3 bg-sky-900 rounded-md" onClick={() => setEditModal(true)}>
           <BiPencil size={20} color="white" />
         </button>
 
-        <button
-          className="p-3 bg-sky-900 rounded-md"
-          onClick={() => handleDelete()}
-        >
+        <button className="p-3 bg-sky-900 rounded-md" onClick={() => handleDelete()}>
           <BiTrash size={20} color="white" />
         </button>
 
-        <button
-          className="p-3 bg-sky-900 rounded-md"
-          onClick={() => logOutHandler()}
-        >
+        <button className="p-3 bg-sky-900 rounded-md" onClick={() => logOutHandler()}>
           <BiLogOut size={20} color="white" />
         </button>
       </div>
@@ -132,8 +123,7 @@ const Page = ({ params }: any) => {
             <div className="flex border-b-2 border-gray-500 mt-10 gap-6 px-8 mx-auto container md:w-[95%]">
               <span
                 className={`text-gray-400 font-[600] h-full cursor-pointer pb-6 ${
-                  sectionActive === 0 &&
-                  "text-sky-800 border-b-4 border-sky-800"
+                  sectionActive === 0 && 'text-sky-800 border-b-4 border-sky-800'
                 }`}
                 onClick={() => setSectionActive(0)}
               >
@@ -141,8 +131,7 @@ const Page = ({ params }: any) => {
               </span>
               <span
                 className={`text-gray-400 font-[600] h-full cursor-pointer pb-6 ${
-                  sectionActive === 1 &&
-                  "text-sky-800 border-b-4 border-sky-800"
+                  sectionActive === 1 && 'text-sky-800 border-b-4 border-sky-800'
                 }`}
                 onClick={() => setSectionActive(1)}
               >
@@ -158,72 +147,44 @@ const Page = ({ params }: any) => {
                     <table className="text-sm my-3">
                       <tbody>
                         <tr>
-                          <td className="px-2 py-2 text-gray-500 font-semibold">
-                            Name
-                          </td>
+                          <td className="px-2 py-2 text-gray-500 font-semibold">Name</td>
                           <td className="px-2 py-2">{data?.course?.title}</td>
                         </tr>
                         <tr>
-                          <td className="px-2 py-2 text-gray-500 font-semibold">
-                            Category
-                          </td>
-                          <td className="px-2 py-2">
-                            {data?.course?.category}
-                          </td>
+                          <td className="px-2 py-2 text-gray-500 font-semibold">Category</td>
+                          <td className="px-2 py-2">{data?.course?.category}</td>
                         </tr>
                         <tr>
                           <td className="px-2 py-2 text-gray-500 font-semibold">
                             Assessment Required
                           </td>
-                          <td className="px-2 py-2">
-                            {data?.course?.assessment_required}
-                          </td>
+                          <td className="px-2 py-2">{data?.course?.assessment_required}</td>
                         </tr>
                         <tr>
-                          <td className="px-2 py-2 text-gray-500 font-semibold">
-                            Duration
-                          </td>
-                          <td className="px-2 py-2">
-                            {data?.course?.duration}
-                          </td>
+                          <td className="px-2 py-2 text-gray-500 font-semibold">Duration</td>
+                          <td className="px-2 py-2">{data?.course?.duration}</td>
                         </tr>
                         <tr>
-                          <td className="px-2 py-2 text-gray-500 font-semibold">
-                            Level
-                          </td>
+                          <td className="px-2 py-2 text-gray-500 font-semibold">Level</td>
                           <td className="px-2 py-2">{data?.course?.level}</td>
                         </tr>
                         <tr>
-                          <td className="px-2 py-2 text-gray-500 font-semibold">
-                            Language
-                          </td>
-                          <td className="px-2 py-2">
-                            {data?.course?.language}
-                          </td>
+                          <td className="px-2 py-2 text-gray-500 font-semibold">Language</td>
+                          <td className="px-2 py-2">{data?.course?.language}</td>
                         </tr>
                         <tr>
-                          <td className="px-2 py-2 text-gray-500 font-semibold">
-                            Created Date
-                          </td>
+                          <td className="px-2 py-2 text-gray-500 font-semibold">Created Date</td>
                           <td className="px-2 py-2">
                             {formatToStringDate(data?.course?.createdAt)}
                           </td>
                         </tr>
                         <tr>
-                          <td className="px-2 py-2 text-gray-500 font-semibold">
-                            Training Status
-                          </td>
-                          <td className="px-2 py-2">
-                            {/* {data?.course?.training_status} */}
-                          </td>
+                          <td className="px-2 py-2 text-gray-500 font-semibold">Training Status</td>
+                          <td className="px-2 py-2">{/* {data?.course?.training_status} */}</td>
                         </tr>
                         <tr>
-                          <td className="px-2 py-2 text-gray-500 font-semibold">
-                            Description
-                          </td>
-                          <td className="px-2 py-2">
-                            {data?.course?.description || "NA"}
-                          </td>
+                          <td className="px-2 py-2 text-gray-500 font-semibold">Description</td>
+                          <td className="px-2 py-2">{data?.course?.description || 'NA'}</td>
                         </tr>
                       </tbody>
                     </table>
@@ -232,63 +193,39 @@ const Page = ({ params }: any) => {
                     <table className="text-sm my-3">
                       <tbody>
                         <tr>
-                          <td className="px-2 py-2 text-gray-500 font-semibold">
-                            Owned By
-                          </td>
+                          <td className="px-2 py-2 text-gray-500 font-semibold">Owned By</td>
                           <td className="px-2 py-2">bSkilling</td>
                         </tr>
                         <tr>
-                          <td className="px-2 py-2 text-gray-500 font-semibold">
-                            Endorsed By
-                          </td>
+                          <td className="px-2 py-2 text-gray-500 font-semibold">Endorsed By</td>
                           <td className="px-2 py-2">bSkilling</td>
                         </tr>
                         <tr>
-                          <td className="px-2 py-2 text-gray-500 font-semibold">
-                            Assessment
-                          </td>
-                          <td className="px-2 py-2">
-                            {data?.course?.assessment}
-                          </td>
+                          <td className="px-2 py-2 text-gray-500 font-semibold">Assessment</td>
+                          <td className="px-2 py-2">{data?.course?.assessment}</td>
                         </tr>
                         <tr>
-                          <td className="px-2 py-2 text-gray-500 font-semibold">
-                            Price
-                          </td>
+                          <td className="px-2 py-2 text-gray-500 font-semibold">Price</td>
                           <td className="px-2 py-2">{data?.course?.price}</td>
                         </tr>
                         <tr>
-                          <td className="px-2 py-2 text-gray-500 font-semibold">
-                            Currency
-                          </td>
-                          <td className="px-2 py-2">
-                            {data?.course?.currency}
-                          </td>
+                          <td className="px-2 py-2 text-gray-500 font-semibold">Currency</td>
+                          <td className="px-2 py-2">{data?.course?.currency}</td>
                         </tr>
                         <tr>
-                          <td className="px-2 py-2 text-gray-500 font-semibold">
-                            Discount
-                          </td>
-                          <td className="px-2 py-2">
-                            {data?.course?.discount}
-                          </td>
+                          <td className="px-2 py-2 text-gray-500 font-semibold">Discount</td>
+                          <td className="px-2 py-2">{data?.course?.discount}</td>
                         </tr>
                         <tr>
-                          <td className="px-2 py-2 text-gray-500 font-semibold">
-                            Created By
-                          </td>
-                          <td className="px-2 py-2">{"Learning Admin"}</td>
+                          <td className="px-2 py-2 text-gray-500 font-semibold">Created By</td>
+                          <td className="px-2 py-2">{'Learning Admin'}</td>
                         </tr>
                         <tr>
-                          <td className="px-2 py-2 text-gray-500 font-semibold">
-                            Complted At
-                          </td>
-                          <td className="px-2 py-2">{""}</td>
+                          <td className="px-2 py-2 text-gray-500 font-semibold">Complted At</td>
+                          <td className="px-2 py-2">{''}</td>
                         </tr>
                         <tr>
-                          <td className="px-2 py-2 text-gray-500 font-semibold">
-                            Url
-                          </td>
+                          <td className="px-2 py-2 text-gray-500 font-semibold">Url</td>
                           <td className="px-2 py-2">{data?.course?.url}</td>
                         </tr>
                       </tbody>
@@ -296,48 +233,32 @@ const Page = ({ params }: any) => {
                   </div>
                 </div>
                 <div className="w-full border-1 border-gray-800 rounded-md flex flex-col">
-                  <span
-                    className={`text-sky-800 font-[600] h-full cursor-pointer pb-6`}
-                  >
+                  <span className={`text-sky-800 font-[600] h-full cursor-pointer pb-6`}>
                     Training Batches
                   </span>
                   <div className="p-4 flex bg-white gap-4 justify-start">
                     <table className="text-sm my-3">
                       <tbody>
                         <tr>
-                          <td className="px-2 py-2 text-gray-500 font-semibold">
-                            Batch Name
-                          </td>
+                          <td className="px-2 py-2 text-gray-500 font-semibold">Batch Name</td>
                           <td className="px-2 py-2">
                             {data?.course?.training_batches?.batch_name}
                           </td>
                         </tr>
                         <tr>
-                          <td className="px-2 py-2 text-gray-500 font-semibold">
-                            is Paid
-                          </td>
+                          <td className="px-2 py-2 text-gray-500 font-semibold">is Paid</td>
                           <td className="px-2 py-2">
-                            {data?.course?.training_batches?.isPaid
-                              ? "Yes"
-                              : "No"}
+                            {data?.course?.training_batches?.isPaid ? 'Yes' : 'No'}
                           </td>
                         </tr>
                         <tr>
-                          <td className="px-2 py-2 text-gray-500 font-semibold">
-                            Trainer
-                          </td>
-                          <td className="px-2 py-2">
-                            {data?.course?.training_batches?.trainer}
-                          </td>
+                          <td className="px-2 py-2 text-gray-500 font-semibold">Trainer</td>
+                          <td className="px-2 py-2">{data?.course?.training_batches?.trainer}</td>
                         </tr>
                         <tr>
-                          <td className="px-2 py-2 text-gray-500 font-semibold">
-                            Start Time
-                          </td>
+                          <td className="px-2 py-2 text-gray-500 font-semibold">Start Time</td>
                           <td className="px-2 py-2">
-                            {formatToStringDate(
-                              data?.course?.training_batches?.start_time
-                            )}
+                            {formatToStringDate(data?.course?.training_batches?.start_time)}
                           </td>
                         </tr>
                         <tr>
@@ -346,25 +267,18 @@ const Page = ({ params }: any) => {
                           </td>
                           <td className="px-2 py-2">
                             {formatToStringDate(
-                              data?.course?.training_batches
-                                ?.enrollment_end_date
+                              data?.course?.training_batches?.enrollment_end_date
                             )}
                           </td>
                         </tr>
                         <tr>
-                          <td className="px-2 py-2 text-gray-500 font-semibold">
-                            End Date
-                          </td>
+                          <td className="px-2 py-2 text-gray-500 font-semibold">End Date</td>
                           <td className="px-2 py-2">
-                            {formatToStringDate(
-                              data?.course?.training_batches?.end_date
-                            )}
+                            {formatToStringDate(data?.course?.training_batches?.end_date)}
                           </td>
                         </tr>
                         <tr>
-                          <td className="px-2 py-2 text-gray-500 font-semibold">
-                            Description
-                          </td>
+                          <td className="px-2 py-2 text-gray-500 font-semibold">Description</td>
                           <td className="px-2 py-2">
                             {data?.course?.training_batches?.description}
                           </td>
@@ -382,7 +296,7 @@ const Page = ({ params }: any) => {
                   <label className="font-[600] text-sky-800">Headline</label>
                   <input
                     className="w-full bg-white border-2 border-gray-800 rounded-md px-2 py-3 flex justify-start items-center "
-                    value={data?.course?.training_metadata?.headline || ""}
+                    value={data?.course?.training_metadata?.headline || ''}
                     readOnly
                     disabled
                   />
@@ -391,7 +305,7 @@ const Page = ({ params }: any) => {
                 <div className="flex flex-col gap-2 mb-6">
                   <label className="font-[600] text-sky-800">Body</label>
                   <div className="w-full bg-white border-2 border-gray-800 rounded-md px-2 py-3">
-                    {data?.course?.training_metadata?.body || ""}
+                    {data?.course?.training_metadata?.body || ''}
                   </div>
                 </div>
 
@@ -405,16 +319,12 @@ const Page = ({ params }: any) => {
                 <div className="flex flex-col gap-2 mb-6">
                   <div className="px-2 py-3 grid grid-cols-4">
                     <div className="col-span-3 flex flex-col gap-2 pr-2">
-                      <label className="font-[600] text-sky-800">
-                        Preview Video
-                      </label>
+                      <label className="font-[600] text-sky-800">Preview Video</label>
                       <div className="rounded-lg bg-white border bg-card text-card-foreground shadow-sm p-4 items-center flex justify-center">
                         <iframe
                           width="740"
                           height="416"
-                          src={
-                            data?.course?.training_metadata?.preview_video || ""
-                          }
+                          src={data?.course?.training_metadata?.preview_video || ''}
                           title="Valentines Day Special - Jukebox | Video Song Jukebox | Odia Love Songs |Valentines Day 2023 Jukebox"
                           frameBorder={0}
                           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
@@ -424,15 +334,10 @@ const Page = ({ params }: any) => {
                       </div>
                     </div>
                     <div className="col-span-1 flex flex-col gap-2 pl-2">
-                      <label className="font-[600] text-sky-800">
-                        Preview Image
-                      </label>
+                      <label className="font-[600] text-sky-800">Preview Image</label>
                       <div className="rounded-md bg-white border bg-card text-card-foreground shadow-sm p-4 items-center flex justify-center h-full">
                         <Image
-                          src={
-                            data?.course?.preview_image_uri ??
-                            "/assets/loginBg.png"
-                          }
+                          src={data?.course?.preview_image_uri ?? '/assets/loginBg.png'}
                           width={280}
                           height={280}
                           alt="preview Image"
@@ -444,68 +349,51 @@ const Page = ({ params }: any) => {
                 </div>
 
                 <RenderData
-                  title={"Objectives"}
+                  title={'Objectives'}
                   data={data?.course?.training_metadata?.objectives}
                 />
 
                 <RenderData
-                  title={"Prerequisites"}
+                  title={'Prerequisites'}
                   data={data?.course?.training_metadata?.prerequisites}
                 />
 
-                <RenderData
-                  title={"Audience"}
-                  data={data?.course?.training_metadata?.audience}
-                />
+                <RenderData title={'Audience'} data={data?.course?.training_metadata?.audience} />
 
                 <RenderData
-                  title={"Skills Covered"}
+                  title={'Skills Covered'}
                   data={data?.course?.training_metadata?.skills_covered}
                 />
 
                 <RenderData
-                  title={"Who Should Attend ?"}
+                  title={'Who Should Attend ?'}
                   data={data?.course?.training_metadata?.who_should_attend}
                 />
 
                 <RenderData
-                  title={"Key Features"}
+                  title={'Key Features'}
                   data={data?.course?.training_metadata?.key_features}
                 />
 
-                <RenderData
-                  title={"Benefits"}
-                  data={data?.course?.training_metadata?.benefits}
-                />
+                <RenderData title={'Benefits'} data={data?.course?.training_metadata?.benefits} />
 
-                <RenderData
-                  title={"Resources"}
-                  data={data?.course?.training_metadata?.resources}
-                />
+                <RenderData title={'Resources'} data={data?.course?.training_metadata?.resources} />
 
-                <RenderData
-                  title={"Outcomes"}
-                  data={data?.course?.training_metadata?.outcomes}
-                />
+                <RenderData title={'Outcomes'} data={data?.course?.training_metadata?.outcomes} />
 
                 <div className="flex flex-col gap-2 mb-6">
                   <div className="px-2 py-3 grid grid-cols-4">
                     <div className="col-span-2 flex flex-col gap-2 pr-2">
-                      <label className="font-[600] text-sky-800">
-                        Certification Text
-                      </label>
+                      <label className="font-[600] text-sky-800">Certification Text</label>
                       <div className="rounded-lg bg-white border bg-card text-card-foreground shadow-sm p-4 h-full flex justify-center items-center">
-                        {data?.course?.training_metadata?.certification_text ||
-                          "No data"}
+                        {data?.course?.training_metadata?.certification_text || 'No data'}
                       </div>
                     </div>
                     <div className="col-span-2 flex flex-col gap-2 pl-2">
-                      <label className="font-[600] text-sky-800">
-                        Certification Image
-                      </label>
+                      <label className="font-[600] text-sky-800">Certification Image</label>
                       <div className="rounded-lg bg-white border bg-card text-card-foreground shadow-sm py-4 px-10 items-center flex justify-center h-full">
                         <Image
-                          src={"/assets/loginBg.png"}
+                          src={'/assets/loginBg.png'}
                           alt="preview Image"
                           className="rounded-t-md"
                         />
@@ -517,41 +405,34 @@ const Page = ({ params }: any) => {
                 <div className="flex flex-col gap-2 mb-6">
                   <label className="font-[600] text-sky-800">FAQs</label>
                   <div className="w-full bg-white border-2 border-gray-800 rounded-md px-6 py-3">
-                    {data?.course?.training_metadata?.FAQs?.map(
-                      (obj: any, index: number) => {
-                        return (
-                          <div key={obj} className="leading-2 text-base mb-2">
-                            <p>Question : {obj.question}</p>
-                            <p>Answer : {obj.answer}</p>
-                          </div>
-                        );
-                      }
-                    )}
+                    {data?.course?.training_metadata?.FAQs?.map((obj: any, index: number) => {
+                      return (
+                        <div key={obj} className="leading-2 text-base mb-2">
+                          <p>Question : {obj.question}</p>
+                          <p>Answer : {obj.answer}</p>
+                        </div>
+                      );
+                    })}
                   </div>
                 </div>
 
                 <div className="flex flex-col gap-2 mb-6">
                   <label className="font-[600] text-sky-800">Curriculum</label>
                   <div className="w-full bg-white border-2 border-gray-800 rounded-md px-6 py-3">
-                    {data?.course?.training_metadata?.curriculum?.map(
-                      (obj: any, index: number) => {
-                        return (
-                          <div key={obj} className="leading-2 text-base mb-2">
-                            <p>Topic : {obj.title}</p>
-                            {obj?.section_parts.map((sec: any, ind: number) => {
-                              return (
-                                <ul
-                                  key={obj}
-                                  className="list-disc leading-6 text-sm ml-24"
-                                >
-                                  <li>{sec.title}</li>
-                                </ul>
-                              );
-                            })}
-                          </div>
-                        );
-                      }
-                    )}
+                    {data?.course?.training_metadata?.curriculum?.map((obj: any, index: number) => {
+                      return (
+                        <div key={obj} className="leading-2 text-base mb-2">
+                          <p>Topic : {obj.title}</p>
+                          {obj?.section_parts.map((sec: any, ind: number) => {
+                            return (
+                              <ul key={obj} className="list-disc leading-6 text-sm ml-24">
+                                <li>{sec.title}</li>
+                              </ul>
+                            );
+                          })}
+                        </div>
+                      );
+                    })}
                   </div>
                 </div>
               </div>

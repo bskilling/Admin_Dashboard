@@ -1,6 +1,6 @@
-import env from "@/lib/env";
-import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
+import env from '@/lib/env';
+import { useQuery } from '@tanstack/react-query';
+import axios from 'axios';
 
 export interface TTool {
   _id: string;
@@ -18,7 +18,7 @@ interface Logo {
 
 export const useTools = () => {
   const tools = useQuery<TTool[]>({
-    queryKey: ["tools"],
+    queryKey: ['tools'],
     queryFn: async () => {
       const res = await axios.get(`${env?.BACKEND_URL}/api/tools`);
       return res.data.data as TTool[];

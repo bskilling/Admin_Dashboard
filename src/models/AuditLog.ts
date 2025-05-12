@@ -1,14 +1,14 @@
 // src/models/AuditLog.ts
-import { Schema, model, models } from "mongoose";
+import { Schema, model, models } from 'mongoose';
 
 // dbConnect().catch(console.error);
 
 export enum AuditAction {
-  CREATE = "CREATE",
-  UPDATE = "UPDATE",
-  DELETE = "DELETE",
-  LOGIN = "LOGIN",
-  LOGOUT = "LOGOUT",
+  CREATE = 'CREATE',
+  UPDATE = 'UPDATE',
+  DELETE = 'DELETE',
+  LOGIN = 'LOGIN',
+  LOGOUT = 'LOGOUT',
 }
 
 export interface IAuditLog {
@@ -35,4 +35,4 @@ const AuditLogSchema = new Schema<IAuditLog>(
   }
 );
 
-export default models.AuditLog || model<IAuditLog>("AuditLog", AuditLogSchema);
+export default models.AuditLog || model<IAuditLog>('AuditLog', AuditLogSchema);

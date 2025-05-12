@@ -1,6 +1,6 @@
-import env from "@/lib/env";
-import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
+import env from '@/lib/env';
+import { useQuery } from '@tanstack/react-query';
+import axios from 'axios';
 
 interface TSkills {
   _id: string;
@@ -16,7 +16,7 @@ interface Logo {
 }
 export const useSkills = () => {
   const skills = useQuery<TSkills[]>({
-    queryKey: ["skills"],
+    queryKey: ['skills'],
     queryFn: async () => {
       const res = await axios.get(`${env?.BACKEND_URL}/api/skills`);
       return res.data.data as TSkills[];

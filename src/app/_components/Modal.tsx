@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from "react";
-import { MdClose } from "react-icons/md";
-import TrainingDetails from "./CreateCourse/TrainingDetails";
-import TrainingMetadata from "./CreateCourse/TrainingMetadata";
-import TrainingBatches from "./CreateCourse/TrainingBatches";
-import { useSelector } from "react-redux";
+import React, { useEffect, useState } from 'react';
+import { MdClose } from 'react-icons/md';
+import TrainingDetails from './CreateCourse/TrainingDetails';
+import TrainingMetadata from './CreateCourse/TrainingMetadata';
+import TrainingBatches from './CreateCourse/TrainingBatches';
+import { useSelector } from 'react-redux';
 
 interface ModalProps {
   isOpen: boolean;
@@ -11,79 +11,75 @@ interface ModalProps {
 }
 
 const Modal = ({ isOpen, handleClose }: ModalProps) => {
-  const { courseData: createCourseData } = useSelector(
-    (state: any) => state.courses
-  );
+  const { courseData: createCourseData } = useSelector((state: any) => state.courses);
   const [active, setActive] = useState(0);
   const [isCourseCreated, setIsCourseCreated] = useState(false);
 
   const [trainingMetadata, setTrainingMetadata] = useState({
-    headline: "",
-    body: "",
-    overview: "",
-    preview_video: "",
-    preview_image: "",
-    objectives: [{ title: "" }],
-    prerequisites: [{ title: "" }],
-    audience: [{ title: "" }],
-    skills_covered: [{ title: "" }],
-    key_features: [{ title: "" }],
-    benefits: [{ title: "" }],
-    resources: [{ title: "" }],
-    outcomes: [{ title: "" }],
-    certification_text: "",
-    certification_image: "",
-    FAQs: [{ question: "", answer: "" }],
-    curriculum: [
-      { title: "", videoSection: "", section_parts: [{ title: "" }] },
-    ],
-    who_should_attend: [{ title: "" }],
+    headline: '',
+    body: '',
+    overview: '',
+    preview_video: '',
+    preview_image: '',
+    objectives: [{ title: '' }],
+    prerequisites: [{ title: '' }],
+    audience: [{ title: '' }],
+    skills_covered: [{ title: '' }],
+    key_features: [{ title: '' }],
+    benefits: [{ title: '' }],
+    resources: [{ title: '' }],
+    outcomes: [{ title: '' }],
+    certification_text: '',
+    certification_image: '',
+    FAQs: [{ question: '', answer: '' }],
+    curriculum: [{ title: '', videoSection: '', section_parts: [{ title: '' }] }],
+    who_should_attend: [{ title: '' }],
   });
 
   const [trainingBatchesData, setTrainingBatchesData] = useState({
-    batch_name: "",
+    batch_name: '',
     isPaid: false,
-    trainer: "",
-    start_time: "",
-    enrollment_end_date: "",
-    end_date: "",
-    capacity: "",
-    batch_status: "",
-    description: "",
+    trainer: '',
+    start_time: '',
+    enrollment_end_date: '',
+    end_date: '',
+    capacity: '',
+    batch_status: '',
+    description: '',
   });
 
   const [courseData, setCourseData] = useState({
-    title: "",
-    category: "",
-    duration: "",
-    level: "",
-    language: "",
-    owned_by: "",
-    endorsed_by: "",
-    training_mode: "",
-    description: "",
+    title: '',
+    category: '',
+    duration: '',
+    level: '',
+    language: '',
+    owned_by: '',
+    endorsed_by: '',
+    training_mode: '',
+    description: '',
     assessment_required: false,
     isPaid: false,
-    preview_image_uri: "",
-    file_attach: "",
-    assessment: "",
-    price: "",
-    currency: "",
-    discount: "",
-    coupon_code: "",
+    preview_image_uri: '',
+    file_attach: '',
+    assessment: '',
+    price: '',
+    currency: '',
+    discount: '',
+    coupon_code: '',
     training_metadata: trainingMetadata,
     trainng_batches: trainingBatchesData,
   });
 
   useEffect(() => {
-    setCourseData((prev) => ({
+    setCourseData(prev => ({
       ...prev,
       training_metadata: trainingMetadata,
     }));
   }, [trainingMetadata]);
 
   useEffect(() => {
-    setCourseData((prev) => ({
+    setCourseData(prev => ({
       ...prev,
       training_batches: trainingBatchesData,
     }));
@@ -91,9 +87,9 @@ const Modal = ({ isOpen, handleClose }: ModalProps) => {
 
   useEffect(() => {
     if (isOpen) {
-      document.body.style.overflow = "hidden";
+      document.body.style.overflow = 'hidden';
       return (): void => {
-        document.body.style.overflow = "unset";
+        document.body.style.overflow = 'unset';
       };
     }
   }, [isOpen]);
@@ -108,7 +104,7 @@ const Modal = ({ isOpen, handleClose }: ModalProps) => {
             <div className="flex justify-around gap-1 h-full items-center">
               <div
                 className={`text-gray-400 font-[600] cursor-pointer h-full ${
-                  active === 0 ? "border-b-4 border-b-sky-950" : ""
+                  active === 0 ? 'border-b-4 border-b-sky-950' : ''
                 }`}
                 onClick={() => setActive(0)}
               >
@@ -116,9 +112,9 @@ const Modal = ({ isOpen, handleClose }: ModalProps) => {
               </div>
               <div
                 className={`${
-                  isCourseCreated ? "text-gray-400" : "text-gray-300"
+                  isCourseCreated ? 'text-gray-400' : 'text-gray-300'
                 } font-[600] sticky top-0 cursor-pointer h-full ${
-                  active === 1 ? "border-b-4 border-b-sky-950" : ""
+                  active === 1 ? 'border-b-4 border-b-sky-950' : ''
                 }`}
                 onClick={() => {
                   if (isCourseCreated) {
@@ -130,9 +126,9 @@ const Modal = ({ isOpen, handleClose }: ModalProps) => {
               </div>
               <div
                 className={`${
-                  isCourseCreated ? "text-gray-400" : "text-gray-300"
+                  isCourseCreated ? 'text-gray-400' : 'text-gray-300'
                 } font-[600] sticky top-0 cursor-pointer h-full ${
-                  active === 2 ? "border-b-4 border-b-sky-950" : ""
+                  active === 2 ? 'border-b-4 border-b-sky-950' : ''
                 }`}
                 onClick={() => {
                   if (isCourseCreated) {
@@ -144,9 +140,9 @@ const Modal = ({ isOpen, handleClose }: ModalProps) => {
               </div>
               <div
                 className={`${
-                  isCourseCreated ? "text-gray-400" : "text-gray-300"
+                  isCourseCreated ? 'text-gray-400' : 'text-gray-300'
                 } font-[600] sticky top-0 cursor-pointer h-full ${
-                  active === 3 ? "border-b-4 border-b-sky-950" : ""
+                  active === 3 ? 'border-b-4 border-b-sky-950' : ''
                 }`}
                 onClick={() => {
                   if (isCourseCreated) {
@@ -158,9 +154,9 @@ const Modal = ({ isOpen, handleClose }: ModalProps) => {
               </div>
               <div
                 className={`${
-                  isCourseCreated ? "text-gray-400" : "text-gray-300"
+                  isCourseCreated ? 'text-gray-400' : 'text-gray-300'
                 } font-[600] sticky top-0 cursor-pointer h-full ${
-                  active === 4 ? "border-b-4 border-b-sky-950" : ""
+                  active === 4 ? 'border-b-4 border-b-sky-950' : ''
                 }`}
                 onClick={() => {
                   if (isCourseCreated) {
@@ -172,9 +168,9 @@ const Modal = ({ isOpen, handleClose }: ModalProps) => {
               </div>
               <div
                 className={`${
-                  isCourseCreated ? "text-gray-400" : "text-gray-300"
+                  isCourseCreated ? 'text-gray-400' : 'text-gray-300'
                 } font-[600] sticky top-0 cursor-pointer h-full ${
-                  active === 5 ? "border-b-4 border-b-sky-950" : ""
+                  active === 5 ? 'border-b-4 border-b-sky-950' : ''
                 }`}
                 onClick={() => {
                   if (isCourseCreated) {

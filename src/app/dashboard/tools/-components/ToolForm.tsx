@@ -1,10 +1,10 @@
-"use client";
-import { Input } from "@/components/ui/input";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useState, useEffect } from "react";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
-import { useTools } from "./useTools";
+'use client';
+import { Input } from '@/components/ui/input';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useState, useEffect } from 'react';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
+import { useTools } from './useTools';
 import {
   Dialog,
   DialogClose,
@@ -13,16 +13,16 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import axios from "axios";
-import env from "@/lib/env";
-import { toast } from "sonner";
-import { Button } from "@/components/ui/button";
-import { MdDelete, MdEdit } from "react-icons/md";
-import { FaSquarePlus } from "react-icons/fa6";
-import AlertLoader from "@/components/global/AlertLoader";
-import FileUploader from "@/components/global/FileUploader";
+} from '@/components/ui/dialog';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import axios from 'axios';
+import env from '@/lib/env';
+import { toast } from 'sonner';
+import { Button } from '@/components/ui/button';
+import { MdDelete, MdEdit } from 'react-icons/md';
+import { FaSquarePlus } from 'react-icons/fa6';
+import AlertLoader from '@/components/global/AlertLoader';
+import FileUploader from '@/components/global/FileUploader';
 
 // Table components
 import {
@@ -32,7 +32,7 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table";
+} from '@/components/ui/table';
 
 // Pagination components
 import {
@@ -43,11 +43,11 @@ import {
   PaginationLink,
   PaginationNext,
   PaginationPrevious,
-} from "@/components/ui/pagination";
+} from '@/components/ui/pagination';
 
 const zodSchema = z.object({
-  title: z.string().min(3, "Title is required"),
-  logo: z.string().length(24, "Logo is required"),
+  title: z.string().min(3, 'Title is required'),
+  logo: z.string().length(24, 'Logo is required'),
 });
 
 type ToolType = z.infer<typeof zodSchema>;
@@ -70,7 +70,7 @@ export default function ToolForm() {
   const [deletingToolId, setDeletingToolId] = useState<string | null>(null);
   const queryClient = useQueryClient();
   const [url, setUrl] = useState<string | null>(null);
-  const [searchQuery, setSearchQuery] = useState("");
+  const [searchQuery, setSearchQuery] = useState('');
 
   // Pagination state
   const [currentPage, setCurrentPage] = useState(1);
@@ -82,8 +82,8 @@ export default function ToolForm() {
 
   const form = useForm<ToolType>({
     defaultValues: {
-      title: "",
-      logo: "",
+      title: '',
+      logo: '',
     },
     resolver: zodResolver(zodSchema),
   });
@@ -93,9 +93,7 @@ export default function ToolForm() {
     if (!data) return;
 
     const filtered = searchQuery
-      ? data.filter((tool: Tool) =>
-          tool.title.toLowerCase().includes(searchQuery.toLowerCase())
-        )
+      ? data.filter((tool: Tool) => tool.title.toLowerCase().includes(searchQuery.toLowerCase()))
       : data;
 
     setFilteredData(filtered);
@@ -112,28 +110,28 @@ export default function ToolForm() {
   }, [searchQuery]);
 
   const createNewTool = useMutation({
-    mutationKey: ["new-tool"],
+    mutationKey: ['new-tool'],
     mutationFn: async (data: ToolType) => {
       const res = await axios.post(`${env?.BACKEND_URL}/api/tools`, data);
       return res.data.data;
     },
     onSuccess: () => {
-      form.reset({ title: "", logo: "" });
-      toast.success("Tool created successfully");
-      queryClient.invalidateQueries({ queryKey: ["tools"] });
+      form.reset({ title: '', logo: '' });
+      toast.success('Tool created successfully');
+      queryClient.invalidateQueries({ queryKey: ['tools'] });
       setShow(false);
     },
   });
 
   const deleteTool = useMutation({
-    mutationKey: ["delete-tool"],
+    mutationKey: ['delete-tool'],
     mutationFn: async (id: string) => {
       const res = await axios.delete(`${env?.BACKEND_URL}/api/tools/${id}`);
       return res.data.data;
     },
     onSuccess: () => {
-      toast.success("Tool deleted successfully");
-      queryClient.invalidateQueries({ queryKey: ["tools"] });
+      toast.success('Tool deleted successfully');
+      queryClient.invalidateQueries({ queryKey: ['tools'] });
       setDeletingToolId(null);
     },
     onError: (error: Error) => {
@@ -142,19 +140,16 @@ export default function ToolForm() {
   });
 
   const updateTool = useMutation({
-    mutationKey: ["update-tool"],
+    mutationKey: ['update-tool'],
     mutationFn: async (data: { _id: string; title: string; logo: string }) => {
-      const res = await axios.put(
-        `${env?.BACKEND_URL}/api/tools/${data._id}`,
-        data
-      );
+      const res = await axios.put(`${env?.BACKEND_URL}/api/tools/${data._id}`, data);
       return res.data.data;
     },
     onSuccess: () => {
-      toast.success("Tool updated successfully");
-      queryClient.invalidateQueries({ queryKey: ["tools"] });
+      toast.success('Tool updated successfully');
+      queryClient.invalidateQueries({ queryKey: ['tools'] });
       setEditingTool(null);
-      form.reset({ title: "", logo: "" });
+      form.reset({ title: '', logo: '' });
     },
     onError: (error: Error) => {
       toast.error(error.message);
@@ -164,14 +159,14 @@ export default function ToolForm() {
   const handleEditClick = (tool: Tool) => {
     form.reset({
       title: tool.title,
-      logo: tool.logo?._id || "",
+      logo: tool.logo?._id || '',
     });
     setEditingTool(tool);
   };
 
   const handleEditClose = () => {
     setEditingTool(null);
-    form.reset({ title: "", logo: "" });
+    form.reset({ title: '', logo: '' });
   };
 
   const handleDeleteClick = (toolId: string) => {
@@ -193,10 +188,7 @@ export default function ToolForm() {
     // Always show first page
     items.push(
       <PaginationItem key="first">
-        <PaginationLink
-          onClick={() => handlePageChange(1)}
-          isActive={currentPage === 1}
-        >
+        <PaginationLink onClick={() => handlePageChange(1)} isActive={currentPage === 1}>
           1
         </PaginationLink>
       </PaginationItem>
@@ -227,10 +219,7 @@ export default function ToolForm() {
       if (i > 1 && i < totalPages) {
         items.push(
           <PaginationItem key={i}>
-            <PaginationLink
-              onClick={() => handlePageChange(i)}
-              isActive={currentPage === i}
-            >
+            <PaginationLink onClick={() => handlePageChange(i)} isActive={currentPage === i}>
               {i}
             </PaginationLink>
           </PaginationItem>
@@ -273,7 +262,7 @@ export default function ToolForm() {
           <Input
             placeholder="Search Tool"
             value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
+            onChange={e => setSearchQuery(e.target.value)}
           />
         </div>
 
@@ -286,16 +275,14 @@ export default function ToolForm() {
           <DialogContent>
             <DialogHeader>
               <DialogTitle>Create New Tool</DialogTitle>
-              <DialogDescription>
-                Fill in the details below to add a new tool.
-              </DialogDescription>
+              <DialogDescription>Fill in the details below to add a new tool.</DialogDescription>
             </DialogHeader>
             <form
               className="space-y-6"
-              onSubmit={form.handleSubmit((data) => createNewTool.mutate(data))}
+              onSubmit={form.handleSubmit(data => createNewTool.mutate(data))}
             >
               <Input
-                {...form.register("title")}
+                {...form.register('title')}
                 placeholder="Enter tool"
                 label="Tool"
                 error={form.formState.errors.title?.message}
@@ -303,16 +290,14 @@ export default function ToolForm() {
               <FileUploader
                 title="Tool Image"
                 purpose="tool"
-                setFileId={(id) => id && form.setValue("logo", id)}
-                id={form.watch("logo")}
+                setFileId={id => id && form.setValue('logo', id)}
+                id={form.watch('logo')}
                 key="tool"
                 label="Tool Logo"
-                setUrl={(url) => url && setUrl(url)}
+                setUrl={url => url && setUrl(url)}
               />
               {form.formState.errors.logo?.message && (
-                <p className="text-red-500">
-                  {form.formState.errors.logo?.message}
-                </p>
+                <p className="text-red-500">{form.formState.errors.logo?.message}</p>
               )}
               <div className="flex justify-end">
                 <Button>Add Tool</Button>
@@ -330,7 +315,7 @@ export default function ToolForm() {
       ) : filteredData.length === 0 ? (
         <div className="flex flex-col items-center mt-10 gap-y-5">
           <p className="text-xl">No results found for "{searchQuery}"</p>
-          <Button onClick={() => setSearchQuery("")}>Clear Search</Button>
+          <Button onClick={() => setSearchQuery('')}>Clear Search</Button>
         </div>
       ) : (
         <>
@@ -345,11 +330,9 @@ export default function ToolForm() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {paginatedData.map((tool) => (
+                {paginatedData.map(tool => (
                   <TableRow key={tool._id}>
-                    <TableCell className="font-medium capitalize">
-                      {tool.title}
-                    </TableCell>
+                    <TableCell className="font-medium capitalize">{tool.title}</TableCell>
                     <TableCell className="text-center">
                       <div className="flex justify-center">
                         <img
@@ -364,7 +347,7 @@ export default function ToolForm() {
                       <div className="flex justify-end gap-3">
                         <Dialog
                           open={editingTool?._id === tool._id}
-                          onOpenChange={(open) => !open && handleEditClose()}
+                          onOpenChange={open => !open && handleEditClose()}
                         >
                           <DialogTrigger>
                             <button
@@ -379,22 +362,21 @@ export default function ToolForm() {
                             <DialogHeader>
                               <DialogTitle>Edit Tool</DialogTitle>
                               <DialogDescription>
-                                Changes will update the tool everywhere it is
-                                used.
+                                Changes will update the tool everywhere it is used.
                               </DialogDescription>
                             </DialogHeader>
                             <form
                               className="space-y-6"
-                              onSubmit={form.handleSubmit((data) =>
+                              onSubmit={form.handleSubmit(data =>
                                 updateTool.mutate({
-                                  _id: editingTool?._id ?? "",
+                                  _id: editingTool?._id ?? '',
                                   title: data.title,
                                   logo: data.logo,
                                 })
                               )}
                             >
                               <Input
-                                {...form.register("title")}
+                                {...form.register('title')}
                                 placeholder="Enter tool"
                                 label="Tool"
                                 error={form.formState.errors.title?.message}
@@ -402,13 +384,11 @@ export default function ToolForm() {
                               <FileUploader
                                 title="Tool Image"
                                 purpose="tool"
-                                setFileId={(id) =>
-                                  id && form.setValue("logo", id)
-                                }
-                                id={form.watch("logo")}
+                                setFileId={id => id && form.setValue('logo', id)}
+                                id={form.watch('logo')}
                                 key={`tool-edit-${tool._id}`}
                                 label="Tool Logo"
-                                setUrl={(url) => url && setUrl(url)}
+                                setUrl={url => url && setUrl(url)}
                                 url={editingTool?.logo?.viewUrl}
                               />
                               {form.formState.errors.logo?.message && (
@@ -417,11 +397,7 @@ export default function ToolForm() {
                                 </p>
                               )}
                               <div className="flex justify-end gap-3">
-                                <Button
-                                  type="button"
-                                  variant="outline"
-                                  onClick={handleEditClose}
-                                >
+                                <Button type="button" variant="outline" onClick={handleEditClose}>
                                   Cancel
                                 </Button>
                                 <Button type="submit">Confirm Edit</Button>
@@ -432,9 +408,7 @@ export default function ToolForm() {
 
                         <Dialog
                           open={deletingToolId === tool._id}
-                          onOpenChange={(open) =>
-                            !open && setDeletingToolId(null)
-                          }
+                          onOpenChange={open => !open && setDeletingToolId(null)}
                         >
                           <DialogTrigger>
                             <button
@@ -449,15 +423,11 @@ export default function ToolForm() {
                             <DialogHeader>
                               <DialogTitle>Are you sure?</DialogTitle>
                               <DialogDescription>
-                                This action is irreversible and will delete the
-                                tool permanently.
+                                This action is irreversible and will delete the tool permanently.
                               </DialogDescription>
                             </DialogHeader>
                             <div className="flex justify-end gap-3">
-                              <Button
-                                variant="outline"
-                                onClick={() => setDeletingToolId(null)}
-                              >
+                              <Button variant="outline" onClick={() => setDeletingToolId(null)}>
                                 Cancel
                               </Button>
                               <Button
@@ -486,9 +456,7 @@ export default function ToolForm() {
                     <PaginationPrevious
                       onClick={() => handlePageChange(currentPage - 1)}
                       className={
-                        currentPage === 1
-                          ? "pointer-events-none opacity-50"
-                          : "cursor-pointer"
+                        currentPage === 1 ? 'pointer-events-none opacity-50' : 'cursor-pointer'
                       }
                     />
                   </PaginationItem>
@@ -500,8 +468,8 @@ export default function ToolForm() {
                       onClick={() => handlePageChange(currentPage + 1)}
                       className={
                         currentPage === totalPages
-                          ? "pointer-events-none opacity-50"
-                          : "cursor-pointer"
+                          ? 'pointer-events-none opacity-50'
+                          : 'cursor-pointer'
                       }
                     />
                   </PaginationItem>

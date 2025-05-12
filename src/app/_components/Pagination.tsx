@@ -1,12 +1,7 @@
-import React from "react";
-import { FaAngleLeft, FaAngleRight } from "react-icons/fa6";
+import React from 'react';
+import { FaAngleLeft, FaAngleRight } from 'react-icons/fa6';
 
-export const Pagination = ({
-  itemsPerPage,
-  totalItems,
-  paginate,
-  currentPage,
-}: any) => {
+export const Pagination = ({ itemsPerPage, totalItems, paginate, currentPage }: any) => {
   const pageNumbers: number[] = [];
 
   for (let i = 1; i <= Math.ceil(totalItems / itemsPerPage); i++) {
@@ -18,13 +13,13 @@ export const Pagination = ({
     const currentPageIndex = currentPage - 1;
 
     if (pageNumbers.length <= pageRangeDisplayed) {
-      return pageNumbers.map((number) => (
+      return pageNumbers.map(number => (
         <ul
           key={number}
           className={`${
             currentPage === number
-              ? "p-2 w-[30px] flex justify-center items-center h-[30px] bg-sky-800 text-white rounded-full transition-all duration-300"
-              : "p-2 w-[30px] flex justify-center items-center h-[30px] rounded-full transition-all duration-300 hover:bg-gray-300"
+              ? 'p-2 w-[30px] flex justify-center items-center h-[30px] bg-sky-800 text-white rounded-full transition-all duration-300'
+              : 'p-2 w-[30px] flex justify-center items-center h-[30px] rounded-full transition-all duration-300 hover:bg-gray-300'
           }`}
         >
           <li key={number}>
@@ -39,10 +34,7 @@ export const Pagination = ({
     if (currentPageIndex <= Math.floor(pageRangeDisplayed / 2)) {
       startPage = 0;
       endPage = pageRangeDisplayed - 1;
-    } else if (
-      currentPageIndex >=
-      pageNumbers.length - Math.ceil(pageRangeDisplayed / 2)
-    ) {
+    } else if (currentPageIndex >= pageNumbers.length - Math.ceil(pageRangeDisplayed / 2)) {
       startPage = pageNumbers.length - pageRangeDisplayed;
       endPage = pageNumbers.length - 1;
     } else {
@@ -55,13 +47,13 @@ export const Pagination = ({
     return (
       <>
         {startPage !== 0 && <span>...</span>}
-        {pages.map((number) => (
+        {pages.map(number => (
           <ul
             key={number}
             className={`${
               currentPage === number
-                ? "p-2 w-[30px] flex justify-center items-center h-[30px] bg-sky-800 text-white rounded-full transition-all duration-300"
-                : "p-2 w-[30px] flex justify-center items-center h-[30px] rounded-full transition-all duration-300 hover:bg-gray-300"
+                ? 'p-2 w-[30px] flex justify-center items-center h-[30px] bg-sky-800 text-white rounded-full transition-all duration-300'
+                : 'p-2 w-[30px] flex justify-center items-center h-[30px] rounded-full transition-all duration-300 hover:bg-gray-300'
             }`}
           >
             <li key={number}>
@@ -92,17 +84,15 @@ export const Pagination = ({
     <div className="flex gap-2 justify-center items-center w-60">
       <FaAngleLeft
         onClick={() => paginate(currentPage - 1)}
-        className={`cursor-pointer ${
-          currentPage === 1 ? "pointer-events-none text-gray-300" : ""
-        }`}
+        className={`cursor-pointer ${currentPage === 1 ? 'pointer-events-none text-gray-300' : ''}`}
       />
       {renderPageNumbers()}
       <FaAngleRight
         onClick={() => paginate(currentPage + 1)}
         className={`cursor-pointer ${
           currentPage >= Math.ceil(totalItems / itemsPerPage)
-            ? "pointer-events-none text-gray-300"
-            : ""
+            ? 'pointer-events-none text-gray-300'
+            : ''
         }`}
       />
     </div>

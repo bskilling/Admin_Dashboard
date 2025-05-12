@@ -1,5 +1,5 @@
-"use client";
-import styles from "./BlogBody.module.css";
+'use client';
+import styles from './BlogBody.module.css';
 
 interface BlogBodyProps {
   content: string;
@@ -8,10 +8,7 @@ interface BlogBodyProps {
 export default function BlogBody({ content }: BlogBodyProps) {
   return (
     <div className="max-w-2xl mx-auto">
-      <div
-        className={styles.content}
-        dangerouslySetInnerHTML={{ __html: content }}
-      />
+      <div className={styles.content} dangerouslySetInnerHTML={{ __html: content }} />
     </div>
   );
 }

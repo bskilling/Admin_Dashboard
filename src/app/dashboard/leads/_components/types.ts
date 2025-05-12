@@ -14,7 +14,7 @@ export interface Lead {
   email: string;
   countryCode: string;
   phoneNumber: string;
-  type: "b2i" | "b2b" | "b2c" | "b2g" | "general";
+  type: 'b2i' | 'b2b' | 'b2c' | 'b2g' | 'general';
   subCategory?: string;
   query: string;
   status: string;
@@ -54,24 +54,24 @@ export interface LeadCounts {
 }
 
 export const STATUS_OPTIONS = [
-  "NEW",
-  "Attempted to Contact",
-  "Not Contacted",
-  "In-conversation",
-  "Prospect",
-  "Not-Eligible",
-  "Not-Interested",
-  "Spam",
-  "Opportunity",
-  "Contact-in-Future",
-  "Closed-Won",
-  "Closed-Lost",
+  'NEW',
+  'Attempted to Contact',
+  'Not Contacted',
+  'In-conversation',
+  'Prospect',
+  'Not-Eligible',
+  'Not-Interested',
+  'Spam',
+  'Opportunity',
+  'Contact-in-Future',
+  'Closed-Won',
+  'Closed-Lost',
 ];
 
 export const TYPE_OPTIONS = [
-  { value: "b2i", label: "B2I" },
-  { value: "b2b", label: "B2B" },
-  { value: "b2c", label: "B2C" },
-  { value: "b2g", label: "B2G" },
-  { value: "general", label: "General" },
+  { value: 'b2i', label: 'B2I' },
+  { value: 'b2b', label: 'B2B' },
+  { value: 'b2c', label: 'B2C' },
+  { value: 'b2g', label: 'B2G' },
+  { value: 'general', label: 'General' },
 ];

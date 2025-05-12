@@ -1,9 +1,9 @@
-import Link from "next/link";
-import React from "react";
-import { AiOutlineDashboard } from "react-icons/ai";
-import { BiCategoryAlt, BiLogOut } from "react-icons/bi";
-import { HiOutlineUserGroup } from "react-icons/hi";
-import { MdOutlineLibraryBooks } from "react-icons/md";
+import Link from 'next/link';
+import React from 'react';
+import { AiOutlineDashboard } from 'react-icons/ai';
+import { BiCategoryAlt, BiLogOut } from 'react-icons/bi';
+import { HiOutlineUserGroup } from 'react-icons/hi';
+import { MdOutlineLibraryBooks } from 'react-icons/md';
 
 export default function Sidebar() {
   return (

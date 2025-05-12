@@ -1,26 +1,20 @@
 // components/RelatedCoursesSelect.tsx
-import { Controller } from "react-hook-form";
-import { useState } from "react";
-import { CourseType, useCourseCategories, useCourses } from "./useCourses";
+import { Controller } from 'react-hook-form';
+import { useState } from 'react';
+import { CourseType, useCourseCategories, useCourses } from './useCourses';
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
-import { PlusCircle, X } from "lucide-react";
-import { Badge } from "@/components/ui/badge";
-import { Input } from "@/components/ui/input";
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { ScrollArea } from "@/components/ui/scroll-area";
+} from '@/components/ui/dialog';
+import { Button } from '@/components/ui/button';
+import { PlusCircle, X } from 'lucide-react';
+import { Badge } from '@/components/ui/badge';
+import { Input } from '@/components/ui/input';
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import { ScrollArea } from '@/components/ui/scroll-area';
 
 export default function RelatedCoursesSelect({
   control,
@@ -29,9 +23,9 @@ export default function RelatedCoursesSelect({
   control: any;
   initialSelected?: string[];
 }) {
-  const [selectedType, setSelectedType] = useState<CourseType>("b2b");
+  const [selectedType, setSelectedType] = useState<CourseType>('b2b');
   const [selectedCategory, setSelectedCategory] = useState<string>();
-  const [searchQuery, setSearchQuery] = useState("");
+  const [searchQuery, setSearchQuery] = useState('');
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   // Fetch categories based on selected type
@@ -55,22 +49,18 @@ export default function RelatedCoursesSelect({
           <>
             <div className="flex flex-wrap gap-2">
               {field.value?.map((courseId: string) => {
-                const course = courseData?.courses?.find(
-                  (c) => c._id === courseId
-                );
+                const course = courseData?.courses?.find(c => c._id === courseId);
                 return (
                   <Badge
                     key={courseId}
                     variant="outline"
                     className="flex items-center gap-2 py-1 px-3"
                   >
-                    {course?.title || "Unknown Course"}
+                    {course?.title || 'Unknown Course'}
                     <button
                       type="button"
                       onClick={() => {
-                        field.onChange(
-                          field.value.filter((id: string) => id !== courseId)
-                        );
+                        field.onChange(field.value.filter((id: string) => id !== courseId));
                       }}
                       className="text-muted-foreground hover:text-destructive"
                     >
@@ -96,13 +86,11 @@ export default function RelatedCoursesSelect({
                 <div className="grid grid-cols-4 gap-4">
                   <div className="col-span-1 space-y-4">
                     <div>
-                      <label className="block text-sm font-medium mb-1">
-                        Course Type
-                      </label>
+                      <label className="block text-sm font-medium mb-1">Course Type</label>
                       <select
                         className="w-full px-3 py-2 border rounded-lg"
                         value={selectedType}
-                        onChange={(e) => {
+                        onChange={e => {
                           setSelectedType(e.target.value as CourseType);
                           setSelectedCategory(undefined);
                         }}
@@ -116,15 +104,11 @@ export default function RelatedCoursesSelect({
 
                     {categories && categories.length > 0 && (
                       <div>
-                        <label className="block text-sm font-medium mb-1">
-                          Category
-                        </label>
+                        <label className="block text-sm font-medium mb-1">Category</label>
                         <select
                           className="w-full px-3 py-2 border rounded-lg"
-                          value={selectedCategory || ""}
-                          onChange={(e) =>
-                            setSelectedCategory(e.target.value || undefined)
-                          }
+                          value={selectedCategory || ''}
+                          onChange={e => setSelectedCategory(e.target.value || undefined)}
                         >
                           <option value="">All Categories</option>
                           {categories.map((cat: any) => (
@@ -140,7 +124,7 @@ export default function RelatedCoursesSelect({
                       <Input
                         placeholder="Search courses..."
                         value={searchQuery}
-                        onChange={(e) => setSearchQuery(e.target.value)}
+                        onChange={e => setSearchQuery(e.target.value)}
                       />
                     </div>
                   </div>
@@ -153,22 +137,17 @@ export default function RelatedCoursesSelect({
                         </div>
                       ) : courseData?.courses?.length ? (
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                          {courseData.courses.map((course) => (
+                          {courseData.courses.map(course => (
                             <Card key={course._id}>
                               <CardHeader>
-                                <CardTitle className="text-lg">
-                                  {course.title}
-                                </CardTitle>
-                                <Badge variant="secondary">
-                                  {course.type.toUpperCase()}
-                                </Badge>
+                                <CardTitle className="text-lg">{course.title}</CardTitle>
+                                <Badge variant="secondary">{course.type.toUpperCase()}</Badge>
                               </CardHeader>
                               <CardContent>
                                 <p className="text-sm text-muted-foreground">
                                   {
                                     // @ts-expect-error
-                                    course?.description ||
-                                      "No description available"
+                                    course?.description || 'No description available'
                                   }
                                 </p>
                               </CardContent>
@@ -176,29 +155,20 @@ export default function RelatedCoursesSelect({
                                 <Button
                                   type="button"
                                   variant={
-                                    field.value?.includes(course._id)
-                                      ? "default"
-                                      : "outline"
+                                    field.value?.includes(course._id) ? 'default' : 'outline'
                                   }
                                   size="sm"
                                   onClick={() => {
                                     if (field.value?.includes(course._id)) {
                                       field.onChange(
-                                        field.value.filter(
-                                          (id: string) => id !== course._id
-                                        )
+                                        field.value.filter((id: string) => id !== course._id)
                                       );
                                     } else {
-                                      field.onChange([
-                                        ...(field.value || []),
-                                        course._id,
-                                      ]);
+                                      field.onChange([...(field.value || []), course._id]);
                                     }
                                   }}
                                 >
-                                  {field.value?.includes(course._id)
-                                    ? "Remove"
-                                    : "Add"}
+                                  {field.value?.includes(course._id) ? 'Remove' : 'Add'}
                                 </Button>
                               </CardFooter>
                             </Card>

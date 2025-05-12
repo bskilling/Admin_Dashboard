@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 import {
   CurrencyDollarIcon,
   CreditCardIcon,
@@ -7,17 +7,14 @@ import {
   ShieldCheckIcon,
   AcademicCapIcon,
   DocumentTextIcon,
-} from "@heroicons/react/24/solid";
+} from '@heroicons/react/24/solid';
 
 interface CourseEnrollmentProps {
   formattedPrice: string;
   durationHours: number;
 }
 
-const CourseEnrollment: React.FC<CourseEnrollmentProps> = ({
-  formattedPrice,
-  durationHours,
-}) => {
+const CourseEnrollment: React.FC<CourseEnrollmentProps> = ({ formattedPrice, durationHours }) => {
   return (
     <section className="relative py-16 px-6 flex justify-center bg-gradient-to-r from-[#2E1A47] to-[#0D1B2A]">
       {/* Background Icons - Shifted to Right for Visibility */}
@@ -52,15 +49,11 @@ const CourseEnrollment: React.FC<CourseEnrollmentProps> = ({
           <div className="grid grid-cols-1 gap-6 mt-6">
             <div className="flex items-center gap-3 bg-gray-100 p-4 rounded-xl shadow-sm">
               <ClockIcon className="h-6 w-6 text-[#F8B400]" />
-              <span className="font-medium text-gray-700">
-                {durationHours} Hours of Content
-              </span>
+              <span className="font-medium text-gray-700">{durationHours} Hours of Content</span>
             </div>
             <div className="flex items-center gap-3 bg-gray-100 p-4 rounded-xl shadow-sm">
               <BookOpenIcon className="h-6 w-6 text-[#F8B400]" />
-              <span className="font-medium text-gray-700">
-                Industry-Recognized Curriculum
-              </span>
+              <span className="font-medium text-gray-700">Industry-Recognized Curriculum</span>
             </div>
             <div className="flex items-center gap-3 bg-gray-100 p-4 rounded-xl shadow-sm">
               <ShieldCheckIcon className="h-6 w-6 text-[#F8B400]" />

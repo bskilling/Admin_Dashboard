@@ -1,15 +1,15 @@
-"use client";
+'use client';
 
-import Image from "next/image";
-import React, { Suspense, useEffect, useState } from "react";
+import Image from 'next/image';
+import React, { Suspense, useEffect, useState } from 'react';
 // import loginBg from "../../public/assets/loginBg.png";
-import Link from "next/link";
-import { IoIosAdd } from "react-icons/io";
+import Link from 'next/link';
+import { IoIosAdd } from 'react-icons/io';
 // import loginPageLogo from "../../public/assets/loginPageLogo.png";
-import { useGetAllBlogsQuery } from "@/redux/features/blog/blogApi";
-import { LiaEdit } from "react-icons/lia";
-import { FaExternalLinkAlt } from "react-icons/fa";
-import { formatToStringDate } from "@/utils/formatter";
+import { useGetAllBlogsQuery } from '@/redux/features/blog/blogApi';
+import { LiaEdit } from 'react-icons/lia';
+import { FaExternalLinkAlt } from 'react-icons/fa';
+import { formatToStringDate } from '@/utils/formatter';
 
 const Header = ({ courseId, setEditModal }: any) => {
   const [scrolled, setScrolled] = useState(false);
@@ -24,36 +24,25 @@ const Header = ({ courseId, setEditModal }: any) => {
       }
     };
 
-    window.addEventListener("scroll", handleScroll);
+    window.addEventListener('scroll', handleScroll);
 
     return () => {
-      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener('scroll', handleScroll);
     };
   }, []);
 
   return (
     <header
       className={`fixed top-0 left-0 z-[50]  ${
-        scrolled ? "bg-white" : ""
+        scrolled ? 'bg-white' : ''
       } bg-opacity-30 bg-gray-200 backdrop-filter backdrop-blur-lg h-[80px] flex justify-between items-center px-6 w-screen`}
     >
       <div>
-        <Link
-          href="/learning/trainings"
-          className="flex gap-2 items-center text-xl"
-        >
-          <Image
-            src={"/assets/loginPageLogo.png"}
-            alt="logo"
-            width="120"
-            height="120"
-          />
+        <Link href="/learning/trainings" className="flex gap-2 items-center text-xl">
+          <Image src={'/assets/loginPageLogo.png'} alt="logo" width="120" height="120" />
         </Link>
       </div>
-      <Link
-        href="/dashboard/blogs/create"
-        className="p-3 flex justify-center items-center"
-      >
+      <Link href="/dashboard/blogs/create" className="p-3 flex justify-center items-center">
         <LiaEdit size={40} className="text-gray-400" />
 
         <p className="text-gray-600">Write</p>
@@ -63,10 +52,7 @@ const Header = ({ courseId, setEditModal }: any) => {
 };
 
 export default function Page() {
-  const { isLoading, data, refetch } = useGetAllBlogsQuery(
-    {},
-    { refetchOnMountOrArgChange: true }
-  );
+  const { isLoading, data, refetch } = useGetAllBlogsQuery({}, { refetchOnMountOrArgChange: true });
 
   return (
     <Suspense>
@@ -84,27 +70,25 @@ export default function Page() {
               <Link href={`/dashboard/blogs/${val._id}`} key={val}>
                 <div className="relative bg-white rounded-lg overflow-hidden shadow-lg w-80 h-96 transition-all hover:scale-105 cursor-pointer group">
                   <Image
-                    src={val?.banner ?? "/assets/loginBg.png"}
+                    src={val?.banner ?? '/assets/loginBg.png'}
                     alt="banner"
                     className="rounded-md object-cover w-full h-full"
                     width={400}
                     height={200}
-                    style={{ height: "200px", width: "100%" }}
+                    style={{ height: '200px', width: '100%' }}
                   />
                   <div className="p-4">
                     <div className="text-sm text-gray-600 items-center flex justify-between">
                       <span className="mr-2 font-semibold">BSkilling</span>
                       <span>{formatToStringDate(val.createdAt)}</span>
                     </div>
-                    <div className="font-bold text-xl my-2">
-                      {val?.title || ""}
-                    </div>
+                    <div className="font-bold text-xl my-2">{val?.title || ''}</div>
                     <p
                       className="text-gray-700 text-base"
                       dangerouslySetInnerHTML={{
                         __html:
                           val?.content?.length > 150
-                            ? val?.content?.slice(0, 100) + "..."
+                            ? val?.content?.slice(0, 100) + '...'
                             : val?.content,
                       }}
                     />

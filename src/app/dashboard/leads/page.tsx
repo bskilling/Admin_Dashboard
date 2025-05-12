@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import React from "react";
-import AdminLeadsDashboard from "./_components/Main";
+import React from 'react';
+import AdminLeadsDashboard from './_components/Main';
 
 export default function LeadsPage() {
   return (

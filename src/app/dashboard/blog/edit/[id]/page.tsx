@@ -1,13 +1,13 @@
-"use client";
+'use client';
 
 // app/blog/edit/[id]/page.tsx
-import { useParams } from "next/navigation";
-import { useEffect } from "react";
-import { notFound } from "next/navigation";
-import { useQuery } from "@tanstack/react-query";
-import { blogApi } from "@/lib/api";
-import { Blog } from "../../_components/types";
-import BlogForm from "../../[slug]/_components/BlogForm";
+import { useParams } from 'next/navigation';
+import { useEffect } from 'react';
+import { notFound } from 'next/navigation';
+import { useQuery } from '@tanstack/react-query';
+import { blogApi } from '@/lib/api';
+import { Blog } from '../../_components/types';
+import BlogForm from '../../[slug]/_components/BlogForm';
 
 export default function EditBlogPage() {
   const params = useParams();
@@ -15,8 +15,8 @@ export default function EditBlogPage() {
 
   // Fetch blog data
   const { data, isLoading, isError } = useQuery<{ blog: Blog }>({
-    queryKey: ["blog", id],
-    queryFn: () => blogApi.getById(id).then((res) => res.data.data),
+    queryKey: ['blog', id],
+    queryFn: () => blogApi.getById(id).then(res => res.data.data),
     staleTime: 0, // Don't cache for edit page
   });
 

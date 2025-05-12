@@ -1,23 +1,19 @@
-"use client";
+'use client';
 
-import React, { useState, useEffect } from "react";
-import { Search, Filter, X } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import React, { useState, useEffect } from 'react';
+import { Search, Filter, X } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
-import { FilterOptions, STATUS_OPTIONS, TYPE_OPTIONS } from "./types";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
-import { Badge } from "@/components/ui/badge";
+} from '@/components/ui/select';
+import { FilterOptions, STATUS_OPTIONS, TYPE_OPTIONS } from './types';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { Badge } from '@/components/ui/badge';
 
 interface LeadFilterProps {
   filters: FilterOptions;
@@ -57,12 +53,12 @@ const LeadFilter: React.FC<LeadFilterProps> = ({
   // Reset temp filters
   const handleResetFilters = () => {
     setTempFilters({
-      type: "",
-      subCategory: "",
-      status: "",
+      type: '',
+      subCategory: '',
+      status: '',
       searchQuery: filters.searchQuery, // Preserve search query
-      category: "",
-      courseId: "",
+      category: '',
+      courseId: '',
     });
     resetFilters();
   };
@@ -76,10 +72,10 @@ const LeadFilter: React.FC<LeadFilterProps> = ({
             placeholder="Search by name, email, or query..."
             className="pl-10 w-full"
             value={filters.searchQuery}
-            onChange={(e) => {
+            onChange={e => {
               const value = e.target.value;
-              setFilters((prev) => ({ ...prev, searchQuery: value }));
-              setTempFilters((prev) => ({ ...prev, searchQuery: value }));
+              setFilters(prev => ({ ...prev, searchQuery: value }));
+              setTempFilters(prev => ({ ...prev, searchQuery: value }));
             }}
           />
           {filters.searchQuery && (
@@ -88,8 +84,8 @@ const LeadFilter: React.FC<LeadFilterProps> = ({
               size="sm"
               className="absolute right-1 top-1/2 transform -translate-y-1/2 h-6 w-6 p-0"
               onClick={() => {
-                setFilters((prev) => ({ ...prev, searchQuery: "" }));
-                setTempFilters((prev) => ({ ...prev, searchQuery: "" }));
+                setFilters(prev => ({ ...prev, searchQuery: '' }));
+                setTempFilters(prev => ({ ...prev, searchQuery: '' }));
               }}
             >
               <X className="h-4 w-4" />
@@ -107,9 +103,7 @@ const LeadFilter: React.FC<LeadFilterProps> = ({
               <Filter className="h-4 w-4" />
               Filters
               {activeFiltersCount > 0 && (
-                <Badge className="ml-1 bg-blue-500 text-white">
-                  {activeFiltersCount}
-                </Badge>
+                <Badge className="ml-1 bg-blue-500 text-white">{activeFiltersCount}</Badge>
               )}
             </Button>
           </PopoverTrigger>
@@ -119,21 +113,17 @@ const LeadFilter: React.FC<LeadFilterProps> = ({
 
               {/* Type Filter */}
               <div>
-                <label className="text-sm font-medium text-gray-700 mb-1 block">
-                  Lead Type
-                </label>
+                <label className="text-sm font-medium text-gray-700 mb-1 block">Lead Type</label>
                 <Select
                   value={tempFilters.type}
-                  onValueChange={(value) =>
-                    setTempFilters({ ...tempFilters, type: value })
-                  }
+                  onValueChange={value => setTempFilters({ ...tempFilters, type: value })}
                 >
                   <SelectTrigger>
                     <SelectValue placeholder="Select type" />
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="rr">All Types</SelectItem>
-                    {TYPE_OPTIONS.map((type) => (
+                    {TYPE_OPTIONS.map(type => (
                       <SelectItem key={type.value} value={type.value}>
                         {type.label}
                       </SelectItem>
@@ -144,21 +134,17 @@ const LeadFilter: React.FC<LeadFilterProps> = ({
 
               {/* Status Filter */}
               <div>
-                <label className="text-sm font-medium text-gray-700 mb-1 block">
-                  Status
-                </label>
+                <label className="text-sm font-medium text-gray-700 mb-1 block">Status</label>
                 <Select
                   value={tempFilters.status}
-                  onValueChange={(value) =>
-                    setTempFilters({ ...tempFilters, status: value })
-                  }
+                  onValueChange={value => setTempFilters({ ...tempFilters, status: value })}
                 >
                   <SelectTrigger>
                     <SelectValue placeholder="Select status" />
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="rr">All Statuses</SelectItem>
-                    {STATUS_OPTIONS.map((status) => (
+                    {STATUS_OPTIONS.map(status => (
                       <SelectItem key={status} value={status}>
                         {status}
                       </SelectItem>
@@ -169,14 +155,10 @@ const LeadFilter: React.FC<LeadFilterProps> = ({
 
               {/* Sub Category Filter */}
               <div>
-                <label className="text-sm font-medium text-gray-700 mb-1 block">
-                  Sub Category
-                </label>
+                <label className="text-sm font-medium text-gray-700 mb-1 block">Sub Category</label>
                 <Select
                   value={tempFilters.subCategory}
-                  onValueChange={(value) =>
-                    setTempFilters({ ...tempFilters, subCategory: value })
-                  }
+                  onValueChange={value => setTempFilters({ ...tempFilters, subCategory: value })}
                 >
                   <SelectTrigger>
                     <SelectValue placeholder="Select sub-category" />
@@ -196,9 +178,7 @@ const LeadFilter: React.FC<LeadFilterProps> = ({
                 </label>
                 <Select
                   value={tempFilters.category}
-                  onValueChange={(value) =>
-                    setTempFilters({ ...tempFilters, category: value })
-                  }
+                  onValueChange={value => setTempFilters({ ...tempFilters, category: value })}
                 >
                   <SelectTrigger>
                     <SelectValue placeholder="Select category" />
@@ -214,11 +194,7 @@ const LeadFilter: React.FC<LeadFilterProps> = ({
               </div>
 
               <div className="flex justify-end gap-2 pt-2">
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={handleResetFilters}
-                >
+                <Button variant="outline" size="sm" onClick={handleResetFilters}>
                   Reset
                 </Button>
                 <Button size="sm" onClick={applyFilters}>
@@ -234,32 +210,26 @@ const LeadFilter: React.FC<LeadFilterProps> = ({
       {activeFiltersCount > 0 && (
         <div className="flex flex-wrap gap-2 mt-3">
           {filters.type && (
-            <Badge
-              variant="outline"
-              className="bg-blue-50 text-blue-700 flex items-center gap-1"
-            >
+            <Badge variant="outline" className="bg-blue-50 text-blue-700 flex items-center gap-1">
               Type: {filters.type.toUpperCase()}
               <Button
                 variant="ghost"
                 size="sm"
                 className="h-4 w-4 p-0 ml-1"
-                onClick={() => setFilters({ ...filters, type: "" })}
+                onClick={() => setFilters({ ...filters, type: '' })}
               >
                 <X className="h-3 w-3" />
               </Button>
             </Badge>
           )}
           {filters.status && (
-            <Badge
-              variant="outline"
-              className="bg-green-50 text-green-700 flex items-center gap-1"
-            >
+            <Badge variant="outline" className="bg-green-50 text-green-700 flex items-center gap-1">
               Status: {filters.status}
               <Button
                 variant="ghost"
                 size="sm"
                 className="h-4 w-4 p-0 ml-1"
-                onClick={() => setFilters({ ...filters, status: "" })}
+                onClick={() => setFilters({ ...filters, status: '' })}
               >
                 <X className="h-3 w-3" />
               </Button>
@@ -275,35 +245,27 @@ const LeadFilter: React.FC<LeadFilterProps> = ({
                 variant="ghost"
                 size="sm"
                 className="h-4 w-4 p-0 ml-1"
-                onClick={() => setFilters({ ...filters, subCategory: "" })}
+                onClick={() => setFilters({ ...filters, subCategory: '' })}
               >
                 <X className="h-3 w-3" />
               </Button>
             </Badge>
           )}
           {filters.category && (
-            <Badge
-              variant="outline"
-              className="bg-amber-50 text-amber-700 flex items-center gap-1"
-            >
+            <Badge variant="outline" className="bg-amber-50 text-amber-700 flex items-center gap-1">
               Category
               <Button
                 variant="ghost"
                 size="sm"
                 className="h-4 w-4 p-0 ml-1"
-                onClick={() => setFilters({ ...filters, category: "" })}
+                onClick={() => setFilters({ ...filters, category: '' })}
               >
                 <X className="h-3 w-3" />
               </Button>
             </Badge>
           )}
           {activeFiltersCount > 1 && (
-            <Button
-              variant="outline"
-              size="sm"
-              className="h-6 text-xs"
-              onClick={resetFilters}
-            >
+            <Button variant="outline" size="sm" className="h-6 text-xs" onClick={resetFilters}>
               Clear All
             </Button>
           )}

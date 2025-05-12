@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState } from 'react';
 import {
   Dialog,
   DialogTrigger,
@@ -6,11 +6,11 @@ import {
   DialogHeader,
   DialogTitle,
   DialogDescription,
-} from "@/components/ui/dialog";
-import { toast } from "react-hot-toast";
-import { z } from "zod";
-import { Coursedetailstype } from "../page";
-import { draftCourseSchema } from "@/app/dashboard/categories/_components/validators";
+} from '@/components/ui/dialog';
+import { toast } from 'react-hot-toast';
+import { z } from 'zod';
+import { Coursedetailstype } from '../page';
+import { draftCourseSchema } from '@/app/dashboard/categories/_components/validators';
 
 interface RootObject {
   _id: string;
@@ -97,64 +97,50 @@ const DraftCourseButton: React.FC<Props> = ({
   createDraftMutation,
 }) => {
   const [open, setOpen] = useState(false);
-  const [draftData, setDraftData] = useState<z.infer<
-    typeof draftCourseSchema
-  > | null>(null);
+  const [draftData, setDraftData] = useState<z.infer<typeof draftCourseSchema> | null>(null);
 
   const handlePreview = () => {
     if (!selectedCategory || !courseDetails) {
-      toast.error(
-        "Please select a category and ensure course details are loaded"
-      );
+      toast.error('Please select a category and ensure course details are loaded');
       return;
     }
 
     const newDraftData: z.infer<typeof draftCourseSchema> = {
-      type: "b2c",
-      title: courseDetails?.title || "New Draft Course",
-      description: courseDetails?.description || "This is a draft description",
+      type: 'b2c',
+      title: courseDetails?.title || 'New Draft Course',
+      description: courseDetails?.description || 'This is a draft description',
       category: [selectedCategory],
-      price: { amount: Number(courseDetails?.price) || 0, currency: "INR" },
+      price: { amount: Number(courseDetails?.price) || 0, currency: 'INR' },
       durationHours: courseDetails?.duration || 0,
       skills: [],
       tools: [],
-      highlights:
-        courseDetails?.training_metadata?.objectives?.map((b) => b.title) || [],
-      outcomes:
-        courseDetails?.training_metadata?.benefits?.map((b) => b.title) || [],
-      whyJoin:
-        courseDetails?.training_metadata?.outcomes?.map((b) => b.title) || [],
+      highlights: courseDetails?.training_metadata?.objectives?.map(b => b.title) || [],
+      outcomes: courseDetails?.training_metadata?.benefits?.map(b => b.title) || [],
+      whyJoin: courseDetails?.training_metadata?.outcomes?.map(b => b.title) || [],
       slug: courseDetails?.url,
       videoUrl: courseDetails?.training_metadata?.preview_video,
       //@ts-ignore
       overview: {
-        keyFeatures:
-          courseDetails?.training_metadata?.key_features?.map((o) => o.title) ||
-          [],
-        title: courseDetails?.training_metadata?.headline || "",
-        description: courseDetails?.training_metadata?.body || "",
+        keyFeatures: courseDetails?.training_metadata?.key_features?.map(o => o.title) || [],
+        title: courseDetails?.training_metadata?.headline || '',
+        description: courseDetails?.training_metadata?.body || '',
       },
       //@ts-ignore
       curriculum: {
-        prerequisites:
-          courseDetails?.training_metadata?.prerequisites?.map(
-            (p) => p.title
-          ) || [],
-        eligibility: courseDetails?.training_metadata?.audience?.map(
-          (p) => p.title
-        ),
+        prerequisites: courseDetails?.training_metadata?.prerequisites?.map(p => p.title) || [],
+        eligibility: courseDetails?.training_metadata?.audience?.map(p => p.title),
         chapters:
-          courseDetails?.training_metadata?.curriculum?.map((c) => ({
+          courseDetails?.training_metadata?.curriculum?.map(c => ({
             title: c.title,
-            lessons: c.section_parts.map((sp) => ({
+            lessons: c.section_parts.map(sp => ({
               title: sp.title,
-              content: "",
+              content: '',
             })),
           })) || [],
         projects: [],
       },
       faqs:
-        courseDetails?.training_metadata?.FAQs?.map((f) => ({
+        courseDetails?.training_metadata?.FAQs?.map(f => ({
           question: f.question,
           answer: f.answer,
         })) || [],
@@ -185,10 +171,7 @@ const DraftCourseButton: React.FC<Props> = ({
 
   return (
     <>
-      <button
-        onClick={handlePreview}
-        className="px-4 py-2 bg-blue-500 text-white rounded-md"
-      >
+      <button onClick={handlePreview} className="px-4 py-2 bg-blue-500 text-white rounded-md">
         Preview Draft
       </button>
 
@@ -197,9 +180,7 @@ const DraftCourseButton: React.FC<Props> = ({
         <DialogContent className="max-h-[60vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle>Preview Draft Course</DialogTitle>
-            <DialogDescription>
-              This is how the draft course will be created.
-            </DialogDescription>
+            <DialogDescription>This is how the draft course will be created.</DialogDescription>
           </DialogHeader>
           <pre className="bg-gray-100 p-4 rounded-md text-sm overflow-x-auto">
             {JSON.stringify(draftData, null, 2)}

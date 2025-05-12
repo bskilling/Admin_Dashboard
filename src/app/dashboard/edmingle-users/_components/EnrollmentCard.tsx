@@ -1,9 +1,9 @@
 // components/EnrollmentCard.tsx
-import Link from "next/link";
-import { IEnrollment } from "./enrollments";
-import { Card, CardContent, CardFooter } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { formatDate, getStatusColor } from "./utils";
+import Link from 'next/link';
+import { IEnrollment } from './enrollments';
+import { Card, CardContent, CardFooter } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { formatDate, getStatusColor } from './utils';
 
 interface EnrollmentCardProps {
   enrollment: IEnrollment;
@@ -28,31 +28,23 @@ export default function EnrollmentCard({ enrollment }: EnrollmentCardProps) {
           </div>
         )}
         <div className="absolute top-2 right-2">
-          <Badge variant={courseId.isPaid ? "default" : "secondary"}>
-            {courseId.isPaid ? "Paid" : "Free"}
+          <Badge variant={courseId.isPaid ? 'default' : 'secondary'}>
+            {courseId.isPaid ? 'Paid' : 'Free'}
           </Badge>
         </div>
       </div>
 
       <CardContent className="p-4">
         <div className="flex items-start justify-between mb-2">
-          <h3 className="font-semibold text-lg line-clamp-2">
-            {courseId.title}
-          </h3>
+          <h3 className="font-semibold text-lg line-clamp-2">{courseId.title}</h3>
         </div>
 
-        <p className="text-muted-foreground text-sm line-clamp-2 mb-3">
-          {courseId.description}
-        </p>
+        <p className="text-muted-foreground text-sm line-clamp-2 mb-3">{courseId.description}</p>
 
         <div className="flex flex-wrap gap-1 mb-2">
           {courseId.category &&
-            courseId.category.map((cat) => (
-              <Badge
-                key={cat._id}
-                variant="outline"
-                className="text-xs font-normal"
-              >
+            courseId.category.map(cat => (
+              <Badge key={cat._id} variant="outline" className="text-xs font-normal">
                 {cat.name}
               </Badge>
             ))}
@@ -66,19 +58,12 @@ export default function EnrollmentCard({ enrollment }: EnrollmentCardProps) {
 
       <CardFooter className="p-4 pt-0 flex justify-between items-center">
         <div className="flex items-center gap-2">
-          <span
-            className={`text-xs px-2 py-1 rounded-full ${getStatusColor(status)}`}
-          >
+          <span className={`text-xs px-2 py-1 rounded-full ${getStatusColor(status)}`}>
             {status.charAt(0).toUpperCase() + status.slice(1)}
           </span>
-          <span className="text-xs text-muted-foreground">
-            Enrolled: {formatDate(enrolledAt)}
-          </span>
+          <span className="text-xs text-muted-foreground">Enrolled: {formatDate(enrolledAt)}</span>
         </div>
-        <Link
-          href={`/courses/${courseId._id}`}
-          className="text-xs text-primary hover:underline"
-        >
+        <Link href={`/courses/${courseId._id}`} className="text-xs text-primary hover:underline">
           View course
         </Link>
       </CardFooter>

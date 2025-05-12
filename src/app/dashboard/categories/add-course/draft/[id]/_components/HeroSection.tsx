@@ -1,14 +1,14 @@
 /* eslint-disable @next/next/no-img-element */
-"use client";
+'use client';
 
-import FileUploader from "@/components/global/FileUploader";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { cn } from "@/lib/utils";
-import { UseFormReturn } from "react-hook-form";
-import { TDraftCourseForm } from "../page";
-import { motion } from "framer-motion";
+import FileUploader from '@/components/global/FileUploader';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
+import { cn } from '@/lib/utils';
+import { UseFormReturn } from 'react-hook-form';
+import { TDraftCourseForm } from '../page';
+import { motion } from 'framer-motion';
 
 export default function HeroSection({
   watch,
@@ -19,10 +19,10 @@ export default function HeroSection({
   setBannerUrl,
   variants: variant,
 }: {
-  watch: UseFormReturn<TDraftCourseForm>["watch"];
-  register: UseFormReturn<TDraftCourseForm>["register"];
-  formState: UseFormReturn<TDraftCourseForm>["formState"];
-  setValue: UseFormReturn<TDraftCourseForm>["setValue"];
+  watch: UseFormReturn<TDraftCourseForm>['watch'];
+  register: UseFormReturn<TDraftCourseForm>['register'];
+  formState: UseFormReturn<TDraftCourseForm>['formState'];
+  setValue: UseFormReturn<TDraftCourseForm>['setValue'];
   bannerUrl: string;
   setBannerUrl: (url: string) => void;
   variants: number;
@@ -31,8 +31,8 @@ export default function HeroSection({
     <section
       id="hero"
       className={cn(
-        "relative w-full  flex justify-center items-center overflow-hidden transition-all duration-500",
-        "bg-gradient-to-r from-[#0F2027] via-[#203A43] to-[#2C5364]" // Deep Blue Ocean
+        'relative w-full  flex justify-center items-center overflow-hidden transition-all duration-500',
+        'bg-gradient-to-r from-[#0F2027] via-[#203A43] to-[#2C5364]' // Deep Blue Ocean
       )}
     >
       {/* Animated Background Overlay */}
@@ -54,21 +54,21 @@ export default function HeroSection({
         <div className="space-y-5 ">
           <h1 className="text-3xl font-bold ">Create Your Course</h1>
           <Input
-            {...register("title")}
+            {...register('title')}
             label="Course Title"
             placeholder="Enter Course Title"
             error={formState.errors.title?.message}
             className="border border-[#00C6FF] focus:ring-[#00C6FF] focus:border-[#00C6FF]"
           />
           <Input
-            {...register("slug")}
+            {...register('slug')}
             label="Course Slug"
             placeholder="Enter course slug"
             error={formState.errors.slug?.message}
             className="border border-[#00C6FF] focus:ring-[#00C6FF] focus:border-[#00C6FF]"
           />
           <Textarea
-            {...register("description")}
+            {...register('description')}
             label="Description"
             placeholder="Course description"
             error={formState.errors.description?.message}
@@ -83,9 +83,9 @@ export default function HeroSection({
             purpose="course-banner"
             title="Upload Banner Image"
             url={bannerUrl}
-            id={watch("banner")}
-            setFileId={(fileId) => setValue("banner", fileId as string)}
-            setUrl={(url) => setBannerUrl(url as string)}
+            id={watch('banner')}
+            setFileId={fileId => setValue('banner', fileId as string)}
+            setUrl={url => setBannerUrl(url as string)}
           />
         </div>
       </motion.div>

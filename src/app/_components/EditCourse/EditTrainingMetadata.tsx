@@ -1,20 +1,16 @@
-"use client";
+'use client';
 
 import {
   useEditCourseMutation,
   useGetCoursesTitleQuery,
-} from "@/redux/features/courses/coursesApi";
-import React, { useEffect, useState } from "react";
-import toast from "react-hot-toast";
-import { AiOutlinePlus, AiOutlineMinus } from "react-icons/ai";
-import { BiSolidDownArrow, BiSolidUpArrow } from "react-icons/bi";
-import { ThreeCircles } from "react-loader-spinner";
+} from '@/redux/features/courses/coursesApi';
+import React, { useEffect, useState } from 'react';
+import toast from 'react-hot-toast';
+import { AiOutlinePlus, AiOutlineMinus } from 'react-icons/ai';
+import { BiSolidDownArrow, BiSolidUpArrow } from 'react-icons/bi';
+import { ThreeCircles } from 'react-loader-spinner';
 
-export default function EditTrainingMetadata({
-  courseData,
-  setCourseData,
-  setActive,
-}: any) {
+export default function EditTrainingMetadata({ courseData, setCourseData, setActive }: any) {
   const { isLoading, data, refetch } = useGetCoursesTitleQuery(
     {},
     { refetchOnMountOrArgChange: true }
@@ -24,46 +20,44 @@ export default function EditTrainingMetadata({
 
   const [searchIsActive, setSearchIsActive] = useState(false);
   const [objectivesData, setObjectives] = useState(
-    courseData?.training_metadata?.objectives || [{ title: "" }]
+    courseData?.training_metadata?.objectives || [{ title: '' }]
   );
   const [prerequisitesData, setPrerequisites] = useState(
-    courseData?.training_metadata?.prerequisites || [{ title: "" }]
+    courseData?.training_metadata?.prerequisites || [{ title: '' }]
   );
   const [audienceData, setAudience] = useState(
-    courseData?.training_metadata?.audience || [{ title: "" }]
+    courseData?.training_metadata?.audience || [{ title: '' }]
   );
   const [skillscoveredData, setSkillscovered] = useState(
-    courseData?.training_metadata?.skills_covered || [{ title: "" }]
+    courseData?.training_metadata?.skills_covered || [{ title: '' }]
   );
 
   const [whoShouldAttendData, setWhoShouldAttend] = useState(
-    courseData?.training_metadata?.who_should_attend || [{ title: "" }]
+    courseData?.training_metadata?.who_should_attend || [{ title: '' }]
   );
 
   const [keyFeaturesData, setKeyFeatures] = useState(
-    courseData?.training_metadata?.key_features || [{ title: "" }]
+    courseData?.training_metadata?.key_features || [{ title: '' }]
   );
 
   const [benefitsData, setBenefits] = useState(
-    courseData?.training_metadata?.benefits || [{ title: "" }]
+    courseData?.training_metadata?.benefits || [{ title: '' }]
   );
 
   const [resourcesData, setResources] = useState(
-    courseData?.training_metadata?.resources || [{ title: "" }]
+    courseData?.training_metadata?.resources || [{ title: '' }]
   );
 
   const [outcomesData, setOutcomes] = useState(
-    courseData?.training_metadata?.outcomes || [{ title: "" }]
+    courseData?.training_metadata?.outcomes || [{ title: '' }]
   );
 
   const [FAQsData, setFAQs] = useState(
-    courseData?.training_metadata?.FAQs || [{ question: "", answer: "" }]
+    courseData?.training_metadata?.FAQs || [{ question: '', answer: '' }]
   );
 
   const [curriculumData, setCurriculum] = useState(
-    courseData?.training_metadata?.curriculum || [
-      { title: "", section_parts: [{ title: "" }] },
-    ]
+    courseData?.training_metadata?.curriculum || [{ title: '', section_parts: [{ title: '' }] }]
   );
 
   const handleFormSubmit = (e: any) => {
@@ -142,44 +136,30 @@ export default function EditTrainingMetadata({
       data: updatedCourseData,
     });
 
-    toast.success("Course Metadata updated successfully");
+    toast.success('Course Metadata updated successfully');
   };
 
-  const handleSectionTitleChange = (
-    curriculumIndex: number,
-    sectionIndex: number,
-    value: any
-  ) => {
+  const handleSectionTitleChange = (curriculumIndex: number, sectionIndex: number, value: any) => {
     let newCurriculum = [...curriculumData];
     newCurriculum = JSON.parse(JSON.stringify(newCurriculum));
     newCurriculum[curriculumIndex].section_parts[sectionIndex].title = value;
     setCurriculum(newCurriculum);
   };
 
-  const removeCurriculumSectionTitle = (
-    curriculumIndex: number,
-    sectionIndex: number
-  ) => {
+  const removeCurriculumSectionTitle = (curriculumIndex: number, sectionIndex: number) => {
     let updatedTrainingMetadata = [...curriculumData];
-    updatedTrainingMetadata = JSON.parse(
-      JSON.stringify(updatedTrainingMetadata)
-    );
+    updatedTrainingMetadata = JSON.parse(JSON.stringify(updatedTrainingMetadata));
     if (updatedTrainingMetadata[curriculumIndex].section_parts.length > 0) {
       updatedTrainingMetadata[curriculumIndex].section_parts.pop();
       setCurriculum(updatedTrainingMetadata);
     }
   };
 
-  const addCurriculumSectionTitle = (
-    curriculumIndex: number,
-    sectionIndex: number
-  ) => {
+  const addCurriculumSectionTitle = (curriculumIndex: number, sectionIndex: number) => {
     let updatedTrainingMetadata = [...curriculumData];
-    updatedTrainingMetadata = JSON.parse(
-      JSON.stringify(updatedTrainingMetadata)
-    );
+    updatedTrainingMetadata = JSON.parse(JSON.stringify(updatedTrainingMetadata));
     updatedTrainingMetadata[curriculumIndex].section_parts.push({
-      title: "",
+      title: '',
     });
     setCurriculum(updatedTrainingMetadata);
   };
@@ -192,10 +172,7 @@ export default function EditTrainingMetadata({
   };
 
   const handleAddCurriculum = () => {
-    setCurriculum([
-      ...curriculumData,
-      { title: "", section_parts: [{ title: "" }] },
-    ]);
+    setCurriculum([...curriculumData, { title: '', section_parts: [{ title: '' }] }]);
   };
 
   const removeCurriculumSection = () => {
@@ -211,16 +188,16 @@ export default function EditTrainingMetadata({
   const handleFaqsChange = (index: number, value: any, type: string) => {
     let updatedFAQs = [...FAQsData];
     updatedFAQs = JSON.parse(JSON.stringify(updatedFAQs));
-    if (type === "question") {
+    if (type === 'question') {
       updatedFAQs[index].question = value;
-    } else if (type === "answer") {
+    } else if (type === 'answer') {
       updatedFAQs[index].answer = value;
     }
     setFAQs(updatedFAQs);
   };
 
   const handleAddFaqs = () => {
-    setFAQs([...FAQsData, { question: "", answer: "" }]);
+    setFAQs([...FAQsData, { question: '', answer: '' }]);
   };
 
   const handleRemoveFaqs = () => {
@@ -241,7 +218,7 @@ export default function EditTrainingMetadata({
   };
 
   const handleAddOutcomes = () => {
-    setOutcomes([...outcomesData, { title: "" }]);
+    setOutcomes([...outcomesData, { title: '' }]);
   };
 
   const handleRemoveOutcomes = () => {
@@ -262,7 +239,7 @@ export default function EditTrainingMetadata({
   };
 
   const handleAddResources = () => {
-    setResources([...resourcesData, { title: "" }]);
+    setResources([...resourcesData, { title: '' }]);
   };
 
   const handleRemoveResources = () => {
@@ -283,7 +260,7 @@ export default function EditTrainingMetadata({
   };
 
   const handleAddBenefits = () => {
-    setBenefits([...benefitsData, { title: "" }]);
+    setBenefits([...benefitsData, { title: '' }]);
   };
 
   const handleRemoveBenefits = () => {
@@ -304,7 +281,7 @@ export default function EditTrainingMetadata({
   };
 
   const handleAddKeyFeatures = () => {
-    setKeyFeatures([...keyFeaturesData, { title: "" }]);
+    setKeyFeatures([...keyFeaturesData, { title: '' }]);
   };
 
   const handleRemoveKeyFeatures = () => {
@@ -325,7 +302,7 @@ export default function EditTrainingMetadata({
   };
 
   const handleAddSkills = () => {
-    setSkillscovered([...skillscoveredData, { title: "" }]);
+    setSkillscovered([...skillscoveredData, { title: '' }]);
   };
 
   const handleRemoveSkills = () => {
@@ -346,7 +323,7 @@ export default function EditTrainingMetadata({
   };
 
   const handleAddAudience = () => {
-    setAudience([...audienceData, { title: "" }]);
+    setAudience([...audienceData, { title: '' }]);
   };
 
   const handleRemoveAudience = () => {
@@ -367,7 +344,7 @@ export default function EditTrainingMetadata({
   };
 
   const handleAddPrerequisites = () => {
-    setPrerequisites([...prerequisitesData, { title: "" }]);
+    setPrerequisites([...prerequisitesData, { title: '' }]);
   };
 
   const handleRemovePrerequisites = () => {
@@ -388,7 +365,7 @@ export default function EditTrainingMetadata({
   };
 
   const handleAddObjectives = () => {
-    setObjectives([...objectivesData, { title: "" }]);
+    setObjectives([...objectivesData, { title: '' }]);
   };
 
   const handleRemoveObjective = () => {
@@ -406,16 +383,14 @@ export default function EditTrainingMetadata({
       <form onSubmit={handleFormSubmit}>
         <div className="mt-2 h-[420px] overflow-auto pb-20">
           <div className="w-[100%] mt-4">
-            <label className="block mb-2 text-sm font-[700] text-gray-600">
-              Headline
-            </label>
+            <label className="block mb-2 text-sm font-[700] text-gray-600">Headline</label>
             <div className="relative h-[45px]">
               <div className="flex bg-transparent w-[100%] bg-white rounded-md border-2 justify-center items-center hover:border-2 hover:border-[#292929]">
                 <input
                   autoComplete="off"
                   type="text"
-                  value={courseData?.training_metadata?.headline || ""}
-                  onChange={(e) => {
+                  value={courseData?.training_metadata?.headline || ''}
+                  onChange={e => {
                     setCourseData((prevData: any) => ({
                       ...prevData,
                       training_metadata: {
@@ -432,14 +407,12 @@ export default function EditTrainingMetadata({
             </div>
           </div>
           <div className="w-[100%] mt-10">
-            <label className="block mb-2 text-sm font-[700] text-gray-600">
-              Body
-            </label>
+            <label className="block mb-2 text-sm font-[700] text-gray-600">Body</label>
 
             <div className="flex bg-transparent w-[100%] bg-white rounded-md border-2 justify-center items-center hover:border-2 hover:border-[#292929]">
               <textarea
-                value={courseData?.training_metadata?.body || ""}
-                onChange={(e) => {
+                value={courseData?.training_metadata?.body || ''}
+                onChange={e => {
                   setCourseData((prevData: any) => ({
                     ...prevData,
                     training_metadata: {
@@ -451,18 +424,16 @@ export default function EditTrainingMetadata({
                 name="body"
                 id="body"
                 className="bg-transparent w-full p-2 border-none rounded-[5px] h-[100px] outline-none text-[#292929] text-[14px] font-[500] font-Josefin"
-                style={{ resize: "none" }}
+                style={{ resize: 'none' }}
               />
             </div>
           </div>
           <div className="w-[100%] mt-10">
-            <label className="block mb-2 text-sm font-[700] text-gray-600">
-              Overview
-            </label>
+            <label className="block mb-2 text-sm font-[700] text-gray-600">Overview</label>
             <div className="flex bg-transparent w-[100%] bg-white rounded-md border-2 justify-center items-center hover:border-2 hover:border-[#292929]">
               <textarea
-                value={courseData?.training_metadata?.overview || ""}
-                onChange={(e) => {
+                value={courseData?.training_metadata?.overview || ''}
+                onChange={e => {
                   setCourseData((prevData: any) => ({
                     ...prevData,
                     training_metadata: {
@@ -474,20 +445,18 @@ export default function EditTrainingMetadata({
                 name="overview"
                 id="overview"
                 className="bg-transparent w-full p-2 border-none rounded-[5px] h-[80px] outline-none text-[#292929] text-[14px] font-[500] font-Josefin"
-                style={{ resize: "none" }}
+                style={{ resize: 'none' }}
               />
             </div>
           </div>
           <div className="w-[100%] mt-10">
-            <label className="block mb-2 text-sm font-[700] text-gray-600">
-              Preview Video
-            </label>
+            <label className="block mb-2 text-sm font-[700] text-gray-600">Preview Video</label>
             <div className="flex bg-transparent w-[100%] bg-white rounded-md border-2 justify-center items-center hover:border-2 hover:border-[#292929]">
               <input
                 autoComplete="off"
                 type="text"
-                value={courseData?.training_metadata?.preview_video || ""}
-                onChange={(e) => {
+                value={courseData?.training_metadata?.preview_video || ''}
+                onChange={e => {
                   setCourseData((prevData: any) => ({
                     ...prevData,
                     training_metadata: {
@@ -512,19 +481,17 @@ export default function EditTrainingMetadata({
                       autoComplete="off"
                       type="text"
                       value={obj.title}
-                      onChange={(e) =>
-                        handleObjectiveChange(index, e.target.value)
-                      }
+                      onChange={e => handleObjectiveChange(index, e.target.value)}
                       name="objectives"
                       id="objectives"
                       className="bg-transparent w-[90%] pl-2 border-2 left-[50px] rounded-[5px] h-[45px] outline-none text-black text-[14px] font-[500] font-Josefin"
                     />
                     <AiOutlineMinus
                       style={{
-                        cursor: "pointer",
-                        width: "35px",
-                        height: "35px",
-                        color: "white",
+                        cursor: 'pointer',
+                        width: '35px',
+                        height: '35px',
+                        color: 'white',
                       }}
                       className="rounded-full bg-sky-800 p-2 ml-2"
                       onClick={handleRemoveObjective}
@@ -532,10 +499,10 @@ export default function EditTrainingMetadata({
                     {index === objectivesData.length - 1 && (
                       <AiOutlinePlus
                         style={{
-                          cursor: "pointer",
-                          width: "35px",
-                          height: "35px",
-                          color: "white",
+                          cursor: 'pointer',
+                          width: '35px',
+                          height: '35px',
+                          color: 'white',
                         }}
                         className="rounded-full bg-sky-800 p-2 ml-2"
                         onClick={handleAddObjectives}
@@ -547,9 +514,7 @@ export default function EditTrainingMetadata({
             </label>
           </div>
           <div className="w-[100%] mt-10">
-            <label className="block mb-2 text-sm font-[700] text-gray-600">
-              Prerequisites
-            </label>
+            <label className="block mb-2 text-sm font-[700] text-gray-600">Prerequisites</label>
 
             {prerequisitesData?.map((obj: any, index: number) => {
               return (
@@ -558,29 +523,27 @@ export default function EditTrainingMetadata({
                     autoComplete="off"
                     type="text"
                     value={obj.title}
-                    onChange={(e) =>
-                      handlePrerequisitesChange(index, e.target.value)
-                    }
+                    onChange={e => handlePrerequisitesChange(index, e.target.value)}
                     name="prerequisites"
                     id="prerequisites"
                     className="bg-transparent w-[90%] pl-2 border-2 left-[50px] rounded-[5px] h-[45px] outline-none text-black text-[14px] font-[500] font-Josefin"
                   />
                   <AiOutlineMinus
                     style={{
-                      cursor: "pointer",
-                      width: "35px",
-                      height: "35px",
-                      color: "white",
+                      cursor: 'pointer',
+                      width: '35px',
+                      height: '35px',
+                      color: 'white',
                     }}
                     className="rounded-full bg-sky-800 p-2 ml-2"
                     onClick={handleRemovePrerequisites}
                   />
                   <AiOutlinePlus
                     style={{
-                      cursor: "pointer",
-                      width: "35px",
-                      height: "35px",
-                      color: "white",
+                      cursor: 'pointer',
+                      width: '35px',
+                      height: '35px',
+                      color: 'white',
                     }}
                     className="rounded-full bg-sky-800 p-2 ml-2"
                     onClick={handleAddPrerequisites}
@@ -590,9 +553,7 @@ export default function EditTrainingMetadata({
             })}
           </div>
           <div className="w-[100%] mt-10">
-            <label className="block mb-2 text-sm font-[700] text-gray-600">
-              Audience
-            </label>
+            <label className="block mb-2 text-sm font-[700] text-gray-600">Audience</label>
 
             {audienceData?.map((obj: any, index: number) => {
               return (
@@ -601,29 +562,27 @@ export default function EditTrainingMetadata({
                     autoComplete="off"
                     type="text"
                     value={obj.title}
-                    onChange={(e) =>
-                      handleAudienceChange(index, e.target.value)
-                    }
+                    onChange={e => handleAudienceChange(index, e.target.value)}
                     name="prerequisites"
                     id="prerequisites"
                     className="bg-transparent w-[90%] pl-2 border-2 left-[50px] rounded-[5px] h-[45px] outline-none text-black text-[14px] font-[500] font-Josefin"
                   />
                   <AiOutlineMinus
                     style={{
-                      cursor: "pointer",
-                      width: "35px",
-                      height: "35px",
-                      color: "white",
+                      cursor: 'pointer',
+                      width: '35px',
+                      height: '35px',
+                      color: 'white',
                     }}
                     className="rounded-full bg-sky-800 p-2 ml-2"
                     onClick={handleRemoveAudience}
                   />
                   <AiOutlinePlus
                     style={{
-                      cursor: "pointer",
-                      width: "35px",
-                      height: "35px",
-                      color: "white",
+                      cursor: 'pointer',
+                      width: '35px',
+                      height: '35px',
+                      color: 'white',
                     }}
                     className="rounded-full bg-sky-800 p-2 ml-2"
                     onClick={handleAddAudience}
@@ -633,9 +592,7 @@ export default function EditTrainingMetadata({
             })}
           </div>
           <div className="w-[100%] mt-10">
-            <label className="block mb-2 text-sm font-[700] text-gray-600">
-              Skills Covered
-            </label>
+            <label className="block mb-2 text-sm font-[700] text-gray-600">Skills Covered</label>
             {skillscoveredData?.map((obj: any, index: number) => {
               return (
                 <div className="flex items-center mt-2" key={obj}>
@@ -643,27 +600,27 @@ export default function EditTrainingMetadata({
                     autoComplete="off"
                     type="text"
                     value={obj.title}
-                    onChange={(e) => handleSkillsChange(index, e.target.value)}
+                    onChange={e => handleSkillsChange(index, e.target.value)}
                     name="prerequisites"
                     id="prerequisites"
                     className="bg-transparent w-[90%] pl-2 border-2 left-[50px] rounded-[5px] h-[45px] outline-none text-black text-[14px] font-[500] font-Josefin"
                   />
                   <AiOutlineMinus
                     style={{
-                      cursor: "pointer",
-                      width: "35px",
-                      height: "35px",
-                      color: "white",
+                      cursor: 'pointer',
+                      width: '35px',
+                      height: '35px',
+                      color: 'white',
                     }}
                     className="rounded-full bg-sky-800 p-2 ml-2"
                     onClick={handleRemoveSkills}
                   />
                   <AiOutlinePlus
                     style={{
-                      cursor: "pointer",
-                      width: "35px",
-                      height: "35px",
-                      color: "white",
+                      cursor: 'pointer',
+                      width: '35px',
+                      height: '35px',
+                      color: 'white',
                     }}
                     className="rounded-full bg-sky-800 p-2 ml-2"
                     onClick={handleAddSkills}
@@ -683,7 +640,7 @@ export default function EditTrainingMetadata({
                     autoComplete="off"
                     type="text"
                     value={obj.title}
-                    onChange={(e) => {
+                    onChange={e => {
                       let updatedWhoShouldAttendData = [...whoShouldAttendData];
                       updatedWhoShouldAttendData = JSON.parse(
                         JSON.stringify(updatedWhoShouldAttendData)
@@ -697,16 +654,14 @@ export default function EditTrainingMetadata({
                   />
                   <AiOutlineMinus
                     style={{
-                      cursor: "pointer",
-                      width: "35px",
-                      height: "35px",
-                      color: "white",
+                      cursor: 'pointer',
+                      width: '35px',
+                      height: '35px',
+                      color: 'white',
                     }}
                     className="rounded-full bg-sky-800 p-2 ml-2"
                     onClick={() => {
-                      const updatedWhoShouldAttendData = [
-                        ...whoShouldAttendData,
-                      ];
+                      const updatedWhoShouldAttendData = [...whoShouldAttendData];
 
                       if (updatedWhoShouldAttendData.length > 0) {
                         updatedWhoShouldAttendData.pop();
@@ -717,17 +672,14 @@ export default function EditTrainingMetadata({
                   />
                   <AiOutlinePlus
                     style={{
-                      cursor: "pointer",
-                      width: "35px",
-                      height: "35px",
-                      color: "white",
+                      cursor: 'pointer',
+                      width: '35px',
+                      height: '35px',
+                      color: 'white',
                     }}
                     className="rounded-full bg-sky-800 p-2 ml-2"
                     onClick={() => {
-                      setWhoShouldAttend([
-                        ...whoShouldAttendData,
-                        { title: "" },
-                      ]);
+                      setWhoShouldAttend([...whoShouldAttendData, { title: '' }]);
                     }}
                   />
                 </div>
@@ -735,9 +687,7 @@ export default function EditTrainingMetadata({
             })}
           </div>
           <div className="w-[100%] mt-10">
-            <label className="block mb-2 text-sm font-[700] text-gray-600">
-              Key Featured
-            </label>
+            <label className="block mb-2 text-sm font-[700] text-gray-600">Key Featured</label>
             {keyFeaturesData?.map((obj: any, index: number) => {
               return (
                 <div className="flex items-center mt-2" key={obj}>
@@ -745,29 +695,27 @@ export default function EditTrainingMetadata({
                     autoComplete="off"
                     type="text"
                     value={obj.title}
-                    onChange={(e) =>
-                      handleKeyFeaturesChange(index, e.target.value)
-                    }
+                    onChange={e => handleKeyFeaturesChange(index, e.target.value)}
                     name="prerequisites"
                     id="prerequisites"
                     className="bg-transparent w-[90%] pl-2 border-2 left-[50px] rounded-[5px] h-[45px] outline-none text-black text-[14px] font-[500] font-Josefin"
                   />
                   <AiOutlineMinus
                     style={{
-                      cursor: "pointer",
-                      width: "35px",
-                      height: "35px",
-                      color: "white",
+                      cursor: 'pointer',
+                      width: '35px',
+                      height: '35px',
+                      color: 'white',
                     }}
                     className="rounded-full bg-sky-800 p-2 ml-2"
                     onClick={handleRemoveKeyFeatures}
                   />
                   <AiOutlinePlus
                     style={{
-                      cursor: "pointer",
-                      width: "35px",
-                      height: "35px",
-                      color: "white",
+                      cursor: 'pointer',
+                      width: '35px',
+                      height: '35px',
+                      color: 'white',
                     }}
                     className="rounded-full bg-sky-800 p-2 ml-2"
                     onClick={handleAddKeyFeatures}
@@ -777,9 +725,7 @@ export default function EditTrainingMetadata({
             })}
           </div>
           <div className="w-[100%] mt-10">
-            <label className="block mb-2 text-sm font-[700] text-gray-600">
-              Benefits
-            </label>
+            <label className="block mb-2 text-sm font-[700] text-gray-600">Benefits</label>
             {benefitsData?.map((obj: any, index: number) => {
               return (
                 <div className="flex items-center mt-2" key={obj}>
@@ -787,29 +733,27 @@ export default function EditTrainingMetadata({
                     autoComplete="off"
                     type="text"
                     value={obj.title}
-                    onChange={(e) =>
-                      handleBenefitsChange(index, e.target.value)
-                    }
+                    onChange={e => handleBenefitsChange(index, e.target.value)}
                     name="prerequisites"
                     id="prerequisites"
                     className="bg-transparent w-[90%] pl-2 border-2 left-[50px] rounded-[5px] h-[45px] outline-none text-black text-[14px] font-[500] font-Josefin"
                   />
                   <AiOutlineMinus
                     style={{
-                      cursor: "pointer",
-                      width: "35px",
-                      height: "35px",
-                      color: "white",
+                      cursor: 'pointer',
+                      width: '35px',
+                      height: '35px',
+                      color: 'white',
                     }}
                     className="rounded-full bg-sky-800 p-2 ml-2"
                     onClick={handleRemoveBenefits}
                   />
                   <AiOutlinePlus
                     style={{
-                      cursor: "pointer",
-                      width: "35px",
-                      height: "35px",
-                      color: "white",
+                      cursor: 'pointer',
+                      width: '35px',
+                      height: '35px',
+                      color: 'white',
                     }}
                     className="rounded-full bg-sky-800 p-2 ml-2"
                     onClick={handleAddBenefits}
@@ -819,9 +763,7 @@ export default function EditTrainingMetadata({
             })}
           </div>
           <div className="w-[100%] mt-10">
-            <label className="block mb-2 text-sm font-[700] text-gray-600">
-              Resources
-            </label>
+            <label className="block mb-2 text-sm font-[700] text-gray-600">Resources</label>
             {resourcesData?.map((obj: any, index: number) => {
               return (
                 <div className="flex items-center mt-2" key={obj}>
@@ -829,29 +771,27 @@ export default function EditTrainingMetadata({
                     autoComplete="off"
                     type="text"
                     value={obj.title}
-                    onChange={(e) =>
-                      handleResourcesChange(index, e.target.value)
-                    }
+                    onChange={e => handleResourcesChange(index, e.target.value)}
                     name="prerequisites"
                     id="prerequisites"
                     className="bg-transparent w-[90%] pl-2 border-2 left-[50px] rounded-[5px] h-[45px] outline-none text-black text-[14px] font-[500] font-Josefin"
                   />
                   <AiOutlineMinus
                     style={{
-                      cursor: "pointer",
-                      width: "35px",
-                      height: "35px",
-                      color: "white",
+                      cursor: 'pointer',
+                      width: '35px',
+                      height: '35px',
+                      color: 'white',
                     }}
                     className="rounded-full bg-sky-800 p-2 ml-2"
                     onClick={handleRemoveResources}
                   />
                   <AiOutlinePlus
                     style={{
-                      cursor: "pointer",
-                      width: "35px",
-                      height: "35px",
-                      color: "white",
+                      cursor: 'pointer',
+                      width: '35px',
+                      height: '35px',
+                      color: 'white',
                     }}
                     className="rounded-full bg-sky-800 p-2 ml-2"
                     onClick={handleAddResources}
@@ -861,9 +801,7 @@ export default function EditTrainingMetadata({
             })}
           </div>
           <div className="w-[100%] mt-10">
-            <label className="block mb-2 text-sm font-[700] text-gray-600">
-              Outcomes
-            </label>
+            <label className="block mb-2 text-sm font-[700] text-gray-600">Outcomes</label>
             {outcomesData?.map((obj: any, index: number) => {
               return (
                 <div className="flex items-center mt-2" key={obj}>
@@ -871,29 +809,27 @@ export default function EditTrainingMetadata({
                     autoComplete="off"
                     type="text"
                     value={obj.title}
-                    onChange={(e) =>
-                      handleOutcomesChange(index, e.target.value)
-                    }
+                    onChange={e => handleOutcomesChange(index, e.target.value)}
                     name="prerequisites"
                     id="prerequisites"
                     className="bg-transparent w-[90%] pl-2 border-2 left-[50px] rounded-[5px] h-[45px] outline-none text-black text-[14px] font-[500] font-Josefin"
                   />
                   <AiOutlineMinus
                     style={{
-                      cursor: "pointer",
-                      width: "35px",
-                      height: "35px",
-                      color: "white",
+                      cursor: 'pointer',
+                      width: '35px',
+                      height: '35px',
+                      color: 'white',
                     }}
                     className="rounded-full bg-sky-800 p-2 ml-2"
                     onClick={handleRemoveOutcomes}
                   />
                   <AiOutlinePlus
                     style={{
-                      cursor: "pointer",
-                      width: "35px",
-                      height: "35px",
-                      color: "white",
+                      cursor: 'pointer',
+                      width: '35px',
+                      height: '35px',
+                      color: 'white',
                     }}
                     className="rounded-full bg-sky-800 p-2 ml-2"
                     onClick={handleAddOutcomes}
@@ -908,8 +844,8 @@ export default function EditTrainingMetadata({
             </label>
             <div className="flex bg-transparent w-[100%] bg-white rounded-md border-2 justify-center items-center hover:border-2 hover:border-[#292929]">
               <textarea
-                value={courseData?.training_metadata?.certification_text || ""}
-                onChange={(e) => {
+                value={courseData?.training_metadata?.certification_text || ''}
+                onChange={e => {
                   setCourseData((prevData: any) => ({
                     ...prevData,
                     training_metadata: {
@@ -919,7 +855,7 @@ export default function EditTrainingMetadata({
                   }));
                 }}
                 className="bg-transparent w-full p-2 border-none rounded-[5px] h-[90px] outline-none text-[#292929] text-[14px] font-[500] font-Josefin"
-                style={{ resize: "none" }}
+                style={{ resize: 'none' }}
               />
             </div>
           </div>
@@ -948,9 +884,7 @@ export default function EditTrainingMetadata({
             </div>
           </div>
           <div className="w-[100%] mt-10">
-            <label className="block mb-2 text-sm font-[700] text-gray-600">
-              FAQs
-            </label>
+            <label className="block mb-2 text-sm font-[700] text-gray-600">FAQs</label>
             {FAQsData?.map((obj: any, index: number) => {
               return (
                 <div className="flex flex-col mt-2" key={obj}>
@@ -959,29 +893,27 @@ export default function EditTrainingMetadata({
                       autoComplete="off"
                       type="text"
                       value={obj.question}
-                      onChange={(e) =>
-                        handleFaqsChange(index, e.target.value, "question")
-                      }
+                      onChange={e => handleFaqsChange(index, e.target.value, 'question')}
                       name="prerequisites"
                       id="prerequisites"
                       className="bg-transparent w-[90%] pl-2 border-2 left-[50px] rounded-[5px] h-[45px] outline-none text-black text-[14px] font-[500] font-Josefin"
                     />
                     <AiOutlineMinus
                       style={{
-                        cursor: "pointer",
-                        width: "35px",
-                        height: "35px",
-                        color: "white",
+                        cursor: 'pointer',
+                        width: '35px',
+                        height: '35px',
+                        color: 'white',
                       }}
                       className="rounded-full bg-sky-800 p-2 ml-2"
                       onClick={handleRemoveFaqs}
                     />
                     <AiOutlinePlus
                       style={{
-                        cursor: "pointer",
-                        width: "35px",
-                        height: "35px",
-                        color: "white",
+                        cursor: 'pointer',
+                        width: '35px',
+                        height: '35px',
+                        color: 'white',
                       }}
                       className="rounded-full bg-sky-800 p-2 ml-2"
                       onClick={handleAddFaqs}
@@ -992,11 +924,9 @@ export default function EditTrainingMetadata({
                     <div className="flex items-center">
                       <textarea
                         value={obj.answer}
-                        onChange={(e) =>
-                          handleFaqsChange(index, e.target.value, "answer")
-                        }
+                        onChange={e => handleFaqsChange(index, e.target.value, 'answer')}
                         className="bg-transparent w-[85%] pl-2 border-2 rounded-[5px] h-[90px] outline-none text-[#292929] text-[14px] font-[500] font-Josefin"
-                        style={{ resize: "none", marginLeft: "50px" }}
+                        style={{ resize: 'none', marginLeft: '50px' }}
                       />
                     </div>
                   </div>
@@ -1005,9 +935,7 @@ export default function EditTrainingMetadata({
             })}
           </div>
           <div className="w-[100%] mt-10">
-            <label className="block mb-2 text-sm font-[700] text-gray-600">
-              Curriculum
-            </label>
+            <label className="block mb-2 text-sm font-[700] text-gray-600">Curriculum</label>
             {curriculumData?.map((obj: any, index: number) => {
               return (
                 <div className="flex flex-col mt-2" key={obj}>
@@ -1016,27 +944,25 @@ export default function EditTrainingMetadata({
                       autoComplete="off"
                       type="text"
                       value={obj.title}
-                      onChange={(e) =>
-                        handleCurriculumChange(index, e.target.value)
-                      }
+                      onChange={e => handleCurriculumChange(index, e.target.value)}
                       className="bg-transparent w-[90%] pl-2 border-2 left-[50px] rounded-[5px] h-[45px] outline-none text-black text-[14px] font-[500] font-Josefin"
                     />
                     <AiOutlineMinus
                       style={{
-                        cursor: "pointer",
-                        width: "35px",
-                        height: "35px",
-                        color: "white",
+                        cursor: 'pointer',
+                        width: '35px',
+                        height: '35px',
+                        color: 'white',
                       }}
                       className="rounded-full bg-sky-800 p-2 ml-2"
                       onClick={removeCurriculumSection}
                     />
                     <AiOutlinePlus
                       style={{
-                        cursor: "pointer",
-                        width: "35px",
-                        height: "35px",
-                        color: "white",
+                        cursor: 'pointer',
+                        width: '35px',
+                        height: '35px',
+                        color: 'white',
                       }}
                       className="rounded-full bg-sky-800 p-2 ml-2"
                       onClick={handleAddCurriculum}
@@ -1049,28 +975,26 @@ export default function EditTrainingMetadata({
                           autoComplete="off"
                           type="text"
                           value={item.title}
-                          onChange={(e) =>
-                            handleSectionTitleChange(index, i, e.target.value)
-                          }
+                          onChange={e => handleSectionTitleChange(index, i, e.target.value)}
                           className="bg-transparent w-[85%] pl-2 border-2 rounded-[5px] h-[45px] outline-none text-black text-[14px] font-[500] font-Josefin"
-                          style={{ marginLeft: "50px" }}
+                          style={{ marginLeft: '50px' }}
                         />
                         <AiOutlineMinus
                           style={{
-                            cursor: "pointer",
-                            width: "35px",
-                            height: "35px",
-                            color: "white",
+                            cursor: 'pointer',
+                            width: '35px',
+                            height: '35px',
+                            color: 'white',
                           }}
                           className="rounded-full bg-sky-800 p-2 ml-2"
                           onClick={() => removeCurriculumSectionTitle(index, i)}
                         />
                         <AiOutlinePlus
                           style={{
-                            cursor: "pointer",
-                            width: "35px",
-                            height: "35px",
-                            color: "white",
+                            cursor: 'pointer',
+                            width: '35px',
+                            height: '35px',
+                            color: 'white',
                           }}
                           className="rounded-full bg-sky-800 p-2 ml-2"
                           onClick={() => addCurriculumSectionTitle(index, i)}
@@ -1086,7 +1010,7 @@ export default function EditTrainingMetadata({
         <div className="absolute bottom-0 right-0 bg-gray-100 w-full h-20 flex justify-end items-center pb-2">
           <button
             className="mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-            style={{ position: "absolute", bottom: "1rem", right: "1rem" }}
+            style={{ position: 'absolute', bottom: '1rem', right: '1rem' }}
             type="submit"
           >
             {createCourseLoading ? (
@@ -1100,7 +1024,7 @@ export default function EditTrainingMetadata({
                 wrapperClass=""
               />
             ) : (
-              "save"
+              'save'
             )}
           </button>
         </div>

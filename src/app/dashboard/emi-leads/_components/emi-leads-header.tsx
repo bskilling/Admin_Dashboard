@@ -1,6 +1,6 @@
-"use client";
+'use client';
 
-import { Button } from "@/components/ui/button";
+import { Button } from '@/components/ui/button';
 import {
   Card,
   CardContent,
@@ -8,17 +8,17 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
-import { Download, RefreshCw, Upload, UserRound, Users } from "lucide-react";
-import { useQueryClient } from "@tanstack/react-query";
-import { toast } from "sonner";
+} from '@/components/ui/card';
+import { Download, RefreshCw, Upload, UserRound, Users } from 'lucide-react';
+import { useQueryClient } from '@tanstack/react-query';
+import { toast } from 'sonner';
 
 export function EmiLeadsHeader() {
   const queryClient = useQueryClient();
 
   const refreshData = () => {
-    queryClient.invalidateQueries({ queryKey: ["emiLeads"] });
-    toast.success("Data refreshed");
+    queryClient.invalidateQueries({ queryKey: ['emiLeads'] });
+    toast.success('Data refreshed');
   };
 
   return (
@@ -26,9 +26,7 @@ export function EmiLeadsHeader() {
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <div>
           <h1 className="text-2xl font-bold tracking-tight">EMI Leads</h1>
-          <p className="text-muted-foreground">
-            Manage and track all EMI leads and their status
-          </p>
+          <p className="text-muted-foreground">Manage and track all EMI leads and their status</p>
         </div>
         <div className="flex items-center gap-2">
           <Button variant="outline" onClick={refreshData} className="gap-1">
@@ -50,9 +48,7 @@ export function EmiLeadsHeader() {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">120</div>
-            <p className="text-xs text-muted-foreground">
-              +5.2% from last month
-            </p>
+            <p className="text-xs text-muted-foreground">+5.2% from last month</p>
           </CardContent>
         </Card>
         <Card>
@@ -67,9 +63,7 @@ export function EmiLeadsHeader() {
         </Card>
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">
-              In Conversation
-            </CardTitle>
+            <CardTitle className="text-sm font-medium">In Conversation</CardTitle>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 24 24"
@@ -107,9 +101,7 @@ export function EmiLeadsHeader() {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">18</div>
-            <p className="text-xs text-muted-foreground">
-              +10.5% from last month
-            </p>
+            <p className="text-xs text-muted-foreground">+10.5% from last month</p>
           </CardContent>
         </Card>
       </div>

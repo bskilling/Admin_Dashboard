@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import React, { useState } from "react";
-import { Button } from "@/components/ui/button";
+import React, { useState } from 'react';
+import { Button } from '@/components/ui/button';
 import {
   Dialog,
   DialogContent,
@@ -9,13 +9,13 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from "@/components/ui/dialog";
-import { Textarea } from "@/components/ui/textarea";
-import { Badge } from "@/components/ui/badge";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Clock, MessageSquare, History } from "lucide-react";
-import { Note } from "./types";
-import { getStatusBadgeColor, formatDate, sortNotesByDate } from "./leadUtils";
+} from '@/components/ui/dialog';
+import { Textarea } from '@/components/ui/textarea';
+import { Badge } from '@/components/ui/badge';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Clock, MessageSquare, History } from 'lucide-react';
+import { Note } from './types';
+import { getStatusBadgeColor, formatDate, sortNotesByDate } from './leadUtils';
 
 interface StatusChangeDialogProps {
   isOpen: boolean;
@@ -36,8 +36,8 @@ const StatusChangeDialog: React.FC<StatusChangeDialogProps> = ({
   notes,
   onStatusChange,
 }) => {
-  const [noteText, setNoteText] = useState("");
-  const [activeTab, setActiveTab] = useState("new");
+  const [noteText, setNoteText] = useState('');
+  const [activeTab, setActiveTab] = useState('new');
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleSubmit = async () => {
@@ -48,10 +48,10 @@ const StatusChangeDialog: React.FC<StatusChangeDialogProps> = ({
     try {
       setIsSubmitting(true);
       await onStatusChange(leadId, newStatus, noteText.trim());
-      setNoteText("");
+      setNoteText('');
       onClose();
     } catch (error) {
-      console.error("Error updating status:", error);
+      console.error('Error updating status:', error);
     } finally {
       setIsSubmitting(false);
     }
@@ -67,17 +67,11 @@ const StatusChangeDialog: React.FC<StatusChangeDialogProps> = ({
           <DialogTitle className="text-xl flex items-center gap-2">
             <span>Update Lead Status</span>
             <div className="flex items-center gap-2 text-sm font-normal">
-              <Badge
-                variant="outline"
-                className={getStatusBadgeColor(currentStatus)}
-              >
+              <Badge variant="outline" className={getStatusBadgeColor(currentStatus)}>
                 {currentStatus}
               </Badge>
               <span>→</span>
-              <Badge
-                variant="outline"
-                className={getStatusBadgeColor(newStatus)}
-              >
+              <Badge variant="outline" className={getStatusBadgeColor(newStatus)}>
                 {newStatus}
               </Badge>
             </div>
@@ -117,7 +111,7 @@ const StatusChangeDialog: React.FC<StatusChangeDialogProps> = ({
               <Textarea
                 placeholder="What actions have you taken or why are you changing this status?"
                 value={noteText}
-                onChange={(e) => setNoteText(e.target.value)}
+                onChange={e => setNoteText(e.target.value)}
                 className="min-h-[150px]"
                 required
               />
@@ -135,7 +129,7 @@ const StatusChangeDialog: React.FC<StatusChangeDialogProps> = ({
                 disabled={!noteText.trim() || isSubmitting}
                 className="bg-blue-600 hover:bg-blue-700"
               >
-                {isSubmitting ? "Saving..." : "Save & Update Status"}
+                {isSubmitting ? 'Saving...' : 'Save & Update Status'}
               </Button>
             </DialogFooter>
           </TabsContent>
@@ -149,10 +143,7 @@ const StatusChangeDialog: React.FC<StatusChangeDialogProps> = ({
                     className="p-4 bg-white rounded-lg border border-slate-200 shadow-sm"
                   >
                     <div className="flex justify-between items-start mb-2">
-                      <Badge
-                        variant="outline"
-                        className={getStatusBadgeColor(note.status)}
-                      >
+                      <Badge variant="outline" className={getStatusBadgeColor(note.status)}>
                         {note.status}
                       </Badge>
                       <div className="flex items-center text-xs text-slate-500">
@@ -160,13 +151,9 @@ const StatusChangeDialog: React.FC<StatusChangeDialogProps> = ({
                         {formatDate(note.createdAt)}
                       </div>
                     </div>
-                    <p className="text-slate-700 whitespace-pre-wrap">
-                      {note.text}
-                    </p>
+                    <p className="text-slate-700 whitespace-pre-wrap">{note.text}</p>
                     {note.addedBy && (
-                      <p className="mt-2 text-xs text-slate-500">
-                        Added by {note.addedBy}
-                      </p>
+                      <p className="mt-2 text-xs text-slate-500">Added by {note.addedBy}</p>
                     )}
                   </div>
                 ))}
@@ -174,12 +161,10 @@ const StatusChangeDialog: React.FC<StatusChangeDialogProps> = ({
             ) : (
               <div className="flex flex-col items-center justify-center h-[200px] text-center bg-slate-50 rounded-lg p-6">
                 <History className="h-12 w-12 text-slate-300 mb-3" />
-                <h3 className="text-slate-700 font-medium text-lg mb-1">
-                  No history available
-                </h3>
+                <h3 className="text-slate-700 font-medium text-lg mb-1">No history available</h3>
                 <p className="text-slate-500 max-w-md">
-                  This lead has no status change history yet. Notes will appear
-                  here when status changes are made.
+                  This lead has no status change history yet. Notes will appear here when status
+                  changes are made.
                 </p>
               </div>
             )}

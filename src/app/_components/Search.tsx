@@ -1,5 +1,5 @@
-import React, { FC, useEffect, useState } from "react";
-import { BiSearch, BiSolidDownArrow, BiSolidUpArrow } from "react-icons/bi";
+import React, { FC, useEffect, useState } from 'react';
+import { BiSearch, BiSolidDownArrow, BiSolidUpArrow } from 'react-icons/bi';
 
 type Props = {
   searchQuery: string;
@@ -9,13 +9,7 @@ type Props = {
   onChange: React.ChangeEventHandler;
 };
 
-const Search = ({
-  setSearchQuery,
-  searchQuery,
-  results,
-  renderItem,
-  onChange,
-}: Props) => {
+const Search = ({ setSearchQuery, searchQuery, results, renderItem, onChange }: Props) => {
   const [showResults, setShowResults] = useState(false);
   const [searchIsActive, setSearchIsActive] = useState(false);
 
@@ -26,7 +20,7 @@ const Search = ({
   }, [results, showResults]);
 
   type changeHandler = React.ChangeEventHandler<HTMLInputElement>;
-  const handleChange: changeHandler = (e) => {
+  const handleChange: changeHandler = e => {
     setSearchIsActive(true);
     setSearchQuery(e.target.value);
     onChange && onChange(e);

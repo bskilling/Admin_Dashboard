@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from "react";
-import { MdClose } from "react-icons/md";
-import { useSelector } from "react-redux";
-import EditTrainingDetails from "./EditCourse/EditTrainingDetails";
-import { useGetCourseByIdQuery } from "@/redux/features/courses/coursesApi";
-import EditTrainingMetadata from "./EditCourse/EditTrainingMetadata";
-import EditTrainingBatches from "./EditCourse/EditTrainingBatches";
+import React, { useEffect, useState } from 'react';
+import { MdClose } from 'react-icons/md';
+import { useSelector } from 'react-redux';
+import EditTrainingDetails from './EditCourse/EditTrainingDetails';
+import { useGetCourseByIdQuery } from '@/redux/features/courses/coursesApi';
+import EditTrainingMetadata from './EditCourse/EditTrainingMetadata';
+import EditTrainingBatches from './EditCourse/EditTrainingBatches';
 
 interface ModalProps {
   courseId: string;
@@ -20,37 +20,35 @@ const CourseEditModal = ({ courseId, isOpen, handleClose }: ModalProps) => {
   //   );
 
   const [trainingMetadata, setTrainingMetadata] = useState({
-    headline: "",
-    body: "",
-    overview: "",
-    preview_video: "",
-    preview_image: "",
-    objectives: [{ title: "" }],
-    prerequisites: [{ title: "" }],
-    audience: [{ title: "" }],
-    skills_covered: [{ title: "" }],
-    key_features: [{ title: "" }],
-    benefits: [{ title: "" }],
-    resources: [{ title: "" }],
-    outcomes: [{ title: "" }],
-    certification_text: "",
-    certification_image: "",
-    FAQs: [{ question: "", answer: "" }],
-    curriculum: [
-      { title: "", videoSection: "", section_parts: [{ title: "" }] },
-    ],
+    headline: '',
+    body: '',
+    overview: '',
+    preview_video: '',
+    preview_image: '',
+    objectives: [{ title: '' }],
+    prerequisites: [{ title: '' }],
+    audience: [{ title: '' }],
+    skills_covered: [{ title: '' }],
+    key_features: [{ title: '' }],
+    benefits: [{ title: '' }],
+    resources: [{ title: '' }],
+    outcomes: [{ title: '' }],
+    certification_text: '',
+    certification_image: '',
+    FAQs: [{ question: '', answer: '' }],
+    curriculum: [{ title: '', videoSection: '', section_parts: [{ title: '' }] }],
   });
 
   const [trainingBatchesData, setTrainingBatchesData] = useState({
-    batch_name: "",
+    batch_name: '',
     isPaid: false,
-    trainer: "",
-    start_time: "",
-    enrollment_end_date: "",
-    end_date: "",
-    capacity: "",
-    batch_status: "",
-    description: "",
+    trainer: '',
+    start_time: '',
+    enrollment_end_date: '',
+    end_date: '',
+    capacity: '',
+    batch_status: '',
+    description: '',
   });
 
   const [courseData, setCourseData] = useState(data?.course || null);
@@ -58,9 +56,9 @@ const CourseEditModal = ({ courseId, isOpen, handleClose }: ModalProps) => {
   // disalbe scroll on modal open
   useEffect(() => {
     if (isOpen) {
-      document.body.style.overflow = "hidden";
+      document.body.style.overflow = 'hidden';
       return (): void => {
-        document.body.style.overflow = "unset";
+        document.body.style.overflow = 'unset';
       };
     }
   }, [isOpen]);
@@ -75,7 +73,7 @@ const CourseEditModal = ({ courseId, isOpen, handleClose }: ModalProps) => {
             <div className="flex justify-around gap-1 items-center">
               <span
                 className={`text-gray-400 font-[600] h-full cursor-pointer pb-2 ${
-                  active === 0 && "text-sky-800 border-b-4 border-sky-800"
+                  active === 0 && 'text-sky-800 border-b-4 border-sky-800'
                 }`}
                 onClick={() => setActive(0)}
               >
@@ -83,7 +81,7 @@ const CourseEditModal = ({ courseId, isOpen, handleClose }: ModalProps) => {
               </span>
               <span
                 className={`text-gray-400 font-[600] h-full cursor-pointer pb-2 ${
-                  active === 1 && "text-sky-800 border-b-4 border-sky-800"
+                  active === 1 && 'text-sky-800 border-b-4 border-sky-800'
                 }`}
                 onClick={() => {
                   setActive(1);
@@ -93,7 +91,7 @@ const CourseEditModal = ({ courseId, isOpen, handleClose }: ModalProps) => {
               </span>
               <span
                 className={`text-gray-400 font-[600] h-full cursor-pointer pb-2 ${
-                  active === 2 && "text-sky-800 border-b-4 border-sky-800"
+                  active === 2 && 'text-sky-800 border-b-4 border-sky-800'
                 }`}
                 onClick={() => {
                   setActive(2);
@@ -103,7 +101,7 @@ const CourseEditModal = ({ courseId, isOpen, handleClose }: ModalProps) => {
               </span>
               <span
                 className={`text-gray-400 font-[600] h-full cursor-pointer pb-2 ${
-                  active === 3 && "text-sky-800 border-b-4 border-sky-800"
+                  active === 3 && 'text-sky-800 border-b-4 border-sky-800'
                 }`}
                 onClick={() => {
                   setActive(3);
@@ -113,7 +111,7 @@ const CourseEditModal = ({ courseId, isOpen, handleClose }: ModalProps) => {
               </span>
               <span
                 className={`text-gray-400 font-[600] h-full cursor-pointer pb-2 ${
-                  active === 4 && "text-sky-800 border-b-4 border-sky-800"
+                  active === 4 && 'text-sky-800 border-b-4 border-sky-800'
                 }`}
                 onClick={() => {
                   setActive(4);
@@ -123,7 +121,7 @@ const CourseEditModal = ({ courseId, isOpen, handleClose }: ModalProps) => {
               </span>
               <span
                 className={`text-gray-400 font-[600] h-full cursor-pointer pb-2 ${
-                  active === 5 && "text-sky-800 border-b-4 border-sky-800"
+                  active === 5 && 'text-sky-800 border-b-4 border-sky-800'
                 }`}
                 onClick={() => {
                   setActive(5);

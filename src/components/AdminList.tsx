@@ -1,8 +1,8 @@
 // components/admin/AdminList.tsx
-import { useState, useEffect } from "react";
-import axios from "axios";
-import { useAdminAuth } from "@/lib/hooks/useAdminAuth";
-import { IAdminUser } from "@/models/AdminUser";
+import { useState, useEffect } from 'react';
+import axios from 'axios';
+import { useAdminAuth } from '@/lib/hooks/useAdminAuth';
+import { IAdminUser } from '@/models/AdminUser';
 
 interface AdminListProps extends IAdminUser {
   _id: string; // or `_id: Types.ObjectId;` if using Mongoose
@@ -14,7 +14,7 @@ export default function AdminList() {
 
   useEffect(() => {
     if (isSuperAdmin) {
-      axios.get("/api/admin/users").then((res) => setAdmins(res.data));
+      axios.get('/api/admin/users').then(res => setAdmins(res.data));
     }
   }, [isSuperAdmin]);
 
@@ -33,11 +33,11 @@ export default function AdminList() {
           </tr>
         </thead>
         <tbody>
-          {admins.map((admin) => (
+          {admins.map(admin => (
             <tr key={admin._id}>
               <td>{admin.email}</td>
               <td>{admin.role}</td>
-              <td>{admin.isActive ? "Active" : "Inactive"}</td>
+              <td>{admin.isActive ? 'Active' : 'Inactive'}</td>
               <td>{/* Add action buttons here */}</td>
             </tr>
           ))}

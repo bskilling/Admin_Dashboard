@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import { cn } from "@/lib/utils";
-import React from "react";
-import { Link } from "react-scroll";
+import { cn } from '@/lib/utils';
+import React from 'react';
+import { Link } from 'react-scroll';
 
 export default function Navbar({
   activeTab,
@@ -18,12 +18,11 @@ export default function Navbar({
         spy={true}
         smooth={true}
         onClick={() => {
-          setActiveTab("home");
+          setActiveTab('home');
         }}
         className={cn(
-          "cursor-pointer text-gray-600 hover:text-blue-600",
-          activeTab === "home" &&
-            "text-blue-500 font-bold border-b border-blue-500"
+          'cursor-pointer text-gray-600 hover:text-blue-600',
+          activeTab === 'home' && 'text-blue-500 font-bold border-b border-blue-500'
         )}
       >
         Home
@@ -32,11 +31,11 @@ export default function Navbar({
         to="overview"
         smooth={true}
         onClick={() => {
-          setActiveTab("overview");
+          setActiveTab('overview');
         }}
         className={cn(
-          "cursor-pointer text-gray-600 hover:text-blue-600",
-          activeTab === "overview" && "text-blue-600 font-bold"
+          'cursor-pointer text-gray-600 hover:text-blue-600',
+          activeTab === 'overview' && 'text-blue-600 font-bold'
         )}
       >
         Overview
@@ -45,27 +44,27 @@ export default function Navbar({
         to="curriculum"
         smooth={true}
         onClick={() => {
-          setActiveTab("curriculum");
+          setActiveTab('curriculum');
         }}
         className={cn(
-          "cursor-pointer text-gray-600 hover:text-blue-600",
-          activeTab === "curriculum" && "text-blue-600 font-bold"
+          'cursor-pointer text-gray-600 hover:text-blue-600',
+          activeTab === 'curriculum' && 'text-blue-600 font-bold'
         )}
       >
         Curriculum
       </Link>
       {
         // @ts-expect-error error
-        watch("skills") && watch("skills")?.length > 0 && (
+        watch('skills') && watch('skills')?.length > 0 && (
           <Link
             to="skills"
             smooth={true}
             className={cn(
-              "cursor-pointer text-gray-600 hover:text-blue-600",
-              activeTab === "skills" && "text-blue-600 font-bold"
+              'cursor-pointer text-gray-600 hover:text-blue-600',
+              activeTab === 'skills' && 'text-blue-600 font-bold'
             )}
             onClick={() => {
-              setActiveTab("skills");
+              setActiveTab('skills');
             }}
           >
             Skills
@@ -76,11 +75,11 @@ export default function Navbar({
         to="why-join"
         smooth={true}
         onClick={() => {
-          setActiveTab("why-join");
+          setActiveTab('why-join');
         }}
         className={cn(
-          "cursor-pointer text-gray-600 hover:text-blue-600",
-          activeTab === "why-join" && "text-blue-600 font-bold"
+          'cursor-pointer text-gray-600 hover:text-blue-600',
+          activeTab === 'why-join' && 'text-blue-600 font-bold'
         )}
       >
         Why Join
@@ -89,12 +88,12 @@ export default function Navbar({
         to="faqs"
         spy={true}
         onClick={() => {
-          setActiveTab("faqs");
+          setActiveTab('faqs');
         }}
         smooth={true}
         className={cn(
-          "cursor-pointer text-gray-600 hover:text-blue-600",
-          activeTab === "faqs" && "text-blue-600 font-bold"
+          'cursor-pointer text-gray-600 hover:text-blue-600',
+          activeTab === 'faqs' && 'text-blue-600 font-bold'
         )}
       >
         FAQs
@@ -103,11 +102,11 @@ export default function Navbar({
         to="pricing"
         smooth={true}
         onClick={() => {
-          setActiveTab("pricing");
+          setActiveTab('pricing');
         }}
         className={cn(
-          "cursor-pointer text-gray-600 hover:text-blue-600",
-          activeTab === "pricing" && "text-blue-600 font-bold"
+          'cursor-pointer text-gray-600 hover:text-blue-600',
+          activeTab === 'pricing' && 'text-blue-600 font-bold'
         )}
       >
         Pricing

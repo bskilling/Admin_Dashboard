@@ -1,15 +1,15 @@
-import toast from "react-hot-toast";
-import { apiSlice } from "../api/apiSlice";
-import { setCourse } from "./courseSlice";
+import toast from 'react-hot-toast';
+import { apiSlice } from '../api/apiSlice';
+import { setCourse } from './courseSlice';
 
 export const coursesApi = apiSlice.injectEndpoints({
-  endpoints: (builder) => ({
+  endpoints: builder => ({
     createCourse: builder.mutation({
-      query: (data) => ({
-        url: "create-course",
-        method: "POST",
+      query: data => ({
+        url: 'create-course',
+        method: 'POST',
         body: data,
-        credentials: "include" as const,
+        credentials: 'include' as const,
       }),
       async onQueryStarted(arg, { queryFulfilled, dispatch }) {
         try {
@@ -28,9 +28,9 @@ export const coursesApi = apiSlice.injectEndpoints({
     editCourse: builder.mutation({
       query: ({ id, data, section }) => ({
         url: `edit-course/${id}`,
-        method: "PUT",
+        method: 'PUT',
         body: { data, section },
-        credentials: "include" as const,
+        credentials: 'include' as const,
       }),
       async onQueryStarted(arg, { queryFulfilled, dispatch }) {
         try {
@@ -47,39 +47,39 @@ export const coursesApi = apiSlice.injectEndpoints({
       },
     }),
     getAllCourses: builder.query({
-      query: (queryParam) => ({
-        url: "get-courses",
-        method: "GET",
-        credentials: "include" as const,
+      query: queryParam => ({
+        url: 'get-courses',
+        method: 'GET',
+        credentials: 'include' as const,
         params: queryParam,
       }),
     }),
     getCourseById: builder.query({
       query: (id: any) => ({
         url: `/get-course/${id}`,
-        method: "GET",
-        credentials: "include" as const,
+        method: 'GET',
+        credentials: 'include' as const,
       }),
     }),
     getCoursesTitle: builder.query({
       query: () => ({
-        url: "get-course-title",
-        method: "GET",
-        credentials: "include" as const,
+        url: 'get-course-title',
+        method: 'GET',
+        credentials: 'include' as const,
       }),
     }),
     deleteCourse: builder.mutation({
-      query: (id) => ({
+      query: id => ({
         url: `delete-course/${id}`,
-        method: "DELETE",
-        credentials: "include" as const,
+        method: 'DELETE',
+        credentials: 'include' as const,
       }),
     }),
     getCoursesLength: builder.query({
       query: () => ({
-        url: "getCoursesLength",
-        method: "GET",
-        credentials: "include" as const,
+        url: 'getCoursesLength',
+        method: 'GET',
+        credentials: 'include' as const,
       }),
     }),
   }),

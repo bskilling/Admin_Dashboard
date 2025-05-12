@@ -1,9 +1,9 @@
-"use client";
+'use client';
 
-import { useState, useEffect, useCallback } from "react";
-import { useRouter, usePathname } from "next/navigation";
-import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
+import { useState, useEffect, useCallback } from 'react';
+import { useRouter, usePathname } from 'next/navigation';
+import { useQuery } from '@tanstack/react-query';
+import axios from 'axios';
 import {
   Sheet,
   SheetClose,
@@ -13,27 +13,23 @@ import {
   SheetHeader,
   SheetTitle,
   SheetTrigger,
-} from "@/components/ui/sheet";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+} from '@/components/ui/sheet';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
-import { Label } from "@/components/ui/label";
+} from '@/components/ui/select';
+import { Label } from '@/components/ui/label';
 // import { Calendar } from "@/components/ui/calendar";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
-import { CalendarIcon, FilterIcon } from "lucide-react";
-import { format } from "date-fns";
-import { cn } from "@/lib/utils";
-import { useDebounce } from "@/app/hooks/use-debounce";
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { CalendarIcon, FilterIcon } from 'lucide-react';
+import { format } from 'date-fns';
+import { cn } from '@/lib/utils';
+import { useDebounce } from '@/app/hooks/use-debounce';
 
 interface Category {
   _id: string;
@@ -63,8 +59,8 @@ export function EmiLeadFilter({
   // Form state
   const [search, setSearch] = useState(currentSearch);
   const [status, setStatus] = useState(currentStatus);
-  const [courseType, setCourseType] = useState(currentCourseType || "");
-  const [categoryId, setCategoryId] = useState(currentCategoryId || "");
+  const [courseType, setCourseType] = useState(currentCourseType || '');
+  const [categoryId, setCategoryId] = useState(currentCategoryId || '');
   const [startDate, setStartDate] = useState<Date | undefined>(
     currentStartDate ? new Date(currentStartDate) : undefined
   );
@@ -74,11 +70,9 @@ export function EmiLeadFilter({
 
   // Fetch categories for the filter dropdown
   const { data: categoriesData } = useQuery({
-    queryKey: ["categories"],
+    queryKey: ['categories'],
     queryFn: async () => {
-      const response = await axios.get(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/categories`
-      );
+      const response = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/categories`);
       return response.data;
     },
   });
@@ -91,28 +85,18 @@ export function EmiLeadFilter({
     const params = new URLSearchParams();
 
     // Always include page and limit
-    params.append("page", "1"); // Reset to first page when filters change
-    params.append("limit", "10");
+    params.append('page', '1'); // Reset to first page when filters change
+    params.append('limit', '10');
 
-    if (debouncedSearch) params.append("search", debouncedSearch);
-    if (status) params.append("status", status);
-    if (courseType) params.append("courseType", courseType);
-    if (categoryId) params.append("categoryId", categoryId);
-    if (startDate)
-      params.append("startDate", startDate.toISOString().split("T")[0]);
-    if (endDate) params.append("endDate", endDate.toISOString().split("T")[0]);
+    if (debouncedSearch) params.append('search', debouncedSearch);
+    if (status) params.append('status', status);
+    if (courseType) params.append('courseType', courseType);
+    if (categoryId) params.append('categoryId', categoryId);
+    if (startDate) params.append('startDate', startDate.toISOString().split('T')[0]);
+    if (endDate) params.append('endDate', endDate.toISOString().split('T')[0]);
 
     router.push(`${pathname}?${params.toString()}`);
-  }, [
-    debouncedSearch,
-    status,
-    courseType,
-    categoryId,
-    startDate,
-    endDate,
-    router,
-    pathname,
-  ]);
+  }, [debouncedSearch, status, courseType, categoryId, startDate, endDate, router, pathname]);
 
   // Update URL when debounced search changes
   useEffect(() => {
@@ -124,15 +108,14 @@ export function EmiLeadFilter({
     setStatus(value);
 
     const params = new URLSearchParams();
-    params.append("page", "1");
-    params.append("limit", "10");
-    if (debouncedSearch) params.append("search", debouncedSearch);
-    params.append("status", value);
-    if (courseType) params.append("courseType", courseType);
-    if (categoryId) params.append("categoryId", categoryId);
-    if (startDate)
-      params.append("startDate", startDate.toISOString().split("T")[0]);
-    if (endDate) params.append("endDate", endDate.toISOString().split("T")[0]);
+    params.append('page', '1');
+    params.append('limit', '10');
+    if (debouncedSearch) params.append('search', debouncedSearch);
+    params.append('status', value);
+    if (courseType) params.append('courseType', courseType);
+    if (categoryId) params.append('categoryId', categoryId);
+    if (startDate) params.append('startDate', startDate.toISOString().split('T')[0]);
+    if (endDate) params.append('endDate', endDate.toISOString().split('T')[0]);
 
     router.push(`${pathname}?${params.toString()}`);
   };
@@ -142,22 +125,21 @@ export function EmiLeadFilter({
     setCourseType(value);
 
     const params = new URLSearchParams();
-    params.append("page", "1");
-    params.append("limit", "10");
-    if (debouncedSearch) params.append("search", debouncedSearch);
-    if (status) params.append("status", status);
-    params.append("courseType", value);
-    if (categoryId) params.append("categoryId", categoryId);
-    if (startDate)
-      params.append("startDate", startDate.toISOString().split("T")[0]);
-    if (endDate) params.append("endDate", endDate.toISOString().split("T")[0]);
+    params.append('page', '1');
+    params.append('limit', '10');
+    if (debouncedSearch) params.append('search', debouncedSearch);
+    if (status) params.append('status', status);
+    params.append('courseType', value);
+    if (categoryId) params.append('categoryId', categoryId);
+    if (startDate) params.append('startDate', startDate.toISOString().split('T')[0]);
+    if (endDate) params.append('endDate', endDate.toISOString().split('T')[0]);
 
     router.push(`${pathname}?${params.toString()}`);
   };
 
   // Handle date selection
-  const handleDateSelect = (field: "start" | "end", date?: Date) => {
-    if (field === "start") {
+  const handleDateSelect = (field: 'start' | 'end', date?: Date) => {
+    if (field === 'start') {
       setStartDate(date);
     } else {
       setEndDate(date);
@@ -171,10 +153,10 @@ export function EmiLeadFilter({
 
   // Reset all filters
   const resetFilters = () => {
-    setSearch("");
-    setStatus("");
-    setCourseType("");
-    setCategoryId("");
+    setSearch('');
+    setStatus('');
+    setCourseType('');
+    setCategoryId('');
     setStartDate(undefined);
     setEndDate(undefined);
     router.push(pathname);
@@ -196,7 +178,7 @@ export function EmiLeadFilter({
         <Input
           placeholder="Search by name, email, or phone"
           value={search}
-          onChange={(e) => setSearch(e.target.value)}
+          onChange={e => setSearch(e.target.value)}
           className="max-w-md"
         />
       </div>
@@ -209,9 +191,7 @@ export function EmiLeadFilter({
           <SelectContent>
             {/* <SelectItem value="rr">All Statuses</SelectItem> */}
             <SelectItem value="NEW">New</SelectItem>
-            <SelectItem value="Attempted to Contact">
-              Attempted to Contact
-            </SelectItem>
+            <SelectItem value="Attempted to Contact">Attempted to Contact</SelectItem>
             <SelectItem value="In-conversation">In Conversation</SelectItem>
             <SelectItem value="Spam">Spam</SelectItem>
             <SelectItem value="Converted">Converted</SelectItem>
@@ -247,9 +227,7 @@ export function EmiLeadFilter({
           <SheetContent>
             <SheetHeader>
               <SheetTitle>Filter EMI Leads</SheetTitle>
-              <SheetDescription>
-                Apply filters to narrow down your EMI leads list
-              </SheetDescription>
+              <SheetDescription>Apply filters to narrow down your EMI leads list</SheetDescription>
             </SheetHeader>
 
             <div className="grid gap-4 py-4">
@@ -259,7 +237,7 @@ export function EmiLeadFilter({
                   id="sheet-search"
                   placeholder="Name, email, or phone"
                   value={search}
-                  onChange={(e) => setSearch(e.target.value)}
+                  onChange={e => setSearch(e.target.value)}
                 />
               </div>
 
@@ -272,12 +250,8 @@ export function EmiLeadFilter({
                   <SelectContent>
                     {/* <SelectItem value="rr">All Statuses</SelectItem> */}
                     <SelectItem value="NEW">New</SelectItem>
-                    <SelectItem value="Attempted to Contact">
-                      Attempted to Contact
-                    </SelectItem>
-                    <SelectItem value="In-conversation">
-                      In Conversation
-                    </SelectItem>
+                    <SelectItem value="Attempted to Contact">Attempted to Contact</SelectItem>
+                    <SelectItem value="In-conversation">In Conversation</SelectItem>
                     <SelectItem value="Spam">Spam</SelectItem>
                     <SelectItem value="Converted">Converted</SelectItem>
                     <SelectItem value="Not-Converted">Not Converted</SelectItem>
@@ -309,13 +283,11 @@ export function EmiLeadFilter({
                   </SelectTrigger>
                   <SelectContent>
                     {/* <SelectItem value="asasa">All Categories</SelectItem> */}
-                    {categoriesData?.data?.categories?.map(
-                      (category: Category) => (
-                        <SelectItem key={category._id} value={category._id}>
-                          {category.name}
-                        </SelectItem>
-                      )
-                    )}
+                    {categoriesData?.data?.categories?.map((category: Category) => (
+                      <SelectItem key={category._id} value={category._id}>
+                        {category.name}
+                      </SelectItem>
+                    ))}
                   </SelectContent>
                 </Select>
               </div>
@@ -329,12 +301,12 @@ export function EmiLeadFilter({
                         <Button
                           variant="outline"
                           className={cn(
-                            "justify-start text-left font-normal",
-                            !startDate && "text-muted-foreground"
+                            'justify-start text-left font-normal',
+                            !startDate && 'text-muted-foreground'
                           )}
                         >
                           <CalendarIcon className="mr-2 h-4 w-4" />
-                          {startDate ? format(startDate, "PPP") : "Start date"}
+                          {startDate ? format(startDate, 'PPP') : 'Start date'}
                         </Button>
                       </PopoverTrigger>
                       <PopoverContent className="w-auto p-0"></PopoverContent>
@@ -345,12 +317,12 @@ export function EmiLeadFilter({
                         <Button
                           variant="outline"
                           className={cn(
-                            "justify-start text-left font-normal",
-                            !endDate && "text-muted-foreground"
+                            'justify-start text-left font-normal',
+                            !endDate && 'text-muted-foreground'
                           )}
                         >
                           <CalendarIcon className="mr-2 h-4 w-4" />
-                          {endDate ? format(endDate, "PPP") : "End date"}
+                          {endDate ? format(endDate, 'PPP') : 'End date'}
                         </Button>
                       </PopoverTrigger>
                       <PopoverContent className="w-auto p-0"></PopoverContent>

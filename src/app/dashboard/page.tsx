@@ -1,11 +1,11 @@
-"use client";
+'use client';
 
-import React, { Suspense } from "react";
-import { IoIosAdd } from "react-icons/io";
-import { FaFilter } from "react-icons/fa6";
-import { motion } from "framer-motion";
-import { Button } from "@/components/ui/button";
-import { useRouter } from "next/navigation";
+import React, { Suspense } from 'react';
+import { IoIosAdd } from 'react-icons/io';
+import { FaFilter } from 'react-icons/fa6';
+import { motion } from 'framer-motion';
+import { Button } from '@/components/ui/button';
+import { useRouter } from 'next/navigation';
 
 export default function Dashboard() {
   const router = useRouter();

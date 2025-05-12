@@ -1,9 +1,9 @@
 // hooks/useCourses.ts
-import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
-import env from "@/lib/env";
+import { useQuery } from '@tanstack/react-query';
+import axios from 'axios';
+import env from '@/lib/env';
 // types.ts
-export type CourseType = "b2b" | "b2c" | "b2g" | "b2i";
+export type CourseType = 'b2b' | 'b2c' | 'b2g' | 'b2i';
 
 export interface Course {
   _id: string;
@@ -33,9 +33,9 @@ export interface CourseListResponse {
 
 export const useCourses = (params: CourseQueryParams = {}) => {
   return useQuery<CourseListResponse>({
-    queryKey: ["courses", params],
+    queryKey: ['courses', params],
     queryFn: async () => {
-      const res = await axios.get(env.BACKEND_URL + "/api/courses", {
+      const res = await axios.get(env.BACKEND_URL + '/api/courses', {
         params: {
           limit: 100,
           page: 1,
@@ -50,9 +50,9 @@ export const useCourses = (params: CourseQueryParams = {}) => {
 
 export const useCourseCategories = (type?: CourseType) => {
   return useQuery({
-    queryKey: ["courseCategories", type],
+    queryKey: ['courseCategories', type],
     queryFn: async () => {
-      const res = await axios.get(env.BACKEND_URL + "/api/categories", {
+      const res = await axios.get(env.BACKEND_URL + '/api/categories', {
         params: { type },
       });
       return res.data.data;

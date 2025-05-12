@@ -1,7 +1,7 @@
 // app/dashboard/edmingle-users/page.tsx
-"use client";
+'use client';
 
-import UserEnrollmentTable from "./_components/UserEnrollmentTable";
+import UserEnrollmentTable from './_components/UserEnrollmentTable';
 
 export default function EdmingleUsersPage() {
   return (
