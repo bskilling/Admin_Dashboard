@@ -129,14 +129,39 @@ const FileUploader: React.FC<FileUploaderProps> = ({
           <div className="loader">Processing...</div>
         ) : previewUrl ? (
           <div>
-            <img
+            {/\.(jpg|jpeg|png|webp|svg|avif)$/i.test(previewUrl) ? (
+              <img
+                src={previewUrl}
+                alt="Uploaded file preview"
+                className="m-auto h-full w-full max-h-40 object-cover rounded-md"
+                width={200}
+                height={200}
+              />
+            ) : (
+              <div className="flex flex-col items-center">
+                <img
+                  src="https://cdn-icons-png.flaticon.com/512/337/337946.png" // generic document icon
+                  alt="Document"
+                  className="h-20 w-20 object-contain"
+                />
+                <a
+                  href={previewUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mt-2 text-blue-600 underline text-sm"
+                >
+                  Open File
+                </a>
+              </div>
+            )}
+            {/* <img
               src={previewUrl}
               alt="Uploaded file preview"
               style={{ maxWidth: '100%', borderRadius: '5px' }}
               className="m-auto h-full w-full max-h-40  object-cover "
               width={200}
               height={200}
-            />
+            /> */}
             <div className="flex justify-end">
               <button
                 onClick={handleDelete}

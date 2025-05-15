@@ -27,6 +27,7 @@ export default function HeroSection({
   setBannerUrl: (url: string) => void;
   variants: number;
 }) {
+  console.log(watch('broucher'), 'broucher', watch());
   return (
     <section
       id="hero"
@@ -75,7 +76,17 @@ export default function HeroSection({
             className="border border-[#00C6FF] focus:ring-[#00C6FF] focus:border-[#00C6FF]"
           />
         </div>
-
+        <div className="relative w-full px-6 py-6 rounded-lg bg-black/20 backdrop-blur-md flex flex-col items-center justify-center">
+          <FileUploader
+            label="Broucher Image"
+            purpose="Broucher"
+            title="Upload Broucher PDF"
+            url={watch('broucher')}
+            id={watch('broucher')}
+            setFileId={fileId => setValue('broucher', fileId as string)}
+            setUrl={url => setBannerUrl(url as string)}
+          />
+        </div>
         {/* Right Column: Banner Image */}
         <div className="relative w-full px-6 py-6 rounded-lg bg-black/20 backdrop-blur-md flex flex-col items-center justify-center">
           <FileUploader
