@@ -110,6 +110,8 @@ export default function RouteComponent() {
   const router = useRouter();
   const [bannerUrl, setBannerUrl] = useState('');
   const [previewImage, setPreviewImage] = useState('');
+
+  const [fileUrl, setFileUrl] = useState('');
   const [logoUrl, setLogoUrl] = useState('');
   const [whyJoin, setWhyJoin] = useState('');
   const [keyFeature, setKeyFeature] = useState('');

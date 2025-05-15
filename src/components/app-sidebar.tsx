@@ -46,10 +46,10 @@ const menuItems = [
     icon: FolderKanban,
   },
   { title: 'Course Mapping', url: '/dashboard/course-mapping', icon: Layers },
-  // { title: "Skill Library", url: "/dashboard/skills", icon: Cpu },
+  { title: 'NSDC LEAD', url: '/dashboard/nsdc-leads', icon: Cpu },
   { title: 'Tool Repository', url: '/dashboard/tools', icon: Wrench },
   { title: 'Settings', url: '/dashboard/settings', icon: Settings },
-  { title: 'Nsdc Leads', url: '/dashboard/nsdc-leads', icon: Settings },
+  { title: 'Important Logs', url: '/dashboard/important-logs', icon: Settings },
 ];
 
 // Blog section with children

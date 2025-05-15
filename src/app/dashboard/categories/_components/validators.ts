@@ -77,6 +77,7 @@ export const draftCourseSchema = z.object({
   highlights: z.array(z.string()).optional(),
   outcomes: z.array(z.string()).optional(),
   banner: z.string().optional(), // expect an ObjectId string
+  broucher: z.string().optional(), // expect an ObjectId string
   previewImage: z.string().optional(),
   logoUrl: z.string().optional(),
   category: z.array(z.string()).optional(),
