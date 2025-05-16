@@ -32,6 +32,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from '@/components/ui/sidebar';
+import { RiCoupon2Fill } from 'react-icons/ri';
 
 // Improved menu items with better naming and icon selection
 const menuItems = [
@@ -40,6 +41,8 @@ const menuItems = [
   { title: 'Edmingle Users', url: '/dashboard/edmingle-users', icon: Inbox },
   { title: 'EMI Applications', url: '/dashboard/emi-leads', icon: Database },
   // { title: "Data Migration", url: "/dashboard/migration", icon: ArrowUpDown },
+  { title: 'Coupons', url: '/dashboard/coupons', icon: RiCoupon2Fill },
+
   {
     title: 'Categories',
     url: '/dashboard/categories?type=b2c',
