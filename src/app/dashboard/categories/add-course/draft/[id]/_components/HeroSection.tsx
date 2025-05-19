@@ -32,13 +32,12 @@ export default function HeroSection({
     <section
       id="hero"
       className={cn(
-        'relative w-full  flex justify-center items-center overflow-hidden transition-all duration-500',
-        'bg-gradient-to-r from-[#0F2027] via-[#203A43] to-[#2C5364]' // Deep Blue Ocean
+        'relative w-full  flex justify-center items-center overflow-hidden transition-all duration-500'
       )}
     >
       {/* Animated Background Overlay */}
       <motion.div
-        className="absolute inset-0 bg-black/40 backdrop-blur-md"
+        className="absolute inset-0 backdrop-blur-md"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 1 }}
@@ -46,7 +45,7 @@ export default function HeroSection({
 
       {/* Content Box */}
       <motion.div
-        className="relative z-10 mx-auto grid md:grid-cols-2 gap-10 w-[80vw] py-14 px-8 rounded-2xl bg-white backdrop-blur-lg shadow-xl border border-white/20"
+        className="relative z-10 mx-auto grid md:grid-cols-2 gap-10 w-[85vw] py-14 px-8 rounded-2xl bg-white backdrop-blur-lg shadow-xl border "
         initial={{ opacity: 0, y: 50 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.7 }}

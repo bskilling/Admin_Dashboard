@@ -90,6 +90,7 @@
     "sharp": "^0.33.4",
     "sonner": "^2.0.0",
     "sweetalert2": "^11.10.8",
+    "swr": "^2.3.3",
     "tailwind-merge": "^2.6.0",
     "tailwindcss-animate": "^1.0.7",
     "tiptap": "^1.32.2",
