@@ -13,7 +13,17 @@ import { Download, RefreshCw, Upload, UserRound, Users } from 'lucide-react';
 import { useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
 
-export function EmiLeadsHeader() {
+export function EmiLeadsHeader({
+  total,
+  newLeads,
+  in_conversion,
+  converted,
+}: {
+  total: number;
+  newLeads: number;
+  in_conversion: number;
+  converted: number;
+}) {
   const queryClient = useQueryClient();
 
   const refreshData = () => {
@@ -47,8 +57,8 @@ export function EmiLeadsHeader() {
             <Users className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">120</div>
-            <p className="text-xs text-muted-foreground">+5.2% from last month</p>
+            <div className="text-2xl font-bold">{total}</div>
+            {/* <p className="text-xs text-muted-foreground">+5.2% from last month</p> */}
           </CardContent>
         </Card>
         <Card>
@@ -57,8 +67,8 @@ export function EmiLeadsHeader() {
             <UserRound className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">24</div>
-            <p className="text-xs text-muted-foreground">+12% from last week</p>
+            <div className="text-2xl font-bold"> {newLeads} </div>
+            {/* <p className="text-xs text-muted-foreground">+12% from last week</p> */}
           </CardContent>
         </Card>
         <Card>
@@ -78,8 +88,8 @@ export function EmiLeadsHeader() {
             </svg>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">32</div>
-            <p className="text-xs text-muted-foreground">+7% from last month</p>
+            <div className="text-2xl font-bold"> {in_conversion ?? 0} </div>
+            {/* <p className="text-xs text-muted-foreground">+7% from last month</p> */}
           </CardContent>
         </Card>
         <Card>
@@ -100,8 +110,8 @@ export function EmiLeadsHeader() {
             </svg>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">18</div>
-            <p className="text-xs text-muted-foreground">+10.5% from last month</p>
+            <div className="text-2xl font-bold">{converted ?? 0}</div>
+            {/* <p className="text-xs text-muted-foreground">+10.5% from last month</p> */}
           </CardContent>
         </Card>
       </div>
