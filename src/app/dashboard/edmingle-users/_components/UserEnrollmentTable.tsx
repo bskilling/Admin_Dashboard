@@ -32,15 +32,19 @@ import {
 import { Badge } from '@/components/ui/badge';
 import { formatDate } from '@/lib/utils';
 import Link from 'next/link';
+import { useSearchParams } from 'next/navigation';
 
 export default function UserEnrollmentTable() {
   const [page, setPage] = useState(1);
   const [searchQuery, setSearchQuery] = useState('');
 
-  // Fetch users with enrollments
+  const searchParams = useSearchParams();
+
+  const courseId = searchParams.get('course'); // <-- 👈 Get from URL ?course=courseId
+
   const { data, isLoading, isError } = useQuery({
-    queryKey: ['enrollments', page],
-    queryFn: () => fetchEnrollments(page, 10),
+    queryKey: ['enrollments', page, courseId], // 👈 include courseId in queryKey
+    queryFn: () => fetchEnrollments(page, 10, courseId),
     staleTime: 1000 * 60 * 60 * 24 * 200,
   });
 

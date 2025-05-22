@@ -5,21 +5,29 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
 import { getZohoNsdcLeads, pushLeadsToZoho } from './_components/service';
 import { DataTable } from './_components/leads.table';
+import { StatsHeader } from './_components/stats-header';
+import { PaginationControls } from './_components/pagination-controls';
+import { useSearchParams } from 'next/navigation';
+import { Button } from '@/components/ui/button';
 
 export default function NsdcLeadPage() {
   const queryClient = useQueryClient();
+  const searchParams = useSearchParams();
 
-  // Fetch leads data
-  const {
-    data: leads,
-    isLoading,
-    isError,
-  } = useQuery({
-    queryKey: ['nsdcLeads'],
-    queryFn: getZohoNsdcLeads,
+  const page = parseInt(searchParams.get('page') || '1');
+  const limit = parseInt(searchParams.get('limit') || '10');
+
+  const filters = {
+    course: searchParams.get('course') || undefined,
+    status: searchParams.get('status') || undefined,
+    zohoResponseCode: searchParams.get('zohoResponseCode') || undefined,
+  };
+  const { data, isLoading, isError, refetch } = useQuery({
+    queryKey: ['nsdcLeads', page, limit, filters],
+    queryFn: () => getZohoNsdcLeads({ page, limit, ...filters }),
+    staleTime: 60 * 60 * 1000,
   });
 
-  // Mutation for pushing leads to Zoho
   const { mutate: pushToZoho } = useMutation({
     mutationFn: pushLeadsToZoho,
     onSuccess: () => {
@@ -35,9 +43,12 @@ export default function NsdcLeadPage() {
   if (isLoading) return <div>Loading...</div>;
   if (isError) return <div>Error loading leads</div>;
 
+  const leads = data?.data?.leads || [];
+  const total = data?.data?.total || 0;
+
   return (
-    <div className="container mx-auto py-10">
-      <div className="flex justify-between items-center mb-6">
+    <div className="container mx-auto py-10 pt-0 space-y-6">
+      <div className="flex justify-between items-center">
         <h1 className="text-2xl font-bold">NSDC Leads</h1>
         <button
           onClick={() => pushToZoho()}
@@ -47,8 +58,16 @@ export default function NsdcLeadPage() {
         </button>
       </div>
 
-      {/* <FilterControls /> */}
-      {/* <DataTable data={leads || []} /> */}
+      <StatsHeader />
+
+      <Button
+        onClick={() => refetch()}
+        className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
+      >
+        Refresh Leads
+      </Button>
+      <DataTable data={leads} />
+      <PaginationControls page={page} limit={limit} total={total} />
     </div>
   );
 }

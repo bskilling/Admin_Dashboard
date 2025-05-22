@@ -4,8 +4,16 @@ import axios from 'axios';
 
 const API_BASE_URL = env?.BACKEND_URL + '/api/nsdc-lead';
 
-export const getZohoNsdcLeads = async () => {
-  const response = await axios.get(API_BASE_URL);
+export const getZohoNsdcLeads = async (filters: {
+  page: number;
+  limit: number;
+  course?: string;
+  status?: string;
+  zohoResponseCode?: string;
+}) => {
+  const response = await axios.get(API_BASE_URL, {
+    params: filters,
+  });
   return response.data;
 };
 

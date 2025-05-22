@@ -70,11 +70,16 @@ export interface EnrollmentsResponse {
 
 export const fetchEnrollments = async (
   page?: number,
-  limit?: number
+  limit?: number,
+  courseId?: string | null
 ): Promise<EnrollmentsResponse> => {
   try {
     const response = await axios.get(env?.BACKEND_URL + '/api/edmingle/users', {
-      params: { page, limit },
+      params: {
+        page,
+        limit,
+        course: courseId || undefined,
+      },
     });
     return response.data;
   } catch (error) {
