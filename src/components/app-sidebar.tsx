@@ -37,6 +37,8 @@ import { RiCoupon2Fill } from 'react-icons/ri';
 // Improved menu items with better naming and icon selection
 const menuItems = [
   { title: 'Dashboard', url: '/dashboard', icon: LayoutDashboard },
+  { title: 'Purchases', url: '/dashboard/purchases', icon: Inbox },
+
   { title: 'Lead Management', url: '/dashboard/leads', icon: Users },
   { title: 'Nasscom', url: '/dashboard/edmingle-users', icon: Inbox },
   { title: 'EMI Applications', url: '/dashboard/emi-leads', icon: Database },
@@ -53,6 +55,16 @@ const menuItems = [
   { title: 'Tool Repository', url: '/dashboard/tools', icon: Wrench },
   { title: 'Settings', url: '/dashboard/settings', icon: Settings },
   { title: 'Important Logs', url: '/dashboard/important-logs', icon: Settings },
+  {
+    title: 'LMSStrategyPresentation',
+    url: '/LMSStrategyPresentation',
+    icon: FolderKanban,
+  },
+  {
+    title: 'LMSPresentation',
+    url: '/LMSPresentation',
+    icon: Cpu,
+  },
 ];
 
 // Blog section with children

@@ -1,57 +1,69 @@
-// app/nsdc-lead/components/DataTable/data-table.tsx
+// app/nsdc-lead/_components/leads.table.tsx
 'use client';
 
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '@/components/ui/table';
+import { Badge } from '@/components/ui/badge';
 
-interface DataTableProps<TData> {
-  columns: {
-    accessorKey: string;
-    header: string;
-    cell?: (value: any, row: TData) => React.ReactNode;
-  }[];
-  data: TData[];
+interface Lead {
+  candidateName: string;
+  candidateEmail: string;
+  mobile: string;
+  courseName: string[];
+  city: string;
+  state: string;
+  status: string;
+  zohoResponse?: {
+    code: string;
+  };
 }
 
-export function DataTable<TData>({ columns, data }: DataTableProps<TData>) {
+interface Props {
+  data: Lead[];
+}
+
+export const DataTable = ({ data }: Props) => {
   return (
-    <div className="rounded-md border">
-      <Table>
-        <TableHeader>
-          <TableRow>
-            {columns.map(column => (
-              <TableHead key={column.accessorKey}>{column.header}</TableHead>
-            ))}
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {data.length ? (
-            data.map((row, rowIndex) => (
-              <TableRow key={rowIndex}>
-                {columns.map(column => (
-                  <TableCell key={`${rowIndex}-${column.accessorKey}`}>
-                    {column.cell
-                      ? column.cell((row as any)[column.accessorKey], row)
-                      : (row as any)[column.accessorKey]}
-                  </TableCell>
-                ))}
-              </TableRow>
-            ))
-          ) : (
-            <TableRow>
-              <TableCell colSpan={columns.length} className="h-24 text-center">
-                No results.
-              </TableCell>
-            </TableRow>
-          )}
-        </TableBody>
-      </Table>
+    <div className="overflow-x-auto rounded-xl border shadow">
+      <table className="min-w-full text-sm text-left">
+        <thead className="bg-gray-100 border-b text-xs uppercase font-semibold text-gray-600">
+          <tr>
+            <th className="px-4 py-2">No</th>
+
+            <th className="px-4 py-2">Name</th>
+            <th className="px-4 py-2">Email</th>
+            <th className="px-4 py-2">Mobile</th>
+            <th className="px-4 py-2">Course</th>
+            <th className="px-4 py-2">City</th>
+            <th className="px-4 py-2">State</th>
+            <th className="px-4 py-2">Status</th>
+            <th className="px-4 py-2">Zoho Code</th>
+          </tr>
+        </thead>
+        <tbody>
+          {data.map((lead, idx) => (
+            <tr key={idx} className="border-b hover:bg-gray-50">
+              <td className="px-4 py-2 whitespace-nowrap">{idx + 1}.</td>
+              <td className="px-4 py-2 whitespace-nowrap">{lead.candidateName}</td>
+              <td className="px-4 py-2 whitespace-nowrap">{lead.candidateEmail}</td>
+              <td className="px-4 py-2 whitespace-nowrap">{lead.mobile}</td>
+              <td className="px-4 py-2 whitespace-nowrap">
+                <div className="flex flex-wrap gap-1">
+                  {lead.courseName.map(course => (
+                    <Badge key={course}>{course}</Badge>
+                  ))}
+                </div>
+              </td>
+              <td className="px-4 py-2 whitespace-nowrap">{lead.city}</td>
+              <td className="px-4 py-2 whitespace-nowrap">{lead.state}</td>
+              <td className="px-4 py-2 whitespace-nowrap">
+                <Badge variant="outline">{lead.status}</Badge>
+              </td>
+              <td className="px-4 py-2 whitespace-nowrap">
+                <Badge variant="secondary">{lead.zohoResponse?.code || 'UNKNOWN'}</Badge>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </div>
   );
-}
+};

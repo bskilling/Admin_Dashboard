@@ -18,7 +18,10 @@ export function ClientProviders({ children }: { children: React.ReactNode }) {
   const searchParams = useSearchParams();
   const isSidebar = useMemo(() => {
     const previewMode = searchParams.get('preview') === 'true';
-    const siginPage = pathname === '/auth/signin';
+    const siginPage =
+      pathname === '/auth/signin' ||
+      pathname === '/LMSPresentation' ||
+      pathname === '/LMSStrategyPresentation';
     if (siginPage) return false;
     const path = pathname?.split('/');
     console.log(path);
