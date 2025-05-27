@@ -37,7 +37,7 @@ import { RiCoupon2Fill } from 'react-icons/ri';
 // Improved menu items with better naming and icon selection
 const menuItems = [
   { title: 'Dashboard', url: '/dashboard', icon: LayoutDashboard },
-  { title: 'Purchases', url: '/dashboard/purchases', icon: Inbox },
+  { title: 'Purchases', url: '/dashboard/purchases', icon: LayoutDashboard },
 
   { title: 'Lead Management', url: '/dashboard/leads', icon: Users },
   { title: 'Nasscom', url: '/dashboard/edmingle-users', icon: Inbox },
