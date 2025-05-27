@@ -33,6 +33,10 @@ const agentFormSchema = z.object({
   phone: z.string().min(10, 'Phone number must be at least 10 characters'),
   status: z.enum(['ACTIVE', 'INACTIVE', 'SUSPENDED']),
   profileImage: z.string().url('Invalid URL format').optional().or(z.literal('')),
+  Designation: z.string().optional(),
+  Department: z.string().optional(),
+  employee_code: z.string().optional(),
+  workPhone: z.string().optional(),
 });
 
 type AgentFormData = z.infer<typeof agentFormSchema>;
@@ -54,6 +58,10 @@ export default function AgentForm({ agent, onSubmit, onCancel, isLoading }: Agen
       phone: agent?.phone || '',
       status: agent?.status || 'ACTIVE',
       profileImage: agent?.profileImage || '',
+      Designation: agent?.Designation || '',
+      Department: agent?.Department || '',
+      employee_code: agent?.employee_code || '',
+      workPhone: agent?.workPhone || '',
     },
   });
 
@@ -67,14 +75,14 @@ export default function AgentForm({ agent, onSubmit, onCancel, isLoading }: Agen
   };
 
   return (
-    <Card className="w-full max-w-2xl mx-auto">
+    <Card className="w-full max-w-7xl mx-auto">
       <CardHeader>
         <CardTitle>{agent ? 'Edit Agent' : 'Create New Agent'}</CardTitle>
       </CardHeader>
       <CardContent>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               <FormField
                 control={form.control}
                 name="name"
@@ -88,21 +96,19 @@ export default function AgentForm({ agent, onSubmit, onCancel, isLoading }: Agen
                   </FormItem>
                 )}
               />
-
               <FormField
                 control={form.control}
-                name="phone"
+                name="employee_code"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Phone *</FormLabel>
+                    <FormLabel>Employee Code</FormLabel>
                     <FormControl>
-                      <Input placeholder="Enter phone number" {...field} />
+                      <Input placeholder="Enter employee code" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
               />
-
               <FormField
                 control={form.control}
                 name="email"
@@ -111,6 +117,33 @@ export default function AgentForm({ agent, onSubmit, onCancel, isLoading }: Agen
                     <FormLabel>Email *</FormLabel>
                     <FormControl>
                       <Input type="email" placeholder="Enter email address" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="workPhone"
+                render={({ field }: any) => (
+                  <FormItem>
+                    <FormLabel>workPhone</FormLabel>
+                    <FormControl>
+                      <Input placeholder="Enter workPhone" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="phone"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Phone *</FormLabel>
+                    <FormControl>
+                      <Input placeholder="Enter phone number" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -153,7 +186,19 @@ export default function AgentForm({ agent, onSubmit, onCancel, isLoading }: Agen
                   </FormItem>
                 )}
               />
-
+              <FormField
+                control={form.control}
+                name="Designation"
+                render={({ field }: any) => (
+                  <FormItem>
+                    <FormLabel>Designation</FormLabel>
+                    <FormControl>
+                      <Input placeholder="Enter Designation" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
               <FormField
                 control={form.control}
                 name="profileImage"
@@ -162,6 +207,20 @@ export default function AgentForm({ agent, onSubmit, onCancel, isLoading }: Agen
                     <FormLabel>Profile Image URL</FormLabel>
                     <FormControl>
                       <Input placeholder="Enter image URL" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="Department"
+                render={({ field }: any) => (
+                  <FormItem>
+                    <FormLabel>Department</FormLabel>
+                    <FormControl>
+                      <Input placeholder="Enter Department" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>

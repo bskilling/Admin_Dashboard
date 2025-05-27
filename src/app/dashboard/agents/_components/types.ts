@@ -9,6 +9,11 @@ export interface Agent {
   profileImage?: string;
   createdAt: string;
   updatedAt: string;
+  __v: number;
+  Designation?: string;
+  Department?: string;
+  employee_code?: string;
+  workPhone?: string;
 }
 
 export interface CreateAgentData {
