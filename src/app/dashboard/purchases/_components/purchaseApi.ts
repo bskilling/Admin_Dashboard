@@ -10,7 +10,8 @@ import {
   Purchase,
 } from './types';
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_BACKEND_URL + '/api' || 'http://localhost:3000/api';
+const API_BASE_URL =
+  process.env.NEXT_PUBLIC_TRAINING_BASE_URL + '/api' || 'http://localhost:3000/api';
 
 class PurchaseApiService {
   private async fetchApi<T>(endpoint: string, options?: RequestInit): Promise<T> {
