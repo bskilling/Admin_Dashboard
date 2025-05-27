@@ -44,6 +44,10 @@ export interface Purchase {
   userDetails?: User;
   courseDetails?: Course;
   couponDetails?: Coupon;
+  agentDetails?: {
+    name: string;
+    profileImage?: string;
+  };
 }
 
 export interface PurchaseFilters {

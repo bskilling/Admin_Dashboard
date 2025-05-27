@@ -24,6 +24,7 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { Purchase, Pagination } from './types';
 import { formatCurrency, formatDate, getStatusConfig, truncateText } from './purchaseUtils';
+import AgentAssignmentComponent from './AgentAssignmentComponent';
 
 interface PurchaseTableProps {
   purchases: Purchase[];
@@ -84,6 +85,9 @@ const TableRow: React.FC<TableRowProps> = ({ purchase, onViewDetails }) => {
             {formatDate(purchase.createdAt).split(',')[0]}
           </div>
         </div>
+      </td>
+      <td className="p-4">
+        <AgentAssignmentComponent purchase={purchase} />
       </td>
 
       {/* Customer */}
@@ -299,6 +303,8 @@ const PurchaseTable: React.FC<PurchaseTableProps> = ({
             <thead>
               <tr className="border-b bg-muted/50">
                 <th className="text-left p-4 font-medium text-sm">Order ID</th>
+                <th className="text-left p-4 font-medium text-sm">Agent</th>
+
                 <th className="text-left p-4 font-medium text-sm">Customer</th>
                 <th className="text-left p-4 font-medium text-sm">Course</th>
                 <th className="text-right p-4 font-medium text-sm">Amount</th>
@@ -310,13 +316,13 @@ const PurchaseTable: React.FC<PurchaseTableProps> = ({
             <tbody>
               {loading ? (
                 <tr>
-                  <td colSpan={7}>
+                  <td colSpan={8}>
                     <TableSkeleton />
                   </td>
                 </tr>
               ) : purchases.length === 0 ? (
                 <tr>
-                  <td colSpan={7} className="p-8 text-center text-muted-foreground">
+                  <td colSpan={8} className="p-8 text-center text-muted-foreground">
                     <div className="space-y-2">
                       <div>No purchases found</div>
                       <div className="text-sm">Try adjusting your filters or search terms</div>

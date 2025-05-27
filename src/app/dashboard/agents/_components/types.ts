@@ -14,6 +14,7 @@ export interface Agent {
   Department?: string;
   employee_code?: string;
   workPhone?: string;
+  noOfSales?: number;
 }
 
 export interface CreateAgentData {
