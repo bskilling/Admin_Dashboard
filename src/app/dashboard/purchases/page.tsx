@@ -9,7 +9,7 @@ import { RefreshCw, AlertCircle, TrendingUp, FileDown, Settings } from 'lucide-r
 
 // Import components
 import StatsCards from './_components/StatsCards';
-import StatusDistributionCard from './_components/StatusDistributionCard';
+// import StatusDistributionCard from './_components/StatusDistributionCard';
 // import PurchaseDetailsModal from './_components/PurchaseDetailsModal';
 import RecentActivityComponent from './_components/RecentActivityComponent';
 import TopCoursesComponent from './_components/TopCoursesComponent';
