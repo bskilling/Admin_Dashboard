@@ -9,12 +9,10 @@ import { RefreshCw, AlertCircle, TrendingUp, FileDown, Settings } from 'lucide-r
 
 // Import components
 import StatsCards from './_components/StatsCards';
-// import StatusDistributionCard from './_components/StatusDistributionCard';
-// import PurchaseFiltersComponent from './_components/PurchaseFilters';
-// import PurchaseTable from './_components/PurchaseTable';
+import StatusDistributionCard from './_components/StatusDistributionCard';
 // import PurchaseDetailsModal from './_components/PurchaseDetailsModal';
-// import RecentActivityComponent from './_components/RecentActivityComponent';
-// import TopCoursesComponent from './_components/TopCoursesComponent';
+import RecentActivityComponent from './_components/RecentActivityComponent';
+import TopCoursesComponent from './_components/TopCoursesComponent';
 
 // Import types and utilities
 import { Purchase, PurchaseFilters, PurchaseStatus } from './_components/types';
@@ -264,7 +262,7 @@ const PurchaseManagementPage: React.FC = () => {
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             {stats && (
               <>
-                {/* <StatusDistributionCard
+                <StatusDistributionCard
                   statusDistribution={stats.statusDistribution}
                   loading={isLoading}
                 />
@@ -272,7 +270,7 @@ const PurchaseManagementPage: React.FC = () => {
                   recentActivity={stats.recentActivity}
                   loading={isLoading}
                 />
-                <TopCoursesComponent topCourses={stats.topCourses} loading={isLoading} /> */}
+                <TopCoursesComponent topCourses={stats.topCourses} loading={isLoading} />
               </>
             )}
           </div>
