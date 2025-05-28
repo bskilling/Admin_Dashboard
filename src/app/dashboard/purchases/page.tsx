@@ -20,6 +20,9 @@ import { downloadFile } from './_components/purchaseUtils';
 import { purchaseApi } from './_components/purchaseApi';
 import PurchaseFiltersComponent from './_components/PurchaseFilters';
 import PurchaseTable from './_components/PurchaseTable';
+import RecentActivityComponent from './_components/RecentActivityComponent';
+import StatusDistributionCard from './_components/StatusDistributionCard';
+import PurchaseDetailsModal from './_components/PurchaseDetailsModal';
 
 const DEFAULT_FILTERS: PurchaseFilters = {
   page: 1,
@@ -259,14 +262,14 @@ const PurchaseManagementPage: React.FC = () => {
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             {stats && (
               <>
-                {/* <StatusDistributionCard
+                <StatusDistributionCard
                   statusDistribution={stats.statusDistribution}
                   loading={isLoading}
-                /> */}
-                {/* <RecentActivityComponent
+                />
+                <RecentActivityComponent
                   recentActivity={stats.recentActivity}
                   loading={isLoading}
-                /> */}
+                />
                 {/* <TopCoursesComponent topCourses={stats.topCourses} loading={isLoading} /> */}
               </>
             )}
@@ -322,12 +325,14 @@ const PurchaseManagementPage: React.FC = () => {
           </CardContent>
         </Card>
         {/* Purchase Details Modal */}
-        {/* <PurchaseDetailsModal
+        <PurchaseDetailsModal
           purchase={selectedPurchase}
           isOpen={isDetailsModalOpen}
           onClose={closeModal}
+          // @ts-ignore
+          onStatusUpdate={handleStatusUpdate}
           // onStatusUpdate={handleStatusUpdate}
-        /> */}
+        />
       </div>
     </div>
   );
