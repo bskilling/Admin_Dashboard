@@ -8,19 +8,13 @@ import { toast } from 'sonner';
 import { RefreshCw, AlertCircle, TrendingUp, FileDown, Settings } from 'lucide-react';
 
 import StatsCards from './_components/StatsCards';
-// import StatusDistributionCard from './_components/StatusDistributionCard';
-// import PurchaseDetailsModal from './_components/PurchaseDetailsModal';
-// import RecentActivityComponent from './_components/RecentActivityComponent';
-// import TopCoursesComponent from './_components/TopCoursesComponent';
 
-// Import types and utilities
 import { Purchase, PurchaseFilters, PurchaseStatus } from './_components/types';
 import { downloadFile } from './_components/purchaseUtils';
 import { purchaseApi } from './_components/purchaseApi';
 import PurchaseFiltersComponent from './_components/PurchaseFilters';
 import PurchaseTable from './_components/PurchaseTable';
 import RecentActivityComponent from './_components/RecentActivityComponent';
-// import StatusDistributionCard from './_components/StatusDistributionCard';
 import PurchaseDetailsModal from './_components/PurchaseDetailsModal';
 
 const DEFAULT_FILTERS: PurchaseFilters = {
