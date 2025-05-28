@@ -272,7 +272,6 @@ const PurchaseManagementPage: React.FC = () => {
             )}
           </div>
         </div>
-        asasassaasasasasasasaas
         {/* Quick Actions */}
         <Card>
           <CardHeader>
