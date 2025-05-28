@@ -14,7 +14,7 @@ import { downloadFile } from './_components/purchaseUtils';
 import { purchaseApi } from './_components/purchaseApi';
 import PurchaseFiltersComponent from './_components/PurchaseFilters';
 import PurchaseTable from './_components/PurchaseTable';
-import RecentActivityComponent from './_components/RecentActivityComponent';
+// import RecentActivityComponent from './_components/RecentActivityComponent';
 import PurchaseDetailsModal from './_components/PurchaseDetailsModal';
 
 const DEFAULT_FILTERS: PurchaseFilters = {
