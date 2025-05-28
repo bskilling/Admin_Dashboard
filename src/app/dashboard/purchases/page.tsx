@@ -12,7 +12,7 @@ import StatsCards from './_components/StatsCards';
 // import StatusDistributionCard from './_components/StatusDistributionCard';
 // import PurchaseDetailsModal from './_components/PurchaseDetailsModal';
 // import RecentActivityComponent from './_components/RecentActivityComponent';
-import TopCoursesComponent from './_components/TopCoursesComponent';
+// import TopCoursesComponent from './_components/TopCoursesComponent';
 
 // Import types and utilities
 import { Purchase, PurchaseFilters, PurchaseStatus } from './_components/types';
@@ -267,7 +267,7 @@ const PurchaseManagementPage: React.FC = () => {
                   recentActivity={stats.recentActivity}
                   loading={isLoading}
                 /> */}
-                <TopCoursesComponent topCourses={stats.topCourses} loading={isLoading} />
+                {/* <TopCoursesComponent topCourses={stats.topCourses} loading={isLoading} /> */}
               </>
             )}
           </div>
