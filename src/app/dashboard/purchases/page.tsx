@@ -15,7 +15,6 @@ import { purchaseApi } from './_components/purchaseApi';
 import PurchaseFiltersComponent from './_components/PurchaseFilters';
 import PurchaseTable from './_components/PurchaseTable';
 import RecentActivityComponent from './_components/RecentActivityComponent';
-// import StatusDistributionCard from './_components/StatusDistributionCard';
 import PurchaseDetailsModal from './_components/PurchaseDetailsModal';
 
 const DEFAULT_FILTERS: PurchaseFilters = {
