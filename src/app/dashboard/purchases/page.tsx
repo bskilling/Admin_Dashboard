@@ -16,7 +16,7 @@ import PurchaseFiltersComponent from './_components/PurchaseFilters';
 import PurchaseTable from './_components/PurchaseTable';
 // import RecentActivityComponent from './_components/RecentActivityComponent';
 import PurchaseDetailsModal from './_components/PurchaseDetailsModal';
-import StatusDistributionCard from './_components/StatusDistributionCard';
+// import StatusDistributionCard from './_components/StatusDistributionCard';
 import TopCoursesComponent from './_components/TopCoursesComponent';
 
 const DEFAULT_FILTERS: PurchaseFilters = {
@@ -256,10 +256,10 @@ const PurchaseManagementPage: React.FC = () => {
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             {stats && (
               <>
-                <StatusDistributionCard
+                {/* <StatusDistributionCard
                   statusDistribution={stats.statusDistribution}
                   loading={isLoading}
-                />
+                /> */}
                 {/* <RecentActivityComponent
                   recentActivity={stats.recentActivity}
                   loading={isLoading}
