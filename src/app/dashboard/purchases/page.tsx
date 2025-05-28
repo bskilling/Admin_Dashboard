@@ -11,7 +11,7 @@ import { RefreshCw, AlertCircle, TrendingUp, FileDown, Settings } from 'lucide-r
 import StatsCards from './_components/StatsCards';
 // import StatusDistributionCard from './_components/StatusDistributionCard';
 // import PurchaseDetailsModal from './_components/PurchaseDetailsModal';
-import RecentActivityComponent from './_components/RecentActivityComponent';
+// import RecentActivityComponent from './_components/RecentActivityComponent';
 import TopCoursesComponent from './_components/TopCoursesComponent';
 
 // Import types and utilities
@@ -263,10 +263,10 @@ const PurchaseManagementPage: React.FC = () => {
                   statusDistribution={stats.statusDistribution}
                   loading={isLoading}
                 /> */}
-                <RecentActivityComponent
+                {/* <RecentActivityComponent
                   recentActivity={stats.recentActivity}
                   loading={isLoading}
-                />
+                /> */}
                 <TopCoursesComponent topCourses={stats.topCourses} loading={isLoading} />
               </>
             )}
