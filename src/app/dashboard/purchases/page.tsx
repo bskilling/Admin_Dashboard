@@ -17,7 +17,7 @@ import PurchaseTable from './_components/PurchaseTable';
 // import RecentActivityComponent from './_components/RecentActivityComponent';
 import PurchaseDetailsModal from './_components/PurchaseDetailsModal';
 // import StatusDistributionCard from './_components/StatusDistributionCard';
-import TopCoursesComponent from './_components/TopCoursesComponent';
+// import TopCoursesComponent from './_components/TopCoursesComponent';
 
 const DEFAULT_FILTERS: PurchaseFilters = {
   page: 1,
@@ -264,7 +264,7 @@ const PurchaseManagementPage: React.FC = () => {
                   recentActivity={stats.recentActivity}
                   loading={isLoading}
                 /> */}
-                <TopCoursesComponent topCourses={stats.topCourses} loading={isLoading} />
+                {/* <TopCoursesComponent topCourses={stats.topCourses} loading={isLoading} /> */}
               </>
             )}
           </div>
