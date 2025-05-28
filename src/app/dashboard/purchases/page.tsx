@@ -8,7 +8,7 @@ import { toast } from 'sonner';
 import { RefreshCw, AlertCircle, TrendingUp, FileDown, Settings } from 'lucide-react';
 
 // Import components
-// import StatsCards from './_components/StatsCards';
+import StatsCards from './_components/StatsCards';
 // import StatusDistributionCard from './_components/StatusDistributionCard';
 // import PurchaseFiltersComponent from './_components/PurchaseFilters';
 // import PurchaseTable from './_components/PurchaseTable';
@@ -20,6 +20,8 @@ import { RefreshCw, AlertCircle, TrendingUp, FileDown, Settings } from 'lucide-r
 import { Purchase, PurchaseFilters, PurchaseStatus } from './_components/types';
 import { downloadFile } from './_components/purchaseUtils';
 import { purchaseApi } from './_components/purchaseApi';
+import PurchaseFiltersComponent from './_components/PurchaseFilters';
+import PurchaseTable from './_components/PurchaseTable';
 
 const DEFAULT_FILTERS: PurchaseFilters = {
   page: 1,
@@ -234,28 +236,28 @@ const PurchaseManagementPage: React.FC = () => {
         </div>
 
         {/* Stats Cards */}
-        {/* {stats && <StatsCards stats={stats.overall} loading={isLoading} />} */}
+        {stats && <StatsCards stats={stats.overall} loading={isLoading} />}
 
         {/* Filters */}
-        {/* <PurchaseFiltersComponent
+        <PurchaseFiltersComponent
           filters={filters}
           onFiltersChange={updateFilters}
           onExport={handleExport}
           totalCount={pagination.totalCount}
           loading={isLoading}
-        /> */}
+        />
 
         {/* Main Content */}
         <div className="grid grid-cols-1 gap-6">
           {/* Purchase Table */}
           <div className="space-y-6">
-            {/* <PurchaseTable
+            <PurchaseTable
               purchases={purchases}
               pagination={pagination}
               onPageChange={handlePageChange}
               onViewDetails={handleViewDetails}
               loading={isLoading}
-            /> */}
+            />
           </div>
 
           {/* Analytics Grid */}
