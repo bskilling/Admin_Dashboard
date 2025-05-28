@@ -258,10 +258,10 @@ const PurchaseManagementPage: React.FC = () => {
                   statusDistribution={stats.statusDistribution}
                   loading={isLoading}
                 /> */}
-                <RecentActivityComponent
+                {/* <RecentActivityComponent
                   recentActivity={stats.recentActivity}
                   loading={isLoading}
-                />
+                /> */}
                 {/* <TopCoursesComponent topCourses={stats.topCourses} loading={isLoading} /> */}
               </>
             )}
