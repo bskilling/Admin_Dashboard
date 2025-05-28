@@ -232,10 +232,8 @@ const PurchaseManagementPage: React.FC = () => {
             </Button>
           </div>
         </div>
-
         {/* Stats Cards */}
         {stats && <StatsCards stats={stats.overall} loading={isLoading} />}
-
         {/* Filters */}
         <PurchaseFiltersComponent
           filters={filters}
@@ -244,7 +242,6 @@ const PurchaseManagementPage: React.FC = () => {
           totalCount={pagination.totalCount}
           loading={isLoading}
         />
-
         {/* Main Content */}
         <div className="grid grid-cols-1 gap-6">
           {/* Purchase Table */}
@@ -257,7 +254,7 @@ const PurchaseManagementPage: React.FC = () => {
               loading={isLoading}
             />
           </div>
-
+          asasasasasaasas
           {/* Analytics Grid */}
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             {stats && (
@@ -275,7 +272,7 @@ const PurchaseManagementPage: React.FC = () => {
             )}
           </div>
         </div>
-
+        asasassaasasasasasasaas
         {/* Quick Actions */}
         <Card>
           <CardHeader>
@@ -325,7 +322,6 @@ const PurchaseManagementPage: React.FC = () => {
             </div>
           </CardContent>
         </Card>
-
         {/* Purchase Details Modal */}
         {/* <PurchaseDetailsModal
           purchase={selectedPurchase}
