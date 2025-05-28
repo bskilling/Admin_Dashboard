@@ -7,7 +7,6 @@ import { Button } from '@/components/ui/button';
 import { toast } from 'sonner';
 import { RefreshCw, AlertCircle, TrendingUp, FileDown, Settings } from 'lucide-react';
 
-// Import components
 import StatsCards from './_components/StatsCards';
 // import StatusDistributionCard from './_components/StatusDistributionCard';
 // import PurchaseDetailsModal from './_components/PurchaseDetailsModal';
