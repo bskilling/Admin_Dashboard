@@ -7,22 +7,17 @@ import { Button } from '@/components/ui/button';
 import { toast } from 'sonner';
 import { RefreshCw, AlertCircle, TrendingUp, FileDown, Settings } from 'lucide-react';
 
-// Import components
 import StatsCards from './_components/StatsCards';
-// import StatusDistributionCard from './_components/StatusDistributionCard';
-// import PurchaseDetailsModal from './_components/PurchaseDetailsModal';
-// import RecentActivityComponent from './_components/RecentActivityComponent';
-// import TopCoursesComponent from './_components/TopCoursesComponent';
 
-// Import types and utilities
 import { Purchase, PurchaseFilters, PurchaseStatus } from './_components/types';
 import { downloadFile } from './_components/purchaseUtils';
 import { purchaseApi } from './_components/purchaseApi';
 import PurchaseFiltersComponent from './_components/PurchaseFilters';
 import PurchaseTable from './_components/PurchaseTable';
-import RecentActivityComponent from './_components/RecentActivityComponent';
-// import StatusDistributionCard from './_components/StatusDistributionCard';
+// import RecentActivityComponent from './_components/RecentActivityComponent';
 import PurchaseDetailsModal from './_components/PurchaseDetailsModal';
+// import StatusDistributionCard from './_components/StatusDistributionCard';
+// import TopCoursesComponent from './_components/TopCoursesComponent asasasasasasasasa';
 
 const DEFAULT_FILTERS: PurchaseFilters = {
   page: 1,
@@ -265,10 +260,10 @@ const PurchaseManagementPage: React.FC = () => {
                   statusDistribution={stats.statusDistribution}
                   loading={isLoading}
                 /> */}
-                <RecentActivityComponent
+                {/* <RecentActivityComponent
                   recentActivity={stats.recentActivity}
                   loading={isLoading}
-                />
+                /> */}
                 {/* <TopCoursesComponent topCourses={stats.topCourses} loading={isLoading} /> */}
               </>
             )}
