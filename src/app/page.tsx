@@ -43,12 +43,12 @@ export default function Dashboard() {
               <p className="text-3xl font-bold">1,250</p>
             </div>
             <div className="p-6 bg-gradient-to-r from-blue-500 to-teal-500 rounded-xl shadow-lg">
-              <h3 className="text-xl font-semibold">Courses</h3>
+              <h3 className="text-xl font-semibold">Courses j</h3>
               <p className="text-3xl font-bold">75</p>
             </div>
             <div className="p-6 bg-gradient-to-r from-pink-500 to-red-500 rounded-xl shadow-lg">
               <h3 className="text-xl font-semibold">Instructors</h3>
-              <p className="text-3xl font-bold">25</p>
+              <p className="text-3xl font-bold">25 </p>
             </div>
           </motion.div>
         </main>
