@@ -579,10 +579,40 @@ const RichTextEditor: React.FC<RichTextEditorProps> = ({
   const editor = useEditor({
     extensions: [
       StarterKit.configure({
+        paragraph: {
+          HTMLAttributes: {
+            class: 'mb-4',
+          },
+        },
         heading: {
           levels: [1, 2, 3],
           HTMLAttributes: {
-            class: 'font-sans font-bold my-4',
+            class: 'font-sans font-bold my-6 first:mt-0',
+          },
+        },
+        bulletList: {
+          HTMLAttributes: {
+            class: 'list-disc list-inside mb-4 space-y-1',
+          },
+        },
+        orderedList: {
+          HTMLAttributes: {
+            class: 'list-decimal list-inside mb-4 space-y-1',
+          },
+        },
+        listItem: {
+          HTMLAttributes: {
+            class: 'mb-1',
+          },
+        },
+        blockquote: {
+          HTMLAttributes: {
+            class: 'border-l-4 border-gray-300 pl-4 italic my-4 text-gray-600',
+          },
+        },
+        horizontalRule: {
+          HTMLAttributes: {
+            class: 'my-6 border-gray-300',
           },
         },
       }),
@@ -597,12 +627,12 @@ const RichTextEditor: React.FC<RichTextEditorProps> = ({
       }),
       Image.configure({
         HTMLAttributes: {
-          class: 'rounded-lg max-w-full my-4',
+          class: 'rounded-lg max-w-full my-6',
         },
       }),
       Table.configure({
         HTMLAttributes: {
-          class: 'border-collapse table-auto w-full my-4',
+          class: 'border-collapse table-auto w-full my-6',
         },
       }),
       TableRow.configure({
@@ -622,7 +652,7 @@ const RichTextEditor: React.FC<RichTextEditorProps> = ({
       }),
       CodeBlock.configure({
         HTMLAttributes: {
-          class: 'bg-gray-100 rounded-md p-4 font-mono text-sm my-4',
+          class: 'bg-gray-100 rounded-md p-4 font-mono text-sm my-6',
         },
       }),
       Highlight.configure({
@@ -660,7 +690,7 @@ const RichTextEditor: React.FC<RichTextEditorProps> = ({
       <MenuBar editor={editor} />
       <EditorContent
         editor={editor}
-        className="prose prose-blue max-w-none min-h-[300px] border border-gray-300 border-t-0 rounded-b-lg p-4 focus:outline-none"
+        className="prose prose-blue max-w-none min-h-[300px] border border-gray-300 border-t-0 rounded-b-lg p-4 focus:outline-none [&_.ProseMirror]:outline-none [&_.ProseMirror]:space-y-0"
       />
     </div>
   );
