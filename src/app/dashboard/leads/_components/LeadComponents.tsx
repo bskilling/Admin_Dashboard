@@ -31,15 +31,19 @@ export const LeadTabs: React.FC<{
   counts: LeadCounts;
 }> = ({ activeTab, setActiveTab, counts }) => {
   return (
-    <Tabs value={activeTab} onValueChange={setActiveTab} className="mb-6">
-      <TabsList className="grid grid-cols-5 mb-4">
-        <TabsTrigger value="all" className="flex items-center gap-2">
+    <Tabs
+      value={activeTab === 'all' ? 'b2i' : activeTab || 'b2i'}
+      onValueChange={setActiveTab}
+      className="mb-6"
+    >
+      <TabsList className="grid grid-cols-4 mb-4">
+        {/* <TabsTrigger value="all" className="flex items-center gap-2">
           <Users className="h-4 w-4" />
           All{' '}
           <Badge variant="outline" className="ml-1">
             {counts.all}
           </Badge>
-        </TabsTrigger>
+        </TabsTrigger> */}
         <TabsTrigger value="b2i" className="flex items-center gap-2">
           <GraduationCap className="h-4 w-4" />
           B2I{' '}
