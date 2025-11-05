@@ -1,20 +1,17 @@
-import { useFormik } from "formik";
-import React, { useEffect, useState } from "react";
-import { BiSearch, BiSolidDownArrow, BiSolidUpArrow } from "react-icons/bi";
-import * as Yup from "yup";
+import { useFormik } from 'formik';
+import React, { useEffect, useState } from 'react';
+import { BiSearch, BiSolidDownArrow, BiSolidUpArrow } from 'react-icons/bi';
+import * as Yup from 'yup';
 import {
   useCreateCourseMutation,
   useEditCourseMutation,
   useGetCourseByIdQuery,
   useGetCoursesTitleQuery,
-} from "../../../redux/features/courses/coursesApi";
-import { language, mode, category, level } from "@/utils/list";
-import toast from "react-hot-toast";
-import {
-  useUploadImageMutation,
-  useUploadFileMutation,
-} from "@/redux/features/upload/uploadApi";
-import { ThreeCircles } from "react-loader-spinner";
+} from '../../../redux/features/courses/coursesApi';
+import { language, mode, category, level } from '@/utils/list';
+import toast from 'react-hot-toast';
+import { useUploadImageMutation, useUploadFileMutation } from '@/redux/features/upload/uploadApi';
+import { ThreeCircles } from 'react-loader-spinner';
 
 type Props = {
   courseData: any;
@@ -22,21 +19,16 @@ type Props = {
   setActive: any;
 };
 
-export default function EditTrainingDetails({
-  courseData,
-  setCourseData,
-  setActive,
-}: Props) {
+export default function EditTrainingDetails({ courseData, setCourseData, setActive }: Props) {
   const [searchIsActive, setSearchIsActive] = useState(false);
   const [lanIsActive, setLanIsActive] = useState(false);
   const [modeIsActive, setModeIsActive] = useState(false);
   const [categoryIsActive, setCategoryIsActive] = useState(false);
   const [levelIsActive, setLevelIsActive] = useState(false);
-  const [traingData, setTraingingData] = useState("");
+  const [traingData, setTraingingData] = useState('');
   // const { errors, touched, courseData, handleChange } = formik;
-  const [selectedCourse, setSelectedCourse] = useState({ id: "", title: "" });
-  const [editCourse, { isSuccess: updateCourse, error: updateError }] =
-    useEditCourseMutation();
+  const [selectedCourse, setSelectedCourse] = useState({ id: '', title: '' });
+  const [editCourse, { isSuccess: updateCourse, error: updateError }] = useEditCourseMutation();
 
   const [createCourse, { isLoading: createCourseLoading, isSuccess, error }] =
     useCreateCourseMutation();
@@ -48,20 +40,12 @@ export default function EditTrainingDetails({
 
   const [
     uploadImage,
-    {
-      isLoading: uploadLoading,
-      isSuccess: isUploadSuccess,
-      error: uploadError,
-    },
+    { isLoading: uploadLoading, isSuccess: isUploadSuccess, error: uploadError },
   ] = useUploadImageMutation();
 
   const [
     uploadFile,
-    {
-      isLoading: uploadFileLoading,
-      isSuccess: isUploadFileSuccess,
-      error: uploadFileError,
-    },
+    { isLoading: uploadFileLoading, isSuccess: isUploadFileSuccess, error: uploadFileError },
   ] = useUploadFileMutation();
 
   const {
@@ -72,7 +56,7 @@ export default function EditTrainingDetails({
 
   useEffect(() => {
     if (updateCourse) {
-      toast.success("Course Updated successfully");
+      toast.success('Course Updated successfully');
     }
     if (updateError) {
       const errorMessage = error as any;
@@ -84,25 +68,25 @@ export default function EditTrainingDetails({
     if (selectedCourse && refetchData) {
       setCourseData((prevData: any) => ({
         ...prevData,
-        title: refetchData?.course?.title || "",
-        category: refetchData?.course?.category || "",
-        duration: refetchData?.course?.duration || "",
-        level: refetchData?.course?.level || "",
-        language: refetchData?.course?.language || "",
-        owned_by: refetchData?.course?.owned_by || "",
-        endorsed_by: refetchData?.course?.endorsed_by || "",
-        training_mode: refetchData?.course?.training_mode || "",
-        description: refetchData?.course?.description || "",
+        title: refetchData?.course?.title || '',
+        category: refetchData?.course?.category || '',
+        duration: refetchData?.course?.duration || '',
+        level: refetchData?.course?.level || '',
+        language: refetchData?.course?.language || '',
+        owned_by: refetchData?.course?.owned_by || '',
+        endorsed_by: refetchData?.course?.endorsed_by || '',
+        training_mode: refetchData?.course?.training_mode || '',
+        description: refetchData?.course?.description || '',
         assessment_required: refetchData?.course?.assessment_required || false,
         isPaid: refetchData?.course?.isPaid || false,
-        preview_image_uri: refetchData?.course?.preview_image_uri || "",
-        file_attach: refetchData?.course?.file_attach || "",
-        assessment: refetchData?.course?.assessment || "",
+        preview_image_uri: refetchData?.course?.preview_image_uri || '',
+        file_attach: refetchData?.course?.file_attach || '',
+        assessment: refetchData?.course?.assessment || '',
         price: refetchData?.course?.price || 0,
-        currency: refetchData?.course?.currency || "",
+        currency: refetchData?.course?.currency || '',
         discount: refetchData?.course?.discount || 0,
-        coupon_code: refetchData?.course?.coupon_code || "",
-        url: refetchData?.course?.url || "",
+        coupon_code: refetchData?.course?.coupon_code || '',
+        url: refetchData?.course?.url || '',
       }));
     }
   }, [selectedCourse, refetchData, setCourseData]);
@@ -123,7 +107,7 @@ export default function EditTrainingDetails({
 
       if (file) {
         const formData = new FormData();
-        formData.append("file", file);
+        formData.append('file', file);
 
         const data = await uploadImage(formData);
         setCourseData((prev: any) => ({
@@ -148,7 +132,7 @@ export default function EditTrainingDetails({
 
     if (file) {
       const formData = new FormData();
-      formData.append("file", file);
+      formData.append('file', file);
 
       const data = await uploadFile(formData);
       setCourseData((prev: any) => ({
@@ -169,15 +153,10 @@ export default function EditTrainingDetails({
 
   return (
     <div className="overflow-auto h-[100%]">
-      <form
-        className="flex flex-wrap justify-between gap-2 mt-2 mb-2"
-        onSubmit={handleFormSubmit}
-      >
+      <form className="flex flex-wrap justify-between gap-2 mt-2 mb-2" onSubmit={handleFormSubmit}>
         <div className="flex flex-wrap justify-start gap-4 mt-2 h-[450px] overflow-y-scroll pb-32">
           <div className="w-[23%] mt-4">
-            <label className="block mb-2 text-sm font-[700] text-gray-600">
-              Training Name
-            </label>
+            <label className="block mb-2 text-sm font-[700] text-gray-600">Training Name</label>
             <div className="relative h-[45px]">
               <div className="flex bg-transparent w-[100%] bg-white rounded-md border-2 justify-center items-center hover:border-2 hover:border-[#292929]">
                 <input
@@ -193,9 +172,7 @@ export default function EditTrainingDetails({
             </div>
           </div>
           <div className="w-[23%] mt-4">
-            <label className="block mb-2 text-sm font-[700] text-gray-600">
-              Category
-            </label>
+            <label className="block mb-2 text-sm font-[700] text-gray-600">Category</label>
             <div className="relative h-[45px]">
               <div className="flex bg-transparent w-[100%] bg-white rounded-md border-2 justify-center items-center hover:border-2 hover:border-[#292929]">
                 <input
@@ -252,7 +229,7 @@ export default function EditTrainingDetails({
           </div>
           <div className="w-[23%] mt-4">
             <label className="block mb-2 text-sm font-[700] text-gray-600">
-              Duration{"(Hours)"}
+              Duration{'(Hours)'}
             </label>
             <div className="relative h-[45px]">
               <div className="flex bg-transparent w-[100%] bg-white rounded-md border-2 justify-center items-center hover:border-2 hover:border-[#292929]">
@@ -269,9 +246,7 @@ export default function EditTrainingDetails({
             </div>
           </div>
           <div className="w-[23%] mt-4">
-            <label className="block mb-2 text-sm font-[700] text-gray-600">
-              Level
-            </label>
+            <label className="block mb-2 text-sm font-[700] text-gray-600">Level</label>
             <div className="relative h-[45px]">
               <div className="flex bg-transparent w-[100%] bg-white rounded-md border-2 justify-center items-center hover:border-2 hover:border-[#292929]">
                 <input
@@ -326,9 +301,7 @@ export default function EditTrainingDetails({
             </div>
           </div>
           <div className="w-[23%] mt-4">
-            <label className="block mb-2 text-sm font-[700] text-gray-600">
-              Language
-            </label>
+            <label className="block mb-2 text-sm font-[700] text-gray-600">Language</label>
             <div className="relative h-[45px]">
               <div className="flex bg-transparent w-[100%] bg-white rounded-md border-2 justify-center items-center hover:border-2 hover:border-[#292929]">
                 <input
@@ -382,9 +355,7 @@ export default function EditTrainingDetails({
             </div>
           </div>
           <div className="w-[23%] mt-4">
-            <label className="block mb-2 text-sm font-[700] text-gray-600">
-              Owned By
-            </label>
+            <label className="block mb-2 text-sm font-[700] text-gray-600">Owned By</label>
             <div className="relative h-[45px]">
               <div className="flex bg-transparent w-[100%] bg-white rounded-md border-2 justify-center items-center hover:border-2 hover:border-[#292929]">
                 <input
@@ -399,9 +370,7 @@ export default function EditTrainingDetails({
             </div>
           </div>
           <div className="w-[23%] mt-4">
-            <label className="block mb-2 text-sm font-[700] text-gray-600">
-              Endorsed By
-            </label>
+            <label className="block mb-2 text-sm font-[700] text-gray-600">Endorsed By</label>
             <div className="relative h-[45px]">
               <div className="flex bg-transparent w-[100%] bg-white rounded-md border-2 justify-center items-center hover:border-2 hover:border-[#292929]">
                 <input
@@ -417,9 +386,7 @@ export default function EditTrainingDetails({
             </div>
           </div>
           <div className="w-[23%] mt-4">
-            <label className="block mb-2 text-sm font-[700] text-gray-600">
-              Training Mode
-            </label>
+            <label className="block mb-2 text-sm font-[700] text-gray-600">Training Mode</label>
             <div className="relative h-[45px]">
               <div className="flex bg-transparent w-[100%] bg-white rounded-md border-2 justify-center items-center hover:border-2 hover:border-[#292929]">
                 <input
@@ -482,8 +449,8 @@ export default function EditTrainingDetails({
                   type="button"
                   className={`w-[50%] pl-2 border-none left-[50px] rounded-l-md h-[45px] outline-none text-[14px] font-[500] font-Josefin  ${
                     !courseData.assessment_required
-                      ? "bg-violet-950 text-white"
-                      : "bg-white text-sky-800"
+                      ? 'bg-violet-950 text-white'
+                      : 'bg-white text-sky-800'
                   }`}
                   onClick={() => {
                     setCourseData((prevData: any) => ({
@@ -497,7 +464,7 @@ export default function EditTrainingDetails({
                 <button
                   type="button"
                   className={`bg-transparent w-[50%] pl-2 border-none left-[50px] h-[45px] rounded-r-md outline-none text-sky-800 text-[14px] font-[500] font-Josefin ${
-                    courseData.assessment_required && "bg-violet-950 text-white"
+                    courseData.assessment_required && 'bg-violet-950 text-white'
                   }`}
                   onClick={() => {
                     setCourseData((prevData: any) => ({
@@ -513,9 +480,7 @@ export default function EditTrainingDetails({
           </div>
           {courseData.assessment_required && (
             <div className="w-[23%] mt-4">
-              <label className="block mb-2 text-sm font-[700] text-gray-600">
-                Assessment
-              </label>
+              <label className="block mb-2 text-sm font-[700] text-gray-600">Assessment</label>
               <div className="relative h-[45px]">
                 <div className="flex bg-transparent w-[100%] bg-white rounded-md border-2 justify-center items-center hover:border-2 hover:border-[#292929]">
                   <input
@@ -569,16 +534,12 @@ export default function EditTrainingDetails({
             </div>
           )}
           <div className="w-[23%] mt-4">
-            <label className="block mb-2 text-sm font-[700] text-gray-600">
-              Paid
-            </label>
+            <label className="block mb-2 text-sm font-[700] text-gray-600">Paid</label>
             <div className="relative h-[45px]">
               <div className="flex bg-transparent w-[100%] bg-white rounded-md border-2 justify-center items-center hover:border-2 hover:border-[#292929]">
                 <button
                   className={`bg-violet-950 w-[50%] pl-2 border-none left-[50px] rounded-l-md h-[45px] outline-none text-[14px] font-[500] font-Josefin ${
-                    !courseData.isPaid
-                      ? "bg-violet-950 text-white"
-                      : "bg-white text-sky-800"
+                    !courseData.isPaid ? 'bg-violet-950 text-white' : 'bg-white text-sky-800'
                   }`}
                   type="button"
                   onClick={() => {
@@ -593,7 +554,7 @@ export default function EditTrainingDetails({
                 <button
                   type="button"
                   className={`bg-transparent w-[50%] pl-2 border-none left-[50px] h-[45px] rounded-r-md outline-none text-sky-800 text-[14px] font-[500] font-Josefin ${
-                    courseData.isPaid && "bg-violet-950 text-white"
+                    courseData.isPaid && 'bg-violet-950 text-white'
                   }`}
                   onClick={() => {
                     {
@@ -612,9 +573,7 @@ export default function EditTrainingDetails({
           {courseData.isPaid && (
             <>
               <div className="w-[23%] mt-4">
-                <label className="block mb-2 text-sm font-[700] text-gray-600">
-                  Price
-                </label>
+                <label className="block mb-2 text-sm font-[700] text-gray-600">Price</label>
                 <div className="relative h-[45px]">
                   <div className="flex bg-transparent w-[100%] bg-white rounded-md border-2 justify-center items-center hover:border-2 hover:border-[#292929]">
                     <input
@@ -629,9 +588,7 @@ export default function EditTrainingDetails({
                 </div>
               </div>
               <div className="w-[23%] mt-4">
-                <label className="block mb-2 text-sm font-[700] text-gray-600">
-                  Currency
-                </label>
+                <label className="block mb-2 text-sm font-[700] text-gray-600">Currency</label>
                 <div className="relative h-[45px]">
                   <div className="flex bg-transparent w-[100%] bg-white rounded-md border-2 justify-center items-center hover:border-2 hover:border-[#292929]">
                     <input
@@ -647,9 +604,7 @@ export default function EditTrainingDetails({
                 </div>
               </div>
               <div className="w-[23%] mt-4">
-                <label className="block mb-2 text-sm font-[700] text-gray-600">
-                  Discount
-                </label>
+                <label className="block mb-2 text-sm font-[700] text-gray-600">Discount</label>
                 <div className="relative h-[45px]">
                   <div className="flex bg-transparent w-[100%] bg-white rounded-md border-2 justify-center items-center hover:border-2 hover:border-[#292929]">
                     <input
@@ -664,9 +619,7 @@ export default function EditTrainingDetails({
                 </div>
               </div>
               <div className="w-[23%] mt-4">
-                <label className="block mb-2 text-sm font-[700] text-gray-600">
-                  Coupon Code
-                </label>
+                <label className="block mb-2 text-sm font-[700] text-gray-600">Coupon Code</label>
                 <div className="relative h-[45px]">
                   <div className="flex bg-transparent w-[100%] bg-white rounded-md border-2 justify-center items-center hover:border-2 hover:border-[#292929]">
                     <input
@@ -683,9 +636,7 @@ export default function EditTrainingDetails({
             </>
           )}
           <div className="w-[23%] mt-4">
-            <label className="block mb-2 text-sm font-[700] text-gray-600">
-              Preview Image
-            </label>
+            <label className="block mb-2 text-sm font-[700] text-gray-600">Preview Image</label>
             <div className="relative h-[45px] ">
               <div className="flex bg-transparent w-full h-full rounded-md border-2 justify-center items-center hover:border-2 hover:border-[#292929]">
                 <label className="block rounded-md h-full">
@@ -707,9 +658,7 @@ export default function EditTrainingDetails({
             </div>
           </div>
           <div className="w-[23%] mt-4">
-            <label className="block mb-2 text-sm font-[700] text-gray-600">
-              File Attachment
-            </label>
+            <label className="block mb-2 text-sm font-[700] text-gray-600">File Attachment</label>
             <div className="relative h-[45px] ">
               <div className="flex bg-transparent w-full h-full rounded-md border-2 justify-center items-center hover:border-2 hover:border-[#292929]">
                 <label className="block rounded-md h-full">
@@ -731,35 +680,31 @@ export default function EditTrainingDetails({
             </div>
           </div>
           <div className="w-[100%] mt-4">
-            <label className="block mb-2 text-sm font-[700] text-gray-600">
-              Description Url
-            </label>
+            <label className="block mb-2 text-sm font-[700] text-gray-600">Description Url</label>
             <div className="h-[65px]">
               <div className="flex bg-transparent w-[100%] bg-white rounded-md border-2 justify-center items-center hover:border-2 hover:border-[#292929]">
                 <textarea
-                  value={courseData?.url || "NA"}
+                  value={courseData?.url || 'NA'}
                   onChange={handleChange}
                   name="url"
                   id="url"
                   className="bg-transparent w-full p-2 border-none rounded-[5px] h-[40px] outline-none text-[#292929] text-[14px] font-[500] font-Josefin"
-                  style={{ resize: "none" }}
+                  style={{ resize: 'none' }}
                 />
               </div>
             </div>
           </div>
           <div className="w-[100%] mt-4">
-            <label className="block mb-2 text-sm font-[700] text-gray-600">
-              Description
-            </label>
+            <label className="block mb-2 text-sm font-[700] text-gray-600">Description</label>
             <div className="h-[65px]">
               <div className="flex bg-transparent w-[100%] bg-white rounded-md border-2 justify-center items-center hover:border-2 hover:border-[#292929]">
                 <textarea
-                  value={courseData.description || "NA"}
+                  value={courseData.description || 'NA'}
                   onChange={handleChange}
                   name="description"
                   id="description"
                   className="bg-transparent w-full p-2 border-none rounded-[5px] h-[80px] outline-none text-[#292929] text-[14px] font-[500] font-Josefin"
-                  style={{ resize: "none" }}
+                  style={{ resize: 'none' }}
                 />
               </div>
             </div>
@@ -768,7 +713,7 @@ export default function EditTrainingDetails({
         <div className="absolute bottom-0 right-0 bg-gray-100 w-full h-20 flex justify-end items-center pb-2">
           <button
             className="mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-            style={{ position: "absolute", bottom: "1rem", right: "1rem" }}
+            style={{ position: 'absolute', bottom: '1rem', right: '1rem' }}
             type="submit"
           >
             {isSuccess ? (
@@ -782,7 +727,7 @@ export default function EditTrainingDetails({
                 wrapperClass=""
               />
             ) : (
-              "save"
+              'save'
             )}
           </button>
         </div>

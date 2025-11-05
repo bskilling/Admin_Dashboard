@@ -1,9 +1,9 @@
-"use client";
+'use client';
 
-import { configureStore } from "@reduxjs/toolkit";
-import { apiSlice } from "./api/apiSlice";
-import authSlice from "./auth/authSlice";
-import courseSlice from "./courses/courseSlice";
+import { configureStore } from '@reduxjs/toolkit';
+import { apiSlice } from './api/apiSlice';
+import authSlice from './auth/authSlice';
+import courseSlice from './courses/courseSlice';
 
 export const store = configureStore({
   reducer: {
@@ -12,6 +12,5 @@ export const store = configureStore({
     courses: courseSlice,
   },
   devTools: false,
-  middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(apiSlice.middleware),
+  middleware: getDefaultMiddleware => getDefaultMiddleware().concat(apiSlice.middleware),
 });

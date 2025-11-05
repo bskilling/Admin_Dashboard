@@ -1,34 +1,34 @@
-"use client";
-import React, { useEffect, useState } from "react";
-import { BiLogOut } from "react-icons/bi";
-import { IoIosAdd } from "react-icons/io";
-import { FaFilter } from "react-icons/fa6";
-import { AiOutlineClose } from "react-icons/ai";
-import Dropdown from "./Dropdown";
-import { useLogOutQuery } from "../../redux/features/auth/authApi";
-import { useRouter } from "next/navigation";
-import "react-tooltip/dist/react-tooltip.css";
-import { Tooltip } from "react-tooltip";
-import { category, level, language, ispaid, mode } from "../../utils/list";
+'use client';
+import React, { useEffect, useState } from 'react';
+import { BiLogOut } from 'react-icons/bi';
+import { IoIosAdd } from 'react-icons/io';
+import { FaFilter } from 'react-icons/fa6';
+import { AiOutlineClose } from 'react-icons/ai';
+import Dropdown from './Dropdown';
+import { useLogOutQuery } from '../../redux/features/auth/authApi';
+import { useRouter } from 'next/navigation';
+import 'react-tooltip/dist/react-tooltip.css';
+import { Tooltip } from 'react-tooltip';
+import { category, level, language, ispaid, mode } from '../../utils/list';
 import {
   useGetCoursesTitleQuery,
   useGetCoursesLengthQuery,
-} from "@/redux/features/courses/coursesApi";
-import Search from "./Search";
-import { useGetAllCoursesQuery } from "@/redux/features/courses/coursesApi";
-import dynamic from "next/dynamic";
-import { Pagination } from "./Pagination";
-import Link from "next/link";
-import { ThreeCircles } from "react-loader-spinner";
-const Course = dynamic(() => import("./Course"), {
+} from '@/redux/features/courses/coursesApi';
+import Search from './Search';
+import { useGetAllCoursesQuery } from '@/redux/features/courses/coursesApi';
+import dynamic from 'next/dynamic';
+import { Pagination } from './Pagination';
+import Link from 'next/link';
+import { ThreeCircles } from 'react-loader-spinner';
+const Course = dynamic(() => import('./Course'), {
   ssr: false,
 });
 
 type Props = {};
 
 const CourseContent = (props: Props) => {
-  const [searchQuery, setSearchQuery] = useState("");
-  const [selectedFilter, setSelectedFilter] = useState("");
+  const [searchQuery, setSearchQuery] = useState('');
+  const [selectedFilter, setSelectedFilter] = useState('');
   const [logout, setLogout] = useState(false);
   const [filterModalVisible, setFilterModalVisible] = useState(false);
   const router = useRouter();
@@ -37,11 +37,11 @@ const CourseContent = (props: Props) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [filterParams, setFilterParams] = useState({
-    category: "",
-    level: "",
-    language: "",
-    isPaid: "",
-    mode: "",
+    category: '',
+    level: '',
+    language: '',
+    isPaid: '',
+    mode: '',
   });
 
   const {
@@ -97,12 +97,12 @@ const CourseContent = (props: Props) => {
 
   const logOutHandler = async () => {
     setLogout(true);
-    router.push("/");
+    router.push('/');
   };
 
   type changeHandler = React.ChangeEventHandler<HTMLInputElement>;
   const courseData = resultData;
-  const handleChange: changeHandler = (e) => {
+  const handleChange: changeHandler = e => {
     const { target } = e;
     const filteredValue = courseData?.filter((data: any) =>
       data?.title.toLowerCase().startsWith(target.value.toLowerCase())
@@ -117,7 +117,7 @@ const CourseContent = (props: Props) => {
 
   const handleInputChange = (e: any) => {
     const { name, value } = e.target;
-    setFilterParams((prevParams) => ({
+    setFilterParams(prevParams => ({
       ...prevParams,
       [name]: value,
     }));
@@ -136,7 +136,7 @@ const CourseContent = (props: Props) => {
       <div className="fixed top-0 w-full bg-main-bg-img bg-no-repeat bg-cover px-8 z-10 flex justify-around transition-all">
         <div
           className={`fixed top-0 right-0 h-screen w-1/4 bg-white z-20 transition-all ease-out duration-300 shadow-lg transform ${
-            filterModalVisible ? "translate-x-0" : "translate-x-full"
+            filterModalVisible ? 'translate-x-0' : 'translate-x-full'
           }`}
         >
           {filterModalVisible && (
@@ -147,7 +147,7 @@ const CourseContent = (props: Props) => {
                   <AiOutlineClose
                     className="text-sky-700 cursor-pointer"
                     size={24}
-                    style={{ padding: "4px" }}
+                    style={{ padding: '4px' }}
                     onClick={() => setFilterModalVisible(false)}
                   />
                 </div>
@@ -155,9 +155,7 @@ const CourseContent = (props: Props) => {
 
               <div className="flex flex-col gap-8">
                 <div>
-                  <label className="block mb-2 text-sm font-medium text-gray-700">
-                    Category
-                  </label>
+                  <label className="block mb-2 text-sm font-medium text-gray-700">Category</label>
                   <select
                     id="categories"
                     name="category"
@@ -167,11 +165,7 @@ const CourseContent = (props: Props) => {
                   >
                     {category.map((val, ind) => {
                       return (
-                        <option
-                          value={val.name}
-                          key={val.id}
-                          className="text-gray-600"
-                        >
+                        <option value={val.name} key={val.id} className="text-gray-600">
                           {val.name}
                         </option>
                       );
@@ -179,9 +173,7 @@ const CourseContent = (props: Props) => {
                   </select>
                 </div>
                 <div>
-                  <label className="block mb-2 text-sm font-medium text-gray-700">
-                    Level
-                  </label>
+                  <label className="block mb-2 text-sm font-medium text-gray-700">Level</label>
                   <select
                     id="level"
                     name="level"
@@ -191,11 +183,7 @@ const CourseContent = (props: Props) => {
                   >
                     {level.map((val, ind) => {
                       return (
-                        <option
-                          value={val.name}
-                          key={val.id}
-                          className="text-gray-600"
-                        >
+                        <option value={val.name} key={val.id} className="text-gray-600">
                           {val.name}
                         </option>
                       );
@@ -203,9 +191,7 @@ const CourseContent = (props: Props) => {
                   </select>
                 </div>
                 <div>
-                  <label className="block mb-2 text-sm font-medium text-gray-700">
-                    Language
-                  </label>
+                  <label className="block mb-2 text-sm font-medium text-gray-700">Language</label>
                   <select
                     id="language"
                     name="language"
@@ -215,11 +201,7 @@ const CourseContent = (props: Props) => {
                   >
                     {language.map((val, ind) => {
                       return (
-                        <option
-                          value={val.name}
-                          key={val.id}
-                          className="text-gray-600"
-                        >
+                        <option value={val.name} key={val.id} className="text-gray-600">
                           {val.name}
                         </option>
                       );
@@ -227,9 +209,7 @@ const CourseContent = (props: Props) => {
                   </select>
                 </div>
                 <div>
-                  <label className="block mb-2 text-sm font-medium text-gray-700">
-                    Is Paid
-                  </label>
+                  <label className="block mb-2 text-sm font-medium text-gray-700">Is Paid</label>
                   <select
                     id="isPaid"
                     name="isPaid"
@@ -239,11 +219,7 @@ const CourseContent = (props: Props) => {
                   >
                     {ispaid.map((val, ind) => {
                       return (
-                        <option
-                          value={val.name}
-                          key={val.id}
-                          className="text-gray-600"
-                        >
+                        <option value={val.name} key={val.id} className="text-gray-600">
                           {val.name}
                         </option>
                       );
@@ -251,9 +227,7 @@ const CourseContent = (props: Props) => {
                   </select>
                 </div>
                 <div>
-                  <label className="block mb-2 text-sm font-medium text-gray-700">
-                    Mode
-                  </label>
+                  <label className="block mb-2 text-sm font-medium text-gray-700">Mode</label>
                   <select
                     id="mode"
                     name="mode"
@@ -263,11 +237,7 @@ const CourseContent = (props: Props) => {
                   >
                     {mode.map((val, ind) => {
                       return (
-                        <option
-                          value={val.name}
-                          key={val.id}
-                          className="text-gray-600"
-                        >
+                        <option value={val.name} key={val.id} className="text-gray-600">
                           {val.name}
                         </option>
                       );
@@ -320,10 +290,8 @@ const CourseContent = (props: Props) => {
           <Search
             setSearchQuery={setSearchQuery}
             searchQuery={searchQuery}
-            results={
-              searchQuery && searchData.length > 0 ? searchData : resultData
-            }
-            renderItem={(item) => <p>{item.title}</p>}
+            results={searchQuery && searchData.length > 0 ? searchData : resultData}
+            renderItem={item => <p>{item.title}</p>}
             onChange={handleChange}
           />
         </div>
@@ -339,10 +307,7 @@ const CourseContent = (props: Props) => {
               />
             )}
           </div>
-          <Dropdown
-            selectedFilter={selectedFilter}
-            setSelectedFilter={setSelectedFilter}
-          />
+          <Dropdown selectedFilter={selectedFilter} setSelectedFilter={setSelectedFilter} />
           <button
             className="p-3 bg-sky-900 rounded-md"
             data-tooltip-id="add-trainings-tooltip"
@@ -355,9 +320,9 @@ const CourseContent = (props: Props) => {
             id="add-trainings-tooltip"
             opacity={1}
             style={{
-              backgroundColor: "#665c5c",
-              fontSize: "12px",
-              color: "white",
+              backgroundColor: '#665c5c',
+              fontSize: '12px',
+              color: 'white',
             }}
           />
           <button
@@ -372,9 +337,9 @@ const CourseContent = (props: Props) => {
             id="filter-trainings-tooltip"
             opacity={1}
             style={{
-              backgroundColor: "#665c5c",
-              fontSize: "13px",
-              color: "white",
+              backgroundColor: '#665c5c',
+              fontSize: '13px',
+              color: 'white',
             }}
           />
           <button
@@ -389,9 +354,9 @@ const CourseContent = (props: Props) => {
             id="signout-tooltip"
             opacity={1}
             style={{
-              backgroundColor: "#665c5c",
-              fontSize: "12px",
-              color: "white",
+              backgroundColor: '#665c5c',
+              fontSize: '12px',
+              color: 'white',
             }}
           />
         </div>
@@ -409,9 +374,7 @@ const CourseContent = (props: Props) => {
       ) : (
         <Course
           selectedFilter={selectedFilter}
-          resultData={
-            searchQuery && searchData.length > 0 ? searchData : resultData
-          }
+          resultData={searchQuery && searchData.length > 0 ? searchData : resultData}
           openModal={openModal}
           setOpenModal={setOpenModal}
         />

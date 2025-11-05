@@ -1,5 +1,5 @@
-"use client";
-import { z } from "zod";
+'use client';
+import { z } from 'zod';
 
 export interface IAllCourses {
   courses: Course[];
@@ -91,17 +91,15 @@ export const publishedCourseSchema = z.object({
   slug: z.string(),
   price: z.object({
     amount: z.coerce.number(),
-    currency: z.enum(["INR", "USD", "EUR", "GBP"]),
+    currency: z.enum(['INR', 'USD', 'EUR', 'GBP']),
   }),
 
   startTime: z.preprocess(
-    (arg) =>
-      typeof arg === "string" || arg instanceof Date ? new Date(arg) : arg,
+    arg => (typeof arg === 'string' || arg instanceof Date ? new Date(arg) : arg),
     z.date()
   ),
   endTime: z.preprocess(
-    (arg) =>
-      typeof arg === "string" || arg instanceof Date ? new Date(arg) : arg,
+    arg => (typeof arg === 'string' || arg instanceof Date ? new Date(arg) : arg),
     z.date()
   ),
   certification: z.object({
@@ -121,9 +119,9 @@ export const publishedCourseSchema = z.object({
   appliedCount: z.number().optional(),
   trainedCount: z.number().optional(),
   highlights: z.array(z.string()),
-  banner: z.string().length(24, "Banner Required"), // required ObjectId string
-  previewImage: z.string().length(24, "Preview Image Required"),
-  logoUrl: z.string().length(24, "Logo Required"),
+  banner: z.string().length(24, 'Banner Required'), // required ObjectId string
+  previewImage: z.string().length(24, 'Preview Image Required'),
+  logoUrl: z.string().length(24, 'Logo Required'),
   category: z.string(),
   overview: baseOverviewSchema,
   curriculum: baseCurriculumSchema,

@@ -1,20 +1,20 @@
-"use client";
+'use client';
 
-import Image from "next/image";
-import { motion } from "framer-motion";
-import { cn } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
-import { ICourse } from "./types";
+import Image from 'next/image';
+import { motion } from 'framer-motion';
+import { cn } from '@/lib/utils';
+import { Button } from '@/components/ui/button';
+import { ICourse } from './types';
 import {
   AcademicCapIcon,
   DocumentTextIcon,
   ClockIcon,
   BookOpenIcon,
   ShieldCheckIcon,
-} from "@heroicons/react/24/solid";
+} from '@heroicons/react/24/solid';
 
 interface HeroSectionProps {
-  category?: ICourse["category"];
+  category?: ICourse['category'];
   title: string;
   description: string;
   bannerImage: string;
@@ -39,11 +39,11 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
       <div className="relative   flex flex-col md:flex-row w-[75vw] m-auto justify-between gap-12 items-center">
         {/* Left Side - Course Details */}
         <div className="space-y-5 text-white text-center md:text-left max-w-lg">
-          {category && (
+          {/* {category && (
             <span className="inline-block bg-[#FFD166] text-[#5B2A86] px-4 py-1 rounded-full text-sm font-semibold shadow-md">
               {category?.name}
             </span>
-          )}
+          )} */}
           <h1 className="text-4xl font-extrabold leading-tight">{title}</h1>
           <p className="text-lg text-white/80 leading-relaxed">{description}</p>
 

@@ -1,6 +1,6 @@
-"use client";
-import Image from "next/image";
-import { FaRegUserCircle } from "react-icons/fa";
+'use client';
+import Image from 'next/image';
+import { FaRegUserCircle } from 'react-icons/fa';
 
 export default function Avatar() {
   //   const isAuthorHaveFullName =

@@ -1,29 +1,27 @@
-"use client";
+'use client';
 
-import { UseFormReturn } from "react-hook-form";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { MdDelete } from "react-icons/md";
-import { TDraftCourseForm } from "../page";
+import { UseFormReturn } from 'react-hook-form';
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
+import { MdDelete } from 'react-icons/md';
+import { TDraftCourseForm } from '../page';
 
 export default function PrerequisitesSection({
   watch,
   setValue,
   register,
 }: {
-  watch: UseFormReturn<TDraftCourseForm>["watch"];
-  setValue: UseFormReturn<TDraftCourseForm>["setValue"];
-  register: UseFormReturn<TDraftCourseForm>["register"];
+  watch: UseFormReturn<TDraftCourseForm>['watch'];
+  setValue: UseFormReturn<TDraftCourseForm>['setValue'];
+  register: UseFormReturn<TDraftCourseForm>['register'];
 }) {
   return (
     <div className="bg-gradient-to-r from-blue-50 to-blue-100 p-6 rounded-lg shadow-lg w-full border border-blue-300">
-      <h2 className="text-2xl font-bold text-blue-700 tracking-wide">
-        Prerequisites
-      </h2>
+      <h2 className="text-2xl font-bold text-blue-700 tracking-wide">Prerequisites</h2>
 
-      {watch("curriculum.prerequisites")?.length > 0 ? (
+      {watch('curriculum.prerequisites')?.length > 0 ? (
         <div className="w-full space-y-4 mt-4">
-          {watch("curriculum.prerequisites")?.map((field, index) => (
+          {watch('curriculum.prerequisites')?.map((field, index) => (
             <div
               key={index}
               className="flex items-center gap-x-3 w-full bg-white p-4 rounded-lg shadow-md border border-gray-200 transition hover:shadow-lg"
@@ -37,10 +35,9 @@ export default function PrerequisitesSection({
               <button
                 type="button"
                 onClick={() => {
-                  const currentPrerequisites =
-                    watch("curriculum.prerequisites") || [];
+                  const currentPrerequisites = watch('curriculum.prerequisites') || [];
                   setValue(
-                    "curriculum.prerequisites",
+                    'curriculum.prerequisites',
                     currentPrerequisites.filter((_, i) => i !== index)
                   );
                 }}
@@ -59,9 +56,9 @@ export default function PrerequisitesSection({
         <Button
           className="bg-gradient-to-r from-blue-500 to-blue-700 text-white px-5 py-2 rounded-md hover:scale-105 transition-transform shadow-md hover:shadow-lg"
           onClick={() => {
-            setValue("curriculum.prerequisites", [
-              ...(watch("curriculum.prerequisites") || []),
-              "",
+            setValue('curriculum.prerequisites', [
+              ...(watch('curriculum.prerequisites') || []),
+              '',
             ]);
           }}
           type="button"

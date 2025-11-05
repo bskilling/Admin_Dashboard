@@ -1,6 +1,7 @@
-import cn from "classnames";
-import Image from "next/image";
-import Link from "next/link";
+// import {} from '@/utils/formatter';
+import { cn } from '@/lib/utils';
+import Image from 'next/image';
+import Link from 'next/link';
 
 interface Props {
   title: string;
@@ -15,8 +16,8 @@ export default function CoverImage({ title, coverImage, slug }: Props) {
       height={400}
       alt={`Cover Image for ${title}`}
       src={coverImage}
-      className={cn("shadow-small object-cover", {
-        "hover:shadow-medium transition-shadow duration-200": slug,
+      className={cn('shadow-small object-cover', {
+        'hover:shadow-medium transition-shadow duration-200': slug,
       })}
     />
   );

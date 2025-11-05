@@ -1,6 +1,6 @@
-import React, { useEffect, useRef, useState } from "react";
-import { AiOutlineCaretUp, AiOutlineCaretDown } from "react-icons/ai";
-import { list } from "../../utils/list";
+import React, { useEffect, useRef, useState } from 'react';
+import { AiOutlineCaretUp, AiOutlineCaretDown } from 'react-icons/ai';
+import { list } from '../../utils/list';
 
 type Props = {
   selectedFilter: string;
@@ -19,23 +19,20 @@ export default function Dropdown({ selectedFilter, setSelectedFilter }: Props) {
       }
     };
 
-    window.addEventListener("click", handleClickOutside);
+    window.addEventListener('click', handleClickOutside);
     return () => {
-      window.removeEventListener("click", handleClickOutside);
+      window.removeEventListener('click', handleClickOutside);
     };
   }, []);
 
   return (
-    <div
-      className="relative flex flex-col items-center w-[175px]"
-      ref={dropdownRef}
-    >
+    <div className="relative flex flex-col items-center w-[175px]" ref={dropdownRef}>
       <button
-        onClick={() => setIsOpen((prev) => !prev)}
+        onClick={() => setIsOpen(prev => !prev)}
         className="bg-white w-full p-1 flex items-center justify-between rounded-lg tracking-wider border-2 border-[#aca6a6] 
         hover:border-sky-700 border-1 active:border-sky-700 "
       >
-        <p className="text-[15px] font-[500]">{selectedFilter || "Name"}</p>
+        <p className="text-[15px] font-[500]">{selectedFilter || 'Name'}</p>
         {!isOpen ? (
           <AiOutlineCaretDown className="h-8 text-[#696969]" />
         ) : (
@@ -49,9 +46,7 @@ export default function Dropdown({ selectedFilter, setSelectedFilter }: Props) {
               <button
                 key={item.id}
                 className={`flex w-full justify-between p-2 hover:bg-gray-200 cursor-pointer rounded-r-lg border-l-transparent hover:border-l-black border-l-4 ${
-                  selectedFilter === item.name
-                    ? "bg-gray-200 border-l-black"
-                    : ""
+                  selectedFilter === item.name ? 'bg-gray-200 border-l-black' : ''
                 }`}
                 onClick={() => {
                   setSelectedFilter(item.name);

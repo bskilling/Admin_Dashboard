@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 interface CategoryProps {
   category: Category;
@@ -15,6 +15,7 @@ interface Category {
 }
 export interface ICourse {
   overview: Overview;
+  slug: string;
   outcomes: string[];
   curriculum: Curriculum;
   _id: string;
@@ -39,7 +40,7 @@ export interface ICourse {
   faqs: Faq[];
   price: {
     amount: number;
-    currency: "INR" | "USD";
+    currency: 'INR' | 'USD';
   };
   certification?: {
     title: string;
@@ -48,7 +49,7 @@ export interface ICourse {
     title: string;
   };
   logoUrl: Banner;
-  category: CategoryProps["category"];
+  category: string[];
   tools: Skill[];
 }
 interface Faq {

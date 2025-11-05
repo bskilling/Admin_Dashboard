@@ -1,16 +1,27 @@
-"use client";
+'use client';
 
-import { usePathname } from "next/navigation";
+import { usePathname } from 'next/navigation';
 import {
-  Calendar,
-  CircuitBoard,
-  Home,
+  LayoutDashboard,
+  Users,
   Inbox,
-  Search,
+  Database,
+  ArrowUpDown,
+  FolderKanban,
+  Layers,
+  Cpu,
+  Wrench,
   Settings,
-  Slack,
-} from "lucide-react";
-import Link from "next/link";
+  FileText,
+  ChevronDown,
+  ChevronRight,
+  ListFilter,
+  PlusCircle,
+  Edit,
+  Tags,
+} from 'lucide-react';
+import Link from 'next/link';
+import { useState } from 'react';
 import {
   Sidebar,
   SidebarContent,
@@ -20,69 +31,165 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-} from "@/components/ui/sidebar";
+} from '@/components/ui/sidebar';
+import { RiCoupon2Fill } from 'react-icons/ri';
 
-// Menu items.
-const items = [
-  { title: "Home", url: "/dashboard", icon: Home },
-  { title: "Leads", url: "/dashboard/leads", icon: Inbox },
-  { title: "Migration", url: "/dashboard/migration", icon: Inbox },
-  { title: "Categories", url: "/dashboard/categories?type=b2c", icon: Slack },
-  { title: "Skills", url: "/dashboard/skills", icon: CircuitBoard },
-  { title: "Tools", url: "/dashboard/tools", icon: CircuitBoard },
-  // { title: "Courses", url: "/dashboard/new-courses", icon: Calendar },
-  // { title: "Trainings", url: "/dashboard/learning/trainings", icon: Search },
-  { title: "Settings", url: "/dashboard/settings", icon: Settings },
+// Improved menu items with better naming and icon selection
+const menuItems = [
+  { title: 'Dashboard', url: '/dashboard', icon: LayoutDashboard },
+  { title: 'Agents', url: '/dashboard/agents', icon: Users },
+  { title: 'Purchases', url: '/dashboard/purchases', icon: LayoutDashboard },
+  { title: 'Lead Management', url: '/dashboard/leads', icon: Users },
+  { title: 'Nasscom', url: '/dashboard/edmingle-users', icon: Inbox },
+  { title: 'EMI Applications', url: '/dashboard/emi-leads', icon: Database },
+  // { title: "Data Migration", url: "/dashboard/migration", icon: ArrowUpDown },
+  { title: 'Coupons', url: '/dashboard/coupons', icon: RiCoupon2Fill },
+  {
+    title: 'Courses',
+    url: '/dashboard/categories?type=b2c',
+    icon: FolderKanban,
+  },
+  { title: 'Course Mapping', url: '/dashboard/course-mapping', icon: Layers },
+  { title: 'NSDC LEAD', url: '/dashboard/nsdc-leads', icon: Cpu },
+  { title: 'Tool Repository', url: '/dashboard/tools', icon: Wrench },
+  { title: 'Settings', url: '/dashboard/settings', icon: Settings },
+  { title: 'Important Logs', url: '/dashboard/important-logs', icon: Settings },
 ];
+
+// Blog section with children
+const blogMenuItem = {
+  title: 'Blogs',
+  url: '/dashboard/blog',
+  icon: FileText,
+  children: [
+    { title: 'All Posts', url: '/dashboard/blog', icon: ListFilter },
+    {
+      title: 'Categories',
+      url: '/dashboard/blog/category',
+      icon: FolderKanban,
+    },
+    { title: 'Create', url: '/dashboard/blog/create', icon: PlusCircle },
+    { title: 'Edit', url: '/dashboard/blog/edit', icon: Edit },
+    { title: 'Tags', url: '/dashboard/blog/tags', icon: Tags },
+  ],
+};
 
 export function AppSidebar() {
   const pathname = usePathname();
+  const [blogMenuOpen, setBlogMenuOpen] = useState(pathname?.includes('/dashboard/blog'));
 
   return (
-    <Sidebar className=" bg-[#f5f5f5] text-[#222] min-h-screen shadow-xl border-r border-gray-300 px-5 py-6">
-      <SidebarContent>
-        {/* Sidebar Header */}
-        <div className="p-5 text-2xl font-extrabold text-center uppercase bg-gradient-to-r from-[#444] to-[#222] text-white rounded-lg shadow-md tracking-wider">
-          Dashboard
+    <Sidebar className="bg-white min-h-screen border-r border-gray-100 shadow-sm">
+      <div className="flex flex-col h-full">
+        {/* Fixed Logo Header */}
+        <div className="flex-shrink-0 px-6 py-6 border-b border-gray-100">
+          <div className="flex items-center">
+            <div className="w-10 h-10 bg-indigo-500 rounded-lg flex items-center justify-center">
+              <span className="text-white text-lg font-bold">bS</span>
+            </div>
+            <div className="ml-3">
+              <h1 className="text-gray-900 text-lg font-semibold">bSkilling</h1>
+              <p className="text-gray-600 text-xs">Admin Portal</p>
+            </div>
+          </div>
         </div>
 
-        <SidebarGroup>
-          <SidebarGroupLabel className="text-[#444] text-sm uppercase font-semibold px-3 mt-6 tracking-wide">
-            Quick Access
-          </SidebarGroupLabel>
+        {/* Scrollable Content */}
+        <SidebarContent className="flex-1 overflow-y-auto px-4 py-4">
+          <SidebarGroup>
+            <SidebarGroupLabel className="text-gray-600 text-xs font-medium uppercase px-2 mb-3">
+              Main Navigation
+            </SidebarGroupLabel>
 
-          <SidebarGroupContent>
-            <SidebarMenu className="space-y-3 mt-2">
-              {items.map((item) => {
-                const isActive = pathname === item.url;
+            <SidebarGroupContent>
+              <SidebarMenu className="space-y-1">
+                {menuItems.map(item => {
+                  const isActive = pathname === item.url;
 
-                return (
-                  <SidebarMenuItem key={item.title} className="rounded-lg">
-                    <SidebarMenuButton asChild>
-                      <Link
-                        href={item.url}
-                        className={`flex items-center gap-4 px-5 py-3 rounded-lg text-lg font-semibold transition-all duration-200 
-                          ${
+                  return (
+                    <SidebarMenuItem key={item.title}>
+                      <SidebarMenuButton asChild>
+                        <Link
+                          href={item.url}
+                          className={`flex items-center px-3 py-2 rounded-md text-sm ${
                             isActive
-                              ? "bg-gradient-to-r from-[#222] to-[#444] text-white shadow-lg scale-105"
-                              : "text-[#222] hover:bg-[#ddd] hover:text-[#111] transition-all"
+                              ? 'text-indigo-700 bg-indigo-50 font-medium'
+                              : 'text-gray-700 hover:text-indigo-700 hover:bg-gray-50'
                           }`}
-                      >
-                        <item.icon
-                          className={`h-6 w-6 ${
-                            isActive ? "text-white" : "text-[#555]"
+                        >
+                          <item.icon
+                            className={`h-5 w-5 mr-3 ${
+                              isActive ? 'text-indigo-700' : 'text-gray-600'
+                            }`}
+                          />
+                          <span>{item.title}</span>
+                        </Link>
+                      </SidebarMenuButton>
+                    </SidebarMenuItem>
+                  );
+                })}
+
+                {/* Blog Section with Dropdown */}
+                <SidebarMenuItem>
+                  <div>
+                    <button
+                      onClick={() => setBlogMenuOpen(!blogMenuOpen)}
+                      className={`flex items-center justify-between w-full px-3 py-2 rounded-md text-sm 
+                       ${pathname?.includes('/dashboard/blog') ? 'text-indigo-700 bg-indigo-50 font-medium' : 'text-gray-700 hover:text-indigo-700 hover:bg-gray-50'}`}
+                    >
+                      <div className="flex items-center">
+                        <blogMenuItem.icon
+                          className={`h-5 w-5 mr-3 ${
+                            pathname?.includes('/dashboard/blog')
+                              ? 'text-indigo-700'
+                              : 'text-gray-600'
                           }`}
                         />
-                        <span>{item.title}</span>
-                      </Link>
-                    </SidebarMenuButton>
-                  </SidebarMenuItem>
-                );
-              })}
-            </SidebarMenu>
-          </SidebarGroupContent>
-        </SidebarGroup>
-      </SidebarContent>
+                        <span>{blogMenuItem.title}</span>
+                      </div>
+                      <div>
+                        {blogMenuOpen ? (
+                          <ChevronDown className="h-4 w-4" />
+                        ) : (
+                          <ChevronRight className="h-4 w-4" />
+                        )}
+                      </div>
+                    </button>
+
+                    {/* Submenu items */}
+                    {blogMenuOpen && (
+                      <div className="ml-8 mt-1 space-y-1">
+                        {blogMenuItem.children.map(child => {
+                          const isChildActive = pathname === child.url;
+
+                          return (
+                            <Link
+                              key={child.title}
+                              href={child.url}
+                              className={`flex items-center px-3 py-2 rounded-md text-sm ${
+                                isChildActive
+                                  ? 'text-indigo-700 bg-indigo-50 font-medium'
+                                  : 'text-gray-700 hover:text-indigo-700 hover:bg-gray-50'
+                              }`}
+                            >
+                              <child.icon
+                                className={`h-4 w-4 mr-3 ${
+                                  isChildActive ? 'text-indigo-700' : 'text-gray-600'
+                                }`}
+                              />
+                              <span>{child.title}</span>
+                            </Link>
+                          );
+                        })}
+                      </div>
+                    )}
+                  </div>
+                </SidebarMenuItem>
+              </SidebarMenu>
+            </SidebarGroupContent>
+          </SidebarGroup>
+        </SidebarContent>
+      </div>
     </Sidebar>
   );
 }

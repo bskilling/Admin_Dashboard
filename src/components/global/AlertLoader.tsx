@@ -1,7 +1,7 @@
 // import { DotLottieReact } from "@lottiefiles/dotlottie-react";
 
-import { Loader } from "lucide-react";
-import { AlertDialog, AlertDialogContent } from "../ui/alert-dialog";
+import { Loader } from 'lucide-react';
+import { AlertDialog, AlertDialogContent } from '../ui/alert-dialog';
 
 export default function AlertLoader({ isloading }: { isloading: boolean }) {
   return (

@@ -3,7 +3,7 @@ import {
   LightBulbIcon,
   RocketLaunchIcon,
   ChartBarIcon,
-} from "@heroicons/react/24/solid";
+} from '@heroicons/react/24/solid';
 
 const icons = [
   <AcademicCapIcon className="h-10 w-10 text-[#F8B400]" />,
@@ -20,10 +20,7 @@ const WhyJoinSection: React.FC<Props> = ({ whyJoin }) => {
   return (
     whyJoin &&
     whyJoin.length > 0 && (
-      <section
-        id="why-join"
-        className="py-20 px-6 bg-gradient-to-b from-gray-100 to-gray-50"
-      >
+      <section id="why-join" className="py-20 px-6 bg-gradient-to-b from-gray-100 to-gray-50">
         <div className="w-full mx-auto">
           <h2 className="text-4xl font-bold text-center mb-10 text-gray-900">
             🚀 Why Join This Program?

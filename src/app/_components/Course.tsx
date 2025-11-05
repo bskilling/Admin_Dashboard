@@ -1,14 +1,14 @@
-import React, { useEffect, useState } from "react";
-import Image from "next/image";
-import { AiOutlineGlobal } from "react-icons/ai";
-import { FaStar } from "react-icons/fa";
-import { RiGroupLine } from "react-icons/ri";
-import { FaCopy } from "react-icons/fa";
-import "react-tooltip/dist/react-tooltip.css";
-import { Tooltip } from "react-tooltip";
-import Link from "next/link";
-import { useGetAllCoursesQuery } from "@/redux/features/courses/coursesApi";
-import Modal from "./Modal";
+import React, { useEffect, useState } from 'react';
+import Image from 'next/image';
+import { AiOutlineGlobal } from 'react-icons/ai';
+import { FaStar } from 'react-icons/fa';
+import { RiGroupLine } from 'react-icons/ri';
+import { FaCopy } from 'react-icons/fa';
+import 'react-tooltip/dist/react-tooltip.css';
+import { Tooltip } from 'react-tooltip';
+import Link from 'next/link';
+import { useGetAllCoursesQuery } from '@/redux/features/courses/coursesApi';
+import Modal from './Modal';
 
 type Props = {
   selectedFilter: string;
@@ -17,12 +17,7 @@ type Props = {
   setOpenModal: any;
 };
 
-function Course({
-  selectedFilter,
-  resultData,
-  openModal,
-  setOpenModal,
-}: Props) {
+function Course({ selectedFilter, resultData, openModal, setOpenModal }: Props) {
   const { isLoading, data, refetch } = useGetAllCoursesQuery(
     {},
     { refetchOnMountOrArgChange: true }
@@ -32,25 +27,21 @@ function Course({
 
   useEffect(() => {
     if (resultData) {
-      let sortedData = [
-        ...(Array.isArray(resultData) ? resultData : resultData?.courses),
-      ];
+      let sortedData = [...(Array.isArray(resultData) ? resultData : resultData?.courses)];
 
-      if (selectedFilter === "Price (High-Low)") {
+      if (selectedFilter === 'Price (High-Low)') {
         sortedData.sort((a, b) => b.price - a.price);
-      } else if (selectedFilter === "Price (Low-High)") {
+      } else if (selectedFilter === 'Price (Low-High)') {
         sortedData.sort((a, b) => a.price - b.price);
-      } else if (selectedFilter === "Oldest First") {
+      } else if (selectedFilter === 'Oldest First') {
         sortedData.sort(
-          (a, b) =>
-            new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
+          (a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
         );
-      } else if (selectedFilter === "Popularity") {
+      } else if (selectedFilter === 'Popularity') {
         sortedData.sort((a, b) => b.ratings - a.ratings);
-      } else if (selectedFilter === "Latest First") {
+      } else if (selectedFilter === 'Latest First') {
         sortedData.sort(
-          (a, b) =>
-            new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
+          (a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
         );
       }
 
@@ -72,7 +63,7 @@ function Course({
               >
                 <div className="relative flex flex-col items-center mb-4">
                   <Image
-                    src={val?.preview_image_uri || ""}
+                    src={val?.preview_image_uri || ''}
                     alt="course_img"
                     className="rounded-t-md object-cover w-full h-36"
                     width={400}
@@ -102,8 +93,8 @@ function Course({
                     id="language-tooltip"
                     opacity={0.3}
                     style={{
-                      backgroundColor: "#665c5c",
-                      color: "white",
+                      backgroundColor: '#665c5c',
+                      color: 'white',
                     }}
                   />
                   <div
@@ -118,8 +109,8 @@ function Course({
                     id="users-tooltip"
                     opacity={0.3}
                     style={{
-                      backgroundColor: "#665c5c",
-                      color: "white",
+                      backgroundColor: '#665c5c',
+                      color: 'white',
                     }}
                   />
                   <div
@@ -134,8 +125,8 @@ function Course({
                     id="rating-tooltip"
                     opacity={0.3}
                     style={{
-                      backgroundColor: "#665c5c",
-                      color: "white",
+                      backgroundColor: '#665c5c',
+                      color: 'white',
                     }}
                   />
                   <div
@@ -150,8 +141,8 @@ function Course({
                     id="batch-tooltip"
                     opacity={0.3}
                     style={{
-                      backgroundColor: "#665c5c",
-                      color: "white",
+                      backgroundColor: '#665c5c',
+                      color: 'white',
                     }}
                   />
                 </div>

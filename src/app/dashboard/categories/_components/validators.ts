@@ -1,6 +1,6 @@
 // validators/course.validators.ts
-"use client";
-import { z } from "zod";
+'use client';
+import { z } from 'zod';
 
 export const baseOverviewSchema = z.object({
   title: z.string(),
@@ -19,8 +19,8 @@ export const baseCurriculumSchema = z.object({
         title: z.string(),
         lessons: z.array(
           z.object({
-            title: z.string(),
-            content: z.string(),
+            title: z.string().optional(),
+            content: z.string().optional(),
           })
         ),
       })
@@ -39,13 +39,13 @@ export const baseCurriculumSchema = z.object({
 // Draft course validator: all fields are optional.
 export const draftCourseSchema = z.object({
   title: z.string().optional(),
-  type: z.enum(["b2i", "b2b", "b2c", "b2g"]),
+  type: z.enum(['b2i', 'b2b', 'b2c', 'b2g']),
   slug: z.string().optional(),
   variant: z.number().optional(),
   price: z
     .object({
       amount: z.coerce.number().optional(),
-      currency: z.enum(["INR", "USD", "EUR", "GBP"]).optional(),
+      currency: z.enum(['INR', 'USD', 'EUR', 'GBP']).optional(),
     })
     .optional(),
   whyJoin: z.array(z.string()).optional(),
@@ -54,13 +54,11 @@ export const draftCourseSchema = z.object({
   description: z.string().optional(),
   durationHours: z.coerce.number().optional(),
   startTime: z.preprocess(
-    (arg) =>
-      typeof arg === "string" || arg instanceof Date ? new Date(arg) : arg,
+    arg => (typeof arg === 'string' || arg instanceof Date ? new Date(arg) : arg),
     z.date().optional()
   ),
   endTime: z.preprocess(
-    (arg) =>
-      typeof arg === "string" || arg instanceof Date ? new Date(arg) : arg,
+    arg => (typeof arg === 'string' || arg instanceof Date ? new Date(arg) : arg),
     z.date().optional()
   ),
   certification: z
@@ -79,9 +77,10 @@ export const draftCourseSchema = z.object({
   highlights: z.array(z.string()).optional(),
   outcomes: z.array(z.string()).optional(),
   banner: z.string().optional(), // expect an ObjectId string
+  broucher: z.string().optional(), // expect an ObjectId string
   previewImage: z.string().optional(),
   logoUrl: z.string().optional(),
-  category: z.string().length(24).optional(),
+  category: z.array(z.string()).optional(),
   tools: z.array(z.string()).optional(),
   overview: baseOverviewSchema.optional(),
   curriculum: baseCurriculumSchema.optional(),
@@ -100,17 +99,15 @@ export const draftCourseSchema = z.object({
 export const publishedCourseSchema = z.object({
   title: z.string(),
   description: z.string(),
-  type: z.enum(["b2i", "b2b", "b2c", "b2g"]),
+  type: z.enum(['b2i', 'b2b', 'b2c', 'b2g']),
 
   durationHours: z.number(),
   startTime: z.preprocess(
-    (arg) =>
-      typeof arg === "string" || arg instanceof Date ? new Date(arg) : arg,
+    arg => (typeof arg === 'string' || arg instanceof Date ? new Date(arg) : arg),
     z.date()
   ),
   endTime: z.preprocess(
-    (arg) =>
-      typeof arg === "string" || arg instanceof Date ? new Date(arg) : arg,
+    arg => (typeof arg === 'string' || arg instanceof Date ? new Date(arg) : arg),
     z.date()
   ),
   isPaid: z.boolean(),
