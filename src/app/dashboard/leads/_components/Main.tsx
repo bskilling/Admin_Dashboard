@@ -6,7 +6,6 @@ import { Button } from '@/components/ui/button';
 import { toast } from 'sonner';
 import { XCircle, RefreshCw } from 'lucide-react';
 import { FilterOptions, Lead } from './types';
-import { filterLeads, getLeadCounts } from './leadUtils';
 import { LeadTabs, EmptyState } from './LeadComponents';
 import LeadFilter from './LeadFilter';
 import LeadTable from './LeadTable';
@@ -15,7 +14,6 @@ import { fetchLeads, updateStatusWithNote, updateLeadComment } from './leadApi';
 const AdminLeadsDashboard: React.FC = () => {
   // State
   const [leads, setLeads] = useState<Lead[]>([]);
-  const [filteredLeads, setFilteredLeads] = useState<Lead[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [activeTab, setActiveTab] = useState('all');
@@ -26,8 +24,15 @@ const AdminLeadsDashboard: React.FC = () => {
     totalLeads: 0,
     pageSize: 20,
   });
+  const [counts, setCounts] = useState({
+    all: 0,
+    b2i: 0,
+    b2b: 0,
+    b2c: 0,
+    b2g: 0,
+  });
   const [filters, setFilters] = useState<FilterOptions>({
-    type: '',
+    type: 'b2i',
     subCategory: '',
     status: '',
     searchQuery: '',
@@ -35,10 +40,10 @@ const AdminLeadsDashboard: React.FC = () => {
     courseId: '',
   });
   const [staleTime, setStaleTime] = useState<Date | null>(null);
+
   // Add note to lead
   const handleAddNote = async (id: string, text: string, status: string) => {
     try {
-      // Create the note object
       const newNote = {
         text,
         status,
@@ -48,7 +53,6 @@ const AdminLeadsDashboard: React.FC = () => {
 
       await updateStatusWithNote(id, status, text);
 
-      // Update local state
       setLeads(currentLeads =>
         currentLeads.map(lead =>
           lead._id === id
@@ -67,48 +71,102 @@ const AdminLeadsDashboard: React.FC = () => {
       toast.error('Failed to add note. Please try again.');
     }
   };
-  // Fetch leads data
-  const fetchLeadsData = useCallback(async (page = 1, limit = 20) => {
-    try {
-      setLoading(true);
-      const response = await fetchLeads(page, limit);
 
-      // Process leads data - ensure notes array exists and proper status
-      const processedLeads = response.data.leads.map((lead: any) => ({
-        ...lead,
-        status: lead.status || 'NEW',
-        notes: lead.notes || [],
-      }));
+  // Fetch leads data with filters
+  const fetchLeadsData = useCallback(
+    async (page = 1, limit = 20) => {
+      try {
+        setLoading(true);
 
-      setLeads(processedLeads);
-      setPagination(response.data.pagination);
-      setStaleTime(new Date());
-      setError('');
-    } catch (err) {
-      console.error('Error fetching leads:', err);
-      setError('Failed to fetch leads. Please try again later.');
-    } finally {
-      setLoading(false);
-    }
-  }, []);
+        // Build filter parameters
+        const filterParams: any = {};
+
+        // Add type filter from active tab
+        if (activeTab !== 'all') {
+          filterParams.type = activeTab;
+        }
+
+        // Add additional filters from filter state
+        if (filters.type && filters.type !== 'all' && filters.type !== 'rr') {
+          filterParams.type = filters.type;
+        }
+        if (filters.status && filters.status !== 'rr') {
+          filterParams.status = filters.status;
+        }
+        if (filters.subCategory && filters.subCategory !== 'rr') {
+          filterParams.subCategory = filters.subCategory;
+        }
+        if (filters.category && filters.category !== 'rr') {
+          filterParams.category = filters.category;
+        }
+        if (filters.courseId) {
+          filterParams.courseId = filters.courseId;
+        }
+        if (filters.searchQuery) {
+          filterParams.search = filters.searchQuery;
+        }
+
+        const response = await fetchLeads(page, limit, filterParams);
+
+        // Process leads data
+        const processedLeads = response.data.leads.map((lead: any) => ({
+          ...lead,
+          status: lead.status || 'NEW',
+          notes: lead.notes || [],
+        }));
+
+        setLeads(processedLeads);
+        setPagination({
+          currentPage: response.data.pagination.currentPage,
+          totalPages: response.data.pagination.totalPages,
+          totalLeads: response.data.pagination.totalLeads,
+          pageSize: limit, // Use the limit parameter
+        });
+
+        // Update counts from API response
+        if (response.data.counts) {
+          setCounts(response.data.counts);
+        }
+
+        setStaleTime(new Date());
+        setError('');
+      } catch (err) {
+        console.error('Error fetching leads:', err);
+        setError('Failed to fetch leads. Please try again later.');
+      } finally {
+        setLoading(false);
+      }
+    },
+    [activeTab, filters]
+  );
 
   // Initial data load
   useEffect(() => {
-    fetchLeadsData();
-  }, [fetchLeadsData]);
+    fetchLeadsData(1, 20);
+  }, []);
 
-  // Apply filters when leads, filters, or active tab changes
+  // Fetch data when tab changes
+  const handleTabChange = (newTab: string) => {
+    setActiveTab(newTab);
+    setPagination(prev => ({ ...prev, currentPage: 1 }));
+  };
+
+  // Fetch data when filters change (with debounce for search)
   useEffect(() => {
-    const filtered = filterLeads(leads, filters, activeTab);
-    setFilteredLeads(filtered);
-  }, [leads, filters, activeTab]);
+    const timeoutId = setTimeout(() => {
+      setPagination(prev => ({ ...prev, currentPage: 1 }));
+      fetchLeadsData(1, pagination.pageSize);
+    }, 300);
+
+    return () => clearTimeout(timeoutId);
+  }, [activeTab, filters]);
 
   // Check data staleness
   const isDataStale = useCallback(() => {
     if (!staleTime) return true;
 
     const now = new Date();
-    const staleDurationMinutes = 5; // Consider data stale after 5 minutes
+    const staleDurationMinutes = 5;
     const diffMs = now.getTime() - staleTime.getTime();
     const diffMinutes = Math.floor(diffMs / 1000 / 60);
 
@@ -127,12 +185,22 @@ const AdminLeadsDashboard: React.FC = () => {
     fetchLeadsData(newPage, pagination.pageSize);
   };
 
+  // Handle page size change
+  const handlePageSizeChange = (newPageSize: number) => {
+    setPagination(prev => ({
+      ...prev,
+      pageSize: newPageSize,
+      currentPage: 1, // Reset to first page when changing page size
+    }));
+    fetchLeadsData(1, newPageSize);
+    toast.success(`Showing ${newPageSize} items per page`);
+  };
+
   // Update lead status with note
   const handleStatusChange = async (id: string, status: string, note: string) => {
     try {
       await updateStatusWithNote(id, status, note);
 
-      // Update local state
       setLeads(currentLeads =>
         currentLeads.map(lead =>
           lead._id === id
@@ -166,7 +234,6 @@ const AdminLeadsDashboard: React.FC = () => {
     try {
       await updateLeadComment(id, comment);
 
-      // Update local state
       setLeads(currentLeads =>
         currentLeads.map(lead =>
           lead._id === id ? { ...lead, comment, updatedAt: new Date().toISOString() } : lead
@@ -190,10 +257,8 @@ const AdminLeadsDashboard: React.FC = () => {
       category: '',
       courseId: '',
     });
+    setPagination(prev => ({ ...prev, currentPage: 1 }));
   };
-
-  // Get counts for each type
-  const counts = getLeadCounts(leads);
 
   // Loading state
   if (loading && leads.length === 0) {
@@ -251,16 +316,17 @@ const AdminLeadsDashboard: React.FC = () => {
       />
 
       {/* Tabs Component */}
-      <LeadTabs activeTab={activeTab} setActiveTab={setActiveTab} counts={counts} />
+      <LeadTabs activeTab={activeTab} setActiveTab={handleTabChange} counts={counts} />
 
       {/* TabsContent */}
-      <Tabs value={activeTab} onValueChange={setActiveTab}>
+      <Tabs value={activeTab} onValueChange={handleTabChange}>
         <TabsContent value={activeTab} className="m-0">
           <LeadTable
-            leads={filteredLeads}
+            leads={leads}
             loading={loading}
             pagination={pagination}
             onPageChange={handlePageChange}
+            onPageSizeChange={handlePageSizeChange}
             onAddComment={handleAddComment}
             onStatusChange={handleStatusChange}
             onAddNote={handleAddNote}

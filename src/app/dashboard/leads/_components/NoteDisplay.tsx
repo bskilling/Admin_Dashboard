@@ -174,7 +174,8 @@ const NotesDisplay: React.FC<{
         />
         <div className="flex items-center justify-between">
           <div className="text-xs text-slate-500">
-            Current status: <Badge className={getStatusColor(currentStatus)}>{currentStatus}</Badge>
+            Current status: a{' '}
+            <Badge className={getStatusColor(currentStatus)}>{currentStatus}</Badge>
           </div>
           <Button
             onClick={handleSubmit}

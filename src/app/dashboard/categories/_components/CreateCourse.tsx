@@ -45,6 +45,8 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import BulkUpdateDatesDialog from './BulkUpdateDatesDialog';
+import { CalendarDays } from 'lucide-react';
 
 // Define types for category types
 const categoryTypes = [
@@ -270,7 +272,15 @@ export default function CreateCourse({
                 onCheckedChange={checked => setIsPublished(checked)}
               />
             </div>
-
+            <BulkUpdateDatesDialog category={category}>
+              <Button
+                variant="outline"
+                className="flex items-center gap-2 border-green-500 text-green-600 hover:bg-green-50"
+              >
+                <CalendarDays size={16} />
+                <span>Update Dates</span>
+              </Button>
+            </BulkUpdateDatesDialog>
             {/* Import Button */}
             <Button
               variant="outline"

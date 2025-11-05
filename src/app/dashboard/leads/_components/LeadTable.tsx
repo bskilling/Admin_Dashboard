@@ -22,6 +22,13 @@ import {
   DialogClose,
 } from '@/components/ui/dialog';
 import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
+import {
   Phone,
   Mail,
   MessageSquare,
@@ -52,6 +59,7 @@ interface LeadTableProps {
     pageSize: number;
   };
   onPageChange: (page: number) => void;
+  onPageSizeChange: (pageSize: number) => void;
   onStatusChange: (id: string, status: string, note: string) => Promise<void>;
   onAddComment: (id: string, comment: string) => Promise<void>;
   onAddNote: (id: string, text: string, status: string) => Promise<void>;
@@ -62,12 +70,16 @@ const LeadTable: React.FC<LeadTableProps> = ({
   loading,
   pagination,
   onPageChange,
+  onPageSizeChange,
   onStatusChange,
   onAddComment,
   onAddNote,
 }) => {
   const [selectedLead, setSelectedLead] = useState<Lead | null>(null);
   const [isDetailDialogOpen, setIsDetailDialogOpen] = useState(false);
+
+  // Page size options
+  const pageSizeOptions = [10, 20, 50, 100];
 
   function constructLink(type: string, slug: string, category: Lead['course']['category']) {
     if (type === 'b2c' || type === 'b2b') {
@@ -265,7 +277,7 @@ const LeadTable: React.FC<LeadTableProps> = ({
         </div>
 
         <div className="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
-          <div>
+          <div className="flex items-center gap-4">
             <p className="text-sm text-gray-700">
               Showing{' '}
               <span className="font-medium">
@@ -277,7 +289,29 @@ const LeadTable: React.FC<LeadTableProps> = ({
               </span>{' '}
               of <span className="font-medium">{pagination.totalLeads}</span> results
             </p>
+
+            {/* Page Size Selector */}
+            <div className="flex items-center gap-2">
+              <span className="text-sm text-gray-700">Show</span>
+              <Select
+                value={pagination.pageSize.toString()}
+                onValueChange={value => onPageSizeChange(Number(value))}
+              >
+                <SelectTrigger className="w-[70px] h-8">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  {pageSizeOptions.map(size => (
+                    <SelectItem key={size} value={size.toString()}>
+                      {size}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+              <span className="text-sm text-gray-700">per page</span>
+            </div>
           </div>
+
           <div>
             <nav
               className="relative z-0 inline-flex rounded-md shadow-sm -space-x-px"

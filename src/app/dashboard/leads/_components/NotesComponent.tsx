@@ -59,7 +59,7 @@ const NotesComponent: React.FC<NotesComponentProps> = ({
         />
         <div className="flex items-center justify-between">
           <div className="text-xs text-slate-500 flex items-center gap-1">
-            Current status:{' '}
+            Current status:
             <Badge className={getStatusBadgeColor(currentStatus)}>{currentStatus}</Badge>
           </div>
           <Button

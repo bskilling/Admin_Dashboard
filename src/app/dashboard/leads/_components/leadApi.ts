@@ -1,4 +1,3 @@
-// leadApi.ts
 import axios from 'axios';
 import { Lead, Note } from './types';
 
@@ -13,9 +12,35 @@ const api = axios.create({
   },
 });
 
-export const fetchLeads = async (page = 1, limit = 10) => {
+export const fetchLeads = async (page = 1, limit = 20, filters: Record<string, any> = {}) => {
   try {
-    const response = await api.get(`/lead?page=${page}&limit=${limit}`);
+    // Build query parameters
+    const params: any = {
+      page,
+      limit,
+    };
+
+    // Add filters to params if they exist
+    if (filters.type && filters.type !== 'all') {
+      params.type = filters.type;
+    }
+    if (filters.status) {
+      params.status = filters.status;
+    }
+    if (filters.subCategory) {
+      params.subCategory = filters.subCategory;
+    }
+    if (filters.category) {
+      params.category = filters.category;
+    }
+    if (filters.courseId) {
+      params.courseId = filters.courseId;
+    }
+    if (filters.search) {
+      params.search = filters.search;
+    }
+
+    const response = await api.get('/lead', { params });
     return response.data;
   } catch (error) {
     console.error('Error fetching leads:', error);
@@ -61,17 +86,15 @@ export const updateStatusWithNote = async (
   addedBy: string = 'Admin'
 ) => {
   try {
-    // Create the note object
     const note = {
       text: noteText,
       status,
       addedBy,
     };
 
-    // Send both status and note in a single request
     const response = await api.put(`/lead/${leadId}`, {
       status,
-      notes: note,
+      notes: [note],
     });
 
     return response.data;
