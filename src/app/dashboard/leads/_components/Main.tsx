@@ -32,7 +32,7 @@ const AdminLeadsDashboard: React.FC = () => {
     b2g: 0,
   });
   const [filters, setFilters] = useState<FilterOptions>({
-    type: 'b2i',
+    type: '',
     subCategory: '',
     status: '',
     searchQuery: '',
