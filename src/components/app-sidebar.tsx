@@ -40,7 +40,7 @@ const menuItems = [
   { title: 'Agents', url: '/dashboard/agents', icon: Users },
   { title: 'Purchases', url: '/dashboard/purchases', icon: LayoutDashboard },
   { title: 'Lead Management', url: '/dashboard/leads', icon: Users },
-  { title: 'Nasscom', url: '/dashboard/edmingle-users', icon: Inbox },
+  // { title: 'Nasscom', url: '/dashboard/edmingle-users', icon: Inbox },
   { title: 'EMI Applications', url: '/dashboard/emi-leads', icon: Database },
   // { title: "Data Migration", url: "/dashboard/migration", icon: ArrowUpDown },
   { title: 'Coupons', url: '/dashboard/coupons', icon: RiCoupon2Fill },
@@ -50,10 +50,10 @@ const menuItems = [
     icon: FolderKanban,
   },
   { title: 'Course Mapping', url: '/dashboard/course-mapping', icon: Layers },
-  { title: 'NSDC LEAD', url: '/dashboard/nsdc-leads', icon: Cpu },
-  { title: 'Tool Repository', url: '/dashboard/tools', icon: Wrench },
-  { title: 'Settings', url: '/dashboard/settings', icon: Settings },
-  { title: 'Important Logs', url: '/dashboard/important-logs', icon: Settings },
+  // { title: 'NSDC LEAD', url: '/dashboard/nsdc-leads', icon: Cpu },
+  // { title: 'Tool Repository', url: '/dashboard/tools', icon: Wrench },
+  // { title: 'Settings', url: '/dashboard/settings', icon: Settings },
+  // { title: 'Important Logs', url: '/dashboard/important-logs', icon: Settings },
 ];
 
 // Blog section with children
@@ -130,61 +130,6 @@ export function AppSidebar() {
                 })}
 
                 {/* Blog Section with Dropdown */}
-                <SidebarMenuItem>
-                  <div>
-                    <button
-                      onClick={() => setBlogMenuOpen(!blogMenuOpen)}
-                      className={`flex items-center justify-between w-full px-3 py-2 rounded-md text-sm 
-                       ${pathname?.includes('/dashboard/blog') ? 'text-indigo-700 bg-indigo-50 font-medium' : 'text-gray-700 hover:text-indigo-700 hover:bg-gray-50'}`}
-                    >
-                      <div className="flex items-center">
-                        <blogMenuItem.icon
-                          className={`h-5 w-5 mr-3 ${
-                            pathname?.includes('/dashboard/blog')
-                              ? 'text-indigo-700'
-                              : 'text-gray-600'
-                          }`}
-                        />
-                        <span>{blogMenuItem.title}</span>
-                      </div>
-                      <div>
-                        {blogMenuOpen ? (
-                          <ChevronDown className="h-4 w-4" />
-                        ) : (
-                          <ChevronRight className="h-4 w-4" />
-                        )}
-                      </div>
-                    </button>
-
-                    {/* Submenu items */}
-                    {blogMenuOpen && (
-                      <div className="ml-8 mt-1 space-y-1">
-                        {blogMenuItem.children.map(child => {
-                          const isChildActive = pathname === child.url;
-
-                          return (
-                            <Link
-                              key={child.title}
-                              href={child.url}
-                              className={`flex items-center px-3 py-2 rounded-md text-sm ${
-                                isChildActive
-                                  ? 'text-indigo-700 bg-indigo-50 font-medium'
-                                  : 'text-gray-700 hover:text-indigo-700 hover:bg-gray-50'
-                              }`}
-                            >
-                              <child.icon
-                                className={`h-4 w-4 mr-3 ${
-                                  isChildActive ? 'text-indigo-700' : 'text-gray-600'
-                                }`}
-                              />
-                              <span>{child.title}</span>
-                            </Link>
-                          );
-                        })}
-                      </div>
-                    )}
-                  </div>
-                </SidebarMenuItem>
               </SidebarMenu>
             </SidebarGroupContent>
           </SidebarGroup>
