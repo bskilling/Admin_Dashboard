@@ -11,16 +11,7 @@ import {
 } from '@/components/ui/table';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import {
-  Dialog,
-  DialogTrigger,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogDescription,
-  DialogFooter,
-  DialogClose,
-} from '@/components/ui/dialog';
+
 import {
   Select,
   SelectContent,
@@ -41,13 +32,8 @@ import {
   Trash2Icon,
 } from 'lucide-react';
 import { Lead } from './types';
-import { getStatusColor, getTypeBadgeColor } from './leadUtils';
-import { EmptyState, StatusBadge, TypeBadge } from './LeadComponents';
+import { EmptyState, TypeBadge } from './LeadComponents';
 import LeadDetailDialog from './LeadDetails';
-import { category } from '@/utils/list';
-import axios from 'axios';
-import { toast } from 'sonner';
-import env from '@/lib/env';
 
 interface LeadTableProps {
   leads: Lead[];
@@ -201,54 +187,6 @@ const LeadTable: React.FC<LeadTableProps> = ({
                   >
                     <EyeIcon size={14} /> View Details
                   </Button>
-                  <Dialog>
-                    <DialogTrigger>
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        className="flex items-center gap-1 border-red-200 bg-red-50 text-red-600 hover:bg-red-100 my-5"
-                      >
-                        <Trash2Icon size={14} /> Delete
-                      </Button>
-                    </DialogTrigger>
-                    <DialogContent>
-                      <DialogHeader>
-                        <DialogTitle>Are you absolutely sure?</DialogTitle>
-                        <DialogDescription>
-                          This action cannot be undone. This will permanently delete your account
-                          and remove your data from our servers.
-                        </DialogDescription>
-                      </DialogHeader>
-                      <DialogFooter>
-                        <DialogClose>
-                          <Button variant="outline">Cancel</Button>
-                        </DialogClose>
-                        <DialogClose>
-                          {' '}
-                          <Button
-                            variant="destructive"
-                            size="sm"
-                            className="flex items-center gap-1 border-blue-200 bg-blue-50 text-blue-600 hover:bg-blue-100"
-                            onClick={async () => {
-                              try {
-                                const res = await axios?.delete(
-                                  env?.BACKEND_URL + `/api/lead/${lead._id}`
-                                );
-                                if (res?.status === 200) {
-                                  toast.success('Lead deleted successfully');
-                                }
-                              } catch (error) {
-                                console.error('Error updating lead:', error);
-                                toast.error('Failed to delete lead. Please try again.');
-                              }
-                            }}
-                          >
-                            <EyeIcon size={14} /> Delete
-                          </Button>
-                        </DialogClose>
-                      </DialogFooter>
-                    </DialogContent>
-                  </Dialog>
                 </TableCell>
               </TableRow>
             ))}
