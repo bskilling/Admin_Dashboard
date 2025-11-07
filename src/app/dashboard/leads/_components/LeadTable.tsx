@@ -107,7 +107,7 @@ const LeadTable: React.FC<LeadTableProps> = ({
               </TableHead>
               <TableHead className="p-4 text-white font-medium text-left"> Query</TableHead>
 
-              <TableHead className="p-4 text-white font-medium text-right">Actions</TableHead>
+              <TableHead className="p-4 text-white font-medium text-right">Action</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
