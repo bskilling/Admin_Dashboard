@@ -289,7 +289,7 @@ const AdminLeadsDashboard: React.FC = () => {
     <div className="w-full mx-auto p-4 max-w-[100vw]">
       {/* Header with Refresh Button */}
       <div className="flex justify-between items-center mb-4">
-        <h1 className="text-2xl font-bold">Lead Management</h1>
+        <h1 className="text-2xl font-bold">Lead Management q</h1>
         <div className="flex items-center gap-2">
           {isDataStale() && <p className="text-amber-500 text-sm">Data may be outdated</p>}
           <Button
