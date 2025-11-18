@@ -9,7 +9,7 @@ import { FilterOptions, Lead } from './types';
 import { LeadTabs, EmptyState } from './LeadComponents';
 import LeadFilter from './LeadFilter';
 import LeadTable from './LeadTable';
-import { fetchLeads, updateStatusWithNote, updateLeadComment } from './leadApi';
+import { fetchLeads, updateStatusWithNote, updateLeadComment, deleteLead } from './leadApi';
 
 const AdminLeadsDashboard: React.FC = () => {
   // State
@@ -40,6 +40,22 @@ const AdminLeadsDashboard: React.FC = () => {
     courseId: '',
   });
   const [staleTime, setStaleTime] = useState<Date | null>(null);
+
+  const handleDeleteLead = async (leadId: string) => {
+    if (!confirm('Are you sure you want to delete this lead?')) {
+      return;
+    }
+
+    try {
+      await deleteLead(leadId);
+      toast.success('Lead deleted successfully');
+      // Refresh the leads list
+      fetchLeadsData();
+    } catch (error) {
+      toast.error('Failed to delete lead');
+      console.error('Error deleting lead:', error);
+    }
+  };
 
   // Add note to lead
   const handleAddNote = async (id: string, text: string, status: string) => {
@@ -330,6 +346,7 @@ const AdminLeadsDashboard: React.FC = () => {
             onAddComment={handleAddComment}
             onStatusChange={handleStatusChange}
             onAddNote={handleAddNote}
+            onDelete={handleDeleteLead} // Add this
           />
         </TabsContent>
       </Tabs>
