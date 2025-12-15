@@ -50,6 +50,7 @@ const menuItems = [
     icon: FolderKanban,
   },
   { title: 'Course Mapping', url: '/dashboard/course-mapping', icon: Layers },
+
   // { title: 'NSDC LEAD', url: '/dashboard/nsdc-leads', icon: Cpu },
   // { title: 'Tool Repository', url: '/dashboard/tools', icon: Wrench },
   // { title: 'Settings', url: '/dashboard/settings', icon: Settings },
@@ -130,6 +131,51 @@ export function AppSidebar() {
                 })}
 
                 {/* Blog Section with Dropdown */}
+
+                <SidebarMenuItem>
+                  <SidebarMenuButton
+                    onClick={() => setBlogMenuOpen(!blogMenuOpen)}
+                    className={`flex items-center justify-between px-3 py-2 rounded-md text-sm cursor-pointer ${
+                      pathname.startsWith('/dashboard/blog')
+                        ? 'text-indigo-700 bg-indigo-50 font-medium'
+                        : 'text-gray-700 hover:text-indigo-700 hover:bg-gray-50'
+                    }`}
+                  >
+                    <div className="flex items-center">
+                      <FileText className="h-5 w-5 mr-3" />
+                      <span>Blogs</span>
+                    </div>
+
+                    {blogMenuOpen ? (
+                      <ChevronDown className="h-4 w-4" />
+                    ) : (
+                      <ChevronRight className="h-4 w-4" />
+                    )}
+                  </SidebarMenuButton>
+
+                  {blogMenuOpen && (
+                    <div className="ml-8 mt-1 space-y-1">
+                      {blogMenuItem.children.map(child => {
+                        const isChildActive = pathname === child.url;
+
+                        return (
+                          <Link
+                            key={child.title}
+                            href={child.url}
+                            className={`flex items-center px-3 py-2 rounded-md text-sm ${
+                              isChildActive
+                                ? 'text-indigo-700 bg-indigo-50 font-medium'
+                                : 'text-gray-600 hover:text-indigo-700 hover:bg-gray-50'
+                            }`}
+                          >
+                            <child.icon className="h-4 w-4 mr-2" />
+                            <span>{child.title}</span>
+                          </Link>
+                        );
+                      })}
+                    </div>
+                  )}
+                </SidebarMenuItem>
               </SidebarMenu>
             </SidebarGroupContent>
           </SidebarGroup>
