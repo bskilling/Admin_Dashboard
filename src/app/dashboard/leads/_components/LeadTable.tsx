@@ -30,6 +30,7 @@ import {
   ChevronsLeft,
   ChevronsRight,
   Trash2Icon,
+  Trash,
 } from 'lucide-react';
 import { Lead } from './types';
 import { EmptyState, TypeBadge } from './LeadComponents';
@@ -44,6 +45,7 @@ interface LeadTableProps {
     totalLeads: number;
     pageSize: number;
   };
+  onDelete: (id: string) => void;
   onPageChange: (page: number) => void;
   onPageSizeChange: (pageSize: number) => void;
   onStatusChange: (id: string, status: string, note: string) => Promise<void>;
@@ -60,6 +62,7 @@ const LeadTable: React.FC<LeadTableProps> = ({
   onStatusChange,
   onAddComment,
   onAddNote,
+  onDelete,
 }) => {
   const [selectedLead, setSelectedLead] = useState<Lead | null>(null);
   const [isDetailDialogOpen, setIsDetailDialogOpen] = useState(false);
@@ -107,7 +110,7 @@ const LeadTable: React.FC<LeadTableProps> = ({
               </TableHead>
               <TableHead className="p-4 text-white font-medium text-left"> Query</TableHead>
 
-              <TableHead className="p-4 text-white font-medium text-right">Actions</TableHead>
+              <TableHead className="p-4 text-white font-medium text-right">Action</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -176,17 +179,29 @@ const LeadTable: React.FC<LeadTableProps> = ({
                 </TableCell>
 
                 <TableCell className="p-4 text-right">
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    className="flex items-center gap-1 border-blue-200 bg-blue-50 text-blue-600 hover:bg-blue-100"
-                    onClick={() => {
-                      setSelectedLead(lead);
-                      setIsDetailDialogOpen(true);
-                    }}
-                  >
-                    <EyeIcon size={14} /> View Details
-                  </Button>
+                  <>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="flex items-center gap-1 border-blue-200 bg-blue-50 text-blue-600 hover:bg-blue-100"
+                      onClick={() => {
+                        setSelectedLead(lead);
+                        setIsDetailDialogOpen(true);
+                      }}
+                    >
+                      <EyeIcon size={14} /> View Details
+                    </Button>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="flex mt-5 items-center gap-1 border-blue-200 bg-blue-50 text-red-600 hover:bg-blue-100"
+                      onClick={() => {
+                        onDelete(lead._id);
+                      }}
+                    >
+                      <Trash size={14} /> Delete
+                    </Button>
+                  </>
                 </TableCell>
               </TableRow>
             ))}

@@ -103,3 +103,13 @@ export const updateStatusWithNote = async (
     throw error;
   }
 };
+
+export const deleteLead = async (leadId: string) => {
+  try {
+    const response = await api.delete(`/lead/${leadId}`);
+    return response.data;
+  } catch (error) {
+    console.error('Error deleting lead:', error);
+    throw error;
+  }
+};

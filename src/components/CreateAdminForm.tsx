@@ -18,7 +18,7 @@ export default function CreateAdminForm({ onSuccess }: { onSuccess: () => void }
     setError('');
 
     try {
-      const response = await fetch('/api/admin/users', {
+      const response = await fetch(process.env.NEXT_PUBLIC_BACKEND_URL + '/api/admin/users', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

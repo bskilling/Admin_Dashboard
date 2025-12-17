@@ -9,7 +9,7 @@ import { FilterOptions, Lead } from './types';
 import { LeadTabs, EmptyState } from './LeadComponents';
 import LeadFilter from './LeadFilter';
 import LeadTable from './LeadTable';
-import { fetchLeads, updateStatusWithNote, updateLeadComment } from './leadApi';
+import { fetchLeads, updateStatusWithNote, updateLeadComment, deleteLead } from './leadApi';
 
 const AdminLeadsDashboard: React.FC = () => {
   // State
@@ -40,6 +40,22 @@ const AdminLeadsDashboard: React.FC = () => {
     courseId: '',
   });
   const [staleTime, setStaleTime] = useState<Date | null>(null);
+
+  const handleDeleteLead = async (leadId: string) => {
+    if (!confirm('Are you sure you want to delete this lead?')) {
+      return;
+    }
+
+    try {
+      await deleteLead(leadId);
+      toast.success('Lead deleted successfully');
+      // Refresh the leads list
+      fetchLeadsData();
+    } catch (error) {
+      toast.error('Failed to delete lead');
+      console.error('Error deleting lead:', error);
+    }
+  };
 
   // Add note to lead
   const handleAddNote = async (id: string, text: string, status: string) => {
@@ -289,7 +305,7 @@ const AdminLeadsDashboard: React.FC = () => {
     <div className="w-full mx-auto p-4 max-w-[100vw]">
       {/* Header with Refresh Button */}
       <div className="flex justify-between items-center mb-4">
-        <h1 className="text-2xl font-bold">Lead Management</h1>
+        <h1 className="text-2xl font-bold">Lead Management q</h1>
         <div className="flex items-center gap-2">
           {isDataStale() && <p className="text-amber-500 text-sm">Data may be outdated</p>}
           <Button
@@ -330,6 +346,7 @@ const AdminLeadsDashboard: React.FC = () => {
             onAddComment={handleAddComment}
             onStatusChange={handleStatusChange}
             onAddNote={handleAddNote}
+            onDelete={handleDeleteLead} // Add this
           />
         </TabsContent>
       </Tabs>
