@@ -14,13 +14,16 @@ export default function AdminStatusToggle({
   const toggleStatus = async () => {
     setIsLoading(true);
     try {
-      const response = await fetch(`/api/admin/users/${admin._id}`, {
-        method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ isActive: !admin.isActive }),
-      });
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/admin/users/${admin._id}`,
+        {
+          method: 'PATCH',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ isActive: !admin.isActive }),
+        }
+      );
 
       if (!response.ok) {
         throw new Error('Failed to update status');
