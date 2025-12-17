@@ -3,6 +3,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { BookOpen, Check } from 'lucide-react';
+import env from '@/lib/env';
 
 // Types
 interface Series {
@@ -37,7 +38,9 @@ export default function Series({ id, setId }: SeriesProps) {
   const fetchSeries = async () => {
     try {
       setLoading(true);
-      const response = await fetch('/api/admin/blogs/series?isActive=true&limit=50');
+      const response = await fetch(
+        env.BACKEND_URL + '/api/admin/blogs/series?isActive=true&limit=50'
+      );
       const data: ApiResponse = await response.json();
 
       if (data.success && data.data) {
