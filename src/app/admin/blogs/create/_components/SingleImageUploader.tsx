@@ -2,7 +2,7 @@
 'use client';
 
 import React, { useState, useRef, useCallback } from 'react';
-import { Upload, X, Camera, Trash2, AlertCircle, Loader } from 'lucide-react';
+import { Upload, X, Camera, Trash2, AlertCircle, Loader, Check, Copy } from 'lucide-react';
 import env from '@/lib/env';
 import axios from 'axios';
 import { toast } from 'sonner';
@@ -44,6 +44,8 @@ const SingleImageUploader: React.FC<SingleImageUploaderProps> = ({
   purpose = 'default',
 }) => {
   const [currentImage, setCurrentImage] = useState<string | null>(initialImage || null);
+  const [imageUrl, setImageUrl] = useState<string>('');
+  const [copied, setCopied] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
   const [isDragActive, setIsDragActive] = useState(false);
   const [uploadedFile, setUploadedFile] = useState<UploadedImage | null>(null);
@@ -89,6 +91,8 @@ const SingleImageUploader: React.FC<SingleImageUploaderProps> = ({
       console.log('Upload response:', response.data);
 
       const { _id, viewUrl } = response.data.data;
+      // const { _id } = response.data.data._id;
+      // const viewUrl = response.data.data.viewUrl;
 
       const uploadedImage: UploadedImage = {
         id: _id,
@@ -100,6 +104,7 @@ const SingleImageUploader: React.FC<SingleImageUploaderProps> = ({
 
       setFileId(_id);
       setCurrentImage(viewUrl);
+      setImageUrl(viewUrl);
       setUploadedFile(uploadedImage);
       onUploadSuccess?.(uploadedImage);
       toast.success('Image uploaded successfully');
@@ -211,6 +216,18 @@ const SingleImageUploader: React.FC<SingleImageUploaderProps> = ({
     }
   };
 
+  const copyToClipboard = async () => {
+    if (!imageUrl) return;
+
+    try {
+      await navigator.clipboard.writeText(imageUrl);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch (error) {
+      console.error('Failed to copy:', error);
+    }
+  };
+
   return (
     <div className={`relative ${className} w-full`}>
       {/* Main Upload Area */}
@@ -293,6 +310,38 @@ const SingleImageUploader: React.FC<SingleImageUploaderProps> = ({
         >
           <X className="w-4 h-4" />
         </button>
+      )}
+
+      {imageUrl && (
+        <div className="mt-4 space-y-2">
+          <label className="block text-sm font-medium text-gray-700">Image Link</label>
+          <div className="flex gap-2">
+            <input
+              type="text"
+              value={imageUrl}
+              readOnly
+              className="flex-1 px-3 py-2 border border-gray-300 rounded-md bg-gray-50 text-sm"
+              placeholder="Image URL will appear here"
+            />
+            <button
+              onClick={copyToClipboard}
+              className="px-3 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-md transition-colors flex items-center gap-1"
+              title="Copy to clipboard"
+            >
+              {copied ? (
+                <>
+                  <Check className="w-4 h-4" />
+                  <span className="text-sm">Copied!</span>
+                </>
+              ) : (
+                <>
+                  <Copy className="w-4 h-4" />
+                  <span className="text-sm">Copy</span>
+                </>
+              )}
+            </button>
+          </div>
+        </div>
       )}
 
       {/* Hidden File Input */}
