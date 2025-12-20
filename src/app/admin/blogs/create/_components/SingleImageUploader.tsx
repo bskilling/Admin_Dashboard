@@ -91,8 +91,6 @@ const SingleImageUploader: React.FC<SingleImageUploaderProps> = ({
       console.log('Upload response:', response.data);
 
       const { _id, viewUrl } = response.data.data;
-      // const { _id } = response.data.data._id;
-      // const viewUrl = response.data.data.viewUrl;
 
       const uploadedImage: UploadedImage = {
         id: _id,

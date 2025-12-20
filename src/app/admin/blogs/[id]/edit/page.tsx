@@ -27,6 +27,7 @@ import {
   Upload,
   BookOpen,
   Check,
+  Copy,
 } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
@@ -51,6 +52,9 @@ import TableHeader from '@tiptap/extension-table-header';
 import CodeBlock from '@tiptap/extension-code-block';
 import Highlight from '@tiptap/extension-highlight';
 import TextAlign from '@tiptap/extension-text-align';
+import env from '@/lib/env';
+import axios from 'axios';
+import SingleImageUploader from '../../create/_components/SingleImageUploader';
 
 interface EditBlogPageProps {
   params: { id: string };
@@ -89,102 +93,192 @@ const SuccessMessage = ({ message }: { message?: string }) => {
 };
 
 // Single Image Uploader Component
-const SingleImageUploader = ({
-  value,
-  onChange,
-  placeholder = 'Upload image',
-  className = '',
-}: {
-  value?: string;
-  onChange: (url: string | undefined) => void;
-  placeholder?: string;
-  className?: string;
-}) => {
-  const [isUploading, setIsUploading] = useState(false);
-  const fileInputRef = useRef<HTMLInputElement>(null);
+// const SingleImageUploader = ({
+//   value,
+//   onChange,
+//   placeholder = 'Upload image',
+//   className = '',
+// }: {
+//   value?: string;
+//   onChange: (url: string | undefined) => void;
+//   placeholder?: string;
+//   className?: string;
+// }) => {
+//   const [isUploading, setIsUploading] = useState(false);
+//   const [imageUrl, setImageUrl] = useState<string>('');
+//   const [copied, setCopied] = useState(false);
+//   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const handleFileSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
+//   const copyToClipboard = async () => {
+//     if (!imageUrl) return;
 
-    setIsUploading(true);
-    try {
-      const formData = new FormData();
-      formData.append('file', file);
-      formData.append('fileType', 'IMAGE');
-      formData.append('userId', 'current-user-id');
+//     try {
+//       await navigator.clipboard.writeText(imageUrl);
+//       setCopied(true);
+//       setTimeout(() => setCopied(false), 2000);
+//     } catch (error) {
+//       console.error('Failed to copy:', error);
+//     }
+//   };
 
-      const response = await fetch('/api/files', {
-        method: 'POST',
-        body: formData,
-      });
+//   // const handleFileSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
+//   //   const file = e.target.files?.[0];
+//   //   if (!file) return;
 
-      const result = await response.json();
-      if (result.success) {
-        onChange(result.fileUrl);
-        toast.success('Image uploaded successfully');
-      } else {
-        throw new Error(result.error || 'Upload failed');
-      }
-    } catch (error) {
-      console.error('Upload error:', error);
-      toast.error('Upload failed');
-    } finally {
-      setIsUploading(false);
-    }
-  };
+//   //   setIsUploading(true);
+//   //   try {
+//   //     const formData = new FormData();
+//   //     formData.append('file', file);
+//   //     formData.append('fileType', 'IMAGE');
+//   //     formData.append('userId', 'current-user-id');
 
-  return (
-    <div className={className}>
-      <div className="space-y-3">
-        {value && (
-          <div className="relative">
-            <img
-              src={value}
-              alt="Uploaded"
-              className="w-full h-48 object-cover rounded-lg border"
-            />
-            <Button
-              type="button"
-              variant="destructive"
-              size="sm"
-              className="absolute top-2 right-2"
-              onClick={() => onChange(undefined)}
-            >
-              <X className="w-4 h-4" />
-            </Button>
-          </div>
-        )}
+//   //     const response = await fetch(`${env.BACKEND_URL}/api/files`, {
+//   //       method: 'POST',
+//   //       body: formData,
+//   //     });
 
-        <div
-          className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center cursor-pointer hover:border-gray-400 transition-colors"
-          onClick={() => fileInputRef.current?.click()}
-        >
-          {isUploading ? (
-            <div className="flex items-center justify-center gap-2">
-              <Loader2 className="w-6 h-6 animate-spin" />
-              <span>Uploading...</span>
-            </div>
-          ) : (
-            <>
-              <Upload className="w-8 h-8 mx-auto mb-2 text-gray-400" />
-              <p className="text-sm font-medium">{placeholder}</p>
-              <p className="text-xs text-gray-500">Click to browse files</p>
-            </>
-          )}
-        </div>
+//   //     const result = await response.json();
+//   //     if (result.success) {
+//   //       onChange(result.fileUrl);
+//   //       setImageUrl(result.fileUrl);
+//   //       toast.success('Image uploaded successfully');
+//   //     } else {
+//   //       throw new Error(result.error || 'Upload failed');
+//   //     }
+//   //   } catch (error) {
+//   //     console.error('Upload error:', error);
+//   //     toast.error('Upload failed');
+//   //   } finally {
+//   //     setIsUploading(false);
+//   //   }
+//   // };
 
-        <input
-          ref={fileInputRef}
-          type="file"
-          accept="image/*"
-          onChange={handleFileSelect}
-          className="hidden"
-        />
-      </div>
-    </div>
-  );
-};
+//   const handleFileSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
+//     const file = e.target.files?.[0];
+//     if (!file) return;
+
+//     setIsUploading(true);
+
+//     try {
+//       const formData = new FormData();
+//       formData.append('file', file);
+//       formData.append('fileType', 'IMAGE');
+//       formData.append('userId', 'current-user-id');
+
+//       const response = await axios.post(env.BACKEND_URL + '/api/files', formData, {
+//         headers: {
+//           'Content-Type': 'multipart/form-data',
+//         },
+//       });
+
+//       const result = response.data;
+
+//       if (result.success) {
+//         onChange(result.fileUrl);
+//         setImageUrl(result.fileUrl);
+//         toast.success('Image uploaded successfully');
+//       } else {
+//         throw new Error(result.error || 'Upload failed');
+//       }
+//     } catch (error) {
+//       console.error('Upload error:', error);
+
+//       const errorMessage = axios.isAxiosError(error)
+//         ? error.response?.data?.message || error.message
+//         : 'Upload failed';
+
+//       toast.error(errorMessage);
+//     } finally {
+//       setIsUploading(false);
+//     }
+//   };
+
+//   return (
+//     <div className={className}>
+//       <div className="space-y-3">
+//         {value && (
+//           <div className="relative">
+//             <img
+//               src={value}
+//               alt="Uploaded"
+//               className="w-full h-48 object-cover rounded-lg border"
+//             />
+//             <Button
+//               type="button"
+//               variant="destructive"
+//               size="sm"
+//               className="absolute top-2 right-2"
+//               onClick={() => onChange(undefined)}
+//             >
+//               <X className="w-4 h-4" />
+//             </Button>
+//           </div>
+//         )}
+
+//         <div
+//           className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center cursor-pointer hover:border-gray-400 transition-colors"
+//           onClick={() => fileInputRef.current?.click()}
+//         >
+//           {isUploading ? (
+//             <div className="flex items-center justify-center gap-2">
+//               <Loader2 className="w-6 h-6 animate-spin" />
+//               <span>Uploading...</span>
+//             </div>
+//           ) : (
+//             <>
+//               <>
+//                 <Upload className="w-8 h-8 mx-auto mb-2 text-gray-400" />
+//                 <p className="text-sm font-medium">{placeholder}</p>
+//                 <p className="text-xs text-gray-500">Click to browse files</p>
+//               </>
+//               <div>
+//                 {imageUrl && (
+//                   <div className="mt-4 space-y-2">
+//                     <label className="block text-sm font-medium text-gray-700">Image Link</label>
+//                     <div className="flex gap-2">
+//                       <input
+//                         type="text"
+//                         value={imageUrl}
+//                         readOnly
+//                         className="flex-1 px-3 py-2 border border-gray-300 rounded-md bg-gray-50 text-sm"
+//                         placeholder="Image URL will appear here"
+//                       />
+//                       <button
+//                         onClick={copyToClipboard}
+//                         className="px-3 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-md transition-colors flex items-center gap-1"
+//                         title="Copy to clipboard"
+//                       >
+//                         {copied ? (
+//                           <>
+//                             <Check className="w-4 h-4" />
+//                             <span className="text-sm">Copied!</span>
+//                           </>
+//                         ) : (
+//                           <>
+//                             <Copy className="w-4 h-4" />
+//                             <span className="text-sm">Copy</span>
+//                           </>
+//                         )}
+//                       </button>
+//                     </div>
+//                   </div>
+//                 )}
+//               </div>
+//             </>
+//           )}
+//         </div>
+
+//         <input
+//           ref={fileInputRef}
+//           type="file"
+//           accept="image/*"
+//           onChange={handleFileSelect}
+//           className="hidden"
+//         />
+//       </div>
+//     </div>
+//   );
+// };
 
 // Rich Text Editor Menu Bar
 const MenuBar = ({ editor }: { editor: any }) => {
@@ -845,10 +939,34 @@ export default function EditBlogPage() {
                 {/* Banner Image */}
                 <div>
                   <label className="text-sm font-medium mb-2 block">Banner Image</label>
-                  <SingleImageUploader
+                  {/* <SingleImageUploader
                     value={watch('banner')}
                     onChange={url => setValue('banner', url)}
                     placeholder="Upload banner image"
+                  /> */}
+                  <SingleImageUploader
+                    userId="current-user-id"
+                    maxFileSize={2} // 2MB for profile pics
+                    width={150}
+                    height={150}
+                    placeholder="Upload profile picture"
+                    className="w-full max-w-4xl"
+                    onUploadSuccess={file => {
+                      console.log('Profile picture uploaded:', file);
+                      // setProfileImage(file.url);
+                      setValue('banner', file.url);
+                      // Save to user profile in database
+                    }}
+                    onUploadError={error => {
+                      console.error('Upload failed:', error);
+                      alert(`Upload failed: ${error}`);
+                    }}
+                    onDelete={() => {
+                      console.log('Profile picture deleted');
+                      setValue('banner', undefined);
+                      // setProfileImage(null);
+                      // Remove from user profile in database
+                    }}
                   />
                   <ErrorMessage error={errors?.banner?.message} />
                 </div>
