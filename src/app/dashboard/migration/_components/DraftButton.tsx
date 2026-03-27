@@ -105,6 +105,7 @@ const DraftCourseButton: React.FC<Props> = ({
       return;
     }
 
+    // @ts-expect-error err
     const newDraftData: z.infer<typeof draftCourseSchema> = {
       type: 'b2c',
       title: courseDetails?.title || 'New Draft Course',

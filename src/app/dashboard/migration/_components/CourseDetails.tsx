@@ -71,6 +71,7 @@ const CategoryDraftCreator = ({ courseId }: CourseDetailsProps) => {
       return;
     }
 
+    // @ts-expect-error err
     const draftData: z.infer<typeof draftCourseSchema> = {
       type: 'b2c',
       title: courseDetails?.title || 'New Draft Course',

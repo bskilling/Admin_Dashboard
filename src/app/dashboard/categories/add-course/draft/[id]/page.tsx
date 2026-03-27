@@ -60,9 +60,10 @@ import SkillsSection from './_components/SkillsSection';
 import ToolsSection from './_components/ToolsSection';
 import KeyFeaturesSection from './_components/KeyFeaturesSection';
 import { FiBookOpen } from 'react-icons/fi';
-import CoursePricing from './_components/Pricing';
+// import CoursePricing from './_components/Pricing';
 import WhyChooseProgram from './_components/ChooseUs';
 import SkillsSelector from './_components/Skills';
+import OffersAndPricingSection from './_components/OffersAndPricingSection';
 
 export type TDraftCourseForm = z.infer<typeof draftCourseSchema>;
 
@@ -383,13 +384,19 @@ export default function RouteComponent() {
                       </div>
                     </div>
                   </section>
-
-                  <CoursePricing
+                  <OffersAndPricingSection
                     watch={watch}
                     setValue={setValue}
                     register={register}
                     formState={formState}
                   />
+                  {/* 
+                  <CoursePricing
+                    watch={watch}
+                    setValue={setValue}
+                    register={register}
+                    formState={formState}
+                  /> */}
 
                   <FaqSection register={register} watch={watch} setValue={setValue} />
 

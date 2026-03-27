@@ -36,7 +36,55 @@ export const baseCurriculumSchema = z.object({
   ),
 });
 
-// Draft course validator: all fields are optional.
+// ── Reusable sub-schemas ──────────────────────────────────────────────────────
+
+export const gstSchema = z
+  .object({
+    percentage: z.coerce.number().min(0).max(100).default(18),
+    isInclusive: z.boolean().default(false),
+  })
+  .optional();
+
+export const offerSchema = z.object({
+  type: z.enum(['coupon', 'discount', 'referral', 'flash']),
+  discountType: z.enum(['flat', 'percentage']).default('percentage'),
+  value: z.coerce.number().min(0),
+  code: z.string().optional(),
+  description: z.string().optional(),
+  maxDiscountAmount: z.coerce.number().optional(),
+  minOrderAmount: z.coerce.number().optional(),
+  validFrom: z.preprocess(
+    arg => (typeof arg === 'string' || arg instanceof Date ? new Date(arg) : arg),
+    z.date().optional()
+  ),
+  validUntil: z.preprocess(
+    arg => (typeof arg === 'string' || arg instanceof Date ? new Date(arg) : arg),
+    z.date().optional()
+  ),
+  usageLimit: z.coerce.number().optional(),
+  usedCount: z.coerce.number().default(0),
+  isActive: z.boolean().default(true),
+});
+
+export const installmentSchema = z.object({
+  installmentNumber: z.coerce.number(),
+  amount: z.coerce.number().min(1),
+  dueDate: z.preprocess(
+    arg => (typeof arg === 'string' || arg instanceof Date ? new Date(arg) : arg),
+    z.date()
+  ),
+  label: z.string().optional(),
+});
+
+export const partialPaymentSchema = z
+  .object({
+    isAllowed: z.boolean().default(false),
+    installments: z.array(installmentSchema).default([]),
+  })
+  .optional();
+
+// ── Draft course validator: all fields optional ───────────────────────────────
+
 export const draftCourseSchema = z.object({
   title: z.string().optional(),
   type: z.enum(['b2i', 'b2b', 'b2c', 'b2g']),
@@ -48,6 +96,13 @@ export const draftCourseSchema = z.object({
       currency: z.enum(['INR', 'USD', 'EUR', 'GBP']).optional(),
     })
     .optional(),
+
+  // ── NEW ──
+  gst: gstSchema,
+  offers: z.array(offerSchema).optional().default([]),
+  partialPayment: partialPaymentSchema,
+  // ────────
+
   whyJoin: z.array(z.string()).optional(),
   skills: z.array(z.string()).optional(),
   videoUrl: z.string().optional(),
@@ -76,8 +131,8 @@ export const draftCourseSchema = z.object({
   trainedCount: z.number().optional(),
   highlights: z.array(z.string()).optional(),
   outcomes: z.array(z.string()).optional(),
-  banner: z.string().optional(), // expect an ObjectId string
-  broucher: z.string().optional(), // expect an ObjectId string
+  banner: z.string().optional(),
+  broucher: z.string().optional(),
   previewImage: z.string().optional(),
   logoUrl: z.string().optional(),
   category: z.array(z.string()).optional(),
@@ -95,12 +150,13 @@ export const draftCourseSchema = z.object({
     )
     .optional(),
 });
-// Published course validator: all fields are required.
+
+// ── Published course validator: strict ───────────────────────────────────────
+
 export const publishedCourseSchema = z.object({
   title: z.string(),
   description: z.string(),
   type: z.enum(['b2i', 'b2b', 'b2c', 'b2g']),
-
   durationHours: z.number(),
   startTime: z.preprocess(
     arg => (typeof arg === 'string' || arg instanceof Date ? new Date(arg) : arg),
@@ -110,25 +166,32 @@ export const publishedCourseSchema = z.object({
     arg => (typeof arg === 'string' || arg instanceof Date ? new Date(arg) : arg),
     z.date()
   ),
+
+  // ── NEW ──
+  gst: gstSchema,
+  offers: z.array(offerSchema).optional().default([]),
+  partialPayment: partialPaymentSchema,
+  // ────────
+
   isPaid: z.boolean(),
-  // appliedCount and trainedCount can still be optional since they default to 0.
   appliedCount: z.number().optional(),
   trainedCount: z.number().optional(),
   highlights: z.array(z.string()),
-  banner: z.string(), // required ObjectId string
+  banner: z.string(),
   previewImage: z.string(),
   logoUrl: z.string(),
   category: z.string(),
   overview: baseOverviewSchema,
   curriculum: baseCurriculumSchema,
   images: z.array(z.string()).optional(),
-  // When publishing, we enforce isPublished to be true.
   isPublished: z.literal(true),
 });
+
+// ── Query validator ───────────────────────────────────────────────────────────
 
 export const getCoursesQueryValidator = z.object({
   page: z.coerce.number().int().min(1).optional(),
   limit: z.coerce.number().int().min(10).optional(),
-  isPublished: z.string().optional(), // e.g., "draft" or "published"
+  isPublished: z.string().optional(),
   category: z.string().optional(),
 });
