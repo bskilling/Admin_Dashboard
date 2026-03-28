@@ -4,23 +4,20 @@ import { usePathname } from 'next/navigation';
 import {
   LayoutDashboard,
   Users,
-  Inbox,
   Database,
-  ArrowUpDown,
   FolderKanban,
   Layers,
-  Cpu,
-  Wrench,
-  Settings,
   FileText,
   ChevronDown,
   ChevronRight,
-  ListFilter,
   PlusCircle,
-  Edit,
   Tags,
   BookOpen,
   List,
+  CreditCard,
+  Receipt,
+  GraduationCap,
+  BarChart3,
 } from 'lucide-react';
 import Link from 'next/link';
 import { useState } from 'react';
@@ -36,23 +33,27 @@ import {
 } from '@/components/ui/sidebar';
 import { RiCoupon2Fill } from 'react-icons/ri';
 
-// Improved menu items with better naming and icon selection
 const menuItems = [
   { title: 'Dashboard', url: '/dashboard', icon: LayoutDashboard },
   { title: 'Agents', url: '/dashboard/agents', icon: Users },
-  { title: 'Purchases', url: '/dashboard/purchases', icon: LayoutDashboard },
   { title: 'Lead Management', url: '/dashboard/leads', icon: Users },
   { title: 'EMI Applications', url: '/dashboard/emi-leads', icon: Database },
   { title: 'Coupons', url: '/dashboard/coupons', icon: RiCoupon2Fill },
-  {
-    title: 'Courses',
-    url: '/dashboard/categories?type=b2c',
-    icon: FolderKanban,
-  },
+  { title: 'Courses', url: '/dashboard/categories?type=b2c', icon: FolderKanban },
   { title: 'Course Mapping', url: '/dashboard/course-mapping', icon: Layers },
 ];
 
-// Blog section with children
+const purchasesMenu = {
+  title: 'Purchases',
+  icon: CreditCard,
+  baseUrl: '/dashboard/purchases',
+  children: [
+    { title: 'Overview', url: '/dashboard/purchases', icon: BarChart3 },
+    { title: 'All Payments', url: '/dashboard/purchases/payments', icon: Receipt },
+    { title: 'All Enrollments', url: '/dashboard/purchases/enrollments', icon: GraduationCap },
+  ],
+};
+
 const blogMenuItem = {
   title: 'Blogs',
   url: '/admin/blogs',
@@ -66,13 +67,11 @@ const blogMenuItem = {
   ],
 };
 
-// Categories submenu
 const categoryItems = [
   { title: 'All Categories', url: '/admin/categories', icon: List },
   { title: 'Create Category', url: '/admin/categories/create', icon: PlusCircle },
 ];
 
-// Tags submenu
 const tagItems = [
   { title: 'All Tags', url: '/admin/tags', icon: List },
   { title: 'Create Tag', url: '/admin/tags/create', icon: PlusCircle },
@@ -80,6 +79,8 @@ const tagItems = [
 
 export function AppSidebar() {
   const pathname = usePathname();
+
+  const [purchasesOpen, setPurchasesOpen] = useState(pathname?.startsWith('/dashboard/purchases'));
   const [blogMenuOpen, setBlogMenuOpen] = useState(pathname?.includes('/admin/blogs'));
   const [categoriesMenuOpen, setCategoriesMenuOpen] = useState(
     pathname?.includes('/admin/categories')
@@ -89,7 +90,6 @@ export function AppSidebar() {
   return (
     <Sidebar className="bg-white min-h-screen border-r border-gray-100 shadow-sm">
       <div className="flex flex-col h-full">
-        {/* Fixed Logo Header */}
         <div className="flex-shrink-0 px-6 py-6 border-b border-gray-100">
           <div className="flex items-center">
             <div className="w-10 h-10 bg-indigo-500 rounded-lg flex items-center justify-center">
@@ -102,7 +102,6 @@ export function AppSidebar() {
           </div>
         </div>
 
-        {/* Scrollable Content */}
         <SidebarContent className="flex-1 overflow-y-auto px-4 py-4">
           <SidebarGroup>
             <SidebarGroupLabel className="text-gray-600 text-xs font-medium uppercase px-2 mb-3">
@@ -113,7 +112,6 @@ export function AppSidebar() {
               <SidebarMenu className="space-y-1">
                 {menuItems.map(item => {
                   const isActive = pathname === item.url;
-
                   return (
                     <SidebarMenuItem key={item.title}>
                       <SidebarMenuButton asChild>
@@ -126,9 +124,7 @@ export function AppSidebar() {
                           }`}
                         >
                           <item.icon
-                            className={`h-5 w-5 mr-3 ${
-                              isActive ? 'text-indigo-700' : 'text-gray-600'
-                            }`}
+                            className={`h-5 w-5 mr-3 ${isActive ? 'text-indigo-700' : 'text-gray-600'}`}
                           />
                           <span>{item.title}</span>
                         </Link>
@@ -137,7 +133,53 @@ export function AppSidebar() {
                   );
                 })}
 
-                {/* Blog Section with Dropdown */}
+                {/* ── Purchases dropdown ── */}
+                <SidebarMenuItem>
+                  <button
+                    onClick={() => setPurchasesOpen(!purchasesOpen)}
+                    className={`flex items-center justify-between w-full px-3 py-2 rounded-md text-sm ${
+                      pathname?.startsWith('/dashboard/purchases')
+                        ? 'text-indigo-700 bg-indigo-50 font-medium'
+                        : 'text-gray-700 hover:text-indigo-700 hover:bg-gray-50'
+                    }`}
+                  >
+                    <div className="flex items-center">
+                      <CreditCard
+                        className={`h-5 w-5 mr-3 ${pathname?.startsWith('/dashboard/purchases') ? 'text-indigo-700' : 'text-gray-600'}`}
+                      />
+                      <span>Purchases</span>
+                    </div>
+                    {purchasesOpen ? (
+                      <ChevronDown className="h-4 w-4" />
+                    ) : (
+                      <ChevronRight className="h-4 w-4" />
+                    )}
+                  </button>
+
+                  {purchasesOpen && (
+                    <div className="ml-6 mt-1 space-y-1">
+                      {purchasesMenu.children.map(child => {
+                        const isActive = pathname === child.url;
+                        return (
+                          <Link
+                            key={child.title}
+                            href={child.url}
+                            className={`flex items-center px-3 py-2 rounded-md text-sm ${
+                              isActive
+                                ? 'text-indigo-700 bg-indigo-50 font-medium'
+                                : 'text-gray-600 hover:text-indigo-700 hover:bg-gray-50'
+                            }`}
+                          >
+                            <child.icon className="h-4 w-4 mr-3" />
+                            <span>{child.title}</span>
+                          </Link>
+                        );
+                      })}
+                    </div>
+                  )}
+                </SidebarMenuItem>
+
+                {/* ── Blogs dropdown ── */}
                 <SidebarMenuItem>
                   <button
                     onClick={() => setBlogMenuOpen(!blogMenuOpen)}
@@ -148,12 +190,10 @@ export function AppSidebar() {
                     }`}
                   >
                     <div className="flex items-center">
-                      <blogMenuItem.icon
-                        className={`h-5 w-5 mr-3 ${
-                          pathname?.includes('/admin/blogs') ? 'text-indigo-700' : 'text-gray-600'
-                        }`}
+                      <BlogIcon
+                        className={`h-5 w-5 mr-3 ${pathname?.includes('/admin/blogs') ? 'text-indigo-700' : 'text-gray-600'}`}
                       />
-                      <span>{blogMenuItem.title}</span>
+                      <span>Blogs</span>
                     </div>
                     {blogMenuOpen ? (
                       <ChevronDown className="h-4 w-4" />
@@ -165,13 +205,13 @@ export function AppSidebar() {
                   {blogMenuOpen && (
                     <div className="ml-6 mt-1 space-y-1">
                       {blogMenuItem.children.map(child => {
-                        const isChildActive = pathname === child.url;
+                        const isActive = pathname === child.url;
                         return (
                           <Link
                             key={child.title}
                             href={child.url}
                             className={`flex items-center px-3 py-2 rounded-md text-sm ${
-                              isChildActive
+                              isActive
                                 ? 'text-indigo-700 bg-indigo-50 font-medium'
                                 : 'text-gray-600 hover:text-indigo-700 hover:bg-gray-50'
                             }`}
@@ -182,7 +222,7 @@ export function AppSidebar() {
                         );
                       })}
 
-                      {/* Categories Submenu */}
+                      {/* Categories */}
                       <div>
                         <button
                           onClick={() => setCategoriesMenuOpen(!categoriesMenuOpen)}
@@ -202,7 +242,6 @@ export function AppSidebar() {
                             <ChevronRight className="h-3 w-3" />
                           )}
                         </button>
-
                         {categoriesMenuOpen && (
                           <div className="ml-6 mt-1 space-y-1">
                             {categoryItems.map(item => {
@@ -211,11 +250,7 @@ export function AppSidebar() {
                                 <Link
                                   key={item.title}
                                   href={item.url}
-                                  className={`flex items-center px-3 py-2 rounded-md text-xs ${
-                                    isActive
-                                      ? 'text-indigo-700 bg-indigo-50 font-medium'
-                                      : 'text-gray-600 hover:text-indigo-700 hover:bg-gray-50'
-                                  }`}
+                                  className={`flex items-center px-3 py-2 rounded-md text-xs ${isActive ? 'text-indigo-700 bg-indigo-50 font-medium' : 'text-gray-600 hover:text-indigo-700 hover:bg-gray-50'}`}
                                 >
                                   <item.icon className="h-3 w-3 mr-2" />
                                   <span>{item.title}</span>
@@ -226,7 +261,7 @@ export function AppSidebar() {
                         )}
                       </div>
 
-                      {/* Tags Submenu */}
+                      {/* Tags */}
                       <div>
                         <button
                           onClick={() => setTagsMenuOpen(!tagsMenuOpen)}
@@ -246,7 +281,6 @@ export function AppSidebar() {
                             <ChevronRight className="h-3 w-3" />
                           )}
                         </button>
-
                         {tagsMenuOpen && (
                           <div className="ml-6 mt-1 space-y-1">
                             {tagItems.map(item => {
@@ -255,11 +289,7 @@ export function AppSidebar() {
                                 <Link
                                   key={item.title}
                                   href={item.url}
-                                  className={`flex items-center px-3 py-2 rounded-md text-xs ${
-                                    isActive
-                                      ? 'text-indigo-700 bg-indigo-50 font-medium'
-                                      : 'text-gray-600 hover:text-indigo-700 hover:bg-gray-50'
-                                  }`}
+                                  className={`flex items-center px-3 py-2 rounded-md text-xs ${isActive ? 'text-indigo-700 bg-indigo-50 font-medium' : 'text-gray-600 hover:text-indigo-700 hover:bg-gray-50'}`}
                                 >
                                   <item.icon className="h-3 w-3 mr-2" />
                                   <span>{item.title}</span>
@@ -279,4 +309,8 @@ export function AppSidebar() {
       </div>
     </Sidebar>
   );
+}
+
+function BlogIcon({ className }: { className?: string }) {
+  return <BookOpen className={className} />;
 }
